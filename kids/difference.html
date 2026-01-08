@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Differences 100 / まちがいさがし</title>
+    <style>
+        :root { --bg: #E3F2FD; --card: #ffffff; --accent: #2196F3; }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: var(--bg); margin: 0; overflow: hidden; touch-action: none;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+        }
+        .container {
+            background: var(--card); padding: 25px; border-radius: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px;
+            border: 6px solid #fff; position: relative; z-index: 10;
+        }
+        #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
+        
+        .quiz-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+            padding: 20px; background: #f8f9fa; border-radius: 30px; margin-bottom: 20px;
+        }
+        .item-btn {
+            font-size: 3.5rem; background: white; border: 3px solid #e3f2fd;
+            border-radius: 20px; width: 85px; height: 85px; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            transition: transform 0.1s; -webkit-user-select: none;
+        }
+        .item-btn:active { transform: scale(0.9); }
+        .item-btn.correct { background: #c8e6c9; border-color: #4caf50; animation: jump 0.5s; }
+        .item-btn.wrong { background: #ffcdd2; border-color: #f44336; }
+
+        @keyframes jump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .status-text { height: 80px; font-size: 1.4rem; font-weight: 900; color: #1976D2; margin-bottom: 10px; line-height: 1.2; text-align: center; }
+        .status-text small { font-size: 0.9rem; color: #64B5F6; display: block; }
+
+        .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 18px; background: #fff; border: 2px solid #eee; border-radius: 15px; font-weight: bold; z-index: 150; }
+        .btn-main { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #1565C0; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <h1>🔍 まちがいさがし 100</h1>
+    <div style="font-size: 0.9rem; color: #999; margin-bottom: 15px;">いっぱい まちがいさがし</div>
+    <div style="background: #e3f2fd; padding: 15px; border-radius: 20px; text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #90CAF9;">
+        <div>💎 <strong>100しゅるい の なかま！</strong><br>100 types of items!</div>
+        <div style="margin-top:8px;">🎯 <strong>ちがうのを みつけられるかな？</strong><br>Can you find the different one?</div>
+    </div>
+    <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+    <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+</div>
+
+<div id="gameScreen">
+    <button class="btn-exit" onclick="stopGame()">Quit / おわる</button>
+    <div id="statusLabel" class="status-text"></div>
+    <div class="quiz-grid" id="quizGrid"></div>
+</div>
+
+<script>
+    // 100種類のマスターデータをカテゴリー別に整理
+    const masterData = [
+        // どうぶつ
+        {i:'🐶',j:'いぬ',e:'Dog'},{i:'🐱',j:'ねこ',e:'Cat'},{i:'🐭',j:'ねずみ',e:'Mouse'},{i:'🐹',j:'はむすたー',e:'Hamster'},{i:'🐰',j:'うさぎ',e:'Rabbit'},
+        {i:'🦊',j:'きつね',e:'Fox'},{i:'🐻',j:'くま',e:'Bear'},{i:'🐼',j:'ぱんだ',e:'Panda'},{i:'🐨',j:'こあら',e:'Koala'},{i:'🐯',j:'とら',e:'Tiger'},
+        {i:'🦁',j:'らいおん',e:'Lion'},{i:'🐮',j:'うし',e:'Cow'},{i:'🐷',j:'ぶた',e:'Pig'},{i:'🐸',j:'かえる',e:'Frog'},{i:'🐵',j:'さる',e:'Monkey'},
+        {i:'🐣',j:'ひよこ',e:'Chick'},{i:'🐧',j:'ぺんぎん',e:'Penguin'},{i:'🦒',j:'きりん',e:'Giraffe'},{i:'🐘',j:'ぞう',e:'Elephant'},{i:'🦓',j:'しまうま',e:'Zebra'},
+        // たべもの
+        {i:'🍎',j:'りんご',e:'Apple'},{i:'🍏',j:'あおりんご',e:'Green Apple'},{i:'🍐',j:'なし',e:'Pear'},{i:'🍊',j:'みかん',e:'Orange'},{i:'🍋',j:'れもん',e:'Lemon'},
+        {i:'🍌',j:'ばなな',e:'Banana'},{i:'🍉',j:'すいか',e:'Watermelon'},{i:'🍇',j:'ぶどう',e:'Grapes'},{i:'🍓',j:'いちご',e:'Strawberry'},{i:'🍈',j:'めろん',e:'Melon'},
+        {i:'🍒',j:'さくらんぼ',e:'Cherry'},{i:'🍑',j:'もも',e:'Peach'},{i:'🍍',j:'ぱいなっぷる',e:'Pineapple'},{i:'🥝',j:'きうい',e:'Kiwi'},{i:'🍅',j:'とまと',e:'Tomato'},
+        {i:'🍆',j:'なす',e:'Eggplant'},{i:'🌽',j:'とうもろこし',e:'Corn'},{i:'🥕',j:'にんじん',e:'Carrot'},{i:'🍄',j:'きのこ',e:'Mushroom'},{i:'🍞',j:'ぱん',e:'Bread'},
+        // お菓子・飲み物
+        {i:'🍦',j:'あいす',e:'Ice Cream'},{i:'🍩',j:'どーなつ',e:'Donut'},{i:'🍪',j:'くっきー',e:'Cookie'},{i:'🍫',j:'ちょこれーと',e:'Chocolate'},{i:'🍭',j:'あめ',e:'Candy'},
+        {i:'🍮',j:'ぷりん',e:'Pudding'},{i:'🍰',j:'けーき',e:'Cake'},{i:'🍕',j:'ぴざ',e:'Pizza'},{i:'🍔',j:'はんばーがー',e:'Hamburger'},{i:'🍟',j:'ぽてと',e:'Fries'},
+        // のりもの
+        {i:'🚗',j:'くるま',e:'Car'},{i:'🚕',j:'たくしー',e:'Taxi'},{i:'🚙',j:'じーぷ',e:'SUV'},{i:'🚌',j:'ばす',e:'Bus'},{i:'🚎',j:'とろりーばす',e:'Trolley'},
+        {i:'🏎️',j:'れーしんぐかー',e:'Racing Car'},{i:'🚓',j:'ぱとかー',e:'Police Car'},{i:'🚑',j:'きゅうきゅうしゃ',e:'Ambulance'},{i:'🚒',j:'しょうぼうしゃ',e:'Fire Engine'},{i:'🚐',j:'わごんしゃ',e:'Van'},
+        {i:'🚚',j:'とらっく',e:'Truck'},{i:'🚜',j:'とらくたー',e:'Tractor'},{i:'🚲',j:'じてんしゃ',e:'Bicycle'},{i:'🛵',j:'すくーたー',e:'Scooter'},{i:'🏍️',j:'おーとばい',e:'Motorcycle'},
+        {i:'🚂',j:'きかんしゃ',e:'Steam Train'},{i:'🚆',j:'でんしゃ',e:'Train'},{i:'🚀',j:'ろけっと',e:'Rocket'},{i:'🚁',j:'へりこぷたー',e:'Helicopter'},{i:'✈️',j:'ひこうき',e:'Airplane'},
+        // 海・虫・その他
+        {i:'🐙',j:'たこ',e:'Octopus'},{i:'🦑',j:'いか',e:'Squid'},{i:'🦐',j:'えび',e:'Shrimp'},{i:'🦀',j:'かに',e:'Crab'},{i:'🐡',j:'ふぐ',e:'Pufferfish'},
+        {i:'🐠',j:'さかな',e:'Fish'},{i:'🐬',j:'いるか',e:'Dolphin'},{i:'🐳',j:'くじら',e:'Whale'},{i:'🦈',j:'さめ',e:'Shark'},{i:'🐚',j:'かい',e:'Shell'},
+        {i:'🦋',j:'ちょうちょ',e:'Butterfly'},{i:'🐝',j:'はち',e:'Bee'},{i:'🐞',j:'てんとうむし',e:'Ladybug'},{i:'🐜',j:'あり',e:'Ant'},{i:'🐌',j:'かたつむり',e:'Snail'},
+        {i:'🕷️',j:'くも',e:'Spider'},{i:'🐢',j:'かめ',e:'Turtle'},{i:'🐍',j:'へび',e:'Snake'},{i:'🦖',j:'恐竜',e:'Dinosaur'},{i:'👾',j:'かいじゅう',e:'Monster'},
+        {i:'☀️',j:'たいよう',e:'Sun'},{i:'🌙',j:'つき',e:'Moon'},{i:'⭐',j:'ほし',e:'Star'},{i:'☁️',j:'くも',e:'Cloud'},{i:'☔',j:'あめ',e:'Rain'},
+        {i:'⚽',j:'さっかーぼーる',e:'Soccer Ball'},{i:'🏀',j:'ばすけぼーる',e:'Basketball'},{i:'⚾',j:'やきゅう',e:'Baseball'},{i:'🎾',j:'てにす',e:'Tennis'},{i:'🎁',j:'ぷれぜんと',e:'Present'}
+    ];
+
+    let isProcessing = false;
+
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        nextLevel();
+    }
+
+    function stopGame() {
+        window.speechSynthesis.cancel();
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('gameScreen').style.display = 'none';
+    }
+
+    function nextLevel() {
+        isProcessing = false;
+        document.getElementById('statusLabel').innerHTML = "どれが ちがうかな？<br><small>Which one is different?</small>";
+        const grid = document.getElementById('quizGrid');
+        grid.innerHTML = '';
+
+        // 全100種類からランダムに2つ選ぶ（baseとdiff）
+        let randIndices = [];
+        while(randIndices.length < 2) {
+            let r = Math.floor(Math.random() * masterData.length);
+            if(!randIndices.includes(r)) randIndices.push(r);
+        }
+        const base = masterData[randIndices[0]];
+        const diff = masterData[randIndices[1]];
+
+        const diffIndex = Math.floor(Math.random() * 9);
+        
+        for (let i = 0; i < 9; i++) {
+            const item = (i === diffIndex) ? diff : base;
+            const btn = document.createElement('div');
+            btn.className = 'item-btn';
+            btn.innerText = item.i;
+            btn.onclick = () => checkAnswer(i === diffIndex, item, btn);
+            grid.appendChild(btn);
+        }
+    }
+
+    function checkAnswer(isCorrect, item, btn) {
+        if (isProcessing) return;
+        window.speechSynthesis.cancel();
+
+        if (isCorrect) {
+            isProcessing = true;
+            btn.classList.add('correct');
+            document.getElementById('statusLabel').innerHTML = "⭕️ せいかい！<br><small>" + item.e + "!</small>";
+            
+            const uttrJa = new SpeechSynthesisUtterance("せいかい！これは " + item.j);
+            uttrJa.lang = 'ja-JP';
+            const uttrEn = new SpeechSynthesisUtterance("That's right! It's a " + item.e);
+            uttrEn.lang = 'en-US';
+            
+            uttrJa.onend = () => { window.speechSynthesis.speak(uttrEn); };
+            window.speechSynthesis.speak(uttrJa);
+
+            setTimeout(nextLevel, 3000);
+        } else {
+            btn.classList.add('wrong');
+            document.getElementById('statusLabel').innerHTML = "❌ あれれ？<br><small>Try another one!</small>";
+            const uttrNo = new SpeechSynthesisUtterance("ちがうよ");
+            uttrNo.lang = 'ja-JP';
+            window.speechSynthesis.speak(uttrNo);
+
+            setTimeout(() => {
+                btn.classList.remove('wrong');
+                document.getElementById('statusLabel').innerHTML = "どれが ちがうかな？<br><small>Which one is different?</small>";
+            }, 1000);
+        }
+    }
+</script>
+</body>
+</html>
