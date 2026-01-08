@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kids Piano / ドレミかいだん</title>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --bg: #E6F7FF;
+            --card: #ffffff;
+            --accent: #ffcc00; 
+        }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; overflow: hidden; touch-action: none;
+        }
+        .container {
+            background: var(--card); padding: 25px; border-radius: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px;
+            border: 6px solid #fff; position: relative; z-index: 10;
+        }
+
+        #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; overflow: hidden; }
+        
+        /* 鍵盤エリア */
+        .piano-container {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
+            display: flex; padding: 10px; box-sizing: border-box; gap: 5px;
+            background: #f0f0f0;
+        }
+        .key {
+            flex: 1; background: white; border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 0 #ccc; display: flex; flex-direction: column;
+            align-items: center; justify-content: flex-end; padding-bottom: 20px;
+            font-weight: bold; color: #888; cursor: pointer; position: relative;
+            transition: transform 0.1s, box-shadow 0.1s;
+            -webkit-user-select: none;
+        }
+        .key:active, .key.active {
+            transform: translateY(5px); box-shadow: 0 0px 0 #ccc;
+            background: #fdfdfd;
+        }
+        .key-do { border-top: 8px solid #ff5252; }
+        .key-re { border-top: 8px solid #ff9800; }
+        .key-mi { border-top: 8px solid #ffeb3b; }
+        .key-fa { border-top: 8px solid #4caf50; }
+        .key-so { border-top: 8px solid #2196f3; }
+        .key-la { border-top: 8px solid #3f51b5; }
+        .key-si { border-top: 8px solid #9c27b0; }
+        .key-do2 { border-top: 8px solid #e91e63; }
+
+        /* エフェクト描画用 */
+        #effectCanvas { position: absolute; top: 0; left: 0; pointer-events: none; }
+
+        /* モード選択 */
+        .mode-select { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
+        .opt-btn {
+            padding: 10px 15px; border-radius: 15px; border: 2px solid #eee;
+            background: #f8f9fa; cursor: pointer; font-weight: bold; font-size: 0.8rem;
+        }
+        .opt-btn.active { background: var(--accent); border-color: #fcc419; color: #856404; }
+
+        .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 18px; background: #fff; border: 2px solid #eee; border-radius: 15px; font-weight: bold; z-index: 150; }
+        
+        h1 { font-size: 1.5rem; color: #2196f3; margin: 0; }
+        .sub-title { font-size: 0.9rem; color: #999; margin-bottom: 15px; }
+        .manual-section { background: #e3f2fd; padding: 15px; border-radius: 20px; text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #90caf9; }
+        .ad-container { width: 100%; min-height: 100px; margin: 10px 0; display: flex; align-items: center; justify-content: center; }
+        .btn-main { width: 100%; padding: 18px; background: #2196f3; color: white; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #1976d2; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <h1>🎹 Kids Piano</h1>
+    <div class="sub-title">ドレミかいだん / Musical Stairs</div>
+
+    <div style="font-size: 0.8rem; margin-bottom: 8px; font-weight: bold;">おとの しゅるい / Sound Type</div>
+    <div class="mode-select">
+        <div class="opt-btn active" id="sPiano" onclick="setSound('piano')">ピアノ (Piano)</div>
+        <div class="opt-btn" id="sMeow" onclick="setSound('meow')">ねこ (Cat)</div>
+    </div>
+
+    <div class="manual-section">
+        <div>🎵 <strong>たのしく ひこう！</strong><br>Tap the keys to play music!</div>
+        <div style="margin-top:8px;">🌈 <strong>おとが はねるよ！</strong><br>See the colors jump!</div>
+    </div>
+
+    <div class="ad-container">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+    <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+</div>
+
+<div id="gameScreen">
+    <canvas id="effectCanvas"></canvas>
+    <button class="btn-exit" onclick="stopGame()">Quit / おわる</button>
+    
+    <div class="piano-container">
+        <div class="key key-do" onmousedown="playNote(0)" ontouchstart="playNote(0)"><span>ド</span><span>C</span></div>
+        <div class="key key-re" onmousedown="playNote(1)" ontouchstart="playNote(1)"><span>レ</span><span>D</span></div>
+        <div class="key key-mi" onmousedown="playNote(2)" ontouchstart="playNote(2)"><span>ミ</span><span>E</span></div>
+        <div class="key key-fa" onmousedown="playNote(3)" ontouchstart="playNote(3)"><span>ファ</span><span>F</span></div>
+        <div class="key key-so" onmousedown="playNote(4)" ontouchstart="playNote(4)"><span>ソ</span><span>G</span></div>
+        <div class="key key-la" onmousedown="playNote(5)" ontouchstart="playNote(5)"><span>ラ</span><span>A</span></div>
+        <div class="key key-si" onmousedown="playNote(6)" ontouchstart="playNote(6)"><span>シ</span><span>B</span></div>
+        <div class="key key-do2" onmousedown="playNote(7)" ontouchstart="playNote(7)"><span>ド</span><span>C</span></div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('effectCanvas');
+    const ctx = canvas.getContext('2d');
+    let soundType = 'piano';
+    let audioCtx = null;
+    let particles = [];
+
+    const freqs = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
+    const emojis = ['🔴', '🟠', '🟡', '🟢', '🔵', 'Indigo', '🟣', '💖']; // 代替
+    const colors = ['#ff5252', '#ff9800', '#ffeb3b', '#4caf50', '#2196f3', '#3f51b5', '#9c27b0', '#e91e63'];
+
+    function setSound(type) {
+        soundType = type;
+        document.getElementById('sPiano').classList.toggle('active', type === 'piano');
+        document.getElementById('sMeow').classList.toggle('active', type === 'meow');
+    }
+
+    function startGame() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'block';
+        resize();
+        animate();
+        if(typeof gtag === 'function') { gtag('event', 'game_start', {'game_name': 'piano', 'sound': soundType}); }
+    }
+
+    function stopGame() {
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('gameScreen').style.display = 'none';
+        particles = [];
+    }
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function playNote(index) {
+        if (!audioCtx) return;
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        // 音色の設定
+        osc.type = (soundType === 'piano') ? 'triangle' : 'sawtooth'; 
+        osc.frequency.setValueAtTime(freqs[index], audioCtx.currentTime);
+        
+        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+
+        // エフェクト生成
+        createEffect(index);
+    }
+
+    function createEffect(index) {
+        const x = (window.innerWidth / 8) * (index + 0.5);
+        const y = window.innerHeight * 0.4;
+        const color = colors[index];
+        const emoji = (soundType === 'meow') ? '🐱' : '🎵';
+
+        for (let i = 0; i < 5; i++) {
+            particles.push({
+                x: x, y: y,
+                vx: (Math.random() - 0.5) * 10,
+                vy: -Math.random() * 15 - 5,
+                life: 1.0,
+                color: color,
+                char: Math.random() > 0.5 ? emoji : '✨'
+            });
+        }
+    }
+
+    function animate() {
+        if (document.getElementById('gameScreen').style.display === 'none') return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles = particles.filter(p => p.life > 0);
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.5; // 重力
+            p.life -= 0.02;
+            
+            ctx.globalAlpha = p.life;
+            ctx.font = '30px Arial';
+            ctx.fillText(p.char, p.x, p.y);
+        });
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+</script>
+</body>
+</html>
+
