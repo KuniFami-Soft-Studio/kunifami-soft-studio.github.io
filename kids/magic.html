@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Magic Color / マジックぬりえ</title>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --bg: #FFF9E6;
+            --card: #ffffff;
+            --accent: #ffcc00; 
+        }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; overflow: hidden; touch-action: none;
+        }
+        .container {
+            background: var(--card); padding: 25px; border-radius: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px;
+            border: 6px solid #fff; position: relative; z-index: 10;
+        }
+
+        #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; }
+        canvas { display: block; position: absolute; top: 0; left: 0; }
+
+        /* エフェクト設定 */
+        .option-select { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
+        .opt-btn {
+            padding: 10px 15px; border-radius: 15px; border: 2px solid #eee;
+            background: #f8f9fa; cursor: pointer; font-weight: bold; font-size: 0.9rem;
+        }
+        .opt-btn.active { background: var(--accent); border-color: #fcc419; color: #856404; }
+
+        .palette {
+            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 12px; background: rgba(255,255,255,0.95);
+            padding: 15px 20px; border-radius: 40px; box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            z-index: 150; pointer-events: auto; border: 2px solid #fff;
+        }
+        .color-dot {
+            width: 45px; height: 45px; border-radius: 50%; border: 4px solid white;
+            cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        .color-dot.active { transform: scale(1.4) translateY(-5px); border-color: #555; }
+
+        .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 18px; background: #fff; border: 2px solid #eee; border-radius: 15px; font-weight: bold; z-index: 150; color: #666; }
+        .btn-reset { position: absolute; top: 20px; left: 20px; padding: 10px 18px; background: #ffcc00; border: none; border-radius: 15px; font-weight: bold; z-index: 150; color: #856404; }
+
+        h1 { font-size: 1.5rem; color: #ff9500; margin: 0; }
+        .sub-title { font-size: 0.9rem; color: #999; margin-bottom: 15px; }
+        .manual-section { background: #fff9db; padding: 15px; border-radius: 20px; text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #ffe066; line-height: 1.5; }
+        .ad-container { width: 100%; min-height: 100px; margin: 10px 0; display: flex; align-items: center; justify-content: center; border-radius: 20px; overflow: hidden; }
+        .btn-main { width: 100%; padding: 18px; background: var(--accent); color: #856404; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #fcc419; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <h1>🪄 Magic Color</h1>
+    <div class="sub-title">マジックぬりえ / Magic Coloring</div>
+
+    <div style="font-size: 0.9rem; margin-bottom: 8px; font-weight: bold;">エフェクト / Effect</div>
+    <div class="option-select">
+        <div class="opt-btn active" id="effOn" onclick="setEffect(true)">✨ キラキラ (ON)</div>
+        <div class="opt-btn" id="effOff" onclick="setEffect(false)">なし (OFF)</div>
+    </div>
+
+    <div class="manual-section">
+        <div>🌟 <strong>なぞっておえかき！</strong><br>Draw with your finger!</div>
+        <div style="margin-top:8px;">🎨 <strong>いろを えらぼう！</strong><br>Choose your favorite color!</div>
+    </div>
+
+    <div class="ad-container">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+    <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+</div>
+
+<div id="gameScreen">
+    <canvas id="magicCanvas"></canvas>
+    <button class="btn-reset" onclick="resetCanvas()">Clear / けす</button>
+    <button class="btn-exit" onclick="stopGame()">Quit / おわる</button>
+    
+    <div class="palette">
+        <div class="color-dot active" style="background: #ff5252;" onclick="setColor('#ff5252', this)"></div>
+        <div class="color-dot" style="background: #448aff;" onclick="setColor('#448aff', this)"></div>
+        <div class="color-dot" style="background: #4caf50;" onclick="setColor('#4caf50', this)"></div>
+        <div class="color-dot" style="background: #ffeb3b;" onclick="setColor('#ffeb3b', this)"></div>
+        <div class="color-dot" style="background: #ff9800;" onclick="setColor('#ff9800', this)"></div>
+        <div class="color-dot" style="background: #9c27b0;" onclick="setColor('#9c27b0', this)"></div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('magicCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let currentColor = '#ff5252';
+    let particles = [];
+    let useEffect = true;
+
+    class Particle {
+        constructor(x, y, color) {
+            this.x = x; this.y = y; this.color = color;
+            this.size = Math.random() * 15 + 5;
+            this.speedX = (Math.random() - 0.5) * 8;
+            this.speedY = (Math.random() - 0.5) * 8;
+            this.life = 1.0;
+        }
+        update() { this.x += this.speedX; this.y += this.speedY; this.life -= 0.02; }
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.life;
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y - this.size);
+            ctx.lineTo(this.x + this.size/2, this.y);
+            ctx.lineTo(this.x, this.y + this.size);
+            ctx.lineTo(this.x - this.size/2, this.y);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    function setEffect(val) {
+        useEffect = val;
+        document.getElementById('effOn').classList.toggle('active', val);
+        document.getElementById('effOff').classList.toggle('active', !val);
+    }
+
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'block';
+        resize();
+        resetCanvas();
+        animate();
+        if(typeof gtag === 'function') { gtag('event', 'game_start', {'game_name': 'magic_color_v3', 'effect': useEffect}); }
+    }
+
+    function stopGame() {
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('gameScreen').style.display = 'none';
+        particles = [];
+    }
+
+    function resetCanvas() {
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function setColor(color, el) {
+        currentColor = color;
+        document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function handleMove(x, y) {
+        if (!isDrawing) return;
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = 55;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.globalCompositeOperation = 'source-over';
+        
+        ctx.beginPath();
+        if (this.lastX) {
+            ctx.moveTo(this.lastX, this.lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+        this.lastX = x;
+        this.lastY = y;
+
+        if (useEffect) {
+            for (let i = 0; i < 2; i++) {
+                particles.push(new Particle(x, y, currentColor));
+            }
+        }
+    }
+
+    function animate() {
+        if (document.getElementById('gameScreen').style.display === 'none') return;
+        if (useEffect) {
+            particles = particles.filter(p => p.life > 0);
+            particles.forEach(p => { p.update(); p.draw(); });
+        }
+        requestAnimationFrame(animate);
+    }
+
+    function startPosition(e) {
+        isDrawing = true;
+        const pos = e.touches ? e.touches[0] : e;
+        this.lastX = pos.clientX;
+        this.lastY = pos.clientY;
+        handleMove(pos.clientX, pos.clientY);
+    }
+
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); }, { passive: false });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); const t = e.touches[0]; handleMove(t.clientX, t.clientY); }, { passive: false });
+    canvas.addEventListener('touchend', () => { isDrawing = false; this.lastX = null; });
+
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+    window.addEventListener('mouseup', () => { isDrawing = false; this.lastX = null; });
+
+    window.addEventListener('resize', resize);
+</script>
+
+</body>
+</html>
