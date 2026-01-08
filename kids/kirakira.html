@@ -41,7 +41,6 @@
         h1 { font-size: 1.5rem; color: #ff5252; margin: 0; }
         .sub-title { font-size: 0.9rem; color: #999; margin-bottom: 15px; }
 
-        /* 人数選択 */
         .mode-select { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
         .mode-btn {
             padding: 10px 15px; border-radius: 15px; border: 2px solid #eee;
@@ -57,11 +56,9 @@
 
         .ad-container { width: 100%; min-height: 100px; margin: 10px 0; display: flex; align-items: center; justify-content: center; border-radius: 20px; overflow: hidden; }
 
-        /* ゲーム中UI */
         .game-ui { position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 15px; pointer-events: none; }
         .score-box { padding: 10px 15px; border-radius: 15px; font-weight: 900; font-size: 1.2rem; background: rgba(255,255,255,0.9); box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; }
         
-        /* おめでとう演出 */
         #winOverlay {
             position: fixed; inset: 0; background: rgba(255,204,0,0.9);
             display: none; flex-direction: column; align-items: center; justify-content: center;
@@ -71,6 +68,12 @@
         .btn-main { width: 100%; padding: 18px; background: var(--accent); color: #856404; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #fcc419; }
         .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #fcc419; }
         .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: rgba(255,255,255,0.2); color: white; border: 2px solid white; border-radius: 12px; cursor: pointer; z-index: 150; }
+
+        /* コピーライト用のスタイルを追加 */
+        .footer-copyright {
+            margin-top: 20px; font-size: 0.7rem; color: #ccc;
+            text-align: center; font-family: sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -99,6 +102,10 @@
 
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+    
+    <div class="footer-copyright">
+        © 2026 KuniFami Soft Studio. All Rights Reserved.
+    </div>
 </div>
 
 <div id="gameScreen">
@@ -228,4 +235,3 @@
 </script>
 </body>
 </html>
-
