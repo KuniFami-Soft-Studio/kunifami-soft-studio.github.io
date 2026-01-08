@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shadow Quiz / かげあてクイズ</title>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+    
+    <style>
+        :root { --bg: #FFF3E0; --card: #ffffff; --accent: #FF9800; }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; overflow: hidden; touch-action: none;
+        }
+        .container {
+            background: var(--card); padding: 25px; border-radius: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px;
+            border: 6px solid #fff; position: relative; z-index: 10;
+        }
+
+        #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
+        
+        /* シルエット表示エリア */
+        .quiz-area { margin-bottom: 20px; text-align: center; }
+        .shadow-icon {
+            font-size: 9rem;
+            filter: brightness(0);
+            transition: filter 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            -webkit-user-select: none;
+        }
+        .shadow-icon.revealed { filter: brightness(1); }
+
+        /* 結果表示 */
+        .result-overlay {
+            height: 80px; text-align: center; font-size: 1.6rem; font-weight: 900;
+            color: #E65100; margin-bottom: 20px; line-height: 1.2;
+        }
+        .result-overlay small { font-size: 1rem; color: #FF9800; display: block; }
+
+        /* 選択肢ボタン */
+        .choices-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 90%; max-width: 400px; }
+        .choice-btn {
+            background: #fff; border: 3px solid #ffe0b2; border-radius: 20px;
+            padding: 18px 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 0 #ffe0b2; transition: all 0.1s; color: #5D4037;
+        }
+        .choice-btn:active { transform: translateY(4px); box-shadow: none; }
+        .choice-btn.correct { background: #c8e6c9; border-color: #4caf50; color: #1b5e20; box-shadow: 0 4px 0 #388E3C; }
+        .choice-btn.wrong { background: #ffcdd2; border-color: #f44336; color: #b71c1c; box-shadow: 0 4px 0 #D32F2F; }
+
+        .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 18px; background: #fff; border: 2px solid #eee; border-radius: 15px; font-weight: bold; z-index: 150; }
+        h1 { font-size: 1.5rem; color: #E65100; margin: 0; }
+        .btn-main { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #E65100; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <h1>👻 Shadow Quiz</h1>
+    <div style="font-size: 0.9rem; color: #999; margin-bottom: 15px;">かげあてクイズ / Silhouette Quiz</div>
+    
+    <div style="background: #fff3e0; padding: 15px; border-radius: 20px; text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #ffb74d;">
+        <div>❓ <strong>だれのかげかな？</strong><br>Who is this shadow?</div>
+        <div style="margin-top:8px;">✨ <strong>せいかいすると いろがつくよ！</strong><br>Color returns when you're right!</div>
+    </div>
+
+    <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+    <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+</div>
+
+<div id="gameScreen">
+    <button class="btn-exit" onclick="stopGame()">Quit / おわる</button>
+    
+    <div class="quiz-area">
+        <div id="mainIcon" class="shadow-icon"></div>
+    </div>
+
+    <div id="resultText" class="result-overlay"></div>
+
+    <div class="choices-grid" id="choicesGrid"></div>
+</div>
+
+<script>
+    const masterList = [
+        {i:'🦁',j:'ライオン',e:'Lion'},{i:'🐘',j:'ぞう',e:'Elephant'},{i:'🦒',j:'きりん',e:'Giraffe'},{i:'🦓',j:'しまうま',e:'Zebra'},{i:'🐼',j:'ぱんだ',e:'Panda'},
+        {i:'🐻',j:'くま',e:'Bear'},{i:'🐯',j:'とら',e:'Tiger'},{i:'🐵',j:'さる',e:'Monkey'},{i:'🐶',j:'いぬ',e:'Dog'},{i:'🐱',j:'ねこ',e:'Cat'},
+        {i:'🐰',j:'うさぎ',e:'Rabbit'},{i:'🐹',j:'はむすたー',e:'Hamster'},{i:'🐸',j:'かえる',e:'Frog'},{i:'🐢',j:'かめ',e:'Turtle'},{i:'🐧',j:'ぺんぎん',e:'Penguin'},
+        {i:'🐬',j:'いるか',e:'Dolphin'},{i:'🐳',j:'くじら',e:'Whale'},{i:'🐙',j:'たこ',e:'Octopus'},{i:'🦋',j:'ちょうちょ',e:'Butterfly'},{i:'🐝',j:'はち',e:'Bee'},
+        {i:'🐷',j:'ぶた',e:'Pig'},{i:'🐮',j:'うし',e:'Cow'},{i:'🐑',j:'ひつじ',e:'Sheep'},{i:'🐴',j:'うま',e:'Horse'},{i:'🐔',j:'にわとり',e:'Chicken'},
+        {i:'🦆',j:'あひる',e:'Duck'},{i:'🦉',j:'ふくろう',e:'Owl'},{i:'🦇',j:'こうもり',e:'Bat'},{i:'🐺',j:'おおかみ',e:'Wolf'},{i:'🦊',j:'きつね',e:'Fox'},
+        {i:'🦝',j:'あらいぐま',e:'Raccoon'},{i:'🐨',j:'こあら',e:'Koala'},{i:'🦘',j:'かんがるー',e:'Kangaroo'},{i:'🦥',j:'なまけもの',e:'Sloth'},{i:'🦦',j:'かわうそ',e:'Otter'},
+        {i:'🦫',j:'びーばー',e:'Beaver'},{i:'🦔',j:'はりねずみ',e:'Hedgehog'},{i:'🐿️',j:'りす',e:'Squirrel'},{i:'🐫',j:'らくだ',e:'Camel'},{i:'🦏',j:'さい',e:'Rhino'},
+        {i:'🦛',j:'かば',e:'Hippo'},{i:'🐆',j:'ひょう',e:'Leopard'},{i:'🐊',j:'わに',e:'Crocodile'},{i:'🐍',j:'へび',e:'Snake'},{i:'🦎',j:'とかげ',e:'Lizard'},
+        {i:'🦕',j:'きょうりゅう',e:'Dinosaur'},{i:'🦖',j:'てぃらのさうるす',e:'T-Rex'},{i:'🦈',j:'さめ',e:'Shark'},{i:'🦐',j:'えび',e:'Shrimp'},{i:'🦀',j:'かに',e:'Crab'},
+        {i:'🐠',j:'さかな',e:'Fish'},{i:'🐡',j:'ふぐ',e:'Blowfish'},{i:'🐚',j:'かい',e:'Shell'},{i:'🐌',j:'かたつむり',e:'Snail'},{i:'🐞',j:'てんとうむし',e:'Ladybug'},
+        {i:'🐜',j:'あり',e:'Ant'},{i:'🦗',j:'こおろぎ',e:'Cricket'},{i:'🕷️',j:'くも',e:'Spider'},{i:'🦂',j:'さそり',e:'Scorpion'},{i:'🦟',j:'か',e:'Mosquito'},
+        {i:'🦢',j:'はくちょう',e:'Swan'},{i:'🦜',j:'おうむ',e:'Parrot'},{i:'🦚',j:'くじゃく',e:'Peacock'},{i:'🦅',j:'わし',e:'Eagle'},{i:'🕊️',j:'はと',e:'Dove'},
+        {i:'🦃',j:'しちめんちょう',e:'Turkey'},{i:'🐁',j:'ねずみ',e:'Mouse'},{i:'🐃',j:'すいぎゅう',e:'Buffalo'},{i:'🐐',j:'やぎ',e:'Goat'},{i:'🦌',j:'しか',e:'Deer'},
+        {i:'🦩',j:'ふらみんご',e:'Flamingo'},{i:'🦑',j:'いか',e:'Squid'},{i:'🦞',j:'いせえび',e:'Lobster'},{i:'🦄',j:'ゆにこーん',e:'Unicorn'},{i:'🐉',j:'りゅう',e:'Dragon'},
+        {i:'🐆',j:'ちーたー',e:'Cheetah'},{i:'🐏',j:'ひつじ',e:'Ram'},{i:'🐈',j:'こねこ',e:'Kitten'},{i:'🐕',j:'こいぬ',e:'Puppy'},{i:'🐤',j:'ひよこ',e:'Chick'},
+        {i:'🐦',j:'とり',e:'Bird'},{i:'🦍',j:'ごりら',e:'Gorilla'},{i:'🦧',j:'おらんうーたん',e:'Orangutan'},{i:'🐗',j:'いのしし',e:'Boar'},{i:'🐫',j:'らくだ',e:'Camel'},
+        {i:'🐂',j:'おうし',e:'Ox'},{i:'🐾',j:'あしあと',e:'Paws'},{i:'🐋',j:'まっこうくじら',e:'Whale'},{i:'🐛',j:'あおむし',e:'Caterpillar'},{i:'🐚',j:'まきがい',e:'Shell'}
+    ];
+
+    let currentAnimal = null;
+    let isAnswering = false;
+
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        nextQuestion();
+    }
+
+    function stopGame() {
+        window.speechSynthesis.cancel();
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('gameScreen').style.display = 'none';
+    }
+
+    function nextQuestion() {
+        isAnswering = false;
+        document.getElementById('resultText').innerHTML = '';
+        const iconEl = document.getElementById('mainIcon');
+        iconEl.classList.remove('revealed');
+
+        currentAnimal = masterList[Math.floor(Math.random() * masterList.length)];
+        iconEl.innerText = currentAnimal.i;
+
+        let choices = [currentAnimal];
+        while (choices.length < 4) {
+            let randomA = masterList[Math.floor(Math.random() * masterList.length)];
+            if (!choices.find(c => c.j === randomA.j)) choices.push(randomA);
+        }
+        choices.sort(() => 0.5 - Math.random());
+
+        const grid = document.getElementById('choicesGrid');
+        grid.innerHTML = '';
+        choices.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerText = c.j;
+            btn.onclick = () => checkAnswer(c, btn);
+            grid.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, btn) {
+        if (isAnswering) return;
+        isAnswering = true;
+
+        window.speechSynthesis.cancel();
+
+        if (selected.j === currentAnimal.j) {
+            btn.classList.add('correct');
+            document.getElementById('mainIcon').classList.add('revealed');
+            document.getElementById('resultText').innerHTML = "⭕️ せいかい！<br><small>That's Right!</small>";
+            
+            const uttrJa = new SpeechSynthesisUtterance("せいかい！" + currentAnimal.j);
+            uttrJa.lang = 'ja-JP';
+            const uttrEn = new SpeechSynthesisUtterance("Great! " + currentAnimal.e);
+            uttrEn.lang = 'en-US';
+            
+            uttrJa.onend = () => { window.speechSynthesis.speak(uttrEn); };
+            window.speechSynthesis.speak(uttrJa);
+
+            setTimeout(nextQuestion, 3000);
+        } else {
+            btn.classList.add('wrong');
+            document.getElementById('resultText').innerHTML = "❌ ざんねん！<br><small>Try Again!</small>";
+            
+            const uttrNoJa = new SpeechSynthesisUtterance("ざんねん");
+            uttrNoJa.lang = 'ja-JP';
+            const uttrNoEn = new SpeechSynthesisUtterance("Try again");
+            uttrNoEn.lang = 'en-US';
+            
+            uttrNoJa.onend = () => { window.speechSynthesis.speak(uttrNoEn); };
+            window.speechSynthesis.speak(uttrNoJa);
+
+            setTimeout(() => {
+                isAnswering = false;
+                document.getElementById('resultText').innerHTML = '';
+                btn.classList.remove('wrong');
+            }, 1500);
+        }
+    }
+</script>
+</body>
+</html>
