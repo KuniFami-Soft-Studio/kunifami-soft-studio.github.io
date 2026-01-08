@@ -63,7 +63,7 @@
             transition: transform 0.2s; border: 3px solid transparent;
         }
         .app-card:active { transform: scale(0.95); }
-        .app-card.ready { border-color: #FFCC00; }
+        .app-card.ready { border-color: #FFCC00; border-width: 3px; border-style: solid; }
         .app-card.coming-soon { opacity: 0.5; background: #f9f9f9; box-shadow: none; }
         
         .icon { font-size: 2.2rem; margin-bottom: 8px; }
@@ -150,13 +150,13 @@
     <div class="category-section">
         <div class="category-name">🏃 Action & Sound / おと・うごき</div>
         <div class="app-grid">
+            <a href="#" onclick="launchApp('kirakira', 'kirakira.html')" class="app-card ready">
+                <span class="icon">🍎</span><span class="app-name">Fruit Battle</span>
+                <span class="app-lang">フルーツ争奪戦</span><span class="target-age">3yrs~</span>
+            </a>
             <div class="app-card coming-soon">
                 <span class="icon">🐶</span><span class="app-name">Zoo Sounds</span>
                 <span class="app-lang">どうぶつずかん</span><span class="target-age">3yrs~</span>
-            </div>
-            <div class="app-card coming-soon">
-                <span class="icon">🫧</span><span class="app-name">Bubbles</span>
-                <span class="app-lang">シャボンだまわり</span><span class="target-age">3yrs~</span>
             </div>
             <div class="app-card coming-soon">
                 <span class="icon">🎹</span><span class="app-name">Piano</span>
