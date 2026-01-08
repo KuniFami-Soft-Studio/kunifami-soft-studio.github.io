@@ -70,8 +70,14 @@
         .target-age { font-size: 0.65rem; color: #FF9500; font-weight: bold; margin-top: 5px; }
 
         .back-home {
-            margin-top: 20px; margin-bottom: 40px; color: #555; text-decoration: none; font-size: 0.9rem;
+            margin-top: 20px; margin-bottom: 20px; color: #555; text-decoration: none; font-size: 0.9rem;
             padding: 10px; border-bottom: 1px solid #ccc;
+        }
+
+        /* コピーライト用のスタイル */
+        .footer-copyright {
+            margin-top: 20px; margin-bottom: 40px; font-size: 0.7rem; color: #999;
+            text-align: center; font-family: sans-serif;
         }
     </style>
 </head>
@@ -149,10 +155,8 @@
                 <span class="target-age">3yrs~</span>
             </a>
             <div class="app-card coming-soon">
-                <span class="icon">🧩</span>
-                <span class="app-name">Puzzles</span>
-                <span class="app-lang">パズル</span>
-                <span class="target-age">4yrs~</span>
+                <span class="icon">🧩</span><span class="app-name">Puzzles</span>
+                <span class="app-lang">パズル</span><span class="target-age">4yrs~</span>
             </div>
         </div>
     </div>
@@ -180,6 +184,10 @@
     </div>
 
     <a href="../index.html" class="back-home">← Back to Main / 練習モードへ戻る</a>
+
+    <div class="footer-copyright">
+        © 2026 KuniFami Soft Studio. All Rights Reserved.
+    </div>
 
     <script>
         function launchApp(id, url) {
