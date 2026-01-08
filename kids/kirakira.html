@@ -1,1 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>キラキラフルーツ争奪戦 / Fruit Tap Battle</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --bg: #fff5f8;
+            --card: #ffffff;
+            --accent: #ffcc00; 
+            --p1-color: #ff5252;
+            --p2-color: #448aff;
+            --p3-color: #ffd740;
+            --shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; overflow: hidden; touch-action: none;
+        }
+        .container {
+            background: var(--card); padding: 25px; border-radius: 40px;
+            box-shadow: var(--shadow); text-align: center; width: 90%; max-width: 450px;
+            border: 6px solid #fff; position: relative; z-index: 10;
+        }
+
+        #gameScreen { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
+
+        h1 { font-size: 1.5rem; color: #ff5252; margin: 0; }
+        .sub-title { font-size: 0.9rem; color: #999; margin-bottom: 15px; }
+
+        /* 人数選択 */
+        .mode-select { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
+        .mode-btn {
+            padding: 10px 15px; border-radius: 15px; border: 2px solid #eee;
+            background: #f8f9fa; cursor: pointer; font-weight: bold; font-size: 0.9rem;
+        }
+        .mode-btn.active { background: var(--accent); border-color: #fcc419; color: #856404; }
+
+        .manual-section {
+            background: #fff9db; padding: 15px; border-radius: 20px;
+            text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #ffe066;
+        }
+        .manual-item { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+
+        .ad-container { width: 100%; min-height: 100px; margin: 10px 0; display: flex; align-items: center; justify-content: center; border-radius: 20px; overflow: hidden; }
+
+        /* ゲーム中UI */
+        .game-ui { position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 15px; pointer-events: none; }
+        .score-box { padding: 10px 15px; border-radius: 15px; font-weight: 900; font-size: 1.2rem; background: rgba(255,255,255,0.9); box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; }
+        
+        /* おめでとう演出 */
+        #winOverlay {
+            position: fixed; inset: 0; background: rgba(255,204,0,0.9);
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 200; color: #856404; font-weight: 900; text-align: center;
+        }
+
+        .btn-main { width: 100%; padding: 18px; background: var(--accent); color: #856404; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #fcc419; }
+        .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #fcc419; }
+        .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: rgba(255,255,255,0.2); color: white; border: 2px solid white; border-radius: 12px; cursor: pointer; z-index: 150; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <h1>キラキラフルーツ争奪戦</h1>
+    <div class="sub-title">Fruit Tap Battle!</div>
+
+    <div style="font-size: 0.9rem; margin-bottom: 8px; font-weight: bold;">なんにんで あそぶ？ / Players</div>
+    <div class="mode-select">
+        <div class="mode-btn" id="m1" onclick="setMode(1)">1にん</div>
+        <div class="mode-btn active" id="m2" onclick="setMode(2)">2にん</div>
+        <div class="mode-btn" id="m3" onclick="setMode(3)">3にん</div>
+    </div>
+    
+    <div class="manual-section">
+        <div class="manual-item" id="guide1">🍎 <strong>あか</strong> をタッチ！(Red)</div>
+        <div class="manual-item" id="guide2">🍇 <strong>あお</strong> をタッチ！(Blue)</div>
+        <div class="manual-item" id="guide3">🍌 <strong>きいろ</strong> をタッチ！(Yellow)</div>
+    </div>
+
+    <div class="ad-container">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+    <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+</div>
+
+<div id="gameScreen">
+    <canvas id="gameCanvas"></canvas>
+    <button class="btn-exit" onclick="stopGame()">Quit / おわる</button>
+    <div class="game-ui">
+        <div id="sc1" class="score-box" style="color: var(--p1-color);">🍎 0</div>
+        <div id="sc2" class="score-box" style="color: var(--p2-color);">🍇 0</div>
+        <div id="sc3" class="score-box" style="color: var(--p3-color);">🍌 0</div>
+    </div>
+</div>
+
+<div id="winOverlay">
+    <div style="font-size: 4rem;">🎉</div>
+    <div style="font-size: 2rem;" id="winText">おめでとう！</div>
+    <div style="font-size: 1.2rem; margin-top: 10px;">CONGRATULATIONS!</div>
+    <button class="btn-main" style="width:200px; margin-top:30px;" onclick="stopGame()">OK!</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let objects = [];
+    let scores = [0, 0, 0];
+    let playerCount = 2;
+    let gameActive = false;
+    let animationId;
+
+    function setMode(num) {
+        playerCount = num;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('m' + num).classList.add('active');
+        document.getElementById('guide2').style.opacity = (num >= 2) ? "1" : "0.3";
+        document.getElementById('guide3').style.opacity = (num >= 3) ? "1" : "0.3";
+    }
+
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'block';
+        document.getElementById('winOverlay').style.display = 'none';
+        gameActive = true;
+        scores = [0, 0, 0];
+        
+        for(let i=1; i<=3; i++) {
+            document.getElementById('sc'+i).style.display = (i <= playerCount) ? "block" : "none";
+        }
+        
+        updateScoreUI();
+        spawn();
+        render();
+    }
+
+    function stopGame() {
+        gameActive = false;
+        cancelAnimationFrame(animationId);
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('gameScreen').style.display = 'none';
+        document.getElementById('winOverlay').style.display = 'none';
+        objects = [];
+    }
+
+    class Fruit {
+        constructor() {
+            this.type = Math.floor(Math.random() * playerCount);
+            this.size = 70 + Math.random() * 40;
+            this.x = Math.random() * (canvas.width - this.size);
+            this.y = -this.size;
+            this.speed = 3 + Math.random() * 4;
+            this.emoji = ['🍎', '🍇', '🍌'][this.type];
+        }
+        draw() {
+            ctx.font = `${this.size}px serif`;
+            ctx.fillText(this.emoji, this.x, this.y + this.size);
+        }
+        update() { this.y += this.speed; return this.y < canvas.height + this.size; }
+    }
+
+    function spawn() {
+        if (!gameActive) return;
+        objects.push(new Fruit());
+        setTimeout(spawn, 700);
+    }
+
+    function render() {
+        if (!gameActive) return;
+        ctx.fillStyle = '#111';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        objects = objects.filter(obj => { obj.draw(); return obj.update(); });
+        animationId = requestAnimationFrame(render);
+    }
+
+    function updateScoreUI() {
+        for(let i=0; i<playerCount; i++) {
+            document.getElementById(`sc${i+1}`).innerText = ['🍎','🍇','🍌'][i] + " " + scores[i];
+            if (scores[i] >= 30) showWin(i);
+        }
+    }
+
+    function showWin(playerIdx) {
+        gameActive = false;
+        const names = ["あかいろ さん", "あおいろ さん", "きいろ さん"];
+        document.getElementById('winText').innerText = names[playerIdx] + " のかち！";
+        document.getElementById('winOverlay').style.display = 'flex';
+    }
+
+    function handleAction(clientX, clientY) {
+        if (!gameActive) return;
+        for (let i = objects.length - 1; i >= 0; i--) {
+            const o = objects[i];
+            if (clientX > o.x && clientX < o.x + o.size && clientY > o.y && clientY < o.y + o.size) {
+                scores[o.type]++;
+                updateScoreUI();
+                objects.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        [...e.changedTouches].forEach(t => handleAction(t.clientX, t.clientY));
+    }, { passive: false });
+    canvas.addEventListener('mousedown', (e) => handleAction(e.clientX, e.clientY));
+
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+</script>
+</body>
+</html>
 
