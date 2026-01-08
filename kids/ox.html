@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe Kids</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --bg: #eef9ff; /* 優しい水色 */
+            --card: #ffffff;
+            --accent: #ffcc00; /* 元気な黄色 */
+            --text: #555555;
+            --o-color: #ff85a1; /* かわいいピンク */
+            --x-color: #4dabf7; /* さわやかブルー */
+            --shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; color: var(--text);
+        }
+        .container {
+            background: var(--card); padding: 30px; border-radius: 40px;
+            box-shadow: var(--shadow); text-align: center;
+            width: 90%; max-width: 420px;
+            border: 6px solid #fff;
+        }
+
+        #gameScreen { display: none; }
+
+        h1 { font-size: 1.8rem; color: #4dabf7; margin-bottom: 20px; }
+
+        /* マニュアルセクション */
+        .manual-section {
+            background: #fff9db; padding: 20px; border-radius: 25px;
+            text-align: left; font-size: 0.9rem; margin-bottom: 20px; color: #666;
+            border: 2px dashed #ffe066;
+        }
+        .manual-section h2 { font-size: 1.1rem; margin-top: 0; color: #f59f00; display: flex; align-items: center; gap: 5px; }
+        .manual-item { margin-bottom: 12px; line-height: 1.4; }
+        .lang-en { display: block; font-weight: normal; color: #999; font-size: 0.75rem; margin-top: 2px; }
+
+        .ad-placeholder {
+            width: 100%; min-height: 100px; background: #fff;
+            margin: 15px 0; display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; color: #ccc; border: 2px solid #eee; border-radius: 20px;
+            overflow: hidden;
+        }
+        .home-link { display: inline-block; margin-top: 20px; color: #adb5bd; text-decoration: none; font-size: 0.9rem; }
+        .home-link:hover { color: var(--x-color); }
+
+        /* ゲームUI */
+        .controls { margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .setting-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; padding: 4px 0; }
+        select { 
+            padding: 8px 12px; border-radius: 12px; border: 2px solid #eee; 
+            background: #fff; cursor: pointer; font-size: 0.9rem; color: #666;
+            outline: none;
+        }
+        .status { 
+            margin: 15px 0; font-size: 1.3rem; font-weight: bold; 
+            color: #ff922b; min-height: 1.6em;
+            text-shadow: 1px 1px 0 #fff;
+        }
+        .board { 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; 
+            background: #f1f3f5; padding: 12px; border-radius: 25px; aspect-ratio: 1 / 1; 
+        }
+        .cell { 
+            background: var(--card); border-radius: 18px; display: flex; 
+            align-items: center; justify-content: center; font-size: 3rem; 
+            font-weight: 900; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 0 #e9ecef;
+        }
+        .cell:active { transform: translateY(2px); box-shadow: none; }
+        .cell.o { color: var(--o-color); }
+        .cell.x { color: var(--x-color); }
+
+        /* ボタン */
+        .btn-main {
+            width: 100%; padding: 18px; background: var(--accent);
+            color: #856404; border: none; border-radius: 25px; font-weight: 800;
+            font-size: 1.1rem; cursor: pointer; transition: all 0.2s; margin-top: 10px;
+            box-shadow: 0 6px 0 #fcc419;
+        }
+        .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #fcc419; }
+        
+        .btn-secondary {
+            width: 100%; padding: 12px; background: #e9ecef;
+            color: #868e96; border: none; border-radius: 20px; font-weight: 600;
+            cursor: pointer; margin-top: 15px; font-size: 0.85rem;
+        }
+        .btn-secondary:hover { background: #dee2e6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="startScreen">
+        <h1>⭕️ Tic-Tac-Toe ❌</h1>
+        
+        <div class="manual-section">
+            <h2>🎮 How to Play / 遊び方</h2>
+            <div class="manual-item">
+                🌟 <strong>3 in a row!</strong><br>
+                たて・よこ・ななめに3つならべよう！
+            </div>
+            <div class="manual-item">
+                🤖 <strong>Play with CPU!</strong><br>
+                さいきょうCPUと勝負（しょうぶ）だ！
+            </div>
+        </div>
+
+        <div class="ad-placeholder">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5115190227060860"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
+        <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+        <a href="./menu.html" class="home-link">← Back to Kids menu / もどる</a>
+    </div>
+
+    <div id="gameScreen">
+        <div class="controls">
+            <div class="setting-row">
+                <span>Mode / モード:</span>
+                <select id="gameMode" onchange="toggleModeSettings()">
+                    <option value="pvc">1 Player / ひとりで</option>
+                    <option value="pvp">2 Players / ふたりで</option>
+                </select>
+            </div>
+            <div id="pvcSettings">
+                <div class="setting-row">
+                    <span>Level / つよさ:</span>
+                    <select id="difficulty" onchange="resetGame()">
+                        <option value="easy">Easy / やさしい</option>
+                        <option value="medium">Medium / ふつう</option>
+                        <option value="hard" selected>Hard / むずかしい</option>
+                    </select>
+                </div>
+                <div class="setting-row">
+                    <span>Turn / じゅんばん:</span>
+                    <select id="turnOrder" onchange="resetGame()">
+                        <option value="first">1st (O) / さきに</option>
+                        <option value="second">2nd (O) / あとに</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="status" id="status">Ready</div>
+
+        <div class="board" id="board">
+            <div class="cell" onclick="handleMove(0)"></div>
+            <div class="cell" onclick="handleMove(1)"></div>
+            <div class="cell" onclick="handleMove(2)"></div>
+            <div class="cell" onclick="handleMove(3)"></div>
+            <div class="cell" onclick="handleMove(4)"></div>
+            <div class="cell" onclick="handleMove(5)"></div>
+            <div class="cell" onclick="handleMove(6)"></div>
+            <div class="cell" onclick="handleMove(7)"></div>
+            <div class="cell" onclick="handleMove(8)"></div>
+        </div>
+
+        <button class="btn-main" style="margin-top:25px;" onclick="resetGame()">Try Again / もういっかい</button>
+        <button class="btn-secondary" onclick="showTitle()">Title / タイトルにもどる</button>
+    </div>
+</div>
+
+<script>
+    // --- JavaScript部分はロジックを維持 ---
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let isGameActive = true;
+    let currentPlayer = "O"; 
+    const huPlayer = "O";
+    const aiPlayer = "X";
+    const statusDisplay = document.getElementById('status');
+    const cells = document.querySelectorAll('.cell');
+
+    function logEvent(name, params) {
+        if(typeof gtag === 'function') { gtag('event', name, params); }
+    }
+
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'block';
+        logEvent('game_start', { 'mode': document.getElementById('gameMode').value });
+        resetGame();
+    }
+
+    function showTitle() {
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('gameScreen').style.display = 'none';
+        logEvent('back_to_title');
+    }
+
+    function toggleModeSettings() {
+        const mode = document.getElementById('gameMode').value;
+        document.getElementById('pvcSettings').style.display = (mode === 'pvc') ? 'block' : 'none';
+        resetGame();
+    }
+
+    function resetGame() {
+        board = ["", "", "", "", "", "", "", "", ""];
+        isGameActive = true;
+        currentPlayer = "O";
+        cells.forEach(cell => {
+            cell.innerText = "";
+            cell.classList.remove('taken', 'o', 'x');
+        });
+
+        const mode = document.getElementById('gameMode').value;
+        if (mode === "pvc") {
+            const turnOrder = document.getElementById('turnOrder').value;
+            if (turnOrder === "first") {
+                updateStatus("Your Turn! / きみのばん");
+            } else {
+                updateStatus("CPU Thinking... / かんがえちゅう");
+                setTimeout(bestMove, 600);
+            }
+        } else {
+            updateStatus("Player O's Turn / Oのばん");
+        }
+    }
+
+    function updateStatus(msg) { statusDisplay.innerText = msg; }
+
+    function handleMove(index) {
+        if (board[index] === "" && isGameActive) {
+            const mode = document.getElementById('gameMode').value;
+            if (mode === "pvc") {
+                makeMove(index, huPlayer);
+                if (isGameActive && !isBoardFull()) {
+                    updateStatus("CPU Thinking... / かんがえちゅう");
+                    setTimeout(bestMove, 600);
+                }
+            } else {
+                makeMove(index, currentPlayer);
+                if (isGameActive && !isBoardFull()) {
+                    currentPlayer = (currentPlayer === "O") ? "X" : "O";
+                    updateStatus(currentPlayer === "O" ? "O's Turn / Oのばん" : "X's Turn / Xのばん");
+                }
+            }
+        }
+    }
+
+    function makeMove(index, player) {
+        board[index] = player;
+        cells[index].innerText = player;
+        cells[index].classList.add('taken', player.toLowerCase());
+        if (checkWin(board, player)) {
+            const mode = document.getElementById('gameMode').value;
+            if (mode === "pvc") {
+                updateStatus(player === huPlayer ? "You Win! / きみの勝ち！" : "CPU Wins! / CPUの勝ち！");
+            } else {
+                updateStatus(`Player ${player} Wins! / ${player}の勝ち！`);
+            }
+            isGameActive = false;
+            logEvent('game_end', { 'winner': player, 'mode': mode });
+        } else if (isBoardFull()) {
+            updateStatus("Draw! / ひきわけ！");
+            isGameActive = false;
+            logEvent('game_end', { 'winner': 'draw', 'mode': document.getElementById('gameMode').value });
+        }
+    }
+
+    function isBoardFull() { return !board.includes(""); }
+
+    function bestMove() {
+        if (!isGameActive) return;
+        const difficulty = document.getElementById('difficulty').value;
+        let move;
+        if (difficulty === "easy") {
+            let available = board.map((v, i) => v === "" ? i : null).filter(v => v !== null);
+            move = available[Math.floor(Math.random() * available.length)];
+        } else if (difficulty === "medium") {
+            move = (Math.random() < 0.6) ? minimax(board, aiPlayer).index : board.map((v, i) => v === "" ? i : null).filter(v => v !== null)[0];
+        } else {
+            move = minimax(board, aiPlayer).index;
+        }
+        makeMove(move, aiPlayer);
+        if (isGameActive) updateStatus("Your Turn! / きみのばん");
+    }
+
+    function minimax(newBoard, player) {
+        let availSpots = newBoard.map((v, i) => v === "" ? i : null).filter(v => v !== null);
+        if (checkWin(newBoard, huPlayer)) return {score: -10};
+        if (checkWin(newBoard, aiPlayer)) return {score: 10};
+        if (availSpots.length === 0) return {score: 0};
+        let moves = [];
+        for (let i = 0; i < availSpots.length; i++) {
+            let move = {index: availSpots[i]};
+            newBoard[availSpots[i]] = player;
+            move.score = (player === aiPlayer) ? minimax(newBoard, huPlayer).score : minimax(newBoard, aiPlayer).score;
+            newBoard[availSpots[i]] = "";
+            moves.push(move);
+        }
+        let bestMove, bestScore = (player === aiPlayer) ? -Infinity : Infinity;
+        for (let i = 0; i < moves.length; i++) {
+            if ((player === aiPlayer && moves[i].score > bestScore) || (player === huPlayer && moves[i].score < bestScore)) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        }
+        return moves[bestMove];
+    }
+
+    function checkWin(b, p) {
+        const winConditions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        return winConditions.some(c => c.every(i => b[i] === p));
+    }
+</script>
+
+</body>
+</html>
