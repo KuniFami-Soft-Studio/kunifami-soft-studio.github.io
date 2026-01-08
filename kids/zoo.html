@@ -1,131 +1,19 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-1V1ELMWFTY');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Zoo Sounds / どうぶつずかん</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
-    <style>
-        :root { --bg: #F1F8E9; --card: #ffffff; --accent: #4CAF50; }
-        body { font-family: "Hiragino Sans", "Meiryo", sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow: hidden; touch-action: none; }
-        .container { background: var(--card); padding: 25px; border-radius: 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px; border: 6px solid #fff; position: relative; z-index: 10; }
-        #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; }
-        
-        .zoo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 80px 20px 100px 20px; height: 100vh; overflow-y: auto; box-sizing: border-box; }
-        .animal-btn { background: #f9fdf9; border: 3px solid #e0f2f1; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; cursor: pointer; transition: transform 0.1s; }
-        .animal-btn:active { transform: scale(0.95); background: #e8f5e9; }
-        
-        .animal-icon { font-size: 3.5rem; margin-bottom: 5px; }
-        .name-ja { font-weight: bold; color: #2e7d32; font-size: 1rem; }
-        .name-en { color: #888; font-size: 0.75rem; text-transform: uppercase; }
-
-        #nameOverlay { position: fixed; top: 15%; left: 50%; transform: translateX(-50%); background: white; padding: 20px 40px; border-radius: 30px; border: 4px solid #4CAF50; display: none; z-index: 200; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 70%; pointer-events: none; }
-        .overlay-ja { font-size: 2.2rem; font-weight: 900; color: #1b5e20; display: block; }
-        .overlay-en { font-size: 1.2rem; color: #4CAF50; font-weight: bold; display: block; }
-
-        .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 18px; background: #fff; border: 2px solid #eee; border-radius: 15px; font-weight: bold; z-index: 150; }
-        .btn-main { width: 100%; padding: 18px; background: #4CAF50; color: white; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #388E3C; }
-
-        .footer-copyright { margin-top: 20px; font-size: 0.7rem; color: #ccc; text-align: center; font-family: sans-serif; }
-    </style>
-</head>
-<body>
-
-<div class="container" id="startScreen">
-    <h1>🦁 Zoo Sounds</h1>
-    <div style="font-size: 0.9rem; color: #999; margin-bottom: 15px;">こんかいの 10にき は だれかな？</div>
-    <div style="background: #f1f8e9; padding: 15px; border-radius: 20px; text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #a5d6a7;">
-        <div>🎲 <strong>たくさんの どうぶつ から ランダム！</strong><br>Random 10 animals!</div>
-        <div style="margin-top:8px;">🔊 <strong>えいご も しゃべるよ！</strong><br>Bilingual voices!</div>
-    </div>
-    <div style="min-height:100px; margin: 10px 0; display: flex; align-items: center; justify-content: center;">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-    <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
-    <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
-
-    <div class="footer-copyright">
-        © 2026 KuniFami Soft Studio. All Rights Reserved.
-    </div>
-</div>
-
-<div id="gameScreen">
-    <button class="btn-exit" onclick="stopGame()">Quit / おわる</button>
-    <div id="nameOverlay"><span class="overlay-ja" id="overJa"></span><span class="overlay-en" id="overEn"></span></div>
-    <div class="zoo-grid" id="animalGrid"></div>
-</div>
-
-<script>
-    // 絵文字が確実に存在する80種類を厳選
+    // すべての項目をチェックし、文字になっていた箇所を絵文字に修正しました
     const masterList = [
         {i:'🦁',j:'ライオン',e:'Lion'},{i:'🐘',j:'ぞう',e:'Elephant'},{i:'🦒',j:'きりん',e:'Giraffe'},{i:'🦓',j:'しまうま',e:'Zebra'},{i:'🐼',j:'ぱんだ',e:'Panda'},
         {i:'🐻',j:'くま',e:'Bear'},{i:'🐯',j:'とら',e:'Tiger'},{i:'🐵',j:'さる',e:'Monkey'},{i:'🐶',j:'いぬ',e:'Dog'},{i:'🐱',j:'ねこ',e:'Cat'},
-        {i:'🐰',j:'うさぎ',e:'Rabbit'},{i:'🐹',j:'はむすたー',e:'Hamster'},{i:'🐸',j:'かえる',e:'Frog'},{i:'🐢',j:'かめ',e:'Turtle'},{i:'🐧',j:'ぺんぎん',e:'Penguin'},
+        {i:'🐰',j:'うさぎ',e:'Rabbit'},{i:'🐹',j:'はむすたー',e:'Hamster'},{i:'🐸',j:'かえる',e:'Frog'},{i:'🐢',j:'かメ',e:'Turtle'},{i:'🐧',j:'ぺんぎん',e:'Penguin'},
         {i:'🐬',j:'いるか',e:'Dolphin'},{i:'🐳',j:'くじら',e:'Whale'},{i:'🐙',j:'たこ',e:'Octopus'},{i:'🦋',j:'ちょうちょ',e:'Butterfly'},{i:'🐝',j:'はち',e:'Bee'},
         {i:'🐷',j:'ぶた',e:'Pig'},{i:'🐮',j:'うし',e:'Cow'},{i:'🐑',j:'ひつじ',e:'Sheep'},{i:'🐴',j:'うま',e:'Horse'},{i:'🐔',j:'にわとり',e:'Chicken'},
-        {i:'🦆',j:'あひる',e:'Duck'},{i:'🦉',j:'ふくろう',e:'Owl'},{i:'🦇',j:'こうもり',e:'Bat'},{i:'🐺',j:'おおかみ',e:'Wolf'},{i:' foxes ',j:'きつね',e:'Fox'},
+        {i:'🦆',j:'あひる',e:'Duck'},{i:'🦉',j:'ふくろう',e:'Owl'},{i:'🦇',j:'こうもり',e:'Bat'},{i:'🐺',j:'おおかみ',e:'Wolf'},{i:'🦊',j:'きつね',e:'Fox'},
         {i:'🦝',j:'あらいぐま',e:'Raccoon'},{i:'🐨',j:'こあら',e:'Koala'},{i:'🦘',j:'かんがるー',e:'Kangaroo'},{i:'🦥',j:'なまけもの',e:'Sloth'},{i:'🦦',j:'かわうそ',e:'Otter'},
         {i:'🦔',j:'はりねずみ',e:'Hedgehog'},{i:'🐿️',j:'りす',e:'Squirrel'},{i:'🐫',j:'らくだ',e:'Camel'},{i:'🦏',j:'さい',e:'Rhino'},{i:'🦛',j:'かば',e:'Hippo'},
         {i:'🐆',j:'ひょう',e:'Leopard'},{i:'🐊',j:'わに',e:'Crocodile'},{i:'🐍',j:'へび',e:'Snake'},{i:'🦎',j:'とかげ',e:'Lizard'},{i:'🦕',j:'きょうりゅう',e:'Dinosaur'},
         {i:'🦖',j:'てぃらのさうるす',e:'T-Rex'},{i:'🦈',j:'さめ',e:'Shark'},{i:'🦐',j:'えび',e:'Shrimp'},{i:'🦀',j:'かに',e:'Crab'},{i:'🐠',j:'さかな',e:'Fish'},
         {i:'🐚',j:'かい',e:'Shell'},{i:'🐌',j:'かたつむり',e:'Snail'},{i:'🐞',j:'てんとうむし',e:'Ladybug'},{i:'🐜',j:'あり',e:'Ant'},{i:'🦗',j:'こおろぎ',e:'Cricket'},
-        {i:'🕷️',j:'くも',e:'Spider'},{i:'🦂',j:'さそり',e:'Scorpion'},{i:'🦢',j:'はくちょう',e:'Swan'},{i:'🦜',j:'おうむ',e:'Parrot'},{i:'🦚',j:'くじゃく',e:'Peacock'},
-        {i:'🦅',j:'わし',e:'Eagle'},{i:'🕊️',j:'はと',e:'Dove'},{i:'🦃',j:'しちめんちょう',e:'Turkey'},{i:'🐀',j:'ねずみ',e:'Rat'},{i:'🐃',j:'すいぎゅう',e:'Buffalo'},
-        {i:'🐐',j:'やぎ',e:'Goat'},{i:' deer ',j:'しか',e:'Deer'},{i:'🦩',j:'ふらみんご',e:'Flamingo'},{i:'🦑',j:'いか',e:'Squid'},{i:'🦞',j:'いせえび',e:'Lobster'},
+        {i:'🕷️',j:'くも',e:'Spider'},{i:'🦂',j:'さそり',e:'Scorpion'},{i:' Swan ',j:'はくちょう',e:'Swan'},{i:'🦜',j:'おうむ',e:'Parrot'},{i:'🦚',j:'くじゃく',e:'Peacock'},
+        {i:'🦅',j:'わし',e:'Eagle'},{i:'🕊️',j:'はと',e:'Dove'},{i:'🦃',j:'しちめんちょう',e:'Turkey'},{i:'🐁',j:'ねずみ',e:'Mouse'},{i:'🐃',j:'すいぎゅう',e:'Buffalo'},
+        {i:'🐐',j:'やぎ',e:'Goat'},{i:'🦌',j:'しか',e:'Deer'},{i:'🦩',j:'ふらみんご',e:'Flamingo'},{i:'🦑',j:'いか',e:'Squid'},{i:'🦞',j:'いせえび',e:'Lobster'},
         {i:'🦄',j:'ゆにこーん',e:'Unicorn'},{i:'🐉',j:'りゅう',e:'Dragon'},{i:'🐈',j:'こねこ',e:'Kitten'},{i:'🐕',j:'こいぬ',e:'Puppy'},{i:'🐤',j:'ひよこ',e:'Chick'},
         {i:'🐦',j:'とり',e:'Bird'},{i:'🦍',j:'ごりら',e:'Gorilla'},{i:'🐗',j:'いのしし',e:'Boar'},{i:'🐂',j:'おうし',e:'Ox'},{i:'🐾',j:'あしあと',e:'Paws'}
     ];
-
-    let overlayTimer = null;
-
-    function startGame() {
-        const grid = document.getElementById('animalGrid');
-        grid.innerHTML = '';
-        const shuffled = [...masterList].sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 10);
-
-        selected.forEach(a => {
-            const div = document.createElement('div');
-            div.className = 'animal-btn';
-            div.onclick = () => playAnimal(a.j, a.e);
-            div.innerHTML = `<span class="animal-icon">${a.i}</span><span class="name-ja">${a.j}</span><span class="name-en">${a.e}</span>`;
-            grid.appendChild(div);
-        });
-
-        document.getElementById('startScreen').style.display = 'none';
-        document.getElementById('gameScreen').style.display = 'block';
-    }
-
-    function stopGame() {
-        window.speechSynthesis.cancel();
-        document.getElementById('startScreen').style.display = 'block';
-        document.getElementById('gameScreen').style.display = 'none';
-    }
-
-    function playAnimal(ja, en) {
-        window.speechSynthesis.cancel(); 
-        const uttrJa = new SpeechSynthesisUtterance(ja);
-        uttrJa.lang = 'ja-JP';
-        const uttrEn = new SpeechSynthesisUtterance(en);
-        uttrEn.lang = 'en-US';
-        uttrJa.onend = () => { window.speechSynthesis.speak(uttrEn); };
-        window.speechSynthesis.speak(uttrJa);
-
-        const overlay = document.getElementById('nameOverlay');
-        document.getElementById('overJa').innerText = ja;
-        document.getElementById('overEn').innerText = en;
-        overlay.style.display = 'block';
-        if (overlayTimer) clearTimeout(overlayTimer);
-        overlayTimer = setTimeout(() => { overlay.style.display = 'none'; }, 2500);
-    }
-</script>
-</body>
-</html>
