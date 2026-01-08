@@ -31,6 +31,26 @@
         .header-logo { width: 100px; height: auto; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         h1 { color: var(--accent-color); font-size: 2.2rem; margin-bottom: 10px; border-bottom: none; }
         
+        /* 点滅アニメーションとキッズリンク */
+        .kids-link-box { margin: 10px 0 20px; }
+        .kids-btn {
+            display: inline-block;
+            background: #FF9500;
+            color: white;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            animation: blink 1.5s infinite;
+            box-shadow: 0 4px 15px rgba(255,149,0,0.3);
+        }
+        @keyframes blink {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
         .trust-badges { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
         .badge { background: var(--success-color); color: white; padding: 5px 12px; border-radius: 15px; font-weight: bold; font-size: 0.8rem; }
 
@@ -44,6 +64,9 @@
         .video-flex { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 30px 0; }
         .video-container { position: relative; width: 100%; max-width: 220px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* 広告コンテナ */
+        .ad-spacer { margin: 20px auto; max-width: 728px; text-align: center; overflow: hidden; }
 
         /* カードと元々の画像スタイル */
         .section-padding { padding: 0 20px; }
@@ -94,6 +117,11 @@
     <header class="hero">
         <img src="Logo1.jpg" alt="Logo" class="header-logo">
         <h1>KuniFami Soft Studio</h1>
+        
+        <div class="kids-link-box">
+            <a href="kids/menu.html" class="kids-btn">🐣 Kids Menu / キッズメニューはこちら</a>
+        </div>
+
         <p><strong>Perfect your form with "3-second delay" and "Grid".</strong><br>
         「3秒前の自分」と「グリッド」で、理想のフォームへ。</p>
 
@@ -117,6 +145,16 @@
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/GL8-mmvqPtk" allowfullscreen></iframe>
             </div>
+        </div>
+
+        <div class="ad-spacer">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5115190227060860"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
 
         <div>
@@ -193,6 +231,16 @@
                 <a href="https://x.com/kunifami2025" target="_blank" class="sns-link">𝕏 Official X</a>
                 <a href="https://www.youtube.com/@dogqoo4663" target="_blank" class="sns-link" style="color: #FF0000;">📺 YouTube Channel</a>
             </div>
+        </div>
+
+        <div class="ad-spacer">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5115190227060860"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
 
         <div class="info-section">
