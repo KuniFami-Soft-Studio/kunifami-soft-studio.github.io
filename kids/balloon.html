@@ -64,6 +64,12 @@
             background: rgba(255,255,255,0.9); border: 2px solid #ccc;
             border-radius: 15px; font-weight: bold; z-index: 1000; text-decoration: none; color: #333;
         }
+
+        /* コピーライト用のスタイル */
+        .footer-copyright {
+            margin-top: 25px; font-size: 0.7rem; color: #ccc;
+            text-align: center; font-family: sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -81,6 +87,10 @@
         <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
         
         <a href="./menu.html" style="display:block; margin-top:25px; color:#aaa; text-decoration:none; font-size:1rem; font-weight: bold;">← Back / もどる</a>
+        
+        <div class="footer-copyright">
+            © 2026 KuniFami Soft Studio. All Rights Reserved.
+        </div>
     </div>
 </div>
 
@@ -102,12 +112,10 @@
         document.getElementById('startScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'block';
         
-        // 音声コンテキストの初期化（ブラウザ制限対策）
         if (!audioCtx) {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
         
-        // 最初に5個の風船を生成
         for(let i=0; i<5; i++) {
             setTimeout(createBalloon, i * 300);
         }
@@ -121,7 +129,6 @@
         balloon.className = 'balloon';
         balloon.innerText = color.i;
         
-        // 画面内のランダムな位置に配置
         const x = Math.random() * (window.innerWidth - 120);
         const y = Math.random() * (window.innerHeight - 180) + 60;
         balloon.style.left = x + 'px';
@@ -134,21 +141,18 @@
             playPopSound();
             speakColor(color);
             
-            // 消去して、新しい風船を補充
             setTimeout(() => {
                 balloon.remove();
                 createBalloon();
             }, 800);
         };
 
-        // タッチとマウスの両方に対応
         balloon.onmousedown = (e) => { e.preventDefault(); pop(); };
         balloon.ontouchstart = (e) => { e.preventDefault(); pop(); };
 
         screen.appendChild(balloon);
     }
 
-    // シンセサイザーで「パンッ！」音を作成
     function playPopSound() {
         if (!audioCtx) return;
         const osc = audioCtx.createOscillator();
@@ -164,7 +168,6 @@
         osc.stop(audioCtx.currentTime + 0.1);
     }
 
-    // 日本語と英語で読み上げ
     function speakColor(color) {
         window.speechSynthesis.cancel();
         const uttrJa = new SpeechSynthesisUtterance(color.j);
