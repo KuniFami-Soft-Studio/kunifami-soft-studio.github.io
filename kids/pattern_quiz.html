@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>パターン完成 / Pattern Quiz</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --main-purple: #9C27B0; --bg-purple: #F3E5F5; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { 
+            margin: 0; padding: 0; background-color: var(--bg-purple); 
+            font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
+            color: #4A148C; display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; overflow: hidden;
+        }
+        .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        /* クイズエリア */
+        .quiz-card {
+            background: white; border-radius: 30px; padding: 25px 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); width: 100%; margin-bottom: 20px;
+        }
+        .pattern-display {
+            display: flex; justify-content: center; gap: 8px; margin: 20px 0;
+            min-height: 80px; align-items: center; flex-wrap: wrap;
+        }
+        .item-box {
+            width: 50px; height: 50px; background: #F5F5F5; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem;
+            border: 2px solid #E0E0E0;
+        }
+        .item-box.target { border: 3px dashed var(--main-purple); background: #FFF9C4; animation: blink 1s infinite; }
+        
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .choices { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .choice-btn {
+            width: 70px; height: 70px; background: white; border: 4px solid #E1BEE7;
+            border-radius: 20px; font-size: 2.5rem; cursor: pointer;
+            box-shadow: 0 5px 0 #CE93D8; transition: 0.1s;
+        }
+        .choice-btn:active { transform: translateY(4px); box-shadow: none; }
+
+        .btn-sub { 
+            width: 100%; background: var(--main-purple); color: white; border: none; 
+            padding: 16px; border-radius: 18px; font-weight: bold; font-size: 1rem; 
+            box-shadow: 0 4px 0 #7B1FA2; cursor: pointer; margin-top: 10px;
+        }
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container" style="margin-top: 40px;">
+        <div style="font-size:5rem; margin-bottom:10px;">🧩</div>
+        <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #E1BEE7; margin-bottom:25px; width:100%;">
+            <h1 style="margin:0; font-size:1.6rem;">パターン完成</h1>
+            <p style="margin:5px 0 20px; color:#9C27B0; font-weight: bold;">Complete the Pattern</p>
+            <p style="text-align:left; font-size:0.9rem; line-height:1.6; color: #546E7A;">
+                ならんでいる えを みて、つぎに くるものを えらぼう！<br>
+                きまりを みつけることが できるかな？<br>
+                <small>Look at the sequence and pick what comes next. Can you find the rule?</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:#BA68C8; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #8E24AA; cursor:pointer;">はじめる / START</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div class="quiz-card">
+            <div id="levelText" style="font-weight: bold; color: #9C27B0;">LEVEL 1</div>
+            <div class="pattern-display" id="patternDisplay"></div>
+            <div style="font-size: 0.9rem; color: #757575; margin-bottom: 10px;">？に はいるのは どれかな？</div>
+            <div class="choices" id="choicesArea"></div>
+        </div>
+        
+        <button class="btn-sub" onclick="initQuiz()">スキップ / Skip</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        
+        <div style="margin-top:20px;">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    let currentLevel = 1;
+    let answer = "";
+    const emojiGroups = [
+        ["🍎", "🍌", "🍇"], ["🚗", "🚀", "🚁"], ["🐶", "🐱", "🐰"],
+        ["⚽", "🏀", "🎾"], ["☀️", "☁️", "☔"], ["🍦", "🍩", "🍰"]
+    ];
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        initQuiz();
+    }
+
+    function initQuiz() {
+        const display = document.getElementById('patternDisplay');
+        const choices = document.getElementById('choicesArea');
+        display.innerHTML = "";
+        choices.innerHTML = "";
+        
+        document.getElementById('levelText').innerText = "LEVEL " + currentLevel;
+
+        const group = emojiGroups[Math.floor(Math.random() * emojiGroups.length)];
+        const A = group[0];
+        const B = group[1];
+        const C = group[2];
+
+        let pattern = [];
+        let ruleType = currentLevel % 4;
+
+        // レベルに応じた規則生成
+        if (currentLevel <= 3) {
+            pattern = [A, B, A, B, A, B]; // A-B
+            answer = A;
+        } else if (currentLevel <= 7) {
+            pattern = [A, A, B, A, A, B]; // A-A-B
+            answer = A;
+        } else if (currentLevel <= 12) {
+            pattern = [A, B, C, A, B, C]; // A-B-C
+            answer = A;
+        } else {
+            pattern = [A, B, B, A, B, B]; // A-B-B
+            answer = A;
+        }
+
+        // 表示用に最後の1つを空にする
+        for(let i=0; i<pattern.length - 1; i++) {
+            const box = document.createElement('div');
+            box.className = 'item-box';
+            box.innerText = pattern[i];
+            display.appendChild(box);
+        }
+        const targetBox = document.createElement('div');
+        targetBox.className = 'item-box target';
+        targetBox.innerText = "？";
+        display.appendChild(targetBox);
+
+        // 正解のセット
+        answer = pattern[pattern.length - 1];
+
+        // 選択肢の作成（正解＋ランダムな2つ）
+        let options = [answer, B, C];
+        options = options.sort(() => Math.random() - 0.5);
+
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(opt);
+            choices.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected) {
+        if (selected === answer) {
+            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+            alert("せいかい！ 🎉 Correct!");
+            currentLevel++;
+            initQuiz();
+        } else {
+            if (navigator.vibrate) navigator.vibrate(100);
+            alert("おしい！ もういちど かんがえてみて。 Try again!");
+        }
+    }
+
+    function goBack() {
+        if (confirm("メニューにもどりますか？")) location.href = "./menu.html";
+    }
+</script>
+</body>
+</html>

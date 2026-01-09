@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>おそうじゲーム / Cleaning Game</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --main-orange: #FFB74D; --bg-yellow: #FFF8E1; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { 
+            margin: 0; padding: 0; background-color: var(--bg-yellow); 
+            font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
+            color: #5D4037; display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; overflow: hidden;
+        }
+        .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        #canvas-container {
+            position: relative; width: 100%; aspect-ratio: 1/1; background: #fff;
+            border: 8px solid #FFD54F; border-radius: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); touch-action: none; overflow: hidden;
+        }
+        #under-image {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center; font-size: 9rem;
+            background: radial-gradient(circle, #fff 0%, #FFFDE7 100%);
+        }
+        canvas { position: absolute; top: 0; left: 0; cursor: pointer; }
+
+        .btn-sub { 
+            width: 100%; background: var(--main-orange); color: white; border: none; 
+            padding: 18px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; 
+            box-shadow: 0 5px 0 #EF6C00; cursor: pointer; margin-top: 15px;
+        }
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+        
+        #clear-message {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 2.5rem; font-weight: bold; color: #E91E63; text-shadow: 3px 3px white;
+            pointer-events: none; opacity: 0; transition: opacity 0.3s; z-index: 10;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container" style="margin-top: 40px;">
+        <div style="font-size:5rem; margin-bottom:10px;">🧼</div>
+        <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #FFD54F; margin-bottom:25px; width:100%;">
+            <h1 style="margin:0; font-size:1.6rem;">おそうじゲーム</h1>
+            <p style="margin:5px 0 20px; color:#FB8C00; font-weight: bold;">Super Easy Cleaning</p>
+            <p style="text-align:left; font-size:1rem; line-height:1.6; color: #5D4037;">
+                ゆびで さっとなでるだけで<br>
+                ぴかぴかになるよ！<br>
+                <small>Quickly rub to make it sparkle!</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:#FFA726; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #E65100;">はじめる / START</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div id="canvas-container">
+            <div id="under-image">💎</div>
+            <canvas id="cleaningCanvas"></canvas>
+            <div id="clear-message">✨ ピカピカ！ ✨<br>SPARKLE!</div>
+        </div>
+        <button class="btn-sub" onclick="resetGame()">次のおそうじ / Next</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('cleaningCanvas');
+    const ctx = canvas.getContext('2d');
+    const underImage = document.getElementById('under-image');
+    const message = document.getElementById('clear-message');
+    let isDrawing = false;
+    let isCleared = false;
+    const items = ["🧸", "🚗", "🌈", "🍦", "🎁", "🐱", "🐶", "🚀", "🌻", "🍰", "🐼", "🍎"];
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        resetGame();
+    }
+
+    function resetGame() {
+        const size = Math.min(window.innerWidth * 0.88, 380);
+        canvas.width = size;
+        canvas.height = size;
+        message.style.opacity = 0;
+        isCleared = false;
+        
+        underImage.innerText = items[Math.floor(Math.random() * items.length)];
+
+        // 汚れのベース
+        ctx.fillStyle = '#A1887F'; 
+        ctx.fillRect(0, 0, size, size);
+        
+        // 汚れのテクスチャ（少し薄めにして消えやすく）
+        for(let i=0; i<40; i++) {
+            ctx.fillStyle = `rgba(62, 39, 35, 0.4)`;
+            ctx.beginPath();
+            ctx.arc(Math.random()*size, Math.random()*size, Math.random()*50, 0, Math.PI*2);
+            ctx.fill();
+        }
+    }
+
+    function clean(e) {
+        if (!isDrawing || isCleared) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+        const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        // ブラシサイズを 30 -> 55 に拡大
+        ctx.arc(x, y, 55, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 判定頻度を下げるため、一定の間隔でチェック
+        if (Math.random() > 0.8) checkClear();
+    }
+
+    function checkClear() {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        let transparentCount = 0;
+        const step = 40; // 判定の細かさ
+        for (let i = 3; i < imageData.length; i += step) {
+            if (imageData[i] === 0) transparentCount++;
+        }
+        
+        // 90% -> 70% に緩和。少し残っていてもクリア！
+        if (transparentCount > (imageData.length / step) * 0.7) {
+            isCleared = true;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            message.style.opacity = 1;
+            if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+        }
+    }
+
+    canvas.addEventListener('mousedown', () => isDrawing = true);
+    window.addEventListener('mousemove', clean);
+    window.addEventListener('mouseup', () => isDrawing = false);
+    
+    canvas.addEventListener('touchstart', (e) => { 
+        isDrawing = true; 
+        clean(e); 
+        e.preventDefault(); 
+    }, {passive: false});
+    canvas.addEventListener('touchmove', (e) => { 
+        clean(e); 
+        e.preventDefault(); 
+    }, {passive: false});
+    canvas.addEventListener('touchend', () => isDrawing = false);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ふくわらい / Funny Face Maker</title>
+    
+    <style>
+        :root {
+            --bg: #fdfae1;
+            --card: #ffffff;
+            --accent: #ff7043; 
+        }
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: var(--bg);
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; margin: 0; overflow: hidden;
+            touch-action: none;
+        }
+
+        /* Start Screen / スタート画面 */
+        .container {
+            background: var(--card); padding: 30px; border-radius: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; width: 85%; max-width: 450px;
+            border: 6px solid #fff; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5000;
+        }
+
+        #gameScreen { display: none; width: 100%; height: 100vh; flex-direction: column; align-items: center; position: relative; }
+        
+        .face-frame {
+            width: 280px; height: 320px; background: #fff;
+            border: 10px solid #ffccbc; margin-top: 50px;
+            border-radius: 50% 50% 45% 45%;
+            position: relative; box-shadow: 0 10px 0 #ffab91;
+            z-index: 1;
+        }
+
+        /* Part Container / パーツコンテナ */
+        .part-container {
+            position: fixed;
+            width: 100px; height: 100px;
+            display: flex; justify-content: center; align-items: center;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .part-controls {
+            display: none;
+            position: absolute;
+            bottom: 110%;
+            left: 50%; transform: translateX(-50%);
+            flex-direction: row; gap: 6px;
+            background: rgba(255,255,255,0.95); padding: 6px; border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 2px solid #ff7043;
+            pointer-events: auto;
+            z-index: 20000;
+            white-space: nowrap;
+        }
+
+        .part {
+            font-size: 6rem;
+            cursor: move; display: flex; align-items: center; justify-content: center;
+            pointer-events: auto; transform-origin: center center;
+            width: 100px; height: 100px;
+        }
+
+        .selected { z-index: 15000 !important; }
+        .selected .part {
+            outline: 4px dashed #ff7043; border-radius: 15px;
+            background: rgba(255,112,67,0.1);
+        }
+        .selected .part-controls { display: flex; }
+
+        .mini-btn {
+            width: 40px; height: 40px; border-radius: 10px; background: #fff;
+            border: 2px solid #ff7043; font-size: 1.1rem; font-weight: bold;
+            display: flex; align-items: center; justify-content: center; color: #ff7043;
+        }
+
+        /* Shelf / 棚 */
+        .shelf-outer {
+            width: 100%; height: 170px; background: rgba(255,255,255,0.9);
+            margin-top: auto; border-top: 4px dashed #ffccbc;
+            overflow-x: auto; z-index: 100; touch-action: pan-x !important;
+        }
+        .shelf-inner {
+            display: grid; grid-template-rows: repeat(2, 65px);
+            grid-auto-flow: column; padding: 15px; gap: 12px; width: max-content;
+        }
+        .shelf-item-slot { width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; }
+        .part-in-shelf { font-size: 2.5rem; width: 55px; height: 55px; position: relative !important; cursor: pointer; }
+
+        /* UI Elements */
+        .btn-main { width: 80%; padding: 15px; background: #ff7043; color: #fff; border: none; border-radius: 35px; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 6px 0 #d84315; margin: 10px 0; }
+        .btn-exit { position: absolute; top: 15px; right: 15px; padding: 8px 12px; background: #fff; border: 2px solid #ff7043; border-radius: 12px; color: #ff7043; font-weight: bold; z-index: 3000; font-size: 0.8rem;}
+        
+        .copyright { font-size: 0.7rem; color: #999; margin-top: 15px; }
+        .link-back { display: block; margin-top: 15px; color: #ff7043; text-decoration: none; font-size: 0.9rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <h1 style="margin-bottom: 5px;">究極！ふくわらい</h1>
+    <p style="margin-top: 0; color: #ff7043; font-weight: bold;">Ultimate Funny Face Maker</p>
+    
+    <div style="color:#666; margin: 20px 0; font-size: 0.9rem; line-height: 1.6;">
+        パーツを選んで、顔を作ろう！<br>
+        Pick parts and make a face!
+    </div>
+
+    <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+    
+    <a href="./menu.html" class="link-back">← Back to Menu / メニューにもどる</a>
+
+    <div class="copyright">© 2026 KuniFami Soft Studio</div>
+</div>
+
+<div id="gameScreen">
+    <button class="btn-exit" onclick="stopGame()">Quit / おわる</button>
+    
+    <div id="faceCanvas" class="face-frame"></div>
+
+    <div class="shelf-outer">
+        <div class="shelf-inner" id="shelf"></div>
+    </div>
+
+    <div style="width: 100%; text-align: center; background: #fff; padding-bottom: 20px;">
+        <button class="btn-main" onclick="resetAll()">Clear All / ぜんぶ消す</button>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const emojiParts = ['👀','👁️','🙄','🤩','😉','😑','🤣','😲','😴','🥺','🧿','👺','👽','🤨','〰️','🔥','⚡','👃','🐽','👄','👅','😋','🦷','💋','😮','😫','🤫','🤥','🤮','🤡','👹','🤐','👂','🧔','🧔‍♂️','🐱','🐶','🐰','🦁','🕶️','👓','🥽','🎩','👑','🎀','🎓','🤠','✨','💎','🎧','🎈','🍏','🍖','🍥','⚽','💣','🌀','❤️','⭐','💢','💦','💩'];
+
+    const shelf = document.getElementById('shelf');
+    const gameScreen = document.getElementById('gameScreen');
+    let activeContainer = null;
+    let selectedContainer = null;
+    let offsetX, offsetY;
+
+    function initShelf() {
+        shelf.innerHTML = '';
+        emojiParts.forEach(emoji => {
+            const slot = document.createElement('div');
+            slot.className = 'shelf-item-slot';
+            const p = document.createElement('div');
+            p.className = 'part part-in-shelf';
+            p.innerText = emoji;
+            slot.appendChild(p);
+            shelf.appendChild(slot);
+            p.addEventListener('touchstart', spawnPart, {passive: false});
+            p.addEventListener('mousedown', spawnPart);
+        });
+    }
+
+    function spawnPart(e) {
+        e.preventDefault();
+        const master = e.target;
+        const rect = master.getBoundingClientRect();
+
+        const container = document.createElement('div');
+        container.className = 'part-container';
+        container.dataset.scale = 1;
+        container.dataset.flip = 1;
+        
+        container.innerHTML = `
+            <div class="part-controls" onmousedown="event.stopPropagation()" ontouchstart="event.stopPropagation()">
+                <div class="mini-btn" onclick="resizePart(1.2)">＋</div>
+                <div class="mini-btn" onclick="resizePart(0.8)">ー</div>
+                <div class="mini-btn" onclick="flipPart()">↔</div>
+                <div class="mini-btn" onclick="deletePart()" style="color:#d32f2f; border-color:#d32f2f;">🗑️</div>
+            </div>
+            <div class="part">${master.innerText}</div>
+        `;
+        
+        gameScreen.appendChild(container);
+        
+        // 中央座標を計算して配置
+        container.style.left = (rect.left + rect.width/2 - 50) + 'px'; 
+        container.style.top = (rect.top + rect.height/2 - 50) + 'px';
+
+        const partEl = container.querySelector('.part');
+        partEl.addEventListener('touchstart', onPartTouch, {passive: false});
+        partEl.addEventListener('mousedown', onPartTouch);
+
+        selectPart(container);
+        activeContainer = container;
+        startDragging(e);
+    }
+
+    function onPartTouch(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const container = e.target.closest('.part-container');
+        selectPart(container);
+        activeContainer = container;
+        startDragging(e);
+    }
+
+    function selectPart(c) {
+        if (selectedContainer) selectedContainer.classList.remove('selected');
+        selectedContainer = c;
+        selectedContainer.classList.add('selected');
+    }
+
+    function startDragging(e) {
+        const pointer = e.type.includes('touch') ? e.touches[0] : e;
+        offsetX = pointer.clientX - activeContainer.offsetLeft;
+        offsetY = pointer.clientY - activeContainer.offsetTop;
+
+        const moveEv = e.type.includes('touch') ? 'touchmove' : 'mousemove';
+        const endEv = e.type.includes('touch') ? 'touchend' : 'mouseup';
+        
+        document.addEventListener(moveEv, onMove, {passive: false});
+        document.addEventListener(endEv, endMove);
+    }
+
+    function onMove(e) {
+        if (!activeContainer) return;
+        e.preventDefault();
+        const pointer = e.type.includes('touch') ? e.touches[0] : e;
+        activeContainer.style.left = (pointer.clientX - offsetX) + 'px';
+        activeContainer.style.top = (pointer.clientY - offsetY) + 'px';
+    }
+
+    function endMove() {
+        activeContainer = null;
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('mousemove', onMove);
+    }
+
+    window.resizePart = function(factor) {
+        if (!selectedContainer) return;
+        let s = parseFloat(selectedContainer.dataset.scale) * factor;
+        if (s < 0.2 || s > 8) return;
+        selectedContainer.dataset.scale = s;
+        updateTransform();
+    };
+
+    window.flipPart = function() {
+        if (!selectedContainer) return;
+        selectedContainer.dataset.flip *= -1;
+        updateTransform();
+    };
+
+    function updateTransform() {
+        const s = selectedContainer.dataset.scale;
+        const f = selectedContainer.dataset.flip;
+        const part = selectedContainer.querySelector('.part');
+        part.style.transform = `scale(${s * f}, ${s})`;
+    }
+
+    window.deletePart = function() {
+        if (selectedContainer) {
+            selectedContainer.remove();
+            selectedContainer = null;
+        }
+    };
+
+    function resetAll() {
+        if(confirm("ぜんぶ消しますか？\nClear all?")) {
+            document.querySelectorAll('.part-container').forEach(c => c.remove());
+            selectedContainer = null;
+        }
+    }
+
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        initShelf();
+    }
+
+    function stopGame() {
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('gameScreen').style.display = 'none';
+    }
+</script>
+</body>
+</html>

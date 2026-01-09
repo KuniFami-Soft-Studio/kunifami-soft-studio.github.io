@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>おべんとう箱 / Lunch Box Creator</title>
+    <meta name="description" content="分類して並べる力を養う知育アプリ">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --accent: #FF5252; --bg: #F5F5F5; --tab-active: #FF8A80; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { margin: 0; padding: 0; background-color: var(--bg); font-family: sans-serif; color: #4E342E; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { width: 92%; max-width: 420px; margin: 10px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        /* お弁当箱 */
+        .lunch-box-outer { background: #E57373; width: 100%; aspect-ratio: 1.2 / 1; border-radius: 40px; padding: 15px; box-shadow: 0 10px 0 #B71C1C; position: relative; margin-bottom: 10px; }
+        .lunch-box-inner { background: white; width: 100%; height: 100%; border-radius: 25px; position: relative; overflow: hidden; touch-action: none; }
+        
+        /* おかずと仕切りのスタイル */
+        .food-item { position: absolute; transform: translate(-50%, -50%); z-index: 10; pointer-events: none; animation: dropIn 0.2s ease-out; }
+        .partition-wall { position: absolute; z-index: 5; pointer-events: none; border-radius: 4px; }
+        .wall-v { width: 10px; height: 100%; transform: translateX(-50%); } /* 縦の壁 */
+        .wall-h { width: 100%; height: 10px; transform: translateY(-50%); } /* 横の壁 */
+        .green-wall { background: #4CAF50; border: 2px solid #2E7D32; }
+        .pink-wall { background: #F48FB1; border: 2px solid #AD1457; }
+
+        @keyframes dropIn { 0% { transform: translate(-50%, -100%) scale(1.5); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+
+        /* タブとメニュー */
+        .tabs { display: flex; width: 100%; gap: 2px; margin-bottom: 5px; }
+        .tab { flex: 1; padding: 8px 0; border-radius: 10px 10px 0 0; background: #CFD8DC; border: none; font-size: 0.65rem; font-weight: bold; cursor: pointer; color: #546E7A; }
+        .tab.active { background: var(--tab-active); color: white; }
+        .food-menu { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 100%; background: white; padding: 10px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 0 #D7CCC8; min-height: 110px; }
+        .food-opt { font-size: 24px; background: #FBE9E7; border: 3px solid transparent; border-radius: 10px; cursor: pointer; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .food-opt.selected { border-color: var(--accent); background: white; transform: scale(1.05); }
+
+        .controls { display: flex; gap: 10px; width: 100%; margin-top: 15px; }
+        .btn-sub { flex: 1; background: #8D6E63; color: white; border: none; padding: 12px; border-radius: 15px; font-weight: bold; }
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container">
+        <div style="font-size:4.5rem; margin-bottom:10px;">🍱</div>
+        <div style="background:white; padding:25px 20px; border-radius:30px; box-shadow:0 8px 0 #BDBDBD; margin-bottom:20px; width:100%;">
+            <h1 style="margin:0; font-size:1.5rem;">おべんとう箱</h1>
+            <p style="margin:5px 0 15px; color:#888;">Lunch Box Creator</p>
+            <p style="text-align:left; font-size:0.85rem; line-height:1.6;">
+                「しきり」の壁(かべ)を使って、おかずやフルーツをきれいに分けてみよう！<br>
+                <small>Use the walls to organize your lunch box!</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:var(--accent); color:white; border:none; padding:18px; border-radius:50px; font-size:1.3rem; font-weight:bold; width:100%; box-shadow:0 5px 0 #C62828;">つくる / START</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div class="lunch-box-outer">
+            <div class="lunch-box-inner" id="boxInner" onmousedown="addItem(event)" ontouchstart="addItem(event)">
+                <div id="hint" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#eee; pointer-events:none; font-weight:bold; text-align:center;">
+                    ここをタップ！<br>Tap here!
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="changeTab('main', this)">メイン</button>
+            <button class="tab" onclick="changeTab('veggie', this)">やさい</button>
+            <button class="tab" onclick="changeTab('fruit', this)">フルーツ</button>
+            <button class="tab" onclick="changeTab('pick', this)">ピック</button>
+            <button class="tab" onclick="changeTab('tool', this)">しきり</button>
+        </div>
+        <div class="food-menu" id="foodMenu"></div>
+
+        <div class="controls">
+            <button class="btn-sub" onclick="clearBox()">やりなおす</button>
+            <button class="btn-sub" onclick="goBack()">おわる</button>
+        </div>
+
+        <div style="margin-top:15px;">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const foodData = {
+        main: ['🍙', '🍣', '🥪', '🍳', '🍤', '🍖', '🍗', '🍔', '🌭', '🥟'],
+        veggie: ['🥦', '🍅', '🌽', '🥕', '🥔', '🥗', '🥑', '🥒', '🍄', '🎃'],
+        fruit: ['🍎', '🍓', '🍌', '🍇', '🍒', '🍍', '🥝', '🍊', '🍑', '🍈'],
+        pick: ['🚩', '🏁', '🎌', '🎖️', '🪄', '🌸', '✨'],
+        tool: ['┃', '━', '┇', '┅'] // 縦壁(緑), 横壁(緑), 縦壁(ピンク), 横壁(ピンク)
+    };
+
+    let currentItem = foodData.main[0];
+    let currentCategory = 'main';
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        renderMenu('main');
+    }
+
+    function changeTab(cat, el) {
+        currentCategory = cat;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        renderMenu(cat);
+        currentItem = foodData[cat][0];
+    }
+
+    function renderMenu(cat) {
+        const menu = document.getElementById('foodMenu');
+        menu.innerHTML = '';
+        foodData[cat].forEach(item => {
+            const div = document.createElement('div');
+            div.className = `food-opt ${item === currentItem ? 'selected' : ''}`;
+            div.innerText = item;
+            div.onclick = () => {
+                currentItem = item;
+                renderMenu(cat);
+            };
+            menu.appendChild(div);
+        });
+    }
+
+    function addItem(e) {
+        if(e.type === 'touchstart') e.preventDefault();
+        document.getElementById('hint').style.display = 'none';
+
+        const box = document.getElementById('boxInner');
+        const rect = box.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        if (currentCategory === 'tool') {
+            const wall = document.createElement('div');
+            wall.className = 'partition-wall';
+            // アイコンで判定
+            if (currentItem === '┃' || currentItem === '┇') {
+                wall.classList.add('wall-v');
+                wall.style.left = x + 'px';
+            } else {
+                wall.classList.add('wall-h');
+                wall.style.top = y + 'px';
+            }
+            // 色判定
+            wall.classList.add((currentItem === '┇' || currentItem === '┅') ? 'pink-wall' : 'green-wall');
+            box.appendChild(wall);
+        } else {
+            const el = document.createElement('div');
+            el.className = 'food-item';
+            el.innerText = currentItem;
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            
+            if (currentCategory === 'pick') {
+                el.style.zIndex = '20';
+                el.style.fontSize = '35px';
+            } else {
+                el.style.zIndex = '10';
+                el.style.fontSize = '45px';
+            }
+            const randomRotate = (Math.random() - 0.5) * 15;
+            el.style.transform = `translate(-50%, -50%) rotate(${randomRotate}deg)`;
+            box.appendChild(el);
+        }
+        if (navigator.vibrate) navigator.vibrate(15);
+    }
+
+    function clearBox() {
+        const box = document.getElementById('boxInner');
+        box.querySelectorAll('.food-item, .partition-wall').forEach(i => i.remove());
+        document.getElementById('hint').style.display = 'block';
+    }
+
+    function goBack() {
+        if(confirm("最初にもどりますか？")) {
+            clearBox();
+            document.getElementById('appScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+    }
+</script>
+</body>
+</html>

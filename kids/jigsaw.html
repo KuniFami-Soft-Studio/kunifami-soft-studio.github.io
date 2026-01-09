@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>マイフォトパズル / Photo Puzzle</title>
+    
+    <style>
+        :root { --bg: #E1F5FE; --main: #0288D1; }
+        * { -webkit-tap-highlight-color: transparent; user-select: none; box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0; background: var(--bg);
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+
+        /* --- Start Screen --- */
+        #startScreen {
+            position: fixed; inset: 0; z-index: 5000;
+            background: linear-gradient(135deg, #81D4FA 0%, #0288D1 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .start-card {
+            background: white; padding: 30px; border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 90%; max-width: 420px; text-align: center;
+        }
+        .upload-area {
+            border: 4px dashed #0288D1; border-radius: 20px; padding: 30px;
+            margin-bottom: 20px; background: #f1faff; cursor: pointer; display: block;
+        }
+        .level-btn {
+            width: 100%; padding: 15px; margin: 8px 0; border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; cursor: pointer; color: white;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.1);
+        }
+        .btn-4 { background: #FF7043; }
+        .btn-9 { background: #42A5F5; }
+        .btn-16 { background: #9575CD; }
+
+        /* --- Game Screen --- */
+        #gameScreen { display: none; width: 100%; flex-direction: column; align-items: center; padding: 10px; }
+        
+        .puzzle-container {
+            position: relative; width: 340px; height: 340px;
+            background: #fff; border: 6px solid #fff; border-radius: 15px;
+            margin: 10px 0; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            /* 下絵（ガイド）用 */
+            background-size: cover;
+        }
+
+        /* ピースのデザイン改良 */
+        .piece {
+            position: absolute; cursor: grab;
+            /* 太い白枠で境目を強調 */
+            border: 3px solid #fff; 
+            background-repeat: no-repeat;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            touch-action: none; z-index: 10;
+            border-radius: 8px;
+            transition: transform 0.1s;
+        }
+        .piece:active { transform: scale(1.05); z-index: 1000; }
+        .piece.placed { 
+            cursor: default; box-shadow: none; border: 1px solid rgba(255,255,255,0.3); 
+            z-index: 1; transform: none;
+        }
+
+        .success-overlay {
+            display: none; position: fixed; inset: 0; z-index: 6000;
+            background: rgba(255,255,255,0.9); flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+        }
+
+        .ad-bottom { width: 100%; text-align: center; margin-top: auto; }
+        .copyright { font-size: 0.6rem; color: #999; padding: 5px; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen">
+    <div class="start-card">
+        <div style="font-size: 4rem;">📸🧩</div>
+        <h1 style="margin: 0; color: #01579B;">しゃしんパズル</h1>
+        <p style="margin: 0 0 20px 0; color: #0288D1; font-weight: bold;">Photo Jigsaw Puzzle</p>
+        
+        <label class="upload-area" for="fileInput">
+            <div style="font-weight: bold; color: #0288D1;">ここを おして しゃしんを えらんでね<br>Tap to choose a photo</div>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        </label>
+
+        <div id="levelSelection" style="display: none;">
+            <p style="font-weight: bold; color: #666;">なんピースにする？</p>
+            <button class="level-btn btn-4" onclick="initPuzzle(2)">4 ピース / Easy</button>
+            <button class="level-btn btn-9" onclick="initPuzzle(3)">9 ピース / Normal</button>
+            <button class="level-btn btn-16" onclick="initPuzzle(4)">16 ピース / Hard</button>
+        </div>
+        
+        <a href="./menu.html" style="display:block; margin-top:20px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+    </div>
+</div>
+
+<div id="clearScreen" class="success-overlay">
+    <div style="font-size: 6rem;">✨🎉✨</div>
+    <h2 style="color: #01579B; font-size: 2rem;">できた！すごーい！</h2>
+    <p style="font-weight: bold;">You completed the puzzle!</p>
+    <button class="level-btn btn-4" style="width: 200px; background: #FF9800;" onclick="location.reload()">もういっかい / Play Again</button>
+</div>
+
+<div id="gameScreen">
+    <div class="puzzle-container" id="puzzleContainer"></div>
+    <button class="level-btn btn-4" style="width: 160px; background: #90A4AE; font-size: 1rem; padding: 10px;" onclick="location.reload()">Quit / やめる</button>
+
+    <div class="ad-bottom">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const levelSelection = document.getElementById('levelSelection');
+    const container = document.getElementById('puzzleContainer');
+    let baseImage = "";
+    let gridSize = 2;
+    const totalSize = 340;
+
+    fileInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            baseImage = event.target.result;
+            levelSelection.style.display = 'block';
+            fileInput.parentElement.style.background = '#E8F5E9';
+            fileInput.parentElement.style.borderColor = '#4CAF50';
+        };
+        reader.readAsDataURL(file);
+    };
+
+    function initPuzzle(size) {
+        gridSize = size;
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        
+        // ガイド用の下絵を設定（透明度を下げて表示）
+        container.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url(${baseImage})`;
+        container.style.backgroundSize = 'cover';
+
+        container.innerHTML = '';
+        const pieceSize = totalSize / gridSize;
+
+        for (let r = 0; r < gridSize; r++) {
+            for (let c = 0; c < gridSize; c++) {
+                const piece = document.createElement('div');
+                piece.className = 'piece';
+                piece.style.width = pieceSize + 'px';
+                piece.style.height = pieceSize + 'px';
+                piece.style.backgroundImage = `url(${baseImage})`;
+                piece.style.backgroundSize = `${totalSize}px ${totalSize}px`;
+                piece.style.backgroundPosition = `-${c * pieceSize}px -${r * pieceSize}px`;
+
+                const tx = c * pieceSize;
+                const ty = r * pieceSize;
+
+                // バラバラに配置
+                const randX = Math.random() * (totalSize - pieceSize);
+                const randY = Math.random() * (totalSize - pieceSize);
+                piece.style.left = randX + 'px';
+                piece.style.top = randY + 'px';
+
+                addEvents(piece, tx, ty);
+                container.appendChild(piece);
+            }
+        }
+    }
+
+    function addEvents(el, tx, ty) {
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        const start = (e) => {
+            if (el.classList.contains('placed')) return;
+            isDragging = true;
+            const p = e.touches ? e.touches[0] : e;
+            const rect = el.getBoundingClientRect();
+            offsetX = p.clientX - rect.left;
+            offsetY = p.clientY - rect.top;
+            el.style.zIndex = 1000;
+            if (e.cancelable) e.preventDefault();
+        };
+
+        const move = (e) => {
+            if (!isDragging) return;
+            const p = e.touches ? e.touches[0] : e;
+            const containerRect = container.getBoundingClientRect();
+            
+            let x = p.clientX - containerRect.left - offsetX;
+            let y = p.clientY - containerRect.top - offsetY;
+
+            // 枠内制限
+            x = Math.max(-10, Math.min(x, totalSize - el.offsetWidth + 10));
+            y = Math.max(-10, Math.min(y, totalSize - el.offsetHeight + 10));
+
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            if (e.cancelable) e.preventDefault();
+        };
+
+        const end = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const cx = parseInt(el.style.left);
+            const cy = parseInt(el.style.top);
+
+            // 判定（30px以内なら吸い付く）
+            if (Math.abs(cx - tx) < 30 && Math.abs(cy - ty) < 30) {
+                el.style.left = tx + 'px';
+                el.style.top = ty + 'px';
+                el.classList.add('placed');
+                el.style.zIndex = 1;
+                checkWin();
+            } else {
+                el.style.zIndex = 10;
+            }
+        };
+
+        el.addEventListener('mousedown', start);
+        el.addEventListener('touchstart', start, {passive: false});
+        window.addEventListener('mousemove', move, {passive: false});
+        window.addEventListener('touchmove', move, {passive: false});
+        window.addEventListener('mouseup', end);
+        window.addEventListener('touchend', end);
+    }
+
+    function checkWin() {
+        const placed = document.querySelectorAll('.piece.placed').length;
+        if (placed === gridSize * gridSize) {
+            setTimeout(() => {
+                document.getElementById('clearScreen').style.display = 'flex';
+            }, 500);
+        }
+    }
+</script>
+</body>
+</html>

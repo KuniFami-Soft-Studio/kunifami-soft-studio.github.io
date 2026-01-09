@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ポップイット / Pop It Toy</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --bg-color: #FCE4EC; --toy-pink: #F06292; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { 
+            margin: 0; padding: 0; background-color: var(--bg-color); 
+            font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
+            color: #880E4F; display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; overflow: hidden;
+        }
+        .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        .pop-it-board {
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
+            background: #ffffff; padding: 15px; border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%;
+        }
+        .bubble {
+            aspect-ratio: 1/1; border-radius: 50%; cursor: pointer;
+            box-shadow: inset 0 -4px 6px rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.1s, box-shadow 0.1s;
+            position: relative;
+        }
+        .bubble.pushed {
+            transform: scale(0.9);
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.3);
+            filter: brightness(0.8);
+        }
+        .bubble.pushed::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%; background: rgba(0,0,0,0.1);
+        }
+
+        .btn-sub { 
+            width: 100%; background: var(--toy-pink); color: white; border: none; 
+            padding: 16px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; 
+            box-shadow: 0 5px 0 #AD1457; cursor: pointer; margin-top: 20px;
+        }
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container" style="margin-top: 40px;">
+        <div style="font-size:5rem; margin-bottom:10px;">🔴</div>
+        <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #F8BBD0; margin-bottom:25px; width:100%;">
+            <h1 style="margin:0; font-size:1.6rem;">ポップイット</h1>
+            <p style="margin:5px 0 20px; color:#D81B60; font-weight: bold;">Colorful Pop It</p>
+            <p style="text-align:left; font-size:1rem; line-height:1.6; color: #5D4037;">
+                ポコポコ おして あそぼう！<br>
+                ぜんぶ おすと、また もとどおり。<br>
+                <small>Tap the bubbles to pop them! They reset once they're all popped.</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:#F06292; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #C2185B;">はじめる / START</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div class="pop-it-board" id="board"></div>
+        <button class="btn-sub" onclick="resetBoard()">やりなおす / Reset</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        
+        <div style="margin-top:20px;">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const board = document.getElementById('board');
+    const colors = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF'];
+    const totalBubbles = 36;
+
+    // --- 音を鳴らす仕組み ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playPopSound() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    function showApp() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        initBoard();
+    }
+
+    function initBoard() {
+        board.innerHTML = '';
+        for (let i = 0; i < totalBubbles; i++) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.style.backgroundColor = colors[Math.floor(i / 6)];
+            
+            const handlePop = () => {
+                if (!bubble.classList.contains('pushed')) {
+                    bubble.classList.add('pushed');
+                    playPopSound(); // 音を鳴らす
+                    if (navigator.vibrate) navigator.vibrate(20);
+                    checkComplete();
+                }
+            };
+
+            bubble.addEventListener('touchstart', (e) => { e.preventDefault(); handlePop(); });
+            bubble.addEventListener('mousedown', handlePop);
+            board.appendChild(bubble);
+        }
+    }
+
+    function checkComplete() {
+        const pushedCount = document.querySelectorAll('.bubble.pushed').length;
+        if (pushedCount === totalBubbles) {
+            setTimeout(() => {
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                resetBoard();
+            }, 500);
+        }
+    }
+
+    function resetBoard() {
+        const bubbles = document.querySelectorAll('.bubble');
+        bubbles.forEach(b => b.classList.remove('pushed'));
+        // リセット音（ポロンという感じ）
+        playPopSound();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>点つなぎ / Dot to Dot</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --main-blue: #4FC3F7; --bg-blue: #E1F5FE; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { 
+            margin: 0; padding: 0; background-color: var(--bg-blue); 
+            font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
+            color: #0277BD; display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; overflow: hidden;
+        }
+        .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        #game-container {
+            position: relative; background: #fff; border: 8px solid #81D4FA; border-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); touch-action: none; overflow: hidden;
+        }
+        canvas { display: block; cursor: pointer; }
+
+        .controls { display: flex; gap: 10px; width: 100%; margin-top: 15px; }
+        .btn-sub { 
+            flex: 1; background: var(--main-blue); color: white; border: none; 
+            padding: 14px; border-radius: 18px; font-weight: bold; font-size: 0.9rem; 
+            box-shadow: 0 4px 0 #0288D1; cursor: pointer;
+        }
+        .btn-sub:active { transform: translateY(2px); box-shadow: 0 2px 0 #0288D1; }
+
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container" style="margin-top: 40px;">
+        <div style="font-size:5rem; margin-bottom:10px;">🎨</div>
+        <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #81D4FA; margin-bottom:25px; width:100%;">
+            <h1 style="margin:0; font-size:1.6rem;">点つなぎ</h1>
+            <p style="margin:5px 0 20px; color:#039BE5; font-weight: bold;">Dot to Dot Adventure</p>
+            <p style="text-align:left; font-size:0.9rem; line-height:1.6; color: #546E7A;">
+                1, 2, 3... のじゅんばんに タップしてね。<br>
+                ぜんぶ つなぐと、なにかに 変身するよ！<br>
+                <small>Connect dots in order. See what it turns into!</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:#4FC3F7; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #0288D1;">あそぶ / PLAY</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div id="game-container">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+        <div class="controls">
+            <button class="btn-sub" onclick="initGame()">つぎの絵 / Next</button>
+            <button class="btn-sub" onclick="goBack()">おわる / Exit</button>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let dots = [], nextDotIndex = 0, isComplete = false, currentEmoji = "";
+
+    // 全10種類のパターンを統合
+    const shapes = [
+        { emoji: "⭐", pts: [[0.5, 0.1], [0.6, 0.4], [0.9, 0.4], [0.65, 0.6], [0.75, 0.9], [0.5, 0.7], [0.25, 0.9], [0.35, 0.6], [0.1, 0.4], [0.4, 0.4]] },
+        { emoji: "🏠", pts: [[0.2, 0.9], [0.8, 0.9], [0.8, 0.5], [0.5, 0.2], [0.2, 0.5]] },
+        { emoji: "💖", pts: [[0.5, 0.3], [0.6, 0.2], [0.8, 0.2], [0.9, 0.4], [0.5, 0.9], [0.1, 0.4], [0.2, 0.2], [0.4, 0.2]] },
+        { emoji: "🚗", pts: [[0.1, 0.7], [0.9, 0.7], [0.8, 0.4], [0.3, 0.4], [0.2, 0.7]] },
+        { emoji: "🐱", pts: [[0.3, 0.8], [0.7, 0.8], [0.8, 0.5], [0.9, 0.2], [0.7, 0.3], [0.3, 0.3], [0.1, 0.2], [0.2, 0.5]] },
+        { emoji: "🚀", pts: [[0.5, 0.1], [0.7, 0.4], [0.7, 0.8], [0.8, 0.9], [0.2, 0.9], [0.3, 0.8], [0.3, 0.4]] },
+        { emoji: "🍎", pts: [[0.5, 0.2], [0.7, 0.2], [0.9, 0.4], [0.8, 0.8], [0.5, 0.9], [0.2, 0.8], [0.1, 0.4], [0.3, 0.2]] },
+        { emoji: "🚢", pts: [[0.1, 0.6], [0.9, 0.6], [0.8, 0.9], [0.2, 0.9], [0.3, 0.6], [0.3, 0.4], [0.7, 0.4], [0.7, 0.6]] },
+        { emoji: "🍄", pts: [[0.2, 0.5], [0.5, 0.2], [0.8, 0.5], [0.7, 0.5], [0.7, 0.9], [0.3, 0.9], [0.3, 0.5]] },
+        { emoji: "🐘", pts: [[0.2, 0.5], [0.4, 0.3], [0.8, 0.3], [0.9, 0.6], [0.8, 0.9], [0.6, 0.9], [0.6, 0.7], [0.4, 0.7], [0.4, 0.9], [0.2, 0.9]] }
+    ];
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        initGame();
+    }
+
+    function initGame() {
+        const size = Math.min(window.innerWidth * 0.88, 380);
+        canvas.width = size; canvas.height = size;
+        nextDotIndex = 0; isComplete = false;
+        
+        // ランダムに選出
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        currentEmoji = shape.emoji;
+        dots = shape.pts.map(p => ({ x: p[0] * size, y: p[1] * size }));
+        draw();
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 1. 引いた線
+        if (nextDotIndex > 0) {
+            ctx.beginPath();
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = "#4FC3F7";
+            ctx.lineJoin = "round";
+            ctx.moveTo(dots[0].x, dots[0].y);
+            for (let i = 1; i <= nextDotIndex; i++) {
+                if (i < dots.length) ctx.lineTo(dots[i].x, dots[i].y);
+            }
+            if (isComplete) ctx.closePath();
+            ctx.stroke();
+        }
+
+        // 2. 次へのガイド点線
+        if (!isComplete && nextDotIndex < dots.length && nextDotIndex > 0) {
+            ctx.beginPath();
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = "#BDBDBD";
+            ctx.moveTo(dots[nextDotIndex-1].x, dots[nextDotIndex-1].y);
+            ctx.lineTo(dots[nextDotIndex].x, dots[nextDotIndex].y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // 3. 点と数字
+        dots.forEach((dot, i) => {
+            const isActive = (i === nextDotIndex && !isComplete);
+            const isDone = (i < nextDotIndex || isComplete);
+
+            if (isActive) {
+                ctx.fillStyle = "rgba(255, 82, 82, 0.2)";
+                ctx.beginPath(); ctx.arc(dot.x, dot.y, 20, 0, Math.PI * 2); ctx.fill();
+            }
+
+            ctx.fillStyle = isActive ? "#FF5252" : (isDone ? "#4FC3F7" : "#E0E0E0");
+            ctx.beginPath(); ctx.arc(dot.x, dot.y, isActive ? 10 : 6, 0, Math.PI * 2); ctx.fill();
+
+            ctx.font = `bold ${isActive ? 22 : 16}px sans-serif`;
+            ctx.fillStyle = isActive ? "#FF5252" : "#757575";
+            ctx.textAlign = "center";
+            ctx.fillText(i + 1, dot.x, dot.y - 15);
+        });
+
+        // 4. クリア
+        if (isComplete) {
+            ctx.font = (canvas.width * 0.4) + "px serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(currentEmoji, canvas.width / 2, canvas.height / 2);
+        }
+    }
+
+    function handleTouch(e) {
+        if (isComplete) return;
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        const target = dots[nextDotIndex];
+        const dist = Math.sqrt((x - target.x)**2 + (y - target.y)**2);
+
+        if (dist < 40) {
+            nextDotIndex++;
+            if (nextDotIndex >= dots.length) isComplete = true;
+            if (navigator.vibrate) navigator.vibrate(isComplete ? [100, 50, 100] : 20);
+            draw();
+        }
+    }
+
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleTouch(e); }, { passive: false });
+    canvas.addEventListener('mousedown', handleTouch);
+
+    function goBack() { if (confirm("メニューにもどりますか？")) location.href = "./menu.html"; }
+</script>
+</body>
+</html>

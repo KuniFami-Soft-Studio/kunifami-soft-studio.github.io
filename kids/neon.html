@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ネオンおえかき / Neon Magic Draw</title>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --card: #ffffff;
+            --accent: #00ffff; 
+            --shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: #111;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; overflow: hidden; touch-action: none;
+        }
+
+        /* 第一画面（スタート画面） */
+        .container {
+            background: var(--card); padding: 25px; border-radius: 40px;
+            box-shadow: var(--shadow); text-align: center; width: 90%; max-width: 450px;
+            border: 6px solid #fff; position: relative; z-index: 10;
+        }
+        h1 { font-size: 1.5rem; color: #ff00ff; margin: 0; }
+        .sub-title { font-size: 0.9rem; color: #666; margin-bottom: 15px; }
+
+        .manual-section {
+            background: #f0f0f0; padding: 15px; border-radius: 20px;
+            text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #ff00ff;
+            color: #333;
+        }
+        .manual-item { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+
+        .ad-container { width: 100%; min-height: 100px; margin: 10px 0; display: flex; align-items: center; justify-content: center; border-radius: 20px; overflow: hidden; background: #eee; }
+
+        /* お絵描き画面 */
+        #gameScreen { display: none; position: fixed; inset: 0; background: #000; z-index: 100; flex-direction: column; }
+        canvas { flex-grow: 1; cursor: crosshair; background: #000; touch-action: none; }
+
+        .controls {
+            background: #1a1a1a; padding: 15px; display: flex; flex-wrap: wrap;
+            justify-content: space-around; align-items: center; gap: 15px;
+            border-top: 2px solid #333; padding-bottom: 30px;
+        }
+        .color-dot { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; }
+
+        /* ボタン */
+        .btn-main { width: 100%; padding: 18px; background: #ff00ff; color: #fff; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #c000c0; }
+        .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #c000c0; }
+        
+        .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: rgba(255,255,255,0.2); color: white; border: 2px solid white; border-radius: 12px; cursor: pointer; z-index: 150; }
+        
+        .btn-clear { background: #ff4757; color: white; padding: 12px 20px; border-radius: 15px; border: none; font-weight: bold; font-size: 1rem; }
+
+        .footer-copyright { margin-top: 15px; font-size: 0.7rem; color: #999; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <h1>ネオンおえかき</h1>
+    <div class="sub-title">Neon Magic Draw!</div>
+    
+    <div class="manual-section">
+        <div class="manual-item">✨ <strong>ひかる ペン で おえかき！</strong><br>(Draw with glowing pens!)</div>
+        <div class="manual-item">🎨 <strong>すきな いろ を えらんでね！</strong><br>(Choose your favorite colors!)</div>
+    </div>
+
+    <div class="ad-container">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+    <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる (Back)</a>
+    
+    <div class="footer-copyright">
+        © 2026 KuniFami Soft Studio. All Rights Reserved.
+    </div>
+</div>
+
+<div id="gameScreen">
+    <button class="btn-exit" onclick="stopGame()">Quit / おわる</button>
+    <canvas id="paintCanvas"></canvas>
+    
+    <div class="controls">
+        <div class="color-dot" style="background: #FF00FF;" onclick="setColor('#FF00FF')"></div>
+        <div class="color-dot" style="background: #00FFFF;" onclick="setColor('#00FFFF')"></div>
+        <div class="color-dot" style="background: #FFFF00;" onclick="setColor('#FFFF00')"></div>
+        <div class="color-dot" style="background: #00FF00;" onclick="setColor('#00FF00')"></div>
+        <button class="btn-clear" onclick="clearCanvas()">やりなおし (Clear)</button>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let painting = false;
+    let color = '#FF00FF';
+
+    // --- ゲーム制御 ---
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        resize();
+    }
+
+    function stopGame() {
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('gameScreen').style.display = 'none';
+    }
+
+    // --- お絵描きロジック ---
+    function resize() {
+        canvas.width = window.innerWidth;
+        const controlsHeight = document.querySelector('.controls').offsetHeight;
+        canvas.height = window.innerHeight - controlsHeight;
+        clearCanvas();
+    }
+
+    function clearCanvas() {
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function startPosition(e) {
+        painting = true;
+        draw(e);
+    }
+
+    function endPosition() {
+        painting = false;
+        ctx.beginPath();
+    }
+
+    function draw(e) {
+        if (!painting) return;
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+        
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        ctx.lineWidth = 10; // 子供が描きやすいよう少し太めに
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = color;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = color;
+
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+    }
+
+    function setColor(c) { color = c; }
+
+    // イベント
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mouseup', endPosition);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); }, {passive: false});
+    canvas.addEventListener('touchend', endPosition);
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, {passive: false});
+
+    window.addEventListener('resize', resize);
+</script>
+</body>
+</html>

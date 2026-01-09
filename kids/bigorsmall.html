@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>大きさ比べ / Big or Small</title>
+    
+    <style>
+        :root {
+            --bg: #FFF3E0;
+            --main: #FF9800;
+        }
+        * { -webkit-tap-highlight-color: transparent; user-select: none; box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0; background: var(--bg);
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+
+        /* --- スタート画面 --- */
+        #startScreen {
+            position: fixed; inset: 0; z-index: 5000;
+            background: linear-gradient(135deg, #FFE0B2 0%, #FF9800 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .start-card {
+            background: white; padding: 40px; border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 85%; max-width: 400px; text-align: center;
+        }
+        .btn-start {
+            background: #4CAF50; color: white; border: none; padding: 15px 40px;
+            font-size: 1.6rem; font-weight: 800; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 6px 0 #2E7D32; margin: 20px 0; width: 100%;
+        }
+
+        /* --- メイン画面 --- */
+        #gameScreen { display: none; width: 100%; max-width: 500px; padding: 20px; flex-direction: column; align-items: center; }
+        
+        .question-area {
+            text-align: center; margin-bottom: 30px;
+            background: white; padding: 15px; border-radius: 20px; width: 100%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .question-text { font-weight: 900; color: #E65100; margin: 0; font-size: 1.5rem; }
+        .question-sub { font-size: 0.9rem; color: #FB8C00; font-weight: bold; }
+
+        .choice-container {
+            display: flex; justify-content: space-around; align-items: center;
+            width: 100%; flex-grow: 1; min-height: 300px;
+        }
+
+        .item {
+            cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .success-overlay {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 5rem; z-index: 100; pointer-events: none;
+            animation: pop 0.5s forwards;
+        }
+        @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0); } 80% { transform: translate(-50%, -50%) scale(1.2); } 100% { transform: translate(-50%, -50%) scale(1); } }
+
+        /* --- 広告・フッター --- */
+        .ad-bottom { margin-top: auto; width: 100%; text-align: center; background: #fff; }
+        .copyright { font-size: 0.6rem; color: #999; padding: 10px; }
+        .ui-btn {
+            background: #fff; border: 3px solid #FF9800; padding: 10px 25px;
+            border-radius: 20px; color: #E65100; font-weight: 800; margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="startScreen">
+    <div class="start-card">
+        <div style="font-size: 4.5rem; display: flex; justify-content: center; align-items: flex-end;">
+            <span style="font-size: 5rem;">🐘</span><span style="font-size: 2.5rem;">🐭</span>
+        </div>
+        <h1 style="margin: 10px 0; color: #E65100;">大きさ比べ</h1>
+        <p style="margin: 5px 0; font-weight: bold; color: #FB8C00;">Big or Small Quiz</p>
+        <button class="btn-start" onclick="startGame()">Start! / はじめる</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright" style="background:transparent;">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="gameScreen">
+    <div class="question-area">
+        <p class="question-text" id="qMain">どっちが 大きい？</p>
+        <p class="question-sub" id="qSub">Which is bigger?</p>
+    </div>
+
+    <div id="successStar" class="success-overlay">⭐️</div>
+
+    <div class="choice-container" id="choiceContainer">
+        </div>
+
+    <div style="margin-top: 20px;">
+        <button class="ui-btn" onclick="nextQuestion()">つぎへ / Next</button>
+        <button class="ui-btn" onclick="stopGame()">Quit / おわる</button>
+    </div>
+
+    <div class="ad-bottom">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const emojis = ['🐘', '🍎', '🚗', '🦁', '🍦', '🐧', '🍉', '🎈', '🦖', '🍰'];
+    let currentTarget = ""; // "big" or "small"
+    let isAnswering = false;
+
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        nextQuestion();
+    }
+
+    function stopGame() {
+        document.getElementById('startScreen').style.display = 'flex';
+        document.getElementById('gameScreen').style.display = 'none';
+    }
+
+    function nextQuestion() {
+        isAnswering = false;
+        document.getElementById('successStar').style.display = 'none';
+        const container = document.getElementById('choiceContainer');
+        container.innerHTML = '';
+
+        // 大きい方を探すか小さい方を探すかランダム
+        currentTarget = Math.random() > 0.5 ? "big" : "small";
+        
+        if (currentTarget === "big") {
+            document.getElementById('qMain').innerText = "どっちが 大きい？";
+            document.getElementById('qSub').innerText = "Which is bigger?";
+        } else {
+            document.getElementById('qMain').innerText = "どっちが 小さい？";
+            document.getElementById('qSub').innerText = "Which is smaller?";
+        }
+
+        // 絵文字を選択
+        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+        // サイズを決定 (大: 160px, 小: 60px)
+        const sizes = [
+            { id: "choiceA", type: "big", val: "160px" },
+            { id: "choiceB", type: "small", val: "60px" }
+        ].sort(() => Math.random() - 0.5); // 左右入れ替え
+
+        sizes.forEach(size => {
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.style.fontSize = size.val;
+            div.innerText = emoji;
+            div.onclick = () => checkAnswer(size.type, div);
+            container.appendChild(div);
+        });
+    }
+
+    function checkAnswer(type, element) {
+        if (isAnswering) return;
+
+        if (type === currentTarget) {
+            isAnswering = true;
+            document.getElementById('successStar').style.display = 'block';
+            element.style.transform = "scale(1.3)";
+            setTimeout(nextQuestion, 1200);
+        } else {
+            element.style.transform = "translateX(-10px)";
+            setTimeout(() => { element.style.transform = "translateX(10px)"; }, 100);
+            setTimeout(() => { element.style.transform = "translateX(0)"; }, 200);
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ゆびスタンプ / Finger Stamp</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root {
+            --primary-bg: #E3F2FD;
+            --btn-orange: #FFAB91;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--primary-bg);
+            font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+            color: #1565C0;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow: hidden;
+        }
+
+        .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        /* スタンプエリア */
+        .stamp-canvas {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1.1;
+            background: white;
+            border-radius: 30px;
+            border: 6px solid #BBDEFB;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            touch-action: none;
+            cursor: pointer;
+        }
+        
+        /* スタンプ自体のスタイル */
+        .stamp {
+            position: absolute;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0.85;
+            animation: stampPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            pointer-events: none;
+        }
+
+        @keyframes stampPop {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* カラーメニュー */
+        .color-palette {
+            display: flex; gap: 10px;
+            margin: 15px 0; justify-content: center;
+            padding: 10px; background: white; border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .color-dot {
+            width: 35px; height: 35px; border-radius: 50%;
+            border: 3px solid white; cursor: pointer; transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .color-dot.active { transform: scale(1.2); box-shadow: 0 0 0 3px #1E88E5; }
+
+        .controls { display: flex; gap: 10px; width: 100%; }
+        .btn-sub {
+            flex: 1; background: #64B5F6; color: white; border: none;
+            padding: 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;
+            box-shadow: 0 4px 0 #1E88E5;
+        }
+        .btn-sub:active { transform: translateY(2px); box-shadow: 0 2px 0 #1E88E5; }
+
+        .copyright { font-size: 0.7rem; color: #90A4AE; margin: 15px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container" style="margin-top: 40px;">
+        <div style="font-size:5rem; margin-bottom:10px;">☝️</div>
+        <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #BBDEFB; margin-bottom:25px; width:100%;">
+            <h1 style="margin:0; font-size:1.6rem;">ゆびスタンプ</h1>
+            <p style="margin:5px 0 20px; color:#64B5F6; font-weight: bold;">Finger Stamp Art</p>
+            <p style="text-align:left; font-size:0.9rem; line-height:1.6; color: #546E7A;">
+                ポンポン！と ゆびで タップしよう。<br>
+                いろとりどりの スタンプが ひろがるよ！<br>
+                <small>Tap, tap! Create your colorful art with your finger!</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:#FF8A65; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #E64A19; cursor:pointer;">あそぶ / PLAY</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div class="stamp-canvas" id="canvasArea" onmousedown="placeStamp(event)" ontouchstart="placeStamp(event)">
+            <div id="hint" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#E3F2FD; font-size:1.2rem; font-weight:bold; pointer-events:none; text-align:center;">
+                ここをタップ！<br>Tap Tap!
+            </div>
+        </div>
+
+        <div class="color-palette">
+            <div class="color-dot active" style="background:#FF1744" onclick="setColor('#FF1744', this)"></div>
+            <div class="color-dot" style="background:#FFEB3B" onclick="setColor('#FFEB3B', this)"></div>
+            <div class="color-dot" style="background:#00E676" onclick="setColor('#00E676', this)"></div>
+            <div class="color-dot" style="background:#2979FF" onclick="setColor('#2979FF', this)"></div>
+            <div class="color-dot" style="background:#D500F9" onclick="setColor('#D500F9', this)"></div>
+            <div class="color-dot" style="background: linear-gradient(45deg, #f09, #d0e);" onclick="setRainbowMode(this)">🌈</div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-sub" onclick="clearCanvas()">きえるよ / Clear</button>
+            <button class="btn-sub" onclick="goBack()">おわる / Exit</button>
+        </div>
+
+        <div style="margin-top:15px;">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    let currentColor = '#FF1744';
+    let isRainbow = false;
+    const colors = ['#FF1744', '#FFEB3B', '#00E676', '#2979FF', '#D500F9'];
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+    }
+
+    function setColor(color, el) {
+        currentColor = color;
+        isRainbow = false;
+        setActive(el);
+    }
+
+    function setRainbowMode(el) {
+        isRainbow = true;
+        setActive(el);
+    }
+
+    function setActive(el) {
+        document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function placeStamp(e) {
+        if(e.type === 'touchstart') e.preventDefault();
+        document.getElementById('hint').style.display = 'none';
+
+        const canvas = document.getElementById('canvasArea');
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        const stamp = document.createElement('div');
+        stamp.className = 'stamp';
+        
+        // サイズをランダムに（35px〜65px）
+        const size = Math.floor(Math.random() * 30) + 35;
+        stamp.style.width = size + 'px';
+        stamp.style.height = size + 'px';
+        stamp.style.left = x + 'px';
+        stamp.style.top = y + 'px';
+        
+        // 色の設定
+        if(isRainbow) {
+            stamp.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        } else {
+            stamp.style.backgroundColor = currentColor;
+        }
+
+        canvas.appendChild(stamp);
+        
+        // 軽い振動（対応デバイスのみ）
+        if (navigator.vibrate) navigator.vibrate(10);
+    }
+
+    function clearCanvas() {
+        const canvas = document.getElementById('canvasArea');
+        const stamps = canvas.querySelectorAll('.stamp');
+        stamps.forEach(s => s.remove());
+        document.getElementById('hint').style.display = 'block';
+    }
+
+    function goBack() {
+        if(confirm("最初にもどりますか？")) {
+            clearCanvas();
+            document.getElementById('appScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+    }
+</script>
+
+</body>
+</html>

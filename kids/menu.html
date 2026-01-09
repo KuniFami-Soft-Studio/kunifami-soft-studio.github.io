@@ -62,10 +62,9 @@
         }
         .app-card:active { transform: scale(0.95); }
         .app-card.ready { border-color: #FFCC00; border-width: 3px; border-style: solid; }
-        .app-card.coming-soon { opacity: 0.5; background: #f9f9f9; box-shadow: none; }
         
         .icon { font-size: 2.2rem; margin-bottom: 8px; }
-        .app-name { font-weight: bold; font-size: 0.85rem; text-align: center; }
+        .app-name { font-weight: bold; font-size: 0.85rem; text-align: center; line-height: 1.2; }
         .app-lang { font-size: 0.65rem; color: #888; margin-top: 3px; }
         .target-age { font-size: 0.65rem; color: #FF9500; font-weight: bold; margin-top: 5px; }
 
@@ -74,7 +73,6 @@
             padding: 10px; border-bottom: 1px solid #ccc;
         }
 
-        /* コピーライト用のスタイル */
         .footer-copyright {
             margin-top: 20px; margin-bottom: 40px; font-size: 0.7rem; color: #999;
             text-align: center; font-family: sans-serif;
@@ -92,7 +90,7 @@
         <strong>[Parents / おうちのかたへ]</strong><br>
         • Safe: No data uploaded to servers.<br>
         • 安心：<strong>サーバーにデータは送信されません。</strong><br>
-        • 追加課金なし。電車など静かな場所でも遊べます。
+        • 追加課金なし。知育アプリが20種類以上！
     </div>
 
     <div class="ad-spacer" style="width:100%; max-width:400px; margin-bottom:20px;">
@@ -112,18 +110,30 @@
                 <span class="icon">🪄</span><span class="app-name">Magic Color</span>
                 <span class="app-lang">マジックぬりえ</span><span class="target-age">3yrs~</span>
             </a>
-            <div class="app-card coming-soon">
-                <span class="icon">✨</span><span class="app-name">Neon Draw</span>
-                <span class="app-lang">ネオンおえかき</span><span class="target-age">4yrs~</span>
-            </div>
-            <div class="app-card coming-soon">
-                <span class="icon">🐯</span><span class="app-name">Fukuwarai</span>
-                <span class="app-lang">ふくわらい</span><span class="target-age">3yrs~</span>
-            </div>
-            <div class="app-card coming-soon">
-                <span class="icon">💠</span><span class="app-name">Kaleido</span>
-                <span class="app-lang">まんげきょう</span><span class="target-age">5yrs~</span>
-            </div>
+            <a href="#" onclick="launchApp('neon', 'neon.html')" class="app-card ready">
+                <span class="icon">🎨</span><span class="app-name">Neon Draw</span>
+                <span class="app-lang">ネオンおえかき</span><span class="target-age">2yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('fukuwarai', 'fukuwarai.html')" class="app-card ready">
+                <span class="icon">🎭</span><span class="app-name">Funny Face Maker</span>
+                <span class="app-lang">究極！ふくわらい</span><span class="target-age">3yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('mangekyo', 'mangekyo.html')" class="app-card ready">
+                <span class="icon">✨</span><span class="app-name">Kaleidoscope</span>
+                <span class="app-lang">キラキラまんげきょう</span><span class="target-age">2yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('scratch', 'scratch.html')" class="app-card ready">
+                <span class="icon">🪄</span><span class="app-name">Scratch Art</span>
+                <span class="app-lang">スクラッチアート</span><span class="target-age">3yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('sticker', 'sticker_fun.html')" class="app-card ready">
+                <span class="icon">🎨</span><span class="app-name">Sticker Fun</span>
+                <span class="app-lang">シール貼り遊び</span><span class="target-age">2yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('symmetry', 'symmetry_draw.html')" class="app-card ready">
+                <span class="icon">🦋</span><span class="app-name">Symmetry Draw</span>
+                <span class="app-lang">左右対称お絵描き</span><span class="target-age">6yrs~</span>
+            </a>
         </div>
     </div>
 
@@ -131,39 +141,83 @@
         <div class="category-name">🧩 Educational / ちいく・パズル</div>
         <div class="app-grid">
             <a href="#" onclick="launchApp('ox', 'ox.html')" class="app-card ready">
-                <span class="icon">⭕️❌</span>
-                <span class="app-name">Tic-Tac-Toe</span>
-                <span class="app-lang">まるばつゲーム</span>
-                <span class="target-age">5yrs~</span>
+                <span class="icon">⭕️❌</span><span class="app-name">Tic-Tac-Toe</span>
+                <span class="app-lang">まるばつゲーム</span><span class="target-age">5yrs~</span>
             </a>
-            <a href="shadow.html" class="app-card ready">
-                <span class="icon">👻</span>
-                <span class="app-name">Shadow Quiz</span>
-                <span class="app-lang">かげあて</span>
-                <span class="target-age">4yrs~</span>
+            <a href="#" onclick="launchApp('math', 'math_quiz.html')" class="app-card ready">
+                <span class="icon">🧮</span><span class="app-name">Math Fun</span>
+                <span class="app-lang">たしざん・ひきざん</span><span class="target-age">5yrs~</span>
             </a>
-            <a href="difference.html" class="app-card ready">
-                <span class="icon">🔍</span>
-                <span class="app-name">Differences</span>
-                <span class="app-lang">まちがいさがし</span>
-                <span class="target-age">4yrs~</span>
+            <a href="#" onclick="launchApp('color_math', 'color_math.html')" class="app-card ready">
+                <span class="icon">🌈</span><span class="app-name">Color Math</span>
+                <span class="app-lang">カラフル足し算</span><span class="target-age">5yrs~</span>
             </a>
-            <a href="balloon.html" class="app-card ready">
-                <span class="icon">🎈</span>
-                <span class="app-name">Pop Balloons</span>
-                <span class="app-lang">ふうせん</span>
-                <span class="target-age">3yrs~</span>
+            <a href="#" onclick="launchApp('shadow', 'shadow.html')" class="app-card ready">
+                <span class="icon">👻</span><span class="app-name">Shadow Quiz</span>
+                <span class="app-lang">かげあて</span><span class="target-age">4yrs~</span>
             </a>
-            <div class="app-card coming-soon">
-                <span class="icon">🧩</span><span class="app-name">Puzzles</span>
-                <span class="app-lang">パズル</span><span class="target-age">4yrs~</span>
-            </div>
+            <a href="#" onclick="launchApp('diff', 'difference.html')" class="app-card ready">
+                <span class="icon">🔍</span><span class="app-name">Differences</span>
+                <span class="app-lang">まちがいさがし</span><span class="target-age">4yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('colorsort', 'colorsort.html')" class="app-card ready">
+                <span class="icon">🔴</span><span class="app-name">Color Sort</span>
+                <span class="app-lang">いろわけソート</span><span class="target-age">2yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('bigsmall', 'bigorsmall.html')" class="app-card ready">
+                <span class="icon">🐘🐭</span><span class="app-name">Big or Small</span>
+                <span class="app-lang">大きさ比べ</span><span class="target-age">1yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('odd', 'odd_one_out.html')" class="app-card ready">
+                <span class="icon">🧐</span><span class="app-name">Find Odd One</span>
+                <span class="app-lang">なかまはずれ探し</span><span class="target-age">4yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('pattern', 'pattern_quiz.html')" class="app-card ready">
+                <span class="icon">🧩</span><span class="app-name">Pattern Quiz</span>
+                <span class="app-lang">パターン完成</span><span class="target-age">6yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('slide_puzzle', 'puzzle.html')" class="app-card ready">
+                <span class="icon">🧩</span><span class="app-name">Slide Puzzle</span>
+                <span class="app-lang">スライドパズル</span><span class="target-age">3yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('jigsaw', 'jigsaw.html')" class="app-card ready">
+                <span class="icon">🧩</span><span class="app-name">Jigsaw Puzzle</span>
+                <span class="app-lang">ジグソーパズル</span><span class="target-age">3yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('memory', 'sinkeisuizyaku.html')" class="app-card ready">
+                <span class="icon">🃏</span><span class="app-name">Memory Game</span>
+                <span class="app-lang">しんけいすいじゃく</span><span class="target-age">3yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('dot', 'dot_to_dot.html')" class="app-card ready">
+                <span class="icon">🔢</span><span class="app-name">Dot to Dot</span>
+                <span class="app-lang">点つなぎ</span><span class="target-age">5yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('maze', 'maze.html')" class="app-card ready">
+                <span class="icon">🐞</span><span class="app-name">Smooth Maze</span>
+                <span class="app-lang">なめらかめいろ</span><span class="target-age">4yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('lunch', 'lunch_box.html')" class="app-card ready">
+                <span class="icon">🍱</span><span class="app-name">Lunch Box</span>
+                <span class="app-lang">おべんとう箱</span><span class="target-age">4yrs~</span>
+            </a>
         </div>
     </div>
 
     <div class="category-section">
         <div class="category-name">🏃 Action & Sound / おと・うごき</div>
         <div class="app-grid">
+            <a href="#" onclick="launchApp('popit', 'pop_it.html')" class="app-card ready">
+                <span class="icon">🔴</span><span class="app-name">Pop It Toy</span>
+                <span class="app-lang">ポップイット</span><span class="target-age">3yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('fireworks', 'fireworks.html')" class="app-card ready">
+                <span class="icon">🎆</span><span class="app-name">Magic Fireworks</span>
+                <span class="app-lang">まほうの花火</span><span class="target-age">1yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('balloon', 'balloon.html')" class="app-card ready">
+                <span class="icon">🎈</span><span class="app-name">Pop Balloons</span>
+                <span class="app-lang">ふうせん</span><span class="target-age">3yrs~</span>
+            </a>
             <a href="#" onclick="launchApp('kirakira', 'kirakira.html')" class="app-card ready">
                 <span class="icon">🍎</span><span class="app-name">Fruit Battle</span>
                 <span class="app-lang">フルーツ争奪戦</span><span class="target-age">3yrs~</span>
@@ -176,10 +230,30 @@
                 <span class="icon">🎹</span><span class="app-name">Piano</span>
                 <span class="app-lang">ドレミかいだん</span><span class="target-age">3yrs~</span>
             </a>
-            <div class="app-card coming-soon">
-                <span class="icon">🎆</span><span class="app-name">Fireworks</span>
-                <span class="app-lang">はなびしょくにん</span><span class="target-age">3yrs~</span>
-            </div>
+            <a href="#" onclick="launchApp('rhythm', 'rhythm.html')" class="app-card ready">
+                <span class="icon">🥁</span><span class="app-name">Rhythm Tap</span>
+                <span class="app-lang">リズムたたき</span><span class="target-age">3yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('catch', 'catch.html')" class="app-card ready">
+                <span class="icon">🧺</span><span class="app-name">Fruit Catch</span>
+                <span class="app-lang">おちものキャッチ</span><span class="target-age">4yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('bug', 'bug_catch.html')" class="app-card ready">
+                <span class="icon">🌳</span><span class="app-name">Bug Catching</span>
+                <span class="app-lang">むし捕り</span><span class="target-age">4yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('gravity', 'gravity_ball.html')" class="app-card ready">
+                <span class="icon">🌕</span><span class="app-name">Gravity Ball</span>
+                <span class="app-lang">重力ボール</span><span class="target-age">5yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('clean', 'cleaning_game.html')" class="app-card ready">
+                <span class="icon">🧼</span><span class="app-name">Cleaning Game</span>
+                <span class="app-lang">おそうじゲーム</span><span class="target-age">3yrs~</span>
+            </a>
+            <a href="#" onclick="launchApp('finger', 'finger_stamp.html')" class="app-card ready">
+                <span class="icon">☝️</span><span class="app-name">Finger Stamp</span>
+                <span class="app-lang">ゆびスタンプ</span><span class="target-age">3yrs~</span>
+            </a>
         </div>
     </div>
 

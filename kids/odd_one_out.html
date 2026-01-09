@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>なかまはずれ探し / Find the Odd One Out</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --main-orange: #FF9800; --bg-yellow: #FFF9C4; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { 
+            margin: 0; padding: 0; background-color: var(--bg-yellow); 
+            font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
+            color: #E65100; display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; overflow: hidden;
+        }
+        .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        .quiz-card {
+            background: white; border-radius: 35px; padding: 20px;
+            box-shadow: 0 10px 0 #FFD54F; width: 100%; margin-bottom: 20px;
+        }
+        .item-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0;
+        }
+        .choice-btn {
+            aspect-ratio: 1/1; background: #FFFDE7; border: 4px solid #FFECB3;
+            border-radius: 25px; font-size: 3.5rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.1s, background 0.2s;
+        }
+        .choice-btn:active { transform: scale(0.95); background: #FFF9C4; }
+
+        .btn-sub { 
+            width: 100%; background: var(--main-orange); color: white; border: none; 
+            padding: 16px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; 
+            box-shadow: 0 5px 0 #EF6C00; cursor: pointer; margin-top: 10px;
+        }
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+
+        /* 正解時のアニメーション */
+        @keyframes success { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .correct-anim { animation: success 0.5s ease; border-color: #4CAF50 !important; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container" style="margin-top: 40px;">
+        <div style="font-size:5rem; margin-bottom:10px;">🧐</div>
+        <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #FFD54F; margin-bottom:25px; width:100%;">
+            <h1 style="margin:0; font-size:1.6rem;">なかまはずれ探し</h1>
+            <p style="margin:5px 0 20px; color:#FB8C00; font-weight: bold;">Find the Odd One Out</p>
+            <p style="text-align:left; font-size:0.9rem; line-height:1.6; color: #5D4037;">
+                ４つの えの なかに、ひとつだけ なかまはずれが あるよ！<br>
+                どれかな？ みつけて タップしてね。<br>
+                <small>Find the one that doesn't belong in the group!</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:#FF9800; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #E65100;">はじめる / START</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div class="quiz-card">
+            <div style="font-weight: bold; font-size: 1.2rem; color: #FB8C00;">なかまはずれは どれ？</div>
+            <div style="font-size: 0.8rem; color: #999; margin-bottom: 10px;">Which one is different?</div>
+            <div class="item-grid" id="itemGrid"></div>
+        </div>
+        
+        <button class="btn-sub" onclick="initQuiz()">ちがうもんだい / Shuffle</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        
+        <div style="margin-top:20px;">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    let answerEmoji = "";
+    const categories = [
+        { name: "くだもの", items: ["🍎", "🍌", "🍇", "🍓", "🍊", "🍍"], odd: ["🚗", "🐶", "⚽", "🍦"] },
+        { name: "のりもの", items: ["🚗", "🚌", "🚀", "🚁", "🚂", "🚢"], odd: ["🍎", "🐱", "🌻", "🍰"] },
+        { name: "どうぶつ", items: ["🐶", "🐱", "🐰", "🐘", "🦁", "🦒"], odd: ["🚲", "🍔", "☔", "🏠"] },
+        { name: "たべもの", items: ["🍔", "🍕", "🍦", "🍩", "🍰", "🍙"], odd: ["🚀", "🎸", "🦒", "🪸"] },
+        { name: "あかいもの", items: ["🍎", "🍓", "🍅", "🎈", "🚒", "🌹"], odd: ["🍏", "🍌", "🍇", "🫐"] },
+        { name: "うみのいきもの", items: ["🐟", "🐙", "🦑", "🐳", "🦀", "🐬"], odd: ["🦁", "🚁", "🌽", "🌵"] }
+    ];
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        initQuiz();
+    }
+
+    function initQuiz() {
+        const grid = document.getElementById('itemGrid');
+        grid.innerHTML = "";
+        
+        // カテゴリーをランダム選択
+        const cat = categories[Math.floor(Math.random() * categories.length)];
+        
+        // 仲間を3つ、外れを1つ選ぶ
+        const companions = [...cat.items].sort(() => 0.5 - Math.random()).slice(0, 3);
+        const oddOne = cat.odd[Math.floor(Math.random() * cat.odd.length)];
+        answerEmoji = oddOne;
+
+        let gameItems = [...companions, oddOne].sort(() => 0.5 - Math.random());
+
+        gameItems.forEach(emoji => {
+            const btn = document.createElement('div');
+            btn.className = 'choice-btn';
+            btn.innerText = emoji;
+            btn.onclick = () => checkAnswer(emoji, btn);
+            grid.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, element) {
+        if (selected === answerEmoji) {
+            element.classList.add('correct-anim');
+            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+            setTimeout(() => {
+                alert("せいかい！ 🎉 Correct!");
+                initQuiz();
+            }, 300);
+        } else {
+            if (navigator.vibrate) navigator.vibrate(100);
+            element.style.background = "#FFEBEE";
+            element.innerText = "❌";
+            setTimeout(() => {
+                element.style.background = "#FFFDE7";
+                element.innerText = selected;
+            }, 500);
+        }
+    }
+
+    function goBack() {
+        if (confirm("メニューにもどりますか？")) location.href = "./menu.html";
+    }
+</script>
+</body>
+</html>

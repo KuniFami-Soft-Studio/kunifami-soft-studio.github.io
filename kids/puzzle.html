@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>しゃしんスライドパズル / Photo Slide Puzzle</title>
+    <style>
+        :root { --bg: #FFF9C4; --text: #5D4037; }
+        * { -webkit-tap-highlight-color: transparent; user-select: none; box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0; background: var(--bg);
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            color: var(--text);
+        }
+        #startScreen {
+            position: fixed; inset: 0; z-index: 5000;
+            background: linear-gradient(135deg, #FFEB3B 0%, #FBC02D 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            overflow-y: auto; padding-bottom: 40px;
+        }
+        .start-card {
+            background: white; padding: 20px; border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 94%; max-width: 440px; 
+            text-align: center; margin-top: 15px;
+        }
+        
+        /* ヒント・コツのエリア */
+        .tips-area {
+            background: #FFFDE7; border-radius: 20px; padding: 15px; margin: 15px 0;
+            text-align: left; border: 2px solid #FFF176;
+        }
+        .tips-title { font-weight: 900; color: #E65100; font-size: 0.9rem; margin-bottom: 5px; }
+        .tips-text { font-size: 0.75rem; line-height: 1.4; color: #795548; font-weight: bold; }
+        .tips-text b { color: #D84315; }
+
+        .upload-area { border: 4px dashed #FBC02D; border-radius: 20px; padding: 20px; margin-bottom: 15px; background: #FFFDE7; cursor: pointer; display: block; }
+        .setting-box { background: #f5f5f5; border-radius: 12px; padding: 8px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #4CAF50; }
+        input:checked + .slider:before { transform: translateX(18px); }
+
+        .difficulty-btn { width: 100%; padding: 14px; margin: 6px 0; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 800; cursor: pointer; color: white; box-shadow: 0 4px 0 rgba(0,0,0,0.1); }
+        .easy { background: #4CAF50; }
+        .normal { background: #2196F3; }
+        .hard { background: #FF5722; }
+
+        #gameScreen { display: none; width: 100%; max-width: 500px; padding: 10px; flex-direction: column; align-items: center; min-height: 100vh; }
+        .puzzle-board { display: grid; gap: 2px; background: #8D6E63; padding: 6px; border-radius: 12px; width: 340px; height: 340px; box-shadow: 0 12px 24px rgba(0,0,0,0.2); margin: 10px 0; }
+        .tile { width: 100%; height: 100%; background-color: #fff; border-radius: 4px; cursor: pointer; position: relative; background-repeat: no-repeat; border: 1px solid rgba(255,255,255,0.3); }
+        .tile.empty { background: #BCAAA4 !important; border: none; cursor: default; }
+        .tile-num { position: absolute; top: 2px; left: 4px; font-size: 0.9rem; font-weight: 900; color: white; text-shadow: 1px 1px 2px #000; opacity: 0.8; pointer-events: none; }
+        .hidden { display: none; }
+
+        .ui-btn { background: #fff; border: 3px solid #FF9800; padding: 10px 20px; border-radius: 20px; color: #E65100; font-weight: 800; margin: 5px; font-size: 0.9rem; }
+        .copyright { font-size: 0.6rem; color: #999; padding: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+<div id="startScreen">
+    <div class="start-card">
+        <div style="font-size: 2.5rem;">📸🧩</div>
+        <h1 style="margin: 0; color: #E65100; font-size: 1.4rem;">しゃしんスライドパズル</h1>
+        <h2 style="margin: 0; color: #FBC02D; font-size: 0.9rem; font-weight: normal; margin-bottom: 10px;">Photo Slide Puzzle</h2>
+        
+        <div class="tips-area">
+            <div class="tips-title">💡 Tips / クリアのコツ</div>
+            <div class="tips-text">
+                <b>1. 上の段から揃える / Top Row First</b><br>
+                まずは一番上の段を左から順に完成させよう。一度揃えたらそこはもう動かさないのがコツ！<br>
+                <b>2. 角の入れ方 / Corner Trick</b><br>
+                右端のタイルが入らない時は、右から2番目とセットで回すように動かすとうまくいくよ。<br>
+                <b>3. 最後は一気に / Final Steps</b><br>
+                下の2段まで来たら、ぐるぐる回すように動かして位置を調整しよう。
+            </div>
+        </div>
+        
+        <label class="upload-area" for="fileInput">
+            <div style="font-weight: bold; color: #FBC02D; font-size: 0.9rem;">しゃしんを えらんでね / Choose Photo</div>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        </label>
+        
+        <div id="levelSelection" style="display: none;">
+            <div class="setting-box">
+                <span style="font-size: 0.8rem; font-weight: bold;">すうじを表示 / Show Numbers</span>
+                <label class="switch"><input type="checkbox" id="numberSwitch" checked><span class="slider"></span></label>
+            </div>
+            <button class="difficulty-btn easy" onclick="startGame(2)">かんたん / Easy (2×2)</button>
+            <button class="difficulty-btn normal" onclick="startGame(3)">ふつう / Normal (3×3)</button>
+            <button class="difficulty-btn hard" onclick="startGame(4)">むずかしい / Hard (4×4)</button>
+        </div>
+        <a href="./menu.html" style="display:inline-block; margin-top:15px; color:#999; text-decoration:none; font-size:0.75rem; font-weight: bold;">← メニューへもどる / Back to Menu</a>
+    </div>
+    <div class="copyright">© 2026 KuniFami Soft Studio</div>
+</div>
+
+<div id="gameScreen">
+    <div id="successText" style="display: none; color: #E65100; font-weight: 900; font-size: 1.5rem; text-align: center; margin-bottom: 10px;">✨ Clear! できたね！ ✨</div>
+    <div class="puzzle-board" id="board"></div>
+    <div style="display: flex; gap: 5px;">
+        <button class="ui-btn" onclick="shufflePuzzle()">Shuffle / まぜる</button>
+        <button class="ui-btn" onclick="stopGame()">Menu / やめる</button>
+    </div>
+    <div class="copyright">© 2026 KuniFami Soft Studio</div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const levelSelection = document.getElementById('levelSelection');
+    const numberSwitch = document.getElementById('numberSwitch');
+    const board = document.getElementById('board');
+    let baseImage = "";
+    let gridSize = 3;
+    let currentTiles = [];
+    const boardSize = 340;
+
+    fileInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            baseImage = event.target.result;
+            levelSelection.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    };
+
+    function startGame(size) {
+        gridSize = size;
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        board.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+        resetTiles();
+        shufflePuzzle();
+    }
+
+    function stopGame() {
+        document.getElementById('startScreen').style.display = 'flex';
+        document.getElementById('gameScreen').style.display = 'none';
+    }
+
+    function resetTiles() {
+        const total = gridSize * gridSize;
+        currentTiles = [];
+        for (let i = 1; i < total; i++) currentTiles.push(i);
+        currentTiles.push(0);
+    }
+
+    function renderBoard() {
+        board.innerHTML = '';
+        const showNumbers = numberSwitch.checked;
+
+        currentTiles.forEach((tileNum, index) => {
+            const div = document.createElement('div');
+            if (tileNum === 0) {
+                div.className = 'tile empty';
+            } else {
+                div.className = 'tile';
+                const correctPos = tileNum - 1;
+                const r = Math.floor(correctPos / gridSize), c = correctPos % gridSize;
+                div.style.backgroundImage = `url(${baseImage})`;
+                div.style.backgroundSize = `${boardSize}px ${boardSize}px`;
+                div.style.backgroundPosition = `-${c * (boardSize/gridSize)}px -${r * (boardSize/gridSize)}px`;
+                
+                const numSpan = document.createElement('span');
+                numSpan.className = 'tile-num' + (showNumbers ? '' : ' hidden');
+                numSpan.innerText = tileNum;
+                div.appendChild(numSpan);
+                
+                div.onclick = () => moveTile(index);
+            }
+            board.appendChild(div);
+        });
+        checkWin();
+    }
+
+    function moveTile(index) {
+        const emptyIndex = currentTiles.indexOf(0);
+        const r = Math.floor(index / gridSize), c = index % gridSize;
+        const er = Math.floor(emptyIndex / gridSize), ec = emptyIndex % gridSize;
+        if (Math.abs(r - er) + Math.abs(c - ec) === 1) {
+            [currentTiles[index], currentTiles[emptyIndex]] = [currentTiles[emptyIndex], currentTiles[index]];
+            renderBoard();
+        }
+    }
+
+    function shufflePuzzle() {
+        document.getElementById('successText').style.display = 'none';
+        resetTiles();
+        for (let i = 0; i < gridSize * gridSize * 50; i++) {
+            const emptyIndex = currentTiles.indexOf(0);
+            const r = Math.floor(emptyIndex / gridSize), c = emptyIndex % gridSize;
+            let n = [];
+            if (r > 0) n.push(emptyIndex - gridSize);
+            if (r < gridSize - 1) n.push(emptyIndex + gridSize);
+            if (c > 0) n.push(emptyIndex - 1);
+            if (c < gridSize - 1) n.push(emptyIndex + 1);
+            const move = n[Math.floor(Math.random() * n.length)];
+            [currentTiles[emptyIndex], currentTiles[move]] = [currentTiles[move], currentTiles[emptyIndex]];
+        }
+        renderBoard();
+    }
+
+    function checkWin() {
+        const win = currentTiles.every((t, i) => t === (i === currentTiles.length - 1 ? 0 : i + 1));
+        if (win && document.getElementById('successText').style.display === 'none') {
+            document.getElementById('successText').style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>

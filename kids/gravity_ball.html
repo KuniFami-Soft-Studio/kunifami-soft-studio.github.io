@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>重力ボール / Gravity Ball</title>
+    <style>
+        :root { --primary: #4CAF50; --bg: #f0f0f0; --text: #333333; --card-bg: #ffffff; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { margin: 0; padding: 0; background-color: var(--bg); font-family: sans-serif; color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        .container { width: 92%; max-width: 420px; margin: 20px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        .rules { background: var(--card-bg); padding: 18px; border-radius: 20px; margin-bottom: 15px; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; font-size: 0.85rem; }
+        .rules-title { font-weight: bold; color: #FF9800; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 10px; display: block; }
+        .rule-item { margin-bottom: 8px; line-height: 1.4; color: #444; }
+        .rule-item span { font-weight: bold; }
+        .rule-item small { display: block; color: #888; font-size: 0.75rem; }
+
+        .selector-group { background: #e0e0e0; padding: 15px; border-radius: 20px; margin-bottom: 15px; width: 100%; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .btn-opt { border: none; padding: 10px 5px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; cursor: pointer; color: #555; background: #fff; transition: 0.2s; }
+        .btn-opt.selected { background: #FF9800; color: #fff; transform: scale(1.05); }
+
+        .btn-start { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 50px; font-size: 1.2rem; font-weight: bold; width: 100%; box-shadow: 0 4px 0 #2E7D32; margin-bottom: 15px; }
+        .btn-start:active { transform: translateY(2px); box-shadow: none; }
+
+        .game-panel { background: #dddddd; padding: 10px; border-radius: 25px; width: 100%; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        #gameCanvas { background: #ffffff; border-radius: 15px; width: 100%; aspect-ratio: 4 / 5; display: block; touch-action: none; }
+        .hud { display: flex; justify-content: space-between; padding: 5px 10px 10px; font-weight: bold; color: #555; }
+        
+        .copyright { font-size: 0.7rem; color: #999; margin: 20px 0; font-weight: bold; width: 100%; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container">
+        <div style="font-size:3rem;">🐶</div>
+        <div style="font-weight:bold; font-size:1.2rem; margin-bottom:10px;">重力ワンちゃん / Gravity Doggy</div>
+
+        <div class="rules">
+            <span class="rules-title">📜 ルール / Rules</span>
+            <div class="rule-item">
+                ・iPhoneをかたむけてワンちゃんをうごかす
+                <small>Tilt your phone to move the doggy.</small>
+            </div>
+            <div class="rule-item">
+                ・<span>⭐ゲットで +1点</span>
+                <small>Get ⭐ for +1 point.</small>
+            </div>
+            <div class="rule-item">
+                ・<span>🏠に帰るとつぎのステージへ</span>
+                <small>Go to 🏠 for the next stage.</small>
+            </div>
+            <div class="rule-item" style="color:#d32f2f;">
+                ・<span>黒い穴におちると -2点</span>
+                <small>Fall in the black hole for -2 points.</small>
+            </div>
+        </div>
+
+        <button id="permissionBtn" onclick="requestPermission()" style="background:#FF9800; color:white; border:none; padding:15px; border-radius:50px; width:100%; margin-bottom:15px; font-weight:bold; display:none;">センサーをONにする / Enable Sensors</button>
+
+        <div class="selector-group">
+            <div class="grid-3">
+                <button class="btn-opt btn-diff selected" onclick="setDiff('easy', this)">やさしい<br><small>Easy</small></button>
+                <button class="btn-opt btn-diff" onclick="setDiff('normal', this)">ふつう<br><small>Normal</small></button>
+                <button class="btn-opt btn-diff" onclick="setDiff('hard', this)">むずかしい<br><small>Hard</small></button>
+            </div>
+        </div>
+
+        <div class="selector-group">
+            <div class="grid-3">
+                <button class="btn-opt btn-time selected" onclick="setTime(60, this)">1分<br><small>1 min</small></button>
+                <button class="btn-opt btn-time" onclick="setTime(180, this)">3分<br><small>3 min</small></button>
+                <button class="btn-opt btn-time" onclick="setTime(300, this)">5分<br><small>5 min</small></button>
+            </div>
+        </div>
+        
+        <button class="btn-start" onclick="startGame()">はじめる / START</button>
+        <a href="./menu.html" style="color:#999; text-decoration:none; font-size:0.8rem; display:block; margin-bottom:10px;">← もどる / Back</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="gameScreen" class="screen hidden">
+    <div class="container">
+        <div class="game-panel">
+            <div class="hud">
+                <div id="hudTime">Time: 60</div>
+                <div id="hudScore">Score: <span id="scoreValue" style="color:#2E7D32;">0</span></div>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+            <button onclick="backToTitle()" style="background:#fff; border:1px solid #ccc; padding:12px 24px; border-radius:25px; margin-top:15px; font-weight:bold; color:#666;">やめる / Exit</button>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    let ball = { x: 50, y: 50, radius: 15, vx: 0, vy: 0, angle: 0 };
+    let goal = { x: 0, y: 0, radius: 24 };
+    let obstacles = [], stars = [];
+    let score = 0, timeLeft = 60, initialTime = 60;
+    let currentDiff = 'easy', gravityX = 0, gravityY = 0, gameActive = false;
+    let animationId, timerInterval;
+
+    function setDiff(val, el) {
+        currentDiff = val;
+        document.querySelectorAll('.btn-diff').forEach(b => b.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+    function setTime(val, el) {
+        initialTime = val;
+        document.querySelectorAll('.btn-time').forEach(b => b.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function handleOrientation(e) {
+        gravityX = (e.gamma || 0) / 6;
+        gravityY = (e.beta || 0) / 6;
+    }
+
+    function requestPermission() {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission().then(state => {
+                if (state === 'granted') {
+                    document.getElementById('permissionBtn').style.display = 'none';
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+            });
+        }
+    }
+
+    if (typeof DeviceOrientationEvent.requestPermission !== 'function') {
+        window.addEventListener('deviceorientation', handleOrientation);
+    } else {
+        document.getElementById('permissionBtn').style.display = 'block';
+    }
+
+    function startGame() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        score = 0; timeLeft = initialTime;
+        updateScoreUI();
+        resizeCanvas();
+        initStage();
+        gameActive = true;
+        if(timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('hudTime').innerText = `Time: ${timeLeft}`;
+            if (timeLeft <= 0) endGame("Time Up!");
+        }, 1000);
+        if(animationId) cancelAnimationFrame(animationId);
+        update();
+    }
+
+    function backToTitle() {
+        gameActive = false;
+        clearInterval(timerInterval);
+        cancelAnimationFrame(animationId);
+        document.getElementById('gameScreen').classList.add('hidden');
+        document.getElementById('startScreen').classList.remove('hidden');
+    }
+
+    function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+    }
+
+    function initStage() {
+        ball.x = 40; ball.y = 40; ball.vx = 0; ball.vy = 0; ball.angle = 0;
+        goal.x = canvas.width - 45; goal.y = canvas.height - 45;
+        obstacles = []; stars = [];
+        let obsCount = currentDiff === 'easy' ? 1 : (currentDiff === 'hard' ? 7 : 3);
+        for (let i = 0; i < obsCount; i++) {
+            let obs;
+            do { obs = { x: Math.random()*(canvas.width-80)+40, y: Math.random()*(canvas.height-80)+40, r: 18 }; } 
+            while (dist(obs, ball) < 80 || dist(obs, goal) < 80);
+            obstacles.push(obs);
+        }
+        for (let i = 0; i < 3; i++) {
+            let s;
+            do { s = { x: Math.random()*(canvas.width-80)+40, y: Math.random()*(canvas.height-80)+40, collected: false }; } 
+            while (dist(s, ball) < 60 || dist(s, goal) < 60);
+            stars.push(s);
+        }
+    }
+
+    function dist(p1, p2) { return Math.hypot(p1.x - p2.x, p1.y - p2.y); }
+
+    function update() {
+        if (!gameActive) return;
+        let accel = (currentDiff === 'easy') ? 0.12 : 0.25;
+        let friction = (currentDiff === 'easy') ? 0.95 : 0.97;
+        
+        ball.vx += gravityX * accel; 
+        ball.vy += gravityY * accel;
+        ball.vx *= friction; ball.vy *= friction;
+        ball.x += ball.vx; ball.y += ball.vy;
+
+        // 速度に基づいて角度を計算
+        if (Math.abs(ball.vx) > 0.1 || Math.abs(ball.vy) > 0.1) {
+            ball.angle = Math.atan2(ball.vy, ball.vx);
+        }
+
+        if (ball.x < ball.radius) { ball.x = ball.radius; ball.vx *= -0.3; }
+        if (ball.x > canvas.width - ball.radius) { ball.x = canvas.width - ball.radius; ball.vx *= -0.3; }
+        if (ball.y < ball.radius) { ball.y = ball.radius; ball.vy *= -0.3; }
+        if (ball.y > canvas.height - ball.radius) { ball.y = canvas.height - ball.radius; ball.vy *= -0.3; }
+
+        stars.forEach(s => {
+            if (!s.collected && dist(ball, s) < ball.radius + 18) {
+                s.collected = true; score++; updateScoreUI(); playTone(600);
+            }
+        });
+        obstacles.forEach(o => {
+            if (dist(ball, o) < o.r + ball.radius - 5) {
+                playTone(150); score -= 2; updateScoreUI(); initStage();
+            }
+        });
+        if (dist(ball, goal) < goal.radius + 5) { playTone(800); initStage(); }
+        draw();
+        animationId = requestAnimationFrame(update);
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#f0f0f0';
+        for(let i=0; i<canvas.width; i+=40) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,canvas.height); ctx.stroke(); }
+        for(let j=0; j<canvas.height; j+=40) { ctx.beginPath(); ctx.moveTo(0,j); ctx.lineTo(canvas.width,j); ctx.stroke(); }
+        
+        ctx.font = '32px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('🏠', goal.x, goal.y);
+        
+        ctx.fillStyle = '#000000';
+        obstacles.forEach(o => { ctx.beginPath(); ctx.arc(o.x, o.y, o.r, 0, Math.PI*2); ctx.fill(); });
+        
+        ctx.font = '24px Arial';
+        stars.forEach(s => { if (!s.collected) ctx.fillText('⭐', s.x, s.y + 8); });
+
+        // ★★★ 絵文字の回転描画処理 ★★★
+        ctx.save();
+        ctx.translate(ball.x, ball.y);
+        
+        // 左方向に進んでいる時は、絵文字が逆さまにならないように反転させる
+        let flip = (ball.angle > Math.PI/2 || ball.angle < -Math.PI/2);
+        if (flip) {
+            ctx.rotate(ball.angle + Math.PI); // 180度回転
+            ctx.scale(-1, 1); // 左右反転
+        } else {
+            ctx.rotate(ball.angle);
+        }
+        
+        ctx.font = '32px serif';
+        ctx.fillText('🐶', 0, 0);
+        ctx.restore();
+    }
+
+    function updateScoreUI() {
+        const scoreEl = document.getElementById('scoreValue');
+        scoreEl.innerText = score;
+        scoreEl.style.color = score < 0 ? '#F44336' : '#2E7D32';
+    }
+
+    function endGame(msg) {
+        gameActive = false;
+        clearInterval(timerInterval);
+        alert(`${msg}\nScore: ${score}`);
+        backToTitle();
+    }
+
+    function playTone(freq) {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.frequency.value = freq;
+            g.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+        } catch(e) {}
+    }
+</script>
+</body>
+</html>

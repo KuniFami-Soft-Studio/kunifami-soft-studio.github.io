@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>なめらかめいろ / Smooth Maze</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --main-color: #66BB6A; --bg-color: #E8F5E9; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { 
+            margin: 0; padding: 0; background-color: var(--bg-color); 
+            font-family: sans-serif; display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; overflow: hidden;
+        }
+        .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        #maze-container {
+            position: relative; background: #fff; border: 8px solid #A5D6A7; border-radius: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); touch-action: none; overflow: hidden;
+        }
+        canvas { display: block; }
+
+        .controls { display: flex; gap: 10px; width: 100%; margin-top: 15px; }
+        .btn-sub { 
+            flex: 1; background: var(--main-color); color: white; border: none; 
+            padding: 14px; border-radius: 18px; font-weight: bold; font-size: 0.9rem; 
+            box-shadow: 0 4px 0 #2E7D32;
+        }
+
+        .star { position: absolute; pointer-events: none; font-size: 24px; animation: fly 1s ease-out forwards; z-index: 100; }
+        @keyframes fly { 
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 
+            100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0); opacity: 0; } 
+        }
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container" style="margin-top: 40px;">
+        <div style="font-size:5rem; margin-bottom:10px;">🐞</div>
+        <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #A5D6A7; margin-bottom:25px; width:100%;">
+            <h1 style="margin:0; font-size:1.6rem;">めいろ (なめらか)</h1>
+            <p style="margin:5px 0 20px; color:#66BB6A; font-weight: bold;">Smooth Maze</p>
+            <p style="text-align:left; font-size:0.9rem; line-height:1.6; color: #546E7A;">
+                テントウムシさんを スルスル〜っと うごかしてね！<br>
+                ひまわりの ゴールへ いけるかな？<br>
+                <small>Slide the ladybug smoothly to the goal!</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:#FFA726; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #FB8C00;">はじめる / START</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div id="maze-container">
+            <canvas id="mazeCanvas"></canvas>
+        </div>
+        <div class="controls">
+            <button class="btn-sub" onclick="initMaze()">ちがうめいろ</button>
+            <button class="btn-sub" onclick="goBack()">おわる</button>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('mazeCanvas');
+    const ctx = canvas.getContext('2d');
+    let maze = [];
+    const rows = 9, cols = 9;
+    let cellSize, playerRadius;
+    let player = { x: 0, y: 0 };
+    let isGoal = false;
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        setTimeout(initMaze, 100);
+    }
+
+    function initMaze() {
+        const size = Math.min(window.innerWidth * 0.88, 380);
+        canvas.width = size; canvas.height = size;
+        cellSize = size / cols;
+        playerRadius = cellSize * 0.35;
+        // スタート位置を中心座標で設定
+        player.x = cellSize / 2;
+        player.y = cellSize / 2;
+        isGoal = false;
+        generateMaze();
+        gameLoop();
+    }
+
+    function generateMaze() {
+        maze = Array(rows).fill().map(() => Array(cols).fill(1));
+        function dig(x, y) {
+            maze[y][x] = 0;
+            const dirs = [[0, 2], [0, -2], [2, 0], [-2, 0]].sort(() => Math.random() - 0.5);
+            for (let [dx, dy] of dirs) {
+                const nx = x + dx, ny = y + dy;
+                if (nx >= 0 && nx < cols && ny >= 0 && ny < rows && maze[ny][nx] === 1) {
+                    maze[y + dy / 2][x + dx / 2] = 0;
+                    dig(nx, ny);
+                }
+            }
+        }
+        dig(0, 0);
+        maze[rows-1][cols-1] = 0;
+    }
+
+    // 壁判定関数（なめらか移動用）
+    function canMoveTo(nx, ny) {
+        const margin = playerRadius * 0.8;
+        // テントウムシの四隅（当たり判定ボックス）をチェック
+        const points = [
+            {x: nx - margin, y: ny - margin},
+            {x: nx + margin, y: ny - margin},
+            {x: nx - margin, y: ny + margin},
+            {x: nx + margin, y: ny + margin}
+        ];
+        return points.every(p => {
+            const gx = Math.floor(p.x / cellSize);
+            const gy = Math.floor(p.y / cellSize);
+            return gx >= 0 && gx < cols && gy >= 0 && gy < rows && maze[gy][gx] === 0;
+        });
+    }
+
+    function movePlayer(e) {
+        if (isGoal) return;
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
+        const touchX = clientX - rect.left;
+        const touchY = clientY - rect.top;
+
+        // 現在位置からタッチ位置へ少しずつ近づける（なめらかさの肝）
+        const dx = touchX - player.x;
+        const dy = touchY - player.y;
+        const distance = Math.sqrt(dx*dx + dy*dy);
+        
+        if (distance > 2) {
+            const speed = 4; // 移動スピード
+            const vx = (dx / distance) * speed;
+            const vy = (dy / distance) * speed;
+
+            // X方向とY方向を別々に判定することで壁ずり移動を可能に
+            if (canMoveTo(player.x + vx, player.y)) player.x += vx;
+            if (canMoveTo(player.x, player.y + vy)) player.y += vy;
+        }
+
+        // ゴール判定
+        if (player.x > (cols-1)*cellSize && player.y > (rows-1)*cellSize) {
+            win();
+        }
+    }
+
+    function gameLoop() {
+        if (isGoal) return;
+        draw();
+        requestAnimationFrame(gameLoop);
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+                if (maze[y][x] === 1) {
+                    ctx.fillStyle = "#A5D6A7";
+                    ctx.fillRect(x * cellSize, y * cellSize, cellSize + 1, cellSize + 1);
+                }
+            }
+        }
+        ctx.font = (cellSize * 0.7) + "px serif";
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText("🏠", cellSize / 2, cellSize / 2);
+        ctx.fillText("🌻", (cols - 0.5) * cellSize, (rows - 0.5) * cellSize);
+        ctx.fillText("🐞", player.x, player.y);
+    }
+
+    function win() {
+        isGoal = true;
+        const container = document.getElementById('maze-container');
+        for (let i = 0; i < 15; i++) {
+            const star = document.createElement('div');
+            star.className = 'star'; star.innerText = '⭐';
+            star.style.left = '90%'; star.style.top = '90%';
+            star.style.setProperty('--tx', (Math.random() - 0.5) * 400 + 'px');
+            star.style.setProperty('--ty', (Math.random() - 0.5) * 400 + 'px');
+            container.appendChild(star);
+            setTimeout(() => star.remove(), 1000);
+        }
+        if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+        setTimeout(() => { alert("ゴール！ / Goal!"); initMaze(); }, 500);
+    }
+
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); movePlayer(e); }, { passive: false });
+    canvas.addEventListener('mousemove', (e) => { if(e.buttons > 0) movePlayer(e); });
+
+    function goBack() { if (confirm("もどる？")) location.href = "./menu.html"; }
+</script>
+</body>
+</html>

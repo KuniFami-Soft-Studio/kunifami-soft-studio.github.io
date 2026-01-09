@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>シール貼り遊び / Sticker Fun</title>
+    <style>
+        :root {
+            --primary-pink: #FFB7D5;
+            --primary-blue: #B2EBF2;
+            --bg-color: #FFF9C4;
+            --text-color: #5D4037;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            font-family: sans-serif;
+            color: var(--text-color);
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        .container { width: 92%; max-width: 420px; margin: 20px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        /* Start Screen Card */
+        .start-card {
+            background: white; padding: 30px 20px; border-radius: 30px;
+            box-shadow: 0 8px 0 #E6EE9C; margin-bottom: 20px; width: 100%;
+        }
+        .btn-start {
+            background: #FF8A65; color: white; border: none; padding: 20px;
+            border-radius: 50px; font-size: 1.4rem; font-weight: bold;
+            width: 100%; box-shadow: 0 5px 0 #D84315; cursor: pointer;
+        }
+
+        /* Drawing Area */
+        .canvas-area {
+            background: white; width: 100%; aspect-ratio: 1 / 1.2;
+            border-radius: 20px; border: 4px dashed #FFD54F;
+            position: relative; overflow: hidden; cursor: crosshair;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            touch-action: none; /* Scroll prevention */
+        }
+        
+        .sticker-on-canvas {
+            position: absolute; transform: translate(-50%, -50%);
+            font-size: 40px; pointer-events: none;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Sticker Menu */
+        .sticker-menu {
+            display: grid; grid-template-columns: repeat(5, 1fr);
+            gap: 10px; margin: 15px 0; width: 100%;
+            background: rgba(255,255,255,0.5); padding: 10px; border-radius: 20px;
+        }
+        .sticker-opt {
+            font-size: 30px; background: white; border: 2px solid transparent;
+            border-radius: 15px; padding: 5px; cursor: pointer; transition: 0.2s;
+        }
+        .sticker-opt.selected { border-color: #FF8A65; background: #FFF3E0; transform: scale(1.1); }
+
+        .controls { display: flex; gap: 10px; width: 100%; }
+        .btn-sub {
+            flex: 1; background: #90A4AE; color: white; border: none;
+            padding: 12px; border-radius: 15px; font-weight: bold; font-size: 0.9rem;
+        }
+
+        .copyright { font-size: 0.7rem; color: #999; margin: 20px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container">
+        <div style="font-size:4rem; margin-bottom:10px;">🎨</div>
+        <div class="start-card">
+            <h1 style="margin:0; font-size:1.5rem;">シール貼り遊び</h1>
+            <p style="margin:5px 0 20px; color:#888;">Sticker Fun App</p>
+            <p style="text-align:left; font-size:0.9rem; line-height:1.6;">
+                好きなシールをえらんで、白いところにペタペタはってみよう！<br>
+                <small>Choose a sticker and tap on the white board!</small>
+            </p>
+        </div>
+        <button class="btn-start" onclick="showApp()">はじめる / START</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div class="canvas-area" id="canvasArea" onmousedown="placeSticker(event)" ontouchstart="placeSticker(event)">
+            <div id="hintText" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#ddd; pointer-events:none; text-align:center;">
+                ここをタップ！<br>Tap here!
+            </div>
+        </div>
+
+        <div class="sticker-menu" id="stickerMenu">
+            <div class="sticker-opt selected" onclick="selectSticker('🐶', this)">🐶</div>
+            <div class="sticker-opt" onclick="selectSticker('🐱', this)">🐱</div>
+            <div class="sticker-opt" onclick="selectSticker('🐰', this)">🐰</div>
+            <div class="sticker-opt" onclick="selectSticker('🦁', this)">🦁</div>
+            <div class="sticker-opt" onclick="selectSticker('🚗', this)">🚗</div>
+            <div class="sticker-opt" onclick="selectSticker('🍓', this)">🍓</div>
+            <div class="sticker-opt" onclick="selectSticker('🌈', this)">🌈</div>
+            <div class="sticker-opt" onclick="selectSticker('🚀', this)">🚀</div>
+            <div class="sticker-opt" onclick="selectSticker('🌸', this)">🌸</div>
+            <div class="sticker-opt" onclick="selectSticker('⭐', this)">⭐</div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-sub" onclick="resetCanvas()">ぜんぶ消す / Clear All</button>
+            <button class="btn-sub" onclick="goBack()">おわる / Exit</button>
+        </div>
+
+        <div style="margin-top:20px;">
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-5115190227060860"
+                data-ad-slot="3577508619"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    let currentSticker = '🐶';
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+    }
+
+    function goBack() {
+        if(confirm("最初に戻りますか？\nGo back to title?")) {
+            resetCanvas();
+            document.getElementById('appScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+    }
+
+    function selectSticker(emoji, el) {
+        currentSticker = emoji;
+        document.querySelectorAll('.sticker-opt').forEach(opt => opt.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function placeSticker(e) {
+        // Prevent default zoom/scroll on mobile
+        if(e.type === 'touchstart') e.preventDefault();
+
+        const hint = document.getElementById('hintText');
+        if(hint) hint.style.display = 'none';
+
+        const canvas = document.getElementById('canvasArea');
+        const rect = canvas.getBoundingClientRect();
+        
+        // Use client coords for accuracy
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        const sticker = document.createElement('div');
+        sticker.className = 'sticker-on-canvas';
+        sticker.innerText = currentSticker;
+        sticker.style.left = x + 'px';
+        sticker.style.top = y + 'px';
+        
+        const randomRotate = (Math.random() - 0.5) * 30;
+        sticker.style.transform = `translate(-50%, -50%) rotate(${randomRotate}deg)`;
+
+        canvas.appendChild(sticker);
+        
+        if (navigator.vibrate) navigator.vibrate(10);
+    }
+
+    function resetCanvas() {
+        const canvas = document.getElementById('canvasArea');
+        const stickers = canvas.querySelectorAll('.sticker-on-canvas');
+        stickers.forEach(s => s.remove());
+        document.getElementById('hintText').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>

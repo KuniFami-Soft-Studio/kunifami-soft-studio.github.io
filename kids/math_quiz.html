@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>たしざん・ひきざん / Math Fun</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root { --main-purple: #9C27B0; --bg-blue: #E3F2FD; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { 
+            margin: 0; padding: 0; background-color: var(--bg-blue); 
+            font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
+            color: #1A237E; display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; overflow: hidden;
+        }
+        .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        .math-card {
+            background: white; border-radius: 35px; padding: 25px;
+            box-shadow: 0 10px 0 #BBDEFB; width: 100%; margin-bottom: 20px;
+        }
+        .formula { font-size: 3.5rem; font-weight: bold; margin: 20px 0; color: #1565C0; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        
+        .visual-hint { display: flex; justify-content: center; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; min-height: 40px; }
+        .hint-dot { width: 15px; height: 15px; background: #FF4081; border-radius: 50%; }
+
+        .answer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; }
+        .ans-btn {
+            background: #FFF; border: 4px solid #90CAF9; border-radius: 20px;
+            padding: 15px; font-size: 2rem; font-weight: bold; color: #1565C0;
+            cursor: pointer; box-shadow: 0 5px 0 #90CAF9; transition: 0.1s;
+        }
+        .ans-btn:active { transform: translateY(5px); box-shadow: none; }
+
+        .btn-sub { 
+            width: 100%; background: var(--main-purple); color: white; border: none; 
+            padding: 16px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; 
+            box-shadow: 0 5px 0 #7B1FA2; cursor: pointer; margin-top: 10px;
+        }
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container" style="margin-top: 40px;">
+        <div style="font-size:5rem; margin-bottom:10px;">🧮</div>
+        <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #BBDEFB; margin-bottom:25px; width:100%;">
+            <h1 style="margin:0; font-size:1.6rem;">たしざん・ひきざん</h1>
+            <p style="margin:5px 0 20px; color:#1565C0; font-weight: bold;">Addition & Subtraction</p>
+            <p style="text-align:left; font-size:0.9rem; line-height:1.6; color: #5D4037;">
+                かずの もんだいに チャレンジ！<br>
+                ただしい こたえを えらんでね。<br>
+                <small>Challenge math problems! Tap the correct answer.</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:#448AFF; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #1565C0;">はじめる / START</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div class="math-card">
+            <div id="hintArea" class="visual-hint"></div>
+            <div class="formula" id="formula">1 + 1 = ?</div>
+            <div class="answer-grid" id="ansGrid"></div>
+        </div>
+        
+        <button class="btn-sub" onclick="generateProblem()">つぎのもんだい / Next</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        
+        <div style="margin-top:20px;">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq, duration) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + duration);
+    }
+
+    let currentAnswer = 0;
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        generateProblem();
+    }
+
+    function generateProblem() {
+        const isPlus = Math.random() > 0.5;
+        let n1, n2;
+        if (isPlus) {
+            n1 = Math.floor(Math.random() * 6) + 1; // 1-6
+            n2 = Math.floor(Math.random() * 4) + 1; // 1-4
+            currentAnswer = n1 + n2;
+        } else {
+            n1 = Math.floor(Math.random() * 6) + 4; // 4-9
+            n2 = Math.floor(Math.random() * n1) + 1; // 1 to n1
+            currentAnswer = n1 - n2;
+        }
+
+        document.getElementById('formula').innerText = `${n1} ${isPlus ? '+' : '-'} ${n2} = ?`;
+        
+        // 視覚的ヒント（ドットを表示）
+        const hintArea = document.getElementById('hintArea');
+        hintArea.innerHTML = "";
+        for(let i=0; i<n1; i++) hintArea.innerHTML += '<div class="hint-dot"></div>';
+
+        // 選択肢作成
+        const choices = [currentAnswer];
+        while(choices.length < 4) {
+            let fake = Math.floor(Math.random() * 11);
+            if(!choices.includes(fake)) choices.push(fake);
+        }
+        choices.sort(() => Math.random() - 0.5);
+
+        const grid = document.getElementById('ansGrid');
+        grid.innerHTML = "";
+        choices.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'ans-btn';
+            btn.innerText = c;
+            btn.onclick = () => checkAnswer(c, btn);
+            grid.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(val, btn) {
+        if (val === currentAnswer) {
+            playBeep(880, 0.2);
+            btn.style.background = "#C8E6C9";
+            setTimeout(() => {
+                alert("せいかい！ 🎉 Correct!");
+                generateProblem();
+            }, 200);
+        } else {
+            playBeep(220, 0.2);
+            btn.style.background = "#FFCDD2";
+            if (navigator.vibrate) navigator.vibrate(50);
+            setTimeout(() => btn.style.background = "#FFF", 500);
+        }
+    }
+</script>
+</body>
+</html>

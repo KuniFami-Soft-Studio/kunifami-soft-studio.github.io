@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>キラキラまんげきょう / Magic Kaleidoscope</title>
+    
+    <style>
+        :root {
+            --primary: #ff69b4;
+            --bg: #000000;
+        }
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            touch-action: none;
+        }
+        body {
+            margin: 0; padding: 0; background: var(--bg);
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            overflow: hidden; color: white;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* 第一画面 / Start Screen */
+        .start-container {
+            position: fixed; inset: 0; z-index: 5000;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 20px;
+        }
+        .start-card {
+            background: rgba(255,255,255,0.9); padding: 30px; border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); width: 85%; max-width: 400px; color: #333;
+        }
+        .btn-start {
+            background: #ff4081; color: white; border: none; padding: 15px 40px;
+            font-size: 1.5rem; font-weight: bold; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 6px 0 #c2185b; transition: 0.2s; margin: 20px 0;
+        }
+        .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #c2185b; }
+
+        /* メイン画面 / Main Screen */
+        #gameScreen { display: none; width: 100vw; height: 100vh; position: relative; }
+        canvas { width: 100%; height: 100%; display: block; }
+
+        /* 操作パネル */
+        .ui-overlay {
+            position: absolute; top: 15px; left: 15px; right: 15px;
+            display: flex; justify-content: space-between; align-items: flex-start;
+            pointer-events: none;
+        }
+        .ui-btn {
+            background: rgba(255,255,255,0.8); border: none; padding: 10px 15px;
+            border-radius: 15px; font-weight: bold; pointer-events: auto;
+            color: #333; font-size: 0.8rem;
+        }
+
+        /* 広告エリア */
+        .ad-container {
+            position: absolute; bottom: 0; width: 100%;
+            background: rgba(0,0,0,0.5); z-index: 4000;
+            text-align: center;
+        }
+        .copyright { font-size: 0.6rem; color: #999; padding: 5px; background: rgba(0,0,0,0.8); width: 100%; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="start-container" id="startScreen">
+    <div class="start-card">
+        <div style="font-size: 4rem; margin-bottom: 10px;">✨</div>
+        <h1 style="margin: 0; color: #ff4081;">キラキラまんげきょう</h1>
+        <p style="margin: 5px 0; font-weight: bold; color: #666;">Magic Kaleidoscope</p>
+        
+        <p style="font-size: 0.9rem; color: #888;">
+            なぞって 魔法の模様を作ろう！<br>
+            Trace to make magic patterns!
+        </p>
+
+        <button class="btn-start" onclick="startGame()">Start! / はじめる</button>
+
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+        <div class="copyright" style="background:none;">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="gameScreen">
+    <div class="ui-overlay">
+        <button class="ui-btn" onclick="clearCanvas()">ぜんぶ消す / Clear</button>
+        <button class="ui-btn" onclick="stopGame()">Quit / おわる</button>
+    </div>
+
+    <canvas id="kaleidoscope"></canvas>
+
+    <div class="ad-container">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-5115190227060860"
+             data-ad-slot="3577508619"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('kaleidoscope');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let hue = 0;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'block';
+        clearCanvas();
+    }
+
+    function stopGame() {
+        document.getElementById('startScreen').style.display = 'flex';
+        document.getElementById('gameScreen').style.display = 'none';
+    }
+
+    function clearCanvas() {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+
+        const x = (e.touches ? e.touches[0].clientX : e.clientX);
+        const y = (e.touches ? e.touches[0].clientY : e.clientY);
+        
+        // 中心からの座標を計算
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const relX = x - centerX;
+        const relY = y - centerY;
+
+        hue += 2;
+        ctx.strokeStyle = `hsla(${hue}, 80%, 60%, 0.8)`;
+        ctx.lineWidth = 15;
+        ctx.lineCap = 'round';
+
+        // 6方向対称に描画
+        for (let i = 0; i < 6; i++) {
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate((i * 60) * Math.PI / 180);
+            
+            // 線を描画
+            ctx.beginPath();
+            ctx.moveTo(relX, relY);
+            // 鏡像効果
+            ctx.lineTo(relX, -relY);
+            ctx.stroke();
+            
+            ctx.restore();
+        }
+    }
+
+    canvas.addEventListener('mousedown', () => isDrawing = true);
+    canvas.addEventListener('touchstart', () => isDrawing = true);
+    window.addEventListener('mouseup', () => isDrawing = false);
+    window.addEventListener('touchend', () => isDrawing = false);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchmove', draw);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>リズムたたき / Rhythm Tap Challenge</title>
+    <style>
+        :root { --primary: #FF6F91; --secondary: #FFD54F; --bg: #F0F4C3; --text: #5D4037; --white: #ffffff; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { margin: 0; padding: 0; background-color: var(--bg); font-family: "Hiragino Sans", "Meiryo", sans-serif; color: var(--text); overflow-x: hidden; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { background: var(--white); width: 94%; max-width: 420px; margin-top: 10px; padding: 20px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+        h1 { color: var(--primary); font-size: 1.6rem; margin: 0; }
+        .sub-title { color: #888; font-size: 0.8rem; margin-bottom: 10px; }
+        
+        /* ルール説明エリア */
+        .rules { background: #FFF9C4; padding: 12px; border-radius: 15px; margin-bottom: 15px; text-align: left; border: 2px solid #FFE082; width: 100%; }
+        .rules-title { font-size: 0.85rem; font-weight: bold; color: #E65100; border-bottom: 1px solid #FFE082; margin-bottom: 5px; }
+        .rule-item { font-size: 0.75rem; line-height: 1.4; margin-bottom: 4px; color: #5D4037; }
+        .rule-item b { color: #D81B60; }
+
+        .btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; margin: 5px 0; box-shadow: 0 4px 0 #D81B60; transition: 0.1s; width: 100%; display: block; text-decoration: none; }
+        .btn:active { transform: translateY(3px); box-shadow: none; }
+        .btn-yellow { background: var(--secondary); box-shadow: 0 4px 0 #FBC02D; color: #5D4037; }
+        .btn-orange { background: #FF8A65; box-shadow: 0 4px 0 #E64A19; }
+        
+        .game-area { width: 100%; background: #E1F5FE; border-radius: 20px; height: 360px; position: relative; overflow: hidden; border: 4px solid #81D4FA; margin: 10px 0; }
+        .target-line { position: absolute; bottom: 50px; width: 100%; height: 60px; background: rgba(255, 111, 145, 0.15); border-top: 3px dashed var(--primary); border-bottom: 3px dashed var(--primary); }
+        .note { position: absolute; width: 55px; height: 55px; left: calc(50% - 27.5px); border-radius: 50%; border: 3px solid white; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; z-index: 10; }
+        .note.star { background: #FF5252; }
+        .note.bomb { background: #546E7A; }
+        #tapButton { width: 90px; height: 90px; background: radial-gradient(circle, #FFD54F, #FF8F00); border-radius: 50%; border: 6px solid white; box-shadow: 0 6px 15px rgba(0,0,0,0.2); font-weight: 900; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 10px; }
+        .copyright { font-size: 0.7rem; color: #999; margin: 10px 0; font-weight: bold; width: 100%; text-align: center; }
+        #clearMessage { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.95); padding: 30px; border-radius: 30px; border: 6px solid var(--secondary); z-index: 100; font-size: 2rem; font-weight: 900; color: var(--primary); display: none; box-shadow: 0 0 50px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container">
+        <h1>🥁 リズムたたき</h1>
+        <div class="sub-title">Rhythm Tap Challenge</div>
+
+        <div class="rules">
+            <div class="rules-title">💡 あそびかた / How to play</div>
+            <div class="rule-item">・<b>⭐</b>をたたいて 100てんを めざそう！<br>　(Tap ⭐ for 10pts! Reach 100pts to clear.)</div>
+            <div class="rule-item">・<b>Easy</b>: ⭐だけ くるよ (Only ⭐ appears.)</div>
+            <div class="rule-item">・<b>Normal/Fast</b>: 💣💀は たたかないで！<br>　(Don't tap 💣💀! -20pts penalty.)</div>
+        </div>
+
+        <button class="btn" onclick="startGame(1500, false)">かんたん / Easy</button>
+        <button class="btn btn-yellow" onclick="startGame(1000, true)">ふつう / Normal</button>
+        <button class="btn btn-orange" onclick="startGame(700, true)">はやい / Fast</button>
+
+        <a href="./menu.html" style="display:block; margin-top:10px; color:#aaa; text-decoration:none; font-size:0.75rem;">← もどる / Back</a>
+        <div class="copyright" style="margin-top:15px; border-top: 1px dotted #eee; padding-top: 10px;">© 2026 KuniFami Soft Studio</div>
+    </div>
+    <div class="ad-space">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+</div>
+
+<div id="gameScreen" class="screen hidden">
+    <div class="container" style="position: relative;">
+        <div id="clearMessage">✨ CLEAR! ✨</div>
+        <div style="font-size: 1.2rem; font-weight: 900; color: var(--primary);">Score: <span id="score">0</span> / 100</div>
+        <div class="game-area" id="lane"><div class="target-line"></div></div>
+        <div id="tapButton" onmousedown="handleTap(event)" ontouchstart="handleTap(event)">TAP!</div>
+        <button class="btn btn-yellow" style="padding: 8px 20px; width: auto; font-size: 0.85rem; margin-top: 5px;" onclick="stopGame()">End / おわる</button>
+        <div class="copyright" style="margin-top:15px; border-top: 1px dotted #eee; padding-top: 10px;">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    let score = 0;
+    let gameActive = false;
+    let spawnTimer;
+    let noteSpeed = 4.5; 
+    let spawnInterval = 1500;
+    let notes = [];
+    let useObstacles = false;
+    const lane = document.getElementById('lane');
+    const scoreDisplay = document.getElementById('score');
+    const clearMessage = document.getElementById('clearMessage');
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTapSound(freq = 440) {
+        if(audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    function startGame(speed, obstacles) {
+        score = 0;
+        scoreDisplay.innerText = score;
+        spawnInterval = speed;
+        useObstacles = obstacles;
+        gameActive = true;
+        notes = [];
+        clearMessage.style.display = 'none';
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        spawnNote();
+        gameLoop();
+    }
+
+    function stopGame() {
+        gameActive = false;
+        clearTimeout(spawnTimer);
+        notes.forEach(n => n.el.remove());
+        notes = [];
+        document.getElementById('startScreen').classList.remove('hidden');
+        document.getElementById('gameScreen').classList.add('hidden');
+    }
+
+    function spawnNote() {
+        if (!gameActive) return;
+        const el = document.createElement('div');
+        let type = 'star';
+        
+        if (useObstacles && Math.random() < 0.3) {
+            type = 'bomb';
+            el.className = 'note bomb';
+            el.innerText = Math.random() < 0.5 ? '💣' : '💀';
+        } else {
+            el.className = 'note star';
+            el.innerText = '⭐';
+        }
+        
+        el.style.top = '-60px';
+        lane.appendChild(el);
+        notes.push({ el: el, y: -60, type: type });
+        spawnTimer = setTimeout(spawnNote, spawnInterval + (Math.random() * 300));
+    }
+
+    function gameLoop() {
+        if (!gameActive) return;
+        for (let i = notes.length - 1; i >= 0; i--) {
+            const n = notes[i];
+            n.y += noteSpeed;
+            n.el.style.top = n.y + 'px';
+            if (n.y > 360) {
+                n.el.remove();
+                notes.splice(i, 1);
+            }
+        }
+        if (score >= 100) {
+            gameWin();
+            return;
+        }
+        requestAnimationFrame(gameLoop);
+    }
+
+    function gameWin() {
+        gameActive = false;
+        clearMessage.style.display = 'block';
+        playTapSound(523.25);
+        setTimeout(() => playTapSound(659.25), 150);
+        setTimeout(() => playTapSound(783.99), 300);
+        setTimeout(() => playTapSound(1046.50), 450);
+        setTimeout(stopGame, 3000);
+    }
+
+    function handleTap(e) {
+        if (e) e.preventDefault();
+        if (!gameActive) return;
+
+        const hitZoneTop = 240; 
+        const hitZoneBottom = 330;
+        let tapped = false;
+
+        for (let i = 0; i < notes.length; i++) {
+            const n = notes[i];
+            if (n.y > hitZoneTop && n.y < hitZoneBottom) {
+                tapped = true;
+                if (n.type === 'star') {
+                    score += 10; // 10回でクリア
+                    playTapSound(880);
+                    n.el.innerText = "✨";
+                    n.el.style.background = "#FFEB3B";
+                } else {
+                    score = Math.max(0, score - 20); // お邪魔はマイナス20
+                    playTapSound(200);
+                    n.el.innerText = "💥";
+                    n.el.style.background = "#333";
+                }
+                scoreDisplay.innerText = score;
+                const targetEl = n.el;
+                notes.splice(i, 1);
+                setTimeout(() => { if(targetEl) targetEl.remove(); }, 100);
+                break;
+            }
+        }
+        if(!tapped) playTapSound(440);
+    }
+</script>
+
+</body>
+</html>

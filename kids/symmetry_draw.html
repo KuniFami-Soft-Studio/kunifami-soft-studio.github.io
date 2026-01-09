@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>シンメトリーお絵描き / Symmetry Drawing</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <style>
+        :root {
+            --main-purple: #9575CD;
+            --bg: #F3E5F5;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg);
+            font-family: sans-serif;
+            color: #4527A0;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        .container { width: 92%; max-width: 420px; margin: 10px auto; text-align: center; }
+        .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+
+        /* キャンバスエリア */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            touch-action: none;
+        }
+        
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            cursor: crosshair;
+        }
+
+        /* 中心線ガイド */
+        .guide-line {
+            position: absolute;
+            background: rgba(149, 117, 205, 0.2);
+            border: 1px dashed var(--main-purple);
+            pointer-events: none;
+            z-index: 10;
+        }
+        .line-v { left: 50%; top: 0; bottom: 0; width: 0; }
+        .line-h { top: 50%; left: 0; right: 0; height: 0; }
+
+        /* モード切替ボタン */
+        .mode-selector {
+            display: flex; gap: 10px; width: 100%; margin-bottom: 10px;
+        }
+        .btn-mode {
+            flex: 1; padding: 10px; border-radius: 12px; border: 2px solid var(--main-purple);
+            background: white; color: var(--main-purple); font-weight: bold; cursor: pointer;
+        }
+        .btn-mode.active { background: var(--main-purple); color: white; }
+
+        /* ツールバー */
+        .tool-bar {
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+            margin: 10px 0; width: 100%;
+            background: white; padding: 12px; border-radius: 20px;
+        }
+        .color-opt {
+            width: 100%; aspect-ratio: 1/1; border-radius: 50%;
+            border: 3px solid transparent; cursor: pointer;
+        }
+        .color-opt.active { border-color: #4527A0; transform: scale(1.1); }
+
+        .controls { display: flex; gap: 10px; width: 100%; }
+        .btn-sub {
+            flex: 1; background: #7E57C2; color: white; border: none;
+            padding: 12px; border-radius: 15px; font-weight: bold; font-size: 0.8rem;
+        }
+
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen" class="screen">
+    <div class="container" style="margin-top: 50px;">
+        <div style="font-size:5rem; margin-bottom:10px;">🦋</div>
+        <div style="background:white; padding:30px 20px; border-radius:30px; box-shadow:0 8px 0 #D1C4E9; margin-bottom:20px; width:100%;">
+            <h1 style="margin:0; font-size:1.4rem;">シンメトリーお絵描き</h1>
+            <p style="margin:5px 0 20px; color:#888;">Symmetry Drawing</p>
+            <p style="text-align:left; font-size:0.9rem; line-height:1.6;">
+                はんぶん描くと、もうはんぶんも描けるよ！<br>
+                「まほうのモード」にすると、もっとすごくなるかも？<br>
+                <small>Draw on one side, and magic happens on the other side!</small>
+            </p>
+        </div>
+        <button onclick="showApp()" style="background:var(--main-purple); color:white; border:none; padding:20px; border-radius:50px; font-size:1.4rem; font-weight:bold; width:100%; box-shadow:0 5px 0 #512DA8; cursor:pointer;">はじめる / START</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="appScreen" class="screen hidden">
+    <div class="container">
+        <div class="mode-selector">
+            <button id="mode2" class="btn-mode active" onclick="setMode(2)">2分割 / Normal</button>
+            <button id="mode4" class="btn-mode" onclick="setMode(4)">まほう / Magic (4)</button>
+        </div>
+
+        <div class="canvas-container" id="canvasBox">
+            <div class="guide-line line-v"></div>
+            <div id="lineH" class="guide-line line-h hidden"></div>
+            <canvas id="drawCanvas"></canvas>
+        </div>
+
+        <div class="tool-bar">
+            <div class="color-opt active" style="background:#FF5252" onclick="setColor('#FF5252', this)"></div>
+            <div class="color-opt" style="background:#FF4081" onclick="setColor('#FF4081', this)"></div>
+            <div class="color-opt" style="background:#E040FB" onclick="setColor('#E040FB', this)"></div>
+            <div class="color-opt" style="background:#7C4DFF" onclick="setColor('#7C4DFF', this)"></div>
+            <div class="color-opt" style="background:#448AFF" onclick="setColor('#448AFF', this)"></div>
+            <div class="color-opt" style="background:#4CAF50" onclick="setColor('#4CAF50', this)"></div>
+            <div class="color-opt" style="background:#FFEB3B" onclick="setColor('#FFEB3B', this)"></div>
+            <div class="color-opt" style="background:#FF9800" onclick="setColor('#FF9800', this)"></div>
+            <div class="color-opt" style="background:#333" onclick="setColor('#333', this)"></div>
+            <div class="color-opt" style="background:#90A4AE" onclick="setColor('#90A4AE', this)"></div>
+            <div class="color-opt" style="background: linear-gradient(to right, red, orange, yellow, green, cyan, blue, violet);" onclick="setRainbowMode(this)"></div>
+            <div class="color-opt" style="background:white; border: 1px solid #ddd;" onclick="setColor('#FFFFFF', this)">🧼</div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-sub" onclick="clearCanvas()">やりなおす</button>
+            <button class="btn-sub" onclick="goBack()">おわる</button>
+        </div>
+
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('drawCanvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    let currentColor = '#FF5252';
+    let isRainbow = false;
+    let hue = 0;
+    let currentMode = 2;
+    let lastX = 0;
+    let lastY = 0;
+
+    function showApp() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        setTimeout(resizeCanvas, 10);
+    }
+
+    function setMode(m) {
+        currentMode = m;
+        document.getElementById('mode2').classList.toggle('active', m === 2);
+        document.getElementById('mode4').classList.toggle('active', m === 4);
+        document.getElementById('lineH').classList.toggle('hidden', m === 2);
+    }
+
+    function resizeCanvas() {
+        const box = document.getElementById('canvasBox');
+        canvas.width = box.clientWidth;
+        canvas.height = box.clientHeight;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 6;
+    }
+
+    function startPosition(e) {
+        drawing = true;
+        const pos = getPos(e);
+        lastX = pos.x; lastY = pos.y;
+    }
+
+    function draw(e) {
+        if (!drawing) return;
+        const pos = getPos(e);
+        const currentX = pos.x;
+        const currentY = pos.y;
+
+        if(isRainbow) {
+            currentColor = `hsl(${hue}, 100%, 50%)`;
+            hue = (hue + 2) % 360;
+        }
+
+        drawMirrorLines(lastX, lastY, currentX, currentY);
+
+        lastX = currentX; lastY = currentY;
+    }
+
+    function drawMirrorLines(x1, y1, x2, y2) {
+        const w = canvas.width;
+        const h = canvas.height;
+        const midX = w / 2;
+        const midY = h / 2;
+
+        ctx.strokeStyle = currentColor;
+        ctx.beginPath();
+        
+        // --- 1. 左右対称 (基本) ---
+        // オリジナル
+        ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        // 左右反転
+        ctx.moveTo(w - x1, y1); ctx.lineTo(w - x2, y2);
+        
+        // --- 2. 4分割 (まほうモード) ---
+        if (currentMode === 4) {
+            // 上下反転
+            ctx.moveTo(x1, h - y1); ctx.lineTo(x2, h - y2);
+            // 左右＋上下反転
+            ctx.moveTo(w - x1, h - y1); ctx.lineTo(w - x2, h - y2);
+        }
+        
+        ctx.stroke();
+    }
+
+    function stopPosition() { drawing = false; }
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = (e.touches ? e.touches[0].clientX : e.clientX);
+        const clientY = (e.touches ? e.touches[0].clientY : e.clientY);
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function setColor(color, el) {
+        currentColor = color;
+        isRainbow = false;
+        updateActiveTool(el);
+    }
+
+    function setRainbowMode(el) {
+        isRainbow = true;
+        updateActiveTool(el);
+    }
+
+    function updateActiveTool(el) {
+        document.querySelectorAll('.color-opt').forEach(opt => opt.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+    function goBack() {
+        if(confirm("最初にもどりますか？")) {
+            clearCanvas();
+            document.getElementById('appScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+    }
+
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopPosition);
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); }, {passive: false});
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, {passive: false});
+    canvas.addEventListener('touchend', stopPosition);
+    window.addEventListener('resize', resizeCanvas);
+</script>
+
+</body>
+</html>

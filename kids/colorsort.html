@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>いろわけソート / Color Sort</title>
+    
+    <style>
+        :root {
+            --bg: #E3F2FD;
+            --main: #2196F3;
+        }
+        * { -webkit-tap-highlight-color: transparent; user-select: none; box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0; background: var(--bg);
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- スタート画面 --- */
+        #startScreen {
+            position: fixed; inset: 0; z-index: 5000;
+            background: linear-gradient(135deg, #BBDEFB 0%, #2196F3 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .start-card {
+            background: white; padding: 40px; border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 85%; max-width: 400px; text-align: center;
+        }
+        .btn-start {
+            background: #4CAF50; color: white; border: none; padding: 15px 40px;
+            font-size: 1.6rem; font-weight: 800; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 6px 0 #2E7D32; margin: 20px 0; width: 100%;
+        }
+
+        /* --- メイン画面 --- */
+        #gameScreen { display: none; width: 100%; max-width: 500px; height: 100vh; padding: 20px; flex-direction: column; align-items: center; }
+        
+        .game-info { text-align: center; margin-bottom: 20px; }
+        .game-title { font-weight: 900; color: #1565C0; margin: 0; font-size: 1.4rem; }
+
+        /* ボールエリア */
+        #ballContainer {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;
+            background: rgba(255,255,255,0.5); border-radius: 20px; padding: 20px;
+            width: 100%; min-height: 120px; margin-bottom: 30px;
+        }
+
+        .ball {
+            width: 50px; height: 50px; border-radius: 50%;
+            cursor: grab; touch-action: none;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2), 2px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* カップエリア */
+        #cupContainer {
+            display: flex; justify-content: space-around; width: 100%; gap: 10px;
+        }
+        .cup-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .cup {
+            width: 80px; height: 100px; border: 5px solid #fff;
+            border-top: none; border-radius: 0 0 20px 20px;
+            background: rgba(255,255,255,0.3);
+            display: flex; flex-direction: column-reverse; align-items: center; padding-bottom: 5px; gap: 4px;
+        }
+        .cup.highlight { background: rgba(255,255,255,0.8); transform: scale(1.05); }
+
+        .success-msg {
+            display: none; color: #FF5722; font-weight: 900; font-size: 2rem;
+            position: absolute; top: 40%; z-index: 100; text-shadow: 2px 2px white;
+        }
+
+        /* --- 広告・フッター --- */
+        .ad-bottom { margin-top: auto; width: 100%; text-align: center; background: #fff; }
+        .copyright { font-size: 0.6rem; color: #999; padding: 10px; }
+        .ui-btn {
+            background: #fff; border: 3px solid #2196F3; padding: 10px 25px;
+            border-radius: 20px; color: #1565C0; font-weight: 800; margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="startScreen">
+    <div class="start-card">
+        <div style="font-size: 4.5rem;">🔴🔵🟡</div>
+        <h1 style="margin: 0; color: #1565C0;">いろわけソート</h1>
+        <p style="margin: 5px 0; font-weight: bold; color: #64B5F6;">Color Sort Puzzle</p>
+        <button class="btn-start" onclick="startGame()">Start! / はじめる</button>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <div class="copyright" style="background:transparent;">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<div id="gameScreen">
+    <div class="game-info">
+        <p class="game-title">おなじ いろの コップにいれてね！<br><small>Put balls into the same color cups!</small></p>
+    </div>
+
+    <div id="successText" class="success-msg">✨ できた！ ✨</div>
+
+    <div id="ballContainer"></div>
+    <div id="cupContainer"></div>
+
+    <div style="margin-top: 20px;">
+        <button class="ui-btn" onclick="initGame()">もういちど / Reset</button>
+        <button class="ui-btn" onclick="stopGame()">Quit / おわる</button>
+    </div>
+
+    <div class="ad-bottom">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+    const colors = [
+        { name: 'red', code: '#f44336' },
+        { name: 'blue', code: '#2196f3' },
+        { name: 'yellow', code: '#ffeb3b' },
+        { name: 'green', code: '#4caf50' }
+    ];
+
+    function startGame() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        initGame();
+    }
+
+    function stopGame() {
+        document.getElementById('startScreen').style.display = 'flex';
+        document.getElementById('gameScreen').style.display = 'none';
+    }
+
+    function initGame() {
+        const ballContainer = document.getElementById('ballContainer');
+        const cupContainer = document.getElementById('cupContainer');
+        const successText = document.getElementById('successText');
+        
+        ballContainer.innerHTML = '';
+        cupContainer.innerHTML = '';
+        successText.style.display = 'none';
+
+        // ボールを生成 (各色3個ずつ)
+        let ballData = [];
+        colors.forEach(color => {
+            for(let i=0; i<3; i++) ballData.push(color);
+        });
+        // シャッフル
+        ballData.sort(() => Math.random() - 0.5);
+
+        ballData.forEach((color, index) => {
+            const ball = document.createElement('div');
+            ball.className = 'ball';
+            ball.style.backgroundColor = color.code;
+            ball.dataset.color = color.name;
+            ballContainer.appendChild(ball);
+        });
+
+        // カップを生成
+        colors.forEach(color => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'cup-wrapper';
+            
+            const cup = document.createElement('div');
+            cup.className = 'cup';
+            cup.dataset.color = color.name;
+            cup.style.borderColor = color.code;
+
+            const label = document.createElement('div');
+            label.style.fontSize = '2rem';
+            label.innerText = '🥤';
+
+            wrapper.appendChild(cup);
+            wrapper.appendChild(label);
+            cupContainer.appendChild(wrapper);
+
+            // 各カップをSortableにする
+            new Sortable(cup, {
+                group: 'colors',
+                animation: 150,
+                onAdd: (evt) => checkWin()
+            });
+        });
+
+        // ボールエリアをSortableにする
+        new Sortable(ballContainer, {
+            group: 'colors',
+            animation: 150
+        });
+    }
+
+    function checkWin() {
+        const cups = document.querySelectorAll('.cup');
+        const ballsInSource = document.getElementById('ballContainer').children.length;
+        
+        if (ballsInSource > 0) return;
+
+        let allCorrect = true;
+        cups.forEach(cup => {
+            const cupColor = cup.dataset.color;
+            const balls = cup.querySelectorAll('.ball');
+            balls.forEach(ball => {
+                if (ball.dataset.color !== cupColor) allCorrect = false;
+            });
+        });
+
+        if (allCorrect) {
+            document.getElementById('successText').style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>
