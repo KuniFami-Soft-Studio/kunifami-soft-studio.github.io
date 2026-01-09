@@ -18,6 +18,7 @@
             --accent-color: #007AFF;
             --success-color: #28a745;
             --bg-color: #f8f9fa;
+            --support-color: #FF5F5F; /* 応援ボタン用 */
         }
 
         body { 
@@ -59,6 +60,17 @@
             padding: 20px; border-radius: 12px; font-size: 0.85rem; margin: 25px auto; 
             text-align: left; max-width: 700px;
         }
+
+        /* 応援セクションのスタイル */
+        .support-box { margin: 20px 0; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .support-link {
+            display: flex; align-items: center; gap: 8px; text-decoration: none;
+            padding: 10px 18px; border-radius: 10px; font-weight: bold; font-size: 0.9rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .support-link:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .bmc-btn { background: #FFDD00; color: #000000; }
+        .ofuse-btn { background: #1f2c33; color: #ffffff; }
 
         /* ビデオ */
         .video-flex { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 30px 0; }
@@ -128,6 +140,15 @@
         <div class="trust-badges">
             <span class="badge">完全無料 / Free</span>
             <span class="badge">ログイン不要 / No Sign-up</span>
+        </div>
+
+        <div class="support-box">
+            <a href="https://buymeacoffee.com/kunifami20w" target="_blank" class="support-link bmc-btn">
+                ☕ Buy Me a Coffee (for global users)
+            </a>
+            <a href="https://ofuse.me/dfee538b" target="_blank" class="support-link ofuse-btn">
+                🎁 OFUSEで応援（国内向け）
+            </a>
         </div>
 
         <div class="security-note">
@@ -244,6 +265,16 @@
         </div>
 
         <div class="info-section">
+            <h2>Support the Developer / 開発を応援する</h2>
+            <p>
+                このサービスを気に入っていただけましたら、開発継続のために応援いただけると励みになります！<br>
+                If you enjoy our service, please consider supporting the developer to help us keep improving.
+            </p>
+            <div class="support-box" style="justify-content: flex-start;">
+                <a href="https://buymeacoffee.com/kunifami20w" target="_blank" class="support-link bmc-btn">☕ Buy Me a Coffee</a>
+                <a href="https://ofuse.me/dfee538b" target="_blank" class="support-link ofuse-btn">🎁 OFUSEで応援</a>
+            </div>
+
             <h2>Operator Info / 運営者情報</h2>
             <p>
                 <strong>Operator:</strong> KuniFami Soft Studio (Indie Developer)<br>
