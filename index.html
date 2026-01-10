@@ -18,7 +18,7 @@
             --accent-color: #007AFF;
             --success-color: #28a745;
             --bg-color: #f8f9fa;
-            --support-color: #FF5F5F; /* 応援ボタン用 */
+            --support-color: #FF5F5F;
         }
 
         body { 
@@ -27,24 +27,15 @@
             background-color: var(--bg-color); 
         }
 
-        /* ヒーローセクション */
         .hero { text-align: center; padding: 60px 20px; background: white; margin-bottom: 20px; }
         .header-logo { width: 100px; height: auto; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         h1 { color: var(--accent-color); font-size: 2.2rem; margin-bottom: 10px; border-bottom: none; }
         
-        /* 点滅アニメーションとキッズリンク */
         .kids-link-box { margin: 10px 0 20px; }
         .kids-btn {
-            display: inline-block;
-            background: #FF9500;
-            color: white;
-            text-decoration: none;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            animation: blink 1.5s infinite;
-            box-shadow: 0 4px 15px rgba(255,149,0,0.3);
+            display: inline-block; background: #FF9500; color: white; text-decoration: none;
+            padding: 10px 25px; border-radius: 50px; font-weight: bold; font-size: 1.1rem;
+            animation: blink 1.5s infinite; box-shadow: 0 4px 15px rgba(255,149,0,0.3);
         }
         @keyframes blink {
             0% { opacity: 1; transform: scale(1); }
@@ -61,7 +52,6 @@
             text-align: left; max-width: 700px;
         }
 
-        /* 応援セクションのスタイル */
         .support-box { margin: 20px 0; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .support-link {
             display: flex; align-items: center; gap: 8px; text-decoration: none;
@@ -72,15 +62,12 @@
         .bmc-btn { background: #FFDD00; color: #000000; }
         .ofuse-btn { background: #1f2c33; color: #ffffff; }
 
-        /* ビデオ */
         .video-flex { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 30px 0; }
         .video-container { position: relative; width: 100%; max-width: 220px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        /* 広告コンテナ */
         .ad-spacer { margin: 20px auto; max-width: 728px; text-align: center; overflow: hidden; }
 
-        /* カードと元々の画像スタイル */
         .section-padding { padding: 0 20px; }
         .card { background: white; border-radius: 16px; padding: 30px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; }
         
@@ -95,7 +82,6 @@
         }
         .btn:hover { background: #0056b3; }
 
-        /* QRコードセクション */
         .qr-card { 
             background: linear-gradient(135deg, #007AFF, #00C6FF); color: white; 
             border-radius: 16px; padding: 30px; margin-bottom: 25px;
@@ -103,7 +89,6 @@
         }
         .qr-img { width: 150px; height: 150px; border-radius: 12px; border: 4px solid white; background: white; }
 
-        /* Wiki Section */
         .wiki-section { background: white; border-radius: 16px; padding: 30px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .wiki-section h2 { color: var(--accent-color); border-bottom: 1px solid #eee; padding-bottom: 10px; font-size: 1.4rem; }
         .wiki-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 20px; text-align: left; }
@@ -113,17 +98,11 @@
         .wiki-list a { color: var(--accent-color); text-decoration: none; }
         .wiki-list a:hover { text-decoration: underline; }
 
-        /* FAQ highlight style */
         .faq-highlight { 
-            grid-column: 1 / -1; 
-            background: #fff9e6; 
-            padding: 15px; 
-            border-radius: 10px; 
-            border: 1px dashed #ff9500;
-            margin-bottom: 10px;
+            grid-column: 1 / -1; background: #fff9e6; padding: 15px; border-radius: 10px; 
+            border: 1px dashed #ff9500; margin-bottom: 10px;
         }
 
-        /* Info Section (運営者情報・利用規約全文) */
         .info-section { padding: 20px; margin-top: 20px; }
         .info-section h2 { font-size: 1.1rem; border-left: 4px solid var(--accent-color); padding-left: 10px; margin-top: 35px; color: #333; }
         .info-section p { font-size: 0.9rem; color: #555; margin-bottom: 15px; }
@@ -133,10 +112,10 @@
         footer { margin-top: 60px; padding: 40px 20px; font-size: 0.85rem; color: #888; text-align: center; border-top: 1px solid #eee; }
         footer a { color: var(--accent-color); text-decoration: none; }
 
-        /* News Styles */
         #news-list { font-size: 0.9rem; color: #555; max-height: 250px; overflow-y: auto; padding: 15px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; }
         .news-item { margin-bottom: 10px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; line-height: 1.4; }
         .news-date { font-weight: bold; color: var(--accent-color); margin-right: 10px; }
+        .repo-badge { font-size: 0.75rem; background: #eee; color: #666; padding: 2px 6px; border-radius: 4px; margin-right: 8px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -144,182 +123,66 @@
     <header class="hero">
         <img src="Logo1.jpg" alt="Logo" class="header-logo">
         <h1>KuniFami Soft Studio</h1>
-        
-        <div class="kids-link-box">
-            <a href="kids/menu.html" class="kids-btn">🐣 Kids Menu / キッズメニューはこちら</a>
-        </div>
-
-        <p><strong>Perfect your form with "3-second delay" and "Grid".</strong><br>
-        「3秒前の自分」と「グリッド」で、理想のフォームへ。</p>
-
-        <div class="trust-badges">
-            <span class="badge">完全無料 / Free</span>
-            <span class="badge">ログイン不要 / No Sign-up</span>
-        </div>
-
+        <div class="kids-link-box"><a href="kids/menu.html" class="kids-btn">🐣 Kids Menu / キッズメニューはこちら</a></div>
+        <p><strong>Perfect your form with "3-second delay" and "Grid".</strong><br>「3秒前の自分」と「グリッド」で、理想のフォームへ。</p>
+        <div class="trust-badges"><span class="badge">完全無料 / Free</span><span class="badge">ログイン不要 / No Sign-up</span></div>
         <div class="support-box">
-            <a href="https://buymeacoffee.com/kunifami20w" target="_blank" class="support-link bmc-btn">
-                ☕ Buy Me a Coffee (for global users)
-            </a>
-            <a href="https://ofuse.me/dfee538b" target="_blank" class="support-link ofuse-btn">
-                🎁 OFUSEで応援（国内向け）
-            </a>
+            <a href="https://buymeacoffee.com/kunifami20w" target="_blank" class="support-link bmc-btn">☕ Buy Me a Coffee</a>
+            <a href="https://ofuse.me/dfee538b" target="_blank" class="support-link ofuse-btn">🎁 OFUSEで応援</a>
         </div>
-
         <div class="security-note">
             🛡️ <strong>プライバシー保護 / Privacy:</strong><br>
-            動画データは一切サーバーへ送信・保存されません。ブラウザ内だけで処理されるため、安心して練習を録画・確認できます。<br>
-            <span style="font-size: 0.8rem; display: block; margin-top: 5px; opacity: 0.9;">
-                No video data is ever sent to or stored on our servers. Since all processing happens locally within your browser, you can record and review your practice with complete peace of mind.
-            </span>
+            動画データは一切サーバーへ送信・保存されません。ブラウザ内だけで処理されるため、安心して練習を録画・確認できます。
         </div>
-
         <div class="video-flex">
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/-jd5w2OXmbI" allowfullscreen></iframe>
-            </div>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/GL8-mmvqPtk" allowfullscreen></iframe>
-            </div>
+            <div class="video-container"><iframe src="https://www.youtube.com/embed/-jd5w2OXmbI" allowfullscreen></iframe></div>
+            <div class="video-container"><iframe src="https://www.youtube.com/embed/GL8-mmvqPtk" allowfullscreen></iframe></div>
         </div>
-
         <div class="ad-spacer">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-5115190227060860"
-                 data-ad-slot="3577508619"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-
-        <div>
-            <a href="https://x.com/kunifami2025" target="_blank" class="sns-link">𝕏 Official X (Twitter)</a>
         </div>
     </header>
 
     <div class="section-padding">
-        
         <div class="wiki-section" id="news-section">
             <h2>🆕 What's New / 更新履歴</h2>
-            <div id="news-list">
-                読み込み中... (Loading latest updates...)
-            </div>
+            <div id="news-list">読み込み中...</div>
             <p style="font-size: 0.8rem; text-align: right; margin-top: 10px;">
-                <a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/commits/main" target="_blank" style="color: #888; text-decoration: none;">View all history on GitHub →</a>
+                <a href="https://github.com/KuniFami-Soft-Studio/" target="_blank" style="color: #888; text-decoration: none;">View on GitHub →</a>
             </p>
         </div>
 
         <div class="card">
             <img src="Logo.jpg" alt="Form Mirror Pro Logo" class="app-logo">
             <h2>Form Mirror Pro for iPhone</h2>
-            <p>
-                <strong>Features:</strong> 3, 4, 5-second delay, mirror flip, and smart synchronized recording. Perfect for golf, dance, and gym training.<br>
-                iPhoneのカメラと動画を並べて表示。3・4・5秒の遅延再生や反転表示、ズレのない「賢い録画機能」を搭載した練習特化型アプリです。
-            </p> 
+            <p><strong>Features:</strong> 3, 5, 7-second delay, mirror flip, and smart sync recording.<br>iPhoneのカメラと動画を並べて表示。3・5・7秒の遅延再生機能を搭載。</p> 
             <a href="https://kunifami-soft-studio.github.io/form-mirror-pro-iphone/" class="btn">Launch App / アプリを開く</a>
         </div>
 
         <div class="qr-card">
-            <div style="max-width: 400px; text-align: left;">
-                <h2 style="color: white; margin-top: 0;">Take it to the Field!</h2>
-                <p>練習場でスムーズに使えるよう、スマホでこのQRコードをスキャンしてアクセス！<br>Scan this QR code to access the app directly on your mobile device!</p>
-            </div>
+            <div style="max-width: 400px; text-align: left;"><h2 style="color: white; margin-top: 0;">Take it to the Field!</h2><p>QRコードをスキャンしてアクセス！</p></div>
             <img src="QR.jpg" alt="QR Code" class="qr-img">
         </div>
 
         <div class="card">
             <img src="Logo.jpg" alt="Form Mirror Pro Logo" class="app-logo">
             <h2>Form Mirror Pro for PC</h2>
-            <p>
-                <strong>Features:</strong> Large screen form check. Best for detailed analysis at home or studio.<br>
-                PCの大画面で動作するフォーム確認ツールです。広い視野で細かい動きのチェックを行いたい場合に最適です。
-            </p>
+            <p><strong>Features:</strong> Large screen form check. Best for detailed analysis.<br>PCの大画面で動作するフォーム確認ツールです。</p>
             <a href="https://kunifami-soft-studio.github.io/form-mirror-pro-pc/" class="btn">Launch App / アプリを開く</a>
         </div>
 
         <div class="wiki-section">
             <h2>📖 User Guide / 使い方・ガイド</h2>
             <div class="wiki-grid">
-                <div class="faq-highlight">
-                    <strong>❓ Questions? / お困りの方はこちら</strong><br>
-                    <a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/faq" target="_blank" style="color: #FF9500; font-weight: bold; text-decoration: none;">
-                        Go to FAQ (Frequently Asked Questions) / よくある質問・解決策
-                    </a>
-                </div>
-
+                <div class="faq-highlight"><strong>❓ Questions?</strong><br><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/faq" target="_blank">FAQ (よくある質問・解決策)</a></div>
                 <div class="wiki-category">
                     <h3>⚙️ Basics</h3>
                     <ul class="wiki-list">
                         <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/getting%E2%80%90started">Getting Started / はじめての方へ</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/setup%E2%80%90for%E2%80%90iphone">iPhone Setup / iPhoneでのコツ</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/setup%E2%80%90for%E2%80%90pc">PC Setup / PCでの使い方</a></li>
-                    </ul>
-                </div>
-                <div class="wiki-category">
-                    <h3>🎥 Features</h3>
-                    <ul class="wiki-list">
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/smart%E2%80%90sync%E2%80%90recording">Smart Sync Rec / 録画機能</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/video%E2%80%90delay%E2%80%90guide">Video Delay / 遅延再生の利点</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/ghost%E2%80%90mode%E2%80%90guide">Ghost & Grid / ゴースト・グリッド</a></li>
-                    </ul>
-                </div>
-                <div class="wiki-category">
-                    <h3>🎯 Sport Specific</h3>
-                    <ul class="wiki-list">
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/golf%E2%80%90swing%E2%80%90check%E2%80%90tips">⛳ Golf / ゴルフ</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/dance%E2%80%90form%E2%80%90improvement">💃 Dance / ダンス</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/gym%E2%80%90training%E2%80%90tips">🏋️ Gym / 筋トレ</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/baseball%E2%80%90softball%E2%80%90tips">⚾ Baseball / 野球</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/tennis%E2%80%90badminton%E2%80%90tips">🎾 Tennis / テニス</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/volleyball%E2%80%90basketball%E2%80%90tips">🏐 Volley & Basket</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/bowling%E2%80%90form%E2%80%90tips">🎳 Bowling / ボウリング</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/archery%E2%80%90form%E2%80%90tips">🏹 Archery / アーチェリー</a></li>
-                        <li><a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/instruments%E2%80%90others%E2%80%90tips">🎸 Music & Others</a></li>
                     </ul>
                 </div>
             </div>
-            
-            <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
-                <h3>💬 Official Channels</h3>
-                <a href="https://x.com/kunifami2025" target="_blank" class="sns-link">𝕏 Official X</a>
-                <a href="https://www.youtube.com/@dogqoo4663" target="_blank" class="sns-link" style="color: #FF0000;">📺 YouTube Channel</a>
-            </div>
-        </div>
-
-        <div class="ad-spacer">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-5115190227060860"
-                 data-ad-slot="3577508619"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-
-        <div class="info-section">
-            <h2>Support the Developer / 開発を応援する</h2>
-            <p>
-                このサービスを気に入っていただけましたら、開発継続のために応援いただけると励みになります！<br>
-                If you enjoy our service, please consider supporting the developer to help us keep improving.
-            </p>
-            <div class="support-box" style="justify-content: flex-start;">
-                <a href="https://buymeacoffee.com/kunifami20w" target="_blank" class="support-link bmc-btn">☕ Buy Me a Coffee</a>
-                <a href="https://ofuse.me/dfee538b" target="_blank" class="support-link ofuse-btn">🎁 OFUSEで応援</a>
-            </div>
-
-            <h2>Operator Info / 運営者情報</h2>
-            <p>
-                <strong>Operator:</strong> KuniFami Soft Studio (Indie Developer)<br>
-                This site is operated for self-improvement and non-profit purposes.<br>
-                運営者：KuniFami Soft Studio（個人開発）。本サイトは個人が自己研鑽および非営利目的で運営しています。
-            </p>
-
-            <h2>Terms of Use / 利用規約</h2>
-            <p>
-                This service is provided free of charge. The operator shall not be liable for any damages arising from the use of this site or application. Video data is processed locally and never stored on our servers. Content may change or end without notice.<br>
-                本サービスは無償で提供されています。利用により生じた損害について、運営者は一切の責任を負いません。録画データは端末内でのみ処理され、サーバーに保存されることはありません。予告なく内容の変更または終了する場合があります。
-            </p>
         </div>
     </div>
     
@@ -330,45 +193,70 @@
 
     <script>
     async function fetchUpdates() {
-        const repo = "KuniFami-Soft-Studio/kunifami-soft-studio.github.io";
+        const CACHE_KEY = 'kunifami_news_cache';
+        const CACHE_TIME = 60 * 60 * 1000; // 1時間キャッシュ
         const newsList = document.getElementById('news-list');
-        const TARGET_KEYWORD = "[update]"; // 表示対象とするキーワード
-        const MAX_DISPLAY = 5; // 最大表示件数
-        
-        try {
-            const response = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=50`);
-            if (!response.ok) throw new Error();
-            const commits = await response.json();
-            
-            newsList.innerHTML = ''; 
-            let displayCount = 0;
+        const TARGET_KEYWORD = "[update]";
+        const MAX_DISPLAY = 8;
 
+        const repos = [
+            "KuniFami-Soft-Studio/kunifami-soft-studio.github.io",
+            "KuniFami-Soft-Studio/form-mirror-pro-iphone",
+            "KuniFami-Soft-Studio/form-mirror-pro-pc"
+        ];
+
+        // 1. キャッシュ確認
+        const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
+        if (cached && (Date.now() - cached.time < CACHE_TIME)) {
+            renderNews(cached.data);
+            return;
+        }
+
+        try {
+            // 2. 複数リポジトリから取得
+            const results = await Promise.all(repos.map(repo => 
+                fetch(`https://api.github.com/repos/${repo}/commits?per_page=15`)
+                .then(res => res.ok ? res.json() : [])
+            ));
+
+            // 3. データを統合してソート
+            let allCommits = results.flat().sort((a, b) => 
+                new Date(b.commit.author.date) - new Date(a.commit.author.date)
+            );
+
+            // 4. 保存と表示
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ time: Date.now(), data: allCommits }));
+            renderNews(allCommits);
+
+        } catch (e) {
+            newsList.innerText = "更新情報の取得に失敗しました。";
+        }
+
+        function renderNews(commits) {
+            newsList.innerHTML = '';
+            let count = 0;
             commits.forEach(item => {
-                let message = item.commit.message.split('\n')[0];
-                
-                if (message.includes(TARGET_KEYWORD) && displayCount < MAX_DISPLAY) {
+                const message = item.commit.message.split('\n')[0];
+                if (message.includes(TARGET_KEYWORD) && count < MAX_DISPLAY) {
                     const date = new Date(item.commit.author.date).toLocaleDateString('ja-JP');
-                    // キーワードを除去して表示
-                    const cleanMessage = message.replace(TARGET_KEYWORD, '').trim();
+                    const repoLabel = item.html_url.includes("iphone") ? "iPhone" : 
+                                     item.html_url.includes("-pc") ? "PC" : "Portal";
                     
                     const div = document.createElement('div');
                     div.className = 'news-item';
-                    div.innerHTML = `<span class="news-date">${date}</span>${cleanMessage}`;
+                    div.innerHTML = `
+                        <span class="news-date">${date}</span>
+                        <span class="repo-badge">${repoLabel}</span>
+                        ${message.replace(TARGET_KEYWORD, '').trim()}
+                    `;
                     newsList.appendChild(div);
-                    
-                    displayCount++;
+                    count++;
                 }
             });
-
-            if (displayCount === 0) {
-                newsList.innerText = "現在、新しいお知らせはありません。";
-            }
-        } catch (e) {
-            newsList.innerText = "更新情報の取得に失敗しました。";
+            if (count === 0) newsList.innerText = "新しいお知らせはありません。";
         }
     }
     fetchUpdates();
     </script>
-
 </body>
 </html>
