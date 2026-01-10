@@ -113,6 +113,16 @@
         .wiki-list a { color: var(--accent-color); text-decoration: none; }
         .wiki-list a:hover { text-decoration: underline; }
 
+        /* FAQ highlight style */
+        .faq-highlight { 
+            grid-column: 1 / -1; 
+            background: #fff9e6; 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 1px dashed #ff9500;
+            margin-bottom: 10px;
+        }
+
         /* Info Section (運営者情報・利用規約全文) */
         .info-section { padding: 20px; margin-top: 20px; }
         .info-section h2 { font-size: 1.1rem; border-left: 4px solid var(--accent-color); padding-left: 10px; margin-top: 35px; color: #333; }
@@ -122,6 +132,11 @@
         
         footer { margin-top: 60px; padding: 40px 20px; font-size: 0.85rem; color: #888; text-align: center; border-top: 1px solid #eee; }
         footer a { color: var(--accent-color); text-decoration: none; }
+
+        /* News Styles */
+        #news-list { font-size: 0.9rem; color: #555; max-height: 250px; overflow-y: auto; padding: 15px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; }
+        .news-item { margin-bottom: 10px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; line-height: 1.4; }
+        .news-date { font-weight: bold; color: var(--accent-color); margin-right: 10px; }
     </style>
 </head>
 <body>
@@ -184,6 +199,17 @@
     </header>
 
     <div class="section-padding">
+        
+        <div class="wiki-section" id="news-section">
+            <h2>🆕 What's New / 更新履歴</h2>
+            <div id="news-list">
+                読み込み中... (Loading latest updates...)
+            </div>
+            <p style="font-size: 0.8rem; text-align: right; margin-top: 10px;">
+                <a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/commits/main" target="_blank" style="color: #888; text-decoration: none;">View all history on GitHub →</a>
+            </p>
+        </div>
+
         <div class="card">
             <img src="Logo.jpg" alt="Form Mirror Pro Logo" class="app-logo">
             <h2>Form Mirror Pro for iPhone</h2>
@@ -215,6 +241,13 @@
         <div class="wiki-section">
             <h2>📖 User Guide / 使い方・ガイド</h2>
             <div class="wiki-grid">
+                <div class="faq-highlight">
+                    <strong>❓ Questions? / お困りの方はこちら</strong><br>
+                    <a href="https://github.com/KuniFami-Soft-Studio/kunifami-soft-studio.github.io/wiki/faq" target="_blank" style="color: #FF9500; font-weight: bold; text-decoration: none;">
+                        Go to FAQ (Frequently Asked Questions) / よくある質問・解決策
+                    </a>
+                </div>
+
                 <div class="wiki-category">
                     <h3>⚙️ Basics</h3>
                     <ul class="wiki-list">
@@ -294,6 +327,48 @@
         <a href="privacy.html">Privacy Policy / プライバシーポリシー</a><br><br>
         &copy; 2026 KuniFami Soft Studio. All Rights Reserved.
     </footer>
+
+    <script>
+    async function fetchUpdates() {
+        const repo = "KuniFami-Soft-Studio/kunifami-soft-studio.github.io";
+        const newsList = document.getElementById('news-list');
+        const TARGET_KEYWORD = "[update]"; // 表示対象とするキーワード
+        const MAX_DISPLAY = 5; // 最大表示件数
+        
+        try {
+            const response = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=50`);
+            if (!response.ok) throw new Error();
+            const commits = await response.json();
+            
+            newsList.innerHTML = ''; 
+            let displayCount = 0;
+
+            commits.forEach(item => {
+                let message = item.commit.message.split('\n')[0];
+                
+                if (message.includes(TARGET_KEYWORD) && displayCount < MAX_DISPLAY) {
+                    const date = new Date(item.commit.author.date).toLocaleDateString('ja-JP');
+                    // キーワードを除去して表示
+                    const cleanMessage = message.replace(TARGET_KEYWORD, '').trim();
+                    
+                    const div = document.createElement('div');
+                    div.className = 'news-item';
+                    div.innerHTML = `<span class="news-date">${date}</span>${cleanMessage}`;
+                    newsList.appendChild(div);
+                    
+                    displayCount++;
+                }
+            });
+
+            if (displayCount === 0) {
+                newsList.innerText = "現在、新しいお知らせはありません。";
+            }
+        } catch (e) {
+            newsList.innerText = "更新情報の取得に失敗しました。";
+        }
+    }
+    fetchUpdates();
+    </script>
 
 </body>
 </html>
