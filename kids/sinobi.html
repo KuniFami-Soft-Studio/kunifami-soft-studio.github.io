@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>忍び足チェッカー / Ninja Stealth Walk</title>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --bg: #1a1a2e;
+            --card: #ffffff;
+            --accent: #e94560; 
+            --ninja-blue: #0f3460;
+            --shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: #1a1a2e;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; padding: 10px; box-sizing: border-box;
+        }
+
+        .container {
+            background: var(--card); padding: 20px; border-radius: 30px;
+            box-shadow: var(--shadow); text-align: center; width: 100%; max-width: 440px;
+            border: 6px solid var(--ninja-blue); box-sizing: border-box; position: relative;
+        }
+
+        /* 削除ボタン（隠し機能っぽく右上に配置） */
+        .btn-reset-trigger {
+            position: absolute; top: 15px; right: 15px; font-size: 1.2rem;
+            background: none; border: none; cursor: pointer; color: #ccc;
+        }
+
+        h1 { font-size: 1.3rem; color: var(--ninja-blue); margin: 0; }
+        .sub-title { font-size: 0.8rem; color: #666; margin-bottom: 10px; }
+
+        /* Record Area */
+        .record-board {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px;
+        }
+        .diff-box {
+            background: #f8f9fa; border: 1px solid #ddd; border-radius: 15px; padding: 5px;
+        }
+        .diff-label { font-size: 0.7rem; font-weight: bold; color: var(--ninja-blue); border-bottom: 1px solid #ddd; margin-bottom: 4px; padding-bottom: 2px; }
+        .score-row { font-size: 0.65rem; color: #444; margin-bottom: 2px; display: flex; justify-content: space-between; padding: 0 4px; }
+        .score-row.best { color: var(--accent); font-weight: bold; border-bottom: 1px dashed #ffcccc; margin-bottom: 4px; }
+
+        .manual-section {
+            background: #f0f7ff; padding: 12px; border-radius: 15px;
+            text-align: left; font-size: 0.75rem; margin-bottom: 15px; border: 2px dashed var(--ninja-blue);
+            color: #333; line-height: 1.4;
+        }
+
+        .warning-box {
+            font-size: 0.65rem; color: #d63031; background: #ffeaea; padding: 8px; border-radius: 10px; margin-bottom: 15px; text-align: left;
+        }
+
+        .diff-selector { display: flex; gap: 8px; margin-bottom: 15px; }
+        .diff-btn {
+            flex: 1; padding: 8px 4px; border-radius: 15px; border: 2px solid #ddd;
+            background: white; cursor: pointer; font-weight: bold; font-size: 0.75rem;
+        }
+        .diff-btn span { display: block; font-size: 0.6rem; font-weight: normal; }
+        .diff-btn.active { border-color: var(--ninja-blue); background: var(--ninja-blue); color: white; }
+
+        /* Game Screen */
+        #gameScreen { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; flex-direction: column; align-items: center; justify-content: center; color: white; }
+        #timerDisplay { font-size: 4rem; font-weight: 800; font-family: monospace; color: #00ffcc; text-shadow: 0 0 15px #00ffcc; margin: 10px 0; }
+        .ninja-visual { font-size: 6rem; margin: 15px; }
+        
+        .meter-bg { width: 70%; height: 15px; background: #333; border-radius: 10px; overflow: hidden; margin-top: 10px; }
+        #meterFill { width: 0%; height: 100%; background: linear-gradient(90deg, #00ffcc, #ffcc00, #ff0000); }
+
+        .btn-main { width: 100%; padding: 15px; background: var(--ninja-blue); color: #fff; border: none; border-radius: 20px; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 5px 0 #081b33; }
+        .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #081b33; }
+        .btn-exit { position: absolute; top: 15px; right: 15px; padding: 8px 12px; background: rgba(255,255,255,0.1); color: white; border: 1px solid white; border-radius: 10px; font-size: 0.8rem; }
+
+        .footer-copyright { margin-top: 15px; font-size: 0.65rem; color: #999; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <button class="btn-reset-trigger" onmousedown="startPress()" onmouseup="endPress()" ontouchstart="startPress()" ontouchend="endPress()">⚙️</button>
+
+    <h1>忍び足チェッカー</h1>
+    <div class="sub-title">Ninja Stealth Walk Checker</div>
+
+    <div class="record-board">
+        <div class="diff-box">
+            <div class="diff-label">Easy/易しい</div>
+            <div class="score-row best">🏆 <span id="easy-best">0.00</span></div>
+            <div class="score-row">1st <span id="easy-h1">---</span></div>
+            <div class="score-row">2nd <span id="easy-h2">---</span></div>
+        </div>
+        <div class="diff-box">
+            <div class="diff-label">Normal/普通</div>
+            <div class="score-row best">🏆 <span id="normal-best">0.00</span></div>
+            <div class="score-row">1st <span id="normal-h1">---</span></div>
+            <div class="score-row">2nd <span id="normal-h2">---</span></div>
+        </div>
+        <div class="diff-box">
+            <div class="diff-label">Hard/難しい</div>
+            <div class="score-row best">🏆 <span id="hard-best">0.00</span></div>
+            <div class="score-row">1st <span id="hard-h1">---</span></div>
+            <div class="score-row">2nd <span id="hard-h2">---</span></div>
+        </div>
+    </div>
+    
+    <div class="manual-section">
+        <strong>📜 修行の掟 (The Ninja Rules)</strong>
+        <div style="margin-top:5px;">📱 iPhoneを両手で平らに持つ (Hold flat)</div>
+        <div>🥷 静か〜に歩き続けよう！ (Walk quietly)</div>
+        <div>🗑️ 右上の⚙️を長押しで記録を消せるよ (Long press ⚙️ to reset records)</div>
+    </div>
+
+    <div class="warning-box">
+        <strong>⚠️ 注意事項 (Notice)</strong><br>
+        ・履歴を消すと記録も消えます (History deletion erases data)<br>
+        ・プライベートモードは保存不可 (Private mode won't save)
+    </div>
+
+    <div class="diff-selector">
+        <button class="diff-btn active" onclick="selectDiff('easy', 4.0, this)">易しい<span>Easy</span></button>
+        <button class="diff-btn" onclick="selectDiff('normal', 2.8, this)">普通<span>Normal</span></button>
+        <button class="diff-btn" onclick="selectDiff('hard', 1.8, this)">難しい<span>Hard</span></button>
+    </div>
+
+    <button class="btn-main" onclick="requestPermission()">修 行 開 始 ! (Start Training)</button>
+    <a href="./menu.html" style="display:block; margin-top:12px; color:#aaa; text-decoration:none; font-size:0.75rem;">← もどる (Back)</a>
+    
+    <div class="footer-copyright">© 2026 KuniFami Soft Studio. All Rights Reserved.</div>
+</div>
+
+<div id="gameScreen">
+    <button class="btn-exit" onclick="stopGame()">Quit/辞める</button>
+    <div id="statusText" style="font-size: 1rem; color: #00ffcc; font-weight: bold;">READY...</div>
+    <div id="timerDisplay">0.00s</div>
+    <div id="ninjaIcon" class="ninja-visual">🥷</div>
+    <div class="meter-bg"><div id="meterFill"></div></div>
+</div>
+
+<script>
+    let timer = 0, timerId = null, isGaming = false, canCheckFail = false;
+    let currentMode = 'easy';
+    let threshold = 4.0;
+    let pressTimer;
+
+    // データリセット用
+    function startPress() {
+        pressTimer = window.setTimeout(function() {
+            if(confirm("すべての記録を消去しますか？\nDo you want to reset all records?")) {
+                localStorage.clear();
+                alert("記録を消去しました。/ Records reset.");
+                location.reload();
+            }
+        }, 3000); // 3秒長押し
+    }
+    function endPress() { clearTimeout(pressTimer); }
+
+    function getStoredData(mode) {
+        const best = localStorage.getItem(`ninja_best_${mode}`) || 0;
+        const history = JSON.parse(localStorage.getItem(`ninja_history_${mode}`)) || [];
+        return { best, history };
+    }
+
+    function updateDisplay() {
+        ['easy', 'normal', 'hard'].forEach(mode => {
+            const data = getStoredData(mode);
+            document.getElementById(`${mode}-best`).innerText = parseFloat(data.best).toFixed(2);
+            document.getElementById(`${mode}-h1`).innerText = data.history[0] ? parseFloat(data.history[0]).toFixed(2) : "---";
+            document.getElementById(`${mode}-h2`).innerText = data.history[1] ? parseFloat(data.history[1]).toFixed(2) : "---";
+        });
+    }
+    updateDisplay();
+
+    function selectDiff(mode, val, btn) {
+        currentMode = mode; threshold = val;
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    function requestPermission() {
+        if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+            DeviceMotionEvent.requestPermission().then(state => { if (state === 'granted') startGame(); });
+        } else { startGame(); }
+    }
+
+    function startGame() {
+        isGaming = true; canCheckFail = false; timer = 0;
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+        document.getElementById('timerDisplay').innerText = "0.00s";
+        document.getElementById('statusText').innerText = "READY...";
+
+        setTimeout(() => {
+            if(!isGaming) return;
+            canCheckFail = true;
+            document.getElementById('statusText').innerText = "WALK SILENTLY! / 静かに歩け！";
+            timerId = setInterval(() => {
+                timer += 0.01;
+                document.getElementById('timerDisplay').innerText = timer.toFixed(2) + "s";
+            }, 10);
+        }, 800);
+
+        window.removeEventListener('devicemotion', handleMotion);
+        window.addEventListener('devicemotion', handleMotion);
+    }
+
+    function handleMotion(event) {
+        if (!isGaming) return;
+        const acc = event.accelerationIncludingGravity;
+        if (!acc || acc.x === null) return;
+        const shake = Math.abs(Math.sqrt(acc.x**2 + acc.y**2 + acc.z**2) - 9.8);
+        document.getElementById('meterFill').style.width = Math.min((shake / threshold) * 100, 100) + "%";
+        if (canCheckFail && shake > threshold) failGame();
+    }
+
+    function failGame() {
+        isGaming = false; clearInterval(timerId);
+        window.removeEventListener('devicemotion', handleMotion);
+        document.getElementById('ninjaIcon').innerText = "💥";
+        
+        const data = getStoredData(currentMode);
+        if (timer > data.best) localStorage.setItem(`ninja_best_${currentMode}`, timer);
+        data.history.unshift(timer);
+        if (data.history.length > 2) data.history.pop();
+        localStorage.setItem(`ninja_history_${currentMode}`, JSON.stringify(data.history));
+
+        updateDisplay();
+        setTimeout(() => { alert(`修行失敗 / Training Over!\nScore: ${timer.toFixed(2)}s`); stopGame(); }, 500);
+    }
+
+    function stopGame() {
+        isGaming = false; if (timerId) clearInterval(timerId);
+        window.removeEventListener('devicemotion', handleMotion);
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('gameScreen').style.display = 'none';
+    }
+</script>
+</body>
+</html>
