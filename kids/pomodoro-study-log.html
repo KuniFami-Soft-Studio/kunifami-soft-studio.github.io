@@ -117,12 +117,12 @@
             <div class="stat-label">mins</div>
         </div>
         <div class="stat-card" onclick="jumpTo('pieSection')">
-            <div class="stat-label">日平均</div>
-            <div id="avgMinutes" class="stat-value">0</div>
-            <div class="stat-label">min/d</div>
+            <div class="stat-label">実継続</div>
+            <div id="activeDays" class="stat-value">0</div>
+            <div class="stat-label">days</div>
         </div>
         <div class="stat-card" onclick="jumpTo('lineSection')">
-            <div class="stat-label">継続日数</div>
+            <div class="stat-label">連続継続</div>
             <div id="streakDays" class="stat-value">0</div>
             <div class="stat-label">days</div>
         </div>
@@ -201,48 +201,55 @@
     function renderAllCharts(cStart = null, cEnd = null) {
         const labels = []; const chartDates = [];
         const datasetsMap = {}; const categoryTotals = {};
-        let rangeTotal = 0, dayCount = 0;
+        let rangeTotal = 0, actualActiveDays = 0;
 
         if (cStart && cEnd) {
             let curr = new Date(cStart); const stop = new Date(cEnd);
             while (curr <= stop) {
                 const ds = curr.toISOString().split('T')[0];
                 chartDates.push(ds); labels.push(`${curr.getMonth()+1}/${curr.getDate()}`);
-                dayCount++;
+                
+                let dayHasData = false;
                 tagHistory.forEach(tag => {
                     if (!datasetsMap[tag]) datasetsMap[tag] = [];
                     const val = (dailyStats[ds] && dailyStats[ds][tag]) || 0;
                     datasetsMap[tag].push(val);
                     rangeTotal += val;
                     categoryTotals[tag] = (categoryTotals[tag] || 0) + val;
+                    if(val > 0) dayHasData = true;
                 });
+                if(dayHasData) actualActiveDays++;
                 curr.setDate(curr.getDate() + 1);
             }
         } else {
-            const end = new Date(); dayCount = currentRange;
+            const end = new Date();
             for (let i = currentRange - 1; i >= 0; i--) {
                 const d = new Date(); d.setDate(end.getDate() - i);
                 const ds = d.toISOString().split('T')[0];
                 chartDates.push(ds); labels.push(`${d.getMonth()+1}/${d.getDate()}`);
+                
+                let dayHasData = false;
                 tagHistory.forEach(tag => {
                     if (!datasetsMap[tag]) datasetsMap[tag] = [];
                     const val = (dailyStats[ds] && dailyStats[ds][tag]) || 0;
                     datasetsMap[tag].push(val);
                     rangeTotal += val;
                     categoryTotals[tag] = (categoryTotals[tag] || 0) + val;
+                    if(val > 0) dayHasData = true;
                 });
+                if(dayHasData) actualActiveDays++;
             }
         }
 
-        updateDashboard(rangeTotal, dayCount);
+        updateDashboard(rangeTotal, actualActiveDays);
         drawBarChart(labels, chartDates, datasetsMap);
         drawPieChart(categoryTotals);
         drawLineChart(labels, datasetsMap);
     }
 
-    function updateDashboard(total, days) {
+    function updateDashboard(total, activeDays) {
         document.getElementById('totalMinutes').innerText = total;
-        document.getElementById('avgMinutes').innerText = Math.round(total / days) || 0;
+        document.getElementById('activeDays').innerText = activeDays;
         document.getElementById('streakDays').innerText = calculateStreak();
     }
 
@@ -271,38 +278,17 @@
 
     function drawPieChart(catTotals) {
         const ctx = document.getElementById('pieChart').getContext('2d');
-        // 合計時間が0より大きいタグのみをフィルタリング
         const tags = Object.keys(catTotals).filter(t => catTotals[t] > 0);
-        
         if (pieChart) pieChart.destroy();
-        
-        // データの準備
         const chartData = tags.map(t => catTotals[t]);
         const chartColors = tags.map((tag) => {
-            // tagHistory内での絶対的なインデックスに基づいて色を固定
             const idx = tagHistory.indexOf(tag);
             return `hsl(${idx * 137.5}, 70%, 60%)`;
         });
-
         pieChart = new Chart(ctx, {
             type: 'doughnut',
-            data: { 
-                labels: tags, 
-                datasets: [{ 
-                    data: chartData, 
-                    backgroundColor: chartColors 
-                }] 
-            },
-            options: { 
-                responsive: true, 
-                maintainAspectRatio: false, 
-                plugins: { 
-                    legend: { 
-                        position: 'bottom', 
-                        labels: { boxWidth: 12 } 
-                    } 
-                } 
-            }
+            data: { labels: tags, datasets: [{ data: chartData, backgroundColor: chartColors }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } } }
         });
     }
 
@@ -357,12 +343,32 @@
         reader.readAsText(e.target.files[0]);
     }
     function changeRange(d, btn) { currentRange = d; document.getElementById('customRangeBox').style.display='none'; renderAllCharts(); }
+
     function calculateStreak() {
-        const dates = Object.keys(dailyStats).sort(); if (!dates.length) return 0;
-        let streak = 0; const today = new Date().toISOString().split('T')[0];
-        let lastDate = new Date(dates[dates.length - 1]);
-        if ((new Date(today) - lastDate) / 86400000 > 1) return 0;
-        for (let i = dates.length - 1; i >= 0; i--) { streak++; if (i > 0 && (new Date(dates[i]) - new Date(dates[i-1])) / 86400000 !== 1) break; }
+        let streak = 0;
+        let checkDate = new Date(); // 今日から開始
+        
+        while (true) {
+            const ds = checkDate.toISOString().split('T')[0];
+            const hasData = dailyStats[ds] && Object.values(dailyStats[ds]).some(val => val > 0);
+            
+            if (hasData) {
+                streak++;
+            } else {
+                // 今日のデータがない場合は、昨日をチェックして継続中か判断する
+                // 昨日のデータもなければそこで終了
+                const todayStr = new Date().toISOString().split('T')[0];
+                if (ds !== todayStr) break; 
+                
+                // 今日データがないだけで昨日はある場合は、ループを続行して昨日分からカウントする
+                const yesterday = new Date(checkDate);
+                yesterday.setDate(yesterday.getDate() - 1);
+                const ys = yesterday.toISOString().split('T')[0];
+                const hasYesterday = dailyStats[ys] && Object.values(dailyStats[ys]).some(val => val > 0);
+                if (!hasYesterday) break;
+            }
+            checkDate.setDate(checkDate.getDate() - 1);
+        }
         return streak;
     }
 
@@ -388,12 +394,9 @@
         const newTag = prompt(`「${oldTag}」の新しい名前を入力してください:`, oldTag);
         if (!newTag || newTag.trim() === "" || newTag.trim() === oldTag) return;
         const trimmedNewTag = newTag.trim();
-        
         if (tagHistory.includes(trimmedNewTag)) {
             if (!confirm(`「${trimmedNewTag}」は既に存在します。データを統合しますか？`)) return;
         }
-
-        // 統計データの更新
         for (let date in dailyStats) {
             if (dailyStats[date][oldTag] !== undefined) {
                 const value = dailyStats[date][oldTag];
@@ -401,21 +404,12 @@
                 delete dailyStats[date][oldTag];
             }
         }
-
-        // タグ履歴の更新
         tagHistory = tagHistory.filter(t => t !== oldTag);
-        if (!tagHistory.includes(trimmedNewTag)) {
-            tagHistory.push(trimmedNewTag);
-        }
-
-        save();
-        renderAllCharts();
-        updateTagList();
-        openTagManager();
+        if (!tagHistory.includes(trimmedNewTag)) tagHistory.push(trimmedNewTag);
+        save(); renderAllCharts(); updateTagList(); openTagManager();
     }
 
     function deleteTagHistory(t) { if(confirm(`${t} の統計も含めすべて削除しますか？`)){ tagHistory = tagHistory.filter(x => x!==t); for(let d in dailyStats) delete dailyStats[d][t]; save(); renderAllCharts(); openTagManager(); } }
-
     function openDeleteModal() { const max = dailyStats[selectedDate][selectedTag]; document.getElementById('delDateInfo').textContent = `${selectedDate} [${selectedTag}]`; const slider = document.getElementById('delSlider'); slider.max = max; slider.value = 25; document.getElementById('deleteModal').style.display = 'flex'; }
     function closeDeleteModal() { document.getElementById('deleteModal').style.display = 'none'; }
     function executeDelete() { const val = parseInt(document.getElementById('delSlider').value); dailyStats[selectedDate][selectedTag] -= val; if(dailyStats[selectedDate][selectedTag] <= 0) delete dailyStats[selectedDate][selectedTag]; save(); renderAllCharts(); closeDeleteModal(); document.getElementById('delTargetBtn').style.display = 'none'; }
