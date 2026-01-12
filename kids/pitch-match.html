@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>音階神経衰弱：伝説 / Pitch Match Legend</title>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --bg: #fdfdfd;
+            --primary: #4834d4;
+            --secondary: #686de0;
+            --gold: #f1c40f;
+            --silver: #bdc3c7;
+            --bronze: #cd7f32;
+            --card-back: #4834d4;
+            --card-front: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            background: #f0f2f5;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden; touch-action: none;
+        }
+
+        /* スタート画面 / Start Screen */
+        .container {
+            background: #fff; padding: 20px; border-radius: 35px;
+            box-shadow: var(--shadow); text-align: center; width: 92%; max-width: 460px;
+            border: 6px solid var(--primary); z-index: 10; overflow-y: auto; max-height: 95vh;
+        }
+        h1 { font-size: 1.4rem; color: var(--primary); margin: 5px 0; }
+        
+        /* 遊び方の説明 / How to Play */
+        .how-to-play {
+            background: #fdf9e1; padding: 12px; border-radius: 15px;
+            text-align: left; font-size: 0.75rem; color: #555; margin-bottom: 12px; border: 1px solid #ffeaa7;
+        }
+        .how-to-title { font-weight: bold; color: #d35400; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+
+        .setting-box {
+            background: #f1f2f6; padding: 12px; border-radius: 20px;
+            border: 2px dashed var(--primary); margin-bottom: 12px;
+        }
+        .setting-label { font-weight: bold; font-size: 0.8rem; margin: 5px 0; color: var(--primary); }
+
+        .selector { display: flex; justify-content: center; gap: 5px; margin-bottom: 8px; }
+        .selector label {
+            flex: 1; background: #fff; padding: 8px 2px; border-radius: 10px; border: 2px solid #ddd;
+            cursor: pointer; font-size: 0.7rem; font-weight: bold; text-align: center;
+        }
+        .selector input:checked + label { background: var(--primary); color: white; border-color: var(--primary); }
+        .selector input { display: none; }
+
+        /* ゲーム画面 / Game Screen */
+        #gameScreen { 
+            display: none; position: fixed; inset: 0; 
+            background: linear-gradient(135deg, #4834d4 0%, #686de0 100%); 
+            z-index: 100; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .info-bar {
+            display: flex; justify-content: space-between; width: 90%; max-width: 400px;
+            margin-bottom: 15px; color: white; font-weight: bold; font-size: 1rem;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 90%; max-width: 400px; }
+
+        .card {
+            aspect-ratio: 1/1; background-color: var(--card-back);
+            border-radius: 12px; cursor: pointer; position: relative;
+            transform-style: preserve-3d; transition: transform 0.4s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .card.flipped { transform: rotateY(180deg); background-color: var(--card-front); }
+        .card.matched { visibility: hidden; opacity: 0; }
+
+        .card-inner { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .card-front { transform: rotateY(180deg); color: #333; }
+        .note-name { font-size: 0.75rem; font-weight: bold; color: var(--primary); }
+
+        /* ボタン */
+        .btn-main { width: 100%; padding: 16px; background: var(--primary); color: #fff; border: none; border-radius: 30px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #2f3542; margin-bottom: 10px; }
+        .btn-exit { position: absolute; top: 15px; right: 15px; padding: 8px 12px; background: white; border-radius: 10px; border: none; font-weight: bold; color: var(--primary); }
+
+        .ad-container { width: 100%; min-height: 80px; background: #fafafa; border-radius: 15px; overflow: hidden; margin-top: 5px; }
+        .footer-copyright { font-size: 0.6rem; color: #aaa; margin-top: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <h1>音階神経衰弱：伝説</h1>
+    <div style="font-size:0.8rem; font-weight:bold; color:#666; margin-bottom:10px;">Pitch Match Legend</div>
+
+    <div class="how-to-play">
+        <div class="how-to-title">📖 あそびかた / How to Play</div>
+        ・おなじ音のペアをさがそう！ (Find pairs with the same sound!)<br>
+        ・ライフ制：まちがえると❤がへるよ (Life: Don't lose hearts!)<br>
+        ・タイム計測：はやさをきそおう！ (Time: Challenge your speed!)
+    </div>
+    
+    <div class="setting-box">
+        <div class="setting-label">1. まい数 / Number of Cards</div>
+        <div class="selector">
+            <input type="radio" id="num8" name="cards" value="4" checked><label for="num8">8枚<br>8 Cards</label>
+            <input type="radio" id="num12" name="cards" value="6"><label for="num12">12枚<br>12 Cards</label>
+            <input type="radio" id="num16" name="cards" value="8"><label for="num16">16枚<br>16 Cards</label>
+        </div>
+        <div class="setting-label">2. ルール / Game Rule</div>
+        <div class="selector">
+            <input type="radio" id="rTime" name="rule" value="time" checked><label for="rTime">タイム計測<br>Time Trial</label>
+            <input type="radio" id="rLife" name="rule" value="life"><label for="rLife">ライフ制<br>Life Mode</label>
+        </div>
+        <div class="setting-label">3. 表示 / Display Mode</div>
+        <div class="selector">
+            <input type="radio" id="mIcon" name="mode" value="icon" checked><label for="mIcon">えつき<br>w/Icons</label>
+            <input type="radio" id="mSound" name="mode" value="sound"><label for="mSound">おとのみ<br>Sound Only</label>
+        </div>
+    </div>
+
+    <button class="btn-main" onclick="initGame()">Start! / スタート！</button>
+
+    <div class="ad-container">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <a href="./menu.html" style="display:inline-block; margin-top:8px; color:#aaa; text-decoration:none; font-size:0.75rem;">← もどる (Back)</a>
+    <div class="footer-copyright">© 2026 KuniFami Soft Studio. All Rights Reserved.</div>
+</div>
+
+<div id="gameScreen">
+    <button class="btn-exit" onclick="stopGame()">Quit / おわる</button>
+    <div class="info-bar">
+        <div id="statusLabel">Time: 0.0s</div>
+        <div id="lifeLabel"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+</div>
+
+<script>
+    let audioCtx;
+    const notesData = [
+        { f: 261.63, i: '🍎', jp: 'ド', en: 'Do' }, { f: 293.66, i: '🍊', jp: 'レ', en: 'Re' },
+        { f: 329.63, i: '🍋', jp: 'ミ', en: 'Mi' }, { f: 349.23, i: '🍈', jp: 'ファ', en: 'Fa' },
+        { f: 392.00, i: '🍇', jp: 'ソ', en: 'Sol' }, { f: 440.00, i: '🫐', jp: 'ラ', en: 'La' },
+        { f: 493.88, i: '🍑', jp: 'シ', en: 'Ti' }, { f: 523.25, i: '🍒', jp: 'ド', en: 'Do' }
+    ];
+
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let canFlip = true;
+    let totalPairs = 0;
+    let startTime;
+    let timerId;
+    let initialLives = 0;
+    let lives = 0;
+    let gameActive = false;
+
+    function playNote(freq) {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.2);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + 1.2);
+    }
+
+    function initGame() {
+        const pairCount = parseInt(document.querySelector('input[name="cards"]:checked').value);
+        const rule = document.querySelector('input[name="rule"]:checked').value;
+        const mode = document.querySelector('input[name="mode"]:checked').value;
+        
+        totalPairs = pairCount;
+        matchedPairs = 0;
+        flippedCards = [];
+        gameActive = true;
+        initialLives = (pairCount === 4) ? 3 : (pairCount === 6) ? 5 : 7;
+        lives = initialLives;
+        
+        const statusLabel = document.getElementById('statusLabel');
+        const lifeLabel = document.getElementById('lifeLabel');
+        
+        if (rule === 'time') {
+            lifeLabel.innerText = "";
+            startTime = Date.now();
+            timerId = setInterval(() => {
+                const sec = ((Date.now() - startTime) / 1000).toFixed(1);
+                statusLabel.innerText = `Time: ${sec}s`;
+            }, 100);
+        } else {
+            statusLabel.innerText = "Life Mode";
+            updateLifeDisplay();
+        }
+
+        const selected = notesData.slice(0, pairCount);
+        const gameSet = [...selected, ...selected].sort(() => Math.random() - 0.5);
+
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+        gameSet.forEach(note => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.freq = note.f;
+            card.innerHTML = `<div class="card-inner card-back">?</div><div class="card-inner card-front">
+                <div style="font-size:1.5rem">${mode === 'icon' ? note.i : '🎵'}</div>
+                <div class="note-name">${note.jp}/${note.en}</div></div>`;
+            card.onclick = () => {
+                if (!canFlip || !gameActive || card.classList.contains('flipped')) return;
+                playNote(note.f);
+                card.classList.add('flipped');
+                flippedCards.push(card);
+                if (flippedCards.length === 2) {
+                    canFlip = false;
+                    setTimeout(() => checkMatch(rule), 800);
+                }
+            };
+            grid.appendChild(card);
+        });
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'flex';
+    }
+
+    function updateLifeDisplay() { document.getElementById('lifeLabel').innerText = "❤".repeat(lives); }
+
+    function checkMatch(rule) {
+        const [c1, c2] = flippedCards;
+        if (c1.dataset.freq === c2.dataset.freq) {
+            c1.classList.add('matched'); c2.classList.add('matched');
+            matchedPairs++;
+            if (matchedPairs === totalPairs) endGame(true, rule);
+        } else {
+            c1.classList.remove('flipped'); c2.classList.remove('flipped');
+            if (rule === 'life') {
+                lives--; updateLifeDisplay();
+                if (lives <= 0) endGame(false, rule);
+            }
+        }
+        flippedCards = []; canFlip = true;
+    }
+
+    function endGame(win, rule) {
+        gameActive = false; clearInterval(timerId);
+        setTimeout(() => {
+            if (win) {
+                let rank = "Bronze / ブロンズ";
+                if (rule === 'life') {
+                    if (lives === initialLives) rank = "🥇 Gold / ゴールド (Perfect!)";
+                    else if (lives >= initialLives / 2) rank = "🥈 Silver / シルバー";
+                } else {
+                    const sec = (Date.now() - startTime) / 1000;
+                    if (sec < totalPairs * 3) rank = "🥇 Gold / ゴールド (Fast!)";
+                    else if (sec < totalPairs * 5) rank = "🥈 Silver / シルバー";
+                }
+                alert(`Clear! / クリア！\nRank: ${rank}`);
+            } else {
+                alert("Game Over! / ざんねん！\nTry again! / また挑戦してね！");
+            }
+            stopGame();
+        }, 300);
+    }
+
+    function stopGame() { clearInterval(timerId); gameActive = false; document.getElementById('startScreen').style.display = 'block'; document.getElementById('gameScreen').style.display = 'none'; }
+</script>
+</body>
+</html>
