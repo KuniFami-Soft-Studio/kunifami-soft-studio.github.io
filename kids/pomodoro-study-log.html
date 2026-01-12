@@ -338,9 +338,38 @@
     }
 
     function deleteTagHistory(tag) {
-        if (confirm(`履歴から削除しますか？ / Delete [${tag}] from history?`)) {
+        // 1. そのタグのデータが統計内に存在するかチェック
+        let hasData = false;
+        for (const date in dailyStats) {
+            if (dailyStats[date][tag]) {
+                hasData = true;
+                break;
+            }
+        }
+
+        let confirmMsg = `履歴から [${tag}] を削除しますか？\nDelete [${tag}] from history?`;
+        if (hasData) {
+            confirmMsg = `⚠️警告：[${tag}] の過去の統計データもすべて削除されます！\n本当によろしいですか？\nWarning: All past stats for this tag will be deleted!`;
+        }
+
+        if (confirm(confirmMsg)) {
+            // タグ履歴から削除
             tagHistory = tagHistory.filter(t => t !== tag);
-            save(); updateTagList(); openTagManager();
+            
+            // 統計データからも完全に削除（整合性を取るため）
+            if (hasData) {
+                for (const date in dailyStats) {
+                    if (dailyStats[date][tag]) {
+                        delete dailyStats[date][tag];
+                    }
+                }
+            }
+
+            save(); 
+            renderChart(); 
+            updateTagList(); 
+            openTagManager(); 
+            document.getElementById('delTargetBtn').style.display = 'none';
         }
     }
 
