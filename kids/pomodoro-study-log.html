@@ -92,7 +92,7 @@
     </div>
     
     <div id="statusLabel" style="font-weight: bold; color: #666;">集中タイム / Focus Time</div>
-    <div class="timer-display" id="timerDisplay">00:05</div>
+    <div class="timer-display" id="timerDisplay">25:00</div>
     <button id="startBtn" class="btn-main" onclick="toggleTimer()">スタート！ / START</button>
 </div>
 
@@ -150,8 +150,8 @@
 </div>
 
 <script>
-    const STUDY_TIME = 5; // Test only
-    const BREAK_TIME = 3; 
+    const STUDY_TIME = 25 * 60; // 25 minutes
+    const BREAK_TIME = 5 * 60;  // 5 minutes
     
     let timeLeft = STUDY_TIME;
     let timerIdx = null;
@@ -282,7 +282,6 @@
         });
     }
 
-    // タグ管理・選択機能
     function openTagManager() {
         const container = document.getElementById('tagListContainer');
         container.innerHTML = tagHistory.length ? '' : '<p style="text-align:center; padding:20px;">タグ履歴がありません<br>No tag history</p>';
@@ -338,7 +337,6 @@
     }
 
     function deleteTagHistory(tag) {
-        // 1. そのタグのデータが統計内に存在するかチェック
         let hasData = false;
         for (const date in dailyStats) {
             if (dailyStats[date][tag]) {
@@ -346,17 +344,12 @@
                 break;
             }
         }
-
         let confirmMsg = `履歴から [${tag}] を削除しますか？\nDelete [${tag}] from history?`;
         if (hasData) {
             confirmMsg = `⚠️警告：[${tag}] の過去の統計データもすべて削除されます！\n本当によろしいですか？\nWarning: All past stats for this tag will be deleted!`;
         }
-
         if (confirm(confirmMsg)) {
-            // タグ履歴から削除
             tagHistory = tagHistory.filter(t => t !== tag);
-            
-            // 統計データからも完全に削除（整合性を取るため）
             if (hasData) {
                 for (const date in dailyStats) {
                     if (dailyStats[date][tag]) {
@@ -364,11 +357,7 @@
                     }
                 }
             }
-
-            save(); 
-            renderChart(); 
-            updateTagList(); 
-            openTagManager(); 
+            save(); renderChart(); updateTagList(); openTagManager(); 
             document.getElementById('delTargetBtn').style.display = 'none';
         }
     }
