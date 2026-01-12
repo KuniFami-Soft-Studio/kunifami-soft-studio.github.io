@@ -345,27 +345,37 @@
     function changeRange(d, btn) { currentRange = d; document.getElementById('customRangeBox').style.display='none'; renderAllCharts(); }
 
     function calculateStreak() {
+        const dates = Object.keys(dailyStats);
+        if (dates.length === 0) return 0;
+
+        // データが存在する最も古い日付を特定
+        const minDateStr = dates.reduce((a, b) => a < b ? a : b);
+        const minDate = new Date(minDateStr);
+        minDate.setHours(0, 0, 0, 0);
+
         let streak = 0;
-        let checkDate = new Date(); // 今日から開始
+        let checkDate = new Date();
+        checkDate.setHours(0, 0, 0, 0);
         
-        while (true) {
+        while (checkDate >= minDate) {
             const ds = checkDate.toISOString().split('T')[0];
             const hasData = dailyStats[ds] && Object.values(dailyStats[ds]).some(val => val > 0);
             
             if (hasData) {
                 streak++;
             } else {
-                // 今日のデータがない場合は、昨日をチェックして継続中か判断する
-                // 昨日のデータもなければそこで終了
+                // 今日データがない場合は昨日を確認して継続中か判断
                 const todayStr = new Date().toISOString().split('T')[0];
-                if (ds !== todayStr) break; 
-                
-                // 今日データがないだけで昨日はある場合は、ループを続行して昨日分からカウントする
-                const yesterday = new Date(checkDate);
-                yesterday.setDate(yesterday.getDate() - 1);
-                const ys = yesterday.toISOString().split('T')[0];
-                const hasYesterday = dailyStats[ys] && Object.values(dailyStats[ys]).some(val => val > 0);
-                if (!hasYesterday) break;
+                if (ds === todayStr) {
+                    const yesterday = new Date(checkDate);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const ys = yesterday.toISOString().split('T')[0];
+                    const hasYesterday = dailyStats[ys] && Object.values(dailyStats[ys]).some(val => val > 0);
+                    if (!hasYesterday) return 0;
+                } else {
+                    // 今日以外でデータが途切れたら終了
+                    break;
+                }
             }
             checkDate.setDate(checkDate.getDate() - 1);
         }
