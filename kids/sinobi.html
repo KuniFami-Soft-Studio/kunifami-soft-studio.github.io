@@ -36,7 +36,6 @@
             border: 6px solid var(--ninja-blue); box-sizing: border-box; position: relative;
         }
 
-        /* 削除ボタン（隠し機能っぽく右上に配置） */
         .btn-reset-trigger {
             position: absolute; top: 15px; right: 15px; font-size: 1.2rem;
             background: none; border: none; cursor: pointer; color: #ccc;
@@ -45,7 +44,6 @@
         h1 { font-size: 1.3rem; color: var(--ninja-blue); margin: 0; }
         .sub-title { font-size: 0.8rem; color: #666; margin-bottom: 10px; }
 
-        /* Record Area */
         .record-board {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px;
         }
@@ -85,6 +83,11 @@
         .btn-main { width: 100%; padding: 15px; background: var(--ninja-blue); color: #fff; border: none; border-radius: 20px; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 5px 0 #081b33; }
         .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #081b33; }
         .btn-exit { position: absolute; top: 15px; right: 15px; padding: 8px 12px; background: rgba(255,255,255,0.1); color: white; border: 1px solid white; border-radius: 10px; font-size: 0.8rem; }
+
+        /* Fail State */
+        .fail-bg { background: #600 !important; animation: flash 0.5s infinite; }
+        @keyframes flash { 0% { background: #600; } 50% { background: #f00; } 100% { background: #600; } }
+        .btn-stop-alarm { background: #fff !important; color: #f00 !important; font-size: 1.5rem; padding: 25px; margin-top: 20px; box-shadow: 0 8px 0 #ccc !important; }
 
         .footer-copyright { margin-top: 15px; font-size: 0.65rem; color: #999; }
     </style>
@@ -144,11 +147,12 @@
 </div>
 
 <div id="gameScreen">
-    <button class="btn-exit" onclick="stopGame()">Quit/辞める</button>
-    <div id="statusText" style="font-size: 1rem; color: #00ffcc; font-weight: bold;">READY...</div>
+    <button id="exitBtn" class="btn-exit" onclick="stopGame()">Quit/辞める</button>
+    <div id="statusText" style="font-size: 1.2rem; color: #00ffcc; font-weight: bold; text-align:center;">READY...</div>
     <div id="timerDisplay">0.00s</div>
     <div id="ninjaIcon" class="ninja-visual">🥷</div>
-    <div class="meter-bg"><div id="meterFill"></div></div>
+    <div id="meterContainer" class="meter-bg"><div id="meterFill"></div></div>
+    <button id="stopAlarmBtn" class="btn-main btn-stop-alarm" style="display:none;" onclick="stopGame()">止める / STOP ALARM</button>
 </div>
 
 <script>
@@ -156,8 +160,57 @@
     let currentMode = 'easy';
     let threshold = 4.0;
     let pressTimer;
+    let audioCtx = null;
+    let alarmOsc = null;
+    let alarmGain = null;
 
-    // データリセット用
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+
+    function startAlarmLoop() {
+        if (!audioCtx) return;
+        
+        alarmOsc = audioCtx.createOscillator();
+        alarmGain = audioCtx.createGain();
+        
+        alarmOsc.type = 'sawtooth';
+        // サイレンのように周波数を上下させる
+        alarmOsc.frequency.setValueAtTime(440, audioCtx.currentTime);
+        
+        // 音量を最大限に近く
+        alarmGain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+        
+        alarmOsc.connect(alarmGain);
+        alarmGain.connect(audioCtx.destination);
+        
+        alarmOsc.start();
+        
+        // 周波数を揺らしてサイレン音を作る
+        const interval = 0.5;
+        setInterval(() => {
+            if (alarmOsc) {
+                const now = audioCtx.currentTime;
+                alarmOsc.frequency.exponentialRampToValueAtTime(880, now + interval);
+                alarmOsc.frequency.exponentialRampToValueAtTime(440, now + interval * 2);
+            }
+        }, interval * 2000);
+    }
+
+    function stopAlarmSound() {
+        if (alarmOsc) {
+            alarmOsc.stop();
+            alarmOsc.disconnect();
+            alarmOsc = null;
+        }
+        if (alarmGain) {
+            alarmGain.disconnect();
+            alarmGain = null;
+        }
+    }
+
     function startPress() {
         pressTimer = window.setTimeout(function() {
             if(confirm("すべての記録を消去しますか？\nDo you want to reset all records?")) {
@@ -165,7 +218,7 @@
                 alert("記録を消去しました。/ Records reset.");
                 location.reload();
             }
-        }, 3000); // 3秒長押し
+        }, 3000);
     }
     function endPress() { clearTimeout(pressTimer); }
 
@@ -192,6 +245,7 @@
     }
 
     function requestPermission() {
+        initAudio();
         if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
             DeviceMotionEvent.requestPermission().then(state => { if (state === 'granted') startGame(); });
         } else { startGame(); }
@@ -201,8 +255,13 @@
         isGaming = true; canCheckFail = false; timer = 0;
         document.getElementById('startScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'flex';
+        document.getElementById('gameScreen').classList.remove('fail-bg');
+        document.getElementById('stopAlarmBtn').style.display = 'none';
+        document.getElementById('exitBtn').style.display = 'block';
+        document.getElementById('meterContainer').style.display = 'block';
         document.getElementById('timerDisplay').innerText = "0.00s";
         document.getElementById('statusText').innerText = "READY...";
+        document.getElementById('ninjaIcon').innerText = "🥷";
 
         setTimeout(() => {
             if(!isGaming) return;
@@ -230,8 +289,18 @@
     function failGame() {
         isGaming = false; clearInterval(timerId);
         window.removeEventListener('devicemotion', handleMotion);
-        document.getElementById('ninjaIcon').innerText = "💥";
         
+        // 失敗UIに切り替え
+        document.getElementById('gameScreen').classList.add('fail-bg');
+        document.getElementById('ninjaIcon').innerText = "💥";
+        document.getElementById('statusText').innerText = "修行失敗！足音がうるさいぞ！\nTRAINING FAILED!";
+        document.getElementById('statusText').style.color = "#fff";
+        document.getElementById('exitBtn').style.display = 'none';
+        document.getElementById('meterContainer').style.display = 'none';
+        document.getElementById('stopAlarmBtn').style.display = 'block';
+        
+        startAlarmLoop();
+
         const data = getStoredData(currentMode);
         if (timer > data.best) localStorage.setItem(`ninja_best_${currentMode}`, timer);
         data.history.unshift(timer);
@@ -239,11 +308,11 @@
         localStorage.setItem(`ninja_history_${currentMode}`, JSON.stringify(data.history));
 
         updateDisplay();
-        setTimeout(() => { alert(`修行失敗 / Training Over!\nScore: ${timer.toFixed(2)}s`); stopGame(); }, 500);
     }
 
     function stopGame() {
         isGaming = false; if (timerId) clearInterval(timerId);
+        stopAlarmSound();
         window.removeEventListener('devicemotion', handleMotion);
         document.getElementById('startScreen').style.display = 'block';
         document.getElementById('gameScreen').style.display = 'none';
