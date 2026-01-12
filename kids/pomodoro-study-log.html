@@ -8,84 +8,88 @@
         gtag('js', new Date());
         gtag('config', 'G-1V1ELMWFTY');
     </script>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>集中マスター Pro + Backup</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --primary: #4a90e2; --accent: #ff00ff; --bg: #111; --card: #ffffff; }
-        body { font-family: "Hiragino Sans", sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; }
-        .card { background: var(--card); padding: 20px; border-radius: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.5); text-align: center; width: 100%; max-width: 450px; border: 4px solid #fff; margin-bottom: 15px; box-sizing: border-box; }
-        .pomo-guide { text-align: left; font-size: 0.85rem; line-height: 1.6; color: #444; background: #f9f9f9; border-radius: 20px; padding: 15px; margin-bottom: 15px; border: 1px solid #eee; }
-        .pomo-guide summary { font-weight: bold; color: var(--primary); cursor: pointer; outline: none; margin-bottom: 5px; }
-        .pomo-guide h4 { border-left: 4px solid var(--accent); padding-left: 8px; margin: 15px 0 8px 0; color: #333; font-size: 0.9rem; }
+        body { font-family: "Hiragino Sans", sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; min-height: 100vh; color: #fff; }
+        
+        /* カード設定 */
+        .card { background: var(--card); padding: 20px; border-radius: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.5); text-align: center; width: 100%; max-width: 480px; border: 4px solid #fff; margin-bottom: 15px; box-sizing: border-box; color: #333; }
+        
         .timer-display { font-size: 4.5rem; font-weight: 900; color: var(--primary); margin: 10px 0; font-variant-numeric: tabular-nums; }
-        .tag-input { width: 90%; padding: 12px; border-radius: 12px; border: 2px solid #ddd; font-size: 1rem; text-align: center; margin-bottom: 10px; }
-        .btn-main { width: 100%; padding: 16px; background: var(--accent); color: #fff; border: none; border-radius: 20px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 0 #c000c0; }
+        .tag-input { width: 90%; padding: 12px; border-radius: 12px; border: 2px solid #ddd; font-size: 1rem; text-align: center; margin-bottom: 10px; -webkit-appearance: none; }
+        
+        .btn-main { width: 100%; padding: 18px; background: var(--accent); color: #fff; border: none; border-radius: 20px; font-weight: 800; font-size: 1.3rem; cursor: pointer; box-shadow: 0 5px 0 #c000c0; }
         .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #c000c0; }
-        .btn-tool { background: #95a5a6; color: white; padding: 8px 12px; border-radius: 10px; border: none; font-size: 0.75rem; cursor: pointer; font-weight: bold; }
+        .btn-tool { background: #95a5a6; color: white; padding: 12px 16px; border-radius: 10px; border: none; font-size: 0.85rem; cursor: pointer; font-weight: bold; }
         .btn-danger { background: #ff4757; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 25px; border-radius: 25px; width: 85%; max-width: 350px; text-align: center; }
+        
+        /* モーダル */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 35px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; color: #333; }
+        
         .chart-container { height: 280px; margin-top: 10px; }
-        .backup-area { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
-        .instruction { font-size: 0.75rem; color: #666; margin-bottom: 5px; }
+        .backup-area { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 10px; border-top: 1px solid #eee; padding-top: 15px; }
+        
+        /* フッターエリア */
+        .footer-area { width: 100%; max-width: 480px; text-align: center; margin-top: 25px; padding-bottom: 30px; }
+        .footer-link { display: inline-block; color: #fff; text-decoration: none; font-size: 1.1rem; font-weight: bold; padding: 15px 30px; background: #444; border: 2px solid #666; border-radius: 15px; margin-bottom: 20px; }
+        .footer-link:active { background: #666; }
+        .copyright { color: #eee; font-size: 0.9rem; }
+
+        /* アラーム停止ボタン */
+        .btn-alarm-stop { background: #ff4757; font-size: 1.8rem; padding: 25px; animation: pulse 1s infinite; margin-top: 20px; width: 100%; box-shadow: 0 6px 0 #b33030; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <div class="pomo-guide">
-        <details>
-            <summary>🍅 ポモドーロとは？ / What is Pomodoro?</summary>
-            <p>「25分勉強」は、25分集中＋5分休憩を繰り返す時間管理術です。</p>
-            <details>
-                <summary>📝 やり方</summary>
-                <h4>1. タスクを決める</h4><p>やるべき内容を明確にします。</p>
-                <h4>2. 25分集中</h4><p>タイマーをセットし開始！</p>
-                <h4>3. 5分休憩</h4><p>スマホは見ないのがコツ！</p>
-                <h4>4. 長めの休憩</h4><p>4回終わったら30分程休みます。</p>
-            </details>
-        </details>
-    </div>
     <input type="text" id="studyTag" class="tag-input" list="tagHistory" placeholder="例：数学、英語">
     <datalist id="tagHistory"></datalist>
-    <div id="statusLabel" style="font-weight: bold; color: #666;">集中タイム (テスト5秒)</div>
+    <div id="statusLabel" style="font-weight: bold; color: #666;">集中タイム (Focus Time)</div>
     <div class="timer-display" id="timerDisplay">00:05</div>
-    <button id="startBtn" class="btn-main" onclick="toggleTimer()">スタート！</button>
+    <button id="startBtn" class="btn-main" onclick="toggleTimer()">スタート！ / START</button>
 </div>
 
 <div class="card">
-    <div class="instruction">💡 グラフのバーをタップして「その日」を削除</div>
     <div style="display:flex; justify-content: center; gap:5px; margin-bottom:10px;">
         <button class="btn-tool" onclick="changeRange(1, this)">今日</button>
         <button class="btn-tool" onclick="changeRange(7, this)">1週</button>
         <button class="btn-tool" onclick="changeRange(30, this)">1月</button>
     </div>
     <div class="chart-container"><canvas id="pomoChart"></canvas></div>
-    
-    <div style="margin-top:15px; display:flex; gap:8px; justify-content: center;">
-        <button class="btn-tool btn-danger" id="delTargetBtn" onclick="openDeleteModal()" style="display:none; flex:1;">🗑 削除メニューを開く</button>
-    </div>
+    <button class="btn-tool btn-danger" id="delTargetBtn" onclick="openDeleteModal()" style="display:none; width:100%; margin-top:10px; padding: 15px;">🗑 データを削除する</button>
 
     <div class="backup-area">
         <button class="btn-tool" style="background:#27ae60;" onclick="exportData()">💾 保存</button>
         <button class="btn-tool" style="background:#2980b9;" onclick="document.getElementById('importFile').click()">📂 復元</button>
-        <button class="btn-tool" style="background:#e67e22;" onclick="generateTestYearlyData()">🧪 1年分生成</button>
         <input type="file" id="importFile" style="display:none" onchange="importData(event)">
+    </div>
+</div>
+
+<div class="footer-area">
+    <a href="./menu.html" class="footer-link">← メニューへもどる (Back)</a>
+    <div class="copyright">
+        © 2026 KuniFami Soft Studio. <br>All Rights Reserved.
     </div>
 </div>
 
 <div id="deleteModal" class="modal">
     <div class="modal-content">
-        <h3 id="delTagTitle" style="color:var(--accent); margin:0;">タグ削除</h3>
-        <p id="delDateInfo" style="font-size:0.9rem; font-weight:bold; margin:10px 0;"></p>
-        <p id="delMaxInfo" style="font-size:0.8rem; color:#666;"></p>
-        <div id="sliderBox">
+        <h3 id="delTagTitle" style="color:var(--accent); margin-top:0;">タグ削除</h3>
+        <p id="delDateInfo" style="font-weight:bold;"></p>
+        <div style="margin:20px 0;">
             <label><span id="delValDisplay">25</span> 分 削除</label>
             <input type="range" id="delSlider" style="width:100%" step="25" min="25">
         </div>
-        <div style="margin:10px 0;"><label><input type="checkbox" id="delAllCheck" onchange="toggleDelAll(this)"> 全て削除</label></div>
+        <div style="margin:15px 0;"><label><input type="checkbox" id="delAllCheck" onchange="toggleDelAll(this)"> 全て削除 (Delete All)</label></div>
         <div style="display:flex; gap:10px;">
             <button class="btn-tool" style="flex:1; background:#ccc;" onclick="closeDeleteModal()">戻る</button>
             <button class="btn-tool btn-danger" style="flex:1;" onclick="executeDelete()">実行</button>
@@ -93,9 +97,18 @@
     </div>
 </div>
 
+<div id="alarmModal" class="modal">
+    <div class="modal-content">
+        <h2 id="alarmTitle" style="color:var(--primary); font-size:2.2rem; margin:0;">時間です！</h2>
+        <p style="font-size:1.2rem; margin:15px 0;">お疲れ様でした。</p>
+        <button class="btn-main btn-alarm-stop" onclick="stopAlarm()">止める / OK</button>
+    </div>
+</div>
+
 <script>
-    const STUDY_TIME = 5; 
-    const BREAK_TIME = 3;
+    const STUDY_TIME = 5; // テスト用5秒
+    const BREAK_TIME = 3; // テスト用3秒
+    
     let timeLeft = STUDY_TIME;
     let timerIdx = null;
     let isBreak = false;
@@ -103,24 +116,71 @@
     let tagHistory = JSON.parse(localStorage.getItem('focus_master_tags')) || [];
     let currentRange = 7;
     let myChart = null;
-    
-    // 選択された情報を保持
+    let alarmInterval = null;
     let selectedTag = null;
     let selectedDate = null;
-    let chartDates = []; // グラフの各Indexに対応する実際の日付(YYYY-MM-DD)
+    let chartDates = [];
+
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            gain.gain.value = 0;
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(0); osc.stop(0.1);
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playNotificationSound() {
+        if (!audioCtx) return;
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.5);
+    }
 
     function toggleTimer() {
+        initAudio();
         const btn = document.getElementById('startBtn');
         if (timerIdx) {
             clearInterval(timerIdx); timerIdx = null;
-            btn.textContent = "再開";
+            btn.textContent = "再開 / Resume";
         } else {
-            btn.textContent = "一時停止";
+            btn.textContent = "一時停止 / Pause";
             timerIdx = setInterval(() => {
                 timeLeft--; updateTimerDisplay();
-                if (timeLeft <= 0) { clearInterval(timerIdx); timerIdx = null; handleTimerEnd(); }
+                if (timeLeft <= 0) { 
+                    clearInterval(timerIdx); timerIdx = null; 
+                    startAlarmLoop();
+                }
             }, 1000);
         }
+    }
+
+    function startAlarmLoop() {
+        document.getElementById('alarmTitle').textContent = isBreak ? "休憩終了！" : "集中終了！";
+        document.getElementById('alarmModal').style.display = 'flex';
+        const trigger = () => {
+            playNotificationSound();
+            if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
+        };
+        trigger();
+        alarmInterval = setInterval(trigger, 1500);
+    }
+
+    function stopAlarm() {
+        if (alarmInterval) { clearInterval(alarmInterval); alarmInterval = null; }
+        document.getElementById('alarmModal').style.display = 'none';
+        handleTimerEnd(); 
     }
 
     function updateTimerDisplay() {
@@ -135,29 +195,27 @@
             if (!dailyStats[today]) dailyStats[today] = {};
             dailyStats[today][tag] = (dailyStats[today][tag] || 0) + 25;
             if (!tagHistory.includes(tag)) tagHistory.push(tag);
-            save(); alert(`【${tag}】完了！`); isBreak = true; timeLeft = BREAK_TIME;
+            save(); isBreak = true; timeLeft = BREAK_TIME;
         } else {
-            alert("休憩終了！"); isBreak = false; timeLeft = STUDY_TIME;
+            isBreak = false; timeLeft = STUDY_TIME;
         }
         updateStatusUI(); updateTimerDisplay(); renderChart(); updateTagList();
-        document.getElementById('startBtn').textContent = "スタート！";
+        document.getElementById('startBtn').textContent = "スタート！ / START";
     }
 
     function updateStatusUI() {
         const label = document.getElementById('statusLabel');
-        label.textContent = isBreak ? "休憩中" : "集中タイム";
+        label.textContent = isBreak ? "休憩中 (Resting)" : "集中タイム (Focus Time)";
         label.style.color = isBreak ? "#f39c12" : "#4a90e2";
     }
 
     function renderChart() {
         const ctx = document.getElementById('pomoChart').getContext('2d');
-        const labels = []; chartDates = []; 
-        const datasetsMap = {}; const end = new Date();
-        
+        const labels = []; chartDates = []; const datasetsMap = {}; const end = new Date();
         for (let i = currentRange - 1; i >= 0; i--) {
             const d = new Date(); d.setDate(end.getDate() - i);
             const ds = d.toISOString().split('T')[0];
-            chartDates.push(ds); // Indexと日付を紐付け
+            chartDates.push(ds);
             labels.push(`${d.getMonth()+1}/${d.getDate()}`);
             tagHistory.forEach(tag => {
                 if (!datasetsMap[tag]) datasetsMap[tag] = [];
@@ -173,12 +231,12 @@
             type: 'bar', data: { labels, datasets },
             options: {
                 responsive: true, maintainAspectRatio: false,
-                scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } },
+                scales: { x: { stacked: true }, y: { stacked: true } },
                 onClick: (e, elements) => {
                     if (elements.length > 0) {
                         const { datasetIndex, index } = elements[0];
                         selectedTag = myChart.data.datasets[datasetIndex].label;
-                        selectedDate = chartDates[index]; // クリックされた場所の日付を特定
+                        selectedDate = chartDates[index];
                         const btn = document.getElementById('delTargetBtn');
                         btn.style.display = 'block';
                         btn.textContent = `🗑 ${selectedDate} の ${selectedTag} を削除`;
@@ -188,15 +246,11 @@
         });
     }
 
+    // 削除機能
     function openDeleteModal() {
-        if (!selectedTag || !selectedDate || !dailyStats[selectedDate] || !dailyStats[selectedDate][selectedTag]) {
-            return alert("選択されたデータが見つかりません。");
-        }
         const maxTime = dailyStats[selectedDate][selectedTag];
         document.getElementById('delTagTitle').textContent = `「${selectedTag}」を削除`;
         document.getElementById('delDateInfo').textContent = `対象日: ${selectedDate}`;
-        document.getElementById('delMaxInfo').textContent = `記録時間: ${maxTime}分`;
-        
         const slider = document.getElementById('delSlider');
         slider.max = maxTime; slider.value = 25; slider.disabled = false;
         document.getElementById('delValDisplay').textContent = 25;
@@ -214,38 +268,25 @@
 
     function executeDelete() {
         const amount = parseInt(document.getElementById('delSlider').value);
-        if (confirm(`${selectedDate} の ${selectedTag} を ${amount}分 削除しますか？`)) {
+        if (confirm(`${selectedDate} の ${selectedTag} を削除しますか？`)) {
             dailyStats[selectedDate][selectedTag] -= amount;
             if (dailyStats[selectedDate][selectedTag] <= 0) delete dailyStats[selectedDate][selectedTag];
             save(); renderChart(); closeDeleteModal();
             document.getElementById('delTargetBtn').style.display = 'none';
         }
     }
-
     function closeDeleteModal() { document.getElementById('deleteModal').style.display = 'none'; }
 
-    // --- その他機能 (バックアップ・テスト生成等) ---
-    function generateTestYearlyData() {
-        if(!confirm("1年分のデータを生成しますか？")) return;
-        const stats = {}; const tags = ["数学", "英語", "プログラミング", "読書", "その他"];
-        const endDate = new Date();
-        for (let i = 0; i < 365; i++) {
-            const d = new Date(); d.setDate(endDate.getDate() - i);
-            const ds = d.toISOString().split('T')[0];
-            stats[ds] = {};
-            const activeTags = [...tags].sort(() => 0.5 - Math.random()).slice(0, 3);
-            activeTags.forEach(tag => { stats[ds][tag] = (Math.floor(Math.random() * 5) + 1) * 25; });
-        }
-        dailyStats = stats; tagHistory = tags; save(); renderChart(); updateTagList();
+    function save() {
+        localStorage.setItem('focus_master_stats', JSON.stringify(dailyStats));
+        localStorage.setItem('focus_master_tags', JSON.stringify(tagHistory));
     }
 
     function exportData() {
         const data = JSON.stringify({ stats: dailyStats, tags: tagHistory });
         const blob = new Blob([data], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = `pomo_backup_${new Date().toISOString().split('T')[0]}.json`;
-        a.click();
+        const a = document.createElement('a'); a.href = url; a.download = `focus_backup.json`; a.click();
     }
 
     function importData(event) {
@@ -253,32 +294,20 @@
         if (!file) return;
         const reader = new FileReader();
         reader.onload = (e) => {
-            try {
-                const imported = JSON.parse(e.target.result);
-                dailyStats = imported.stats; tagHistory = imported.tags;
-                save(); renderChart(); updateTagList(); alert("復元完了！");
-            } catch (err) { alert("無効なファイルです"); }
+            const imported = JSON.parse(e.target.result);
+            dailyStats = imported.stats; tagHistory = imported.tags;
+            save(); renderChart(); updateTagList(); alert("復元完了！");
         };
         reader.readAsText(file);
     }
 
-    function save() {
-        localStorage.setItem('focus_master_stats', JSON.stringify(dailyStats));
-        localStorage.setItem('focus_master_tags', JSON.stringify(tagHistory));
-    }
-
-    function changeRange(days, btn) {
-        currentRange = days;
-        document.querySelectorAll('.btn-tool').forEach(b => b.classList.remove('btn-active'));
-        btn.classList.add('btn-active'); renderChart();
-    }
-
+    function changeRange(days, btn) { currentRange = days; renderChart(); }
     function updateTagList() {
         const list = document.getElementById('tagHistory');
         list.innerHTML = tagHistory.map(t => `<option value="${t}">`).join('');
     }
 
-    window.onload = () => { renderChart(); updateTagList(); updateTimerDisplay(); };
+    window.onload = () => { updateTimerDisplay(); renderChart(); updateTagList(); };
 </script>
 </body>
 </html>
