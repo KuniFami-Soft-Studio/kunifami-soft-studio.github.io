@@ -13,15 +13,20 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>集中マスター Pro + Backup</title>
+    <title>集中マスター Pro / Focus Master Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --primary: #4a90e2; --accent: #ff00ff; --bg: #111; --card: #ffffff; }
         body { font-family: "Hiragino Sans", sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 10px; box-sizing: border-box; min-height: 100vh; color: #fff; }
         
-        /* カード設定 */
         .card { background: var(--card); padding: 20px; border-radius: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.5); text-align: center; width: 100%; max-width: 480px; border: 4px solid #fff; margin-bottom: 15px; box-sizing: border-box; color: #333; }
         
+        .pomo-guide { text-align: left; font-size: 0.85rem; line-height: 1.5; color: #333; background: #fdfdfd; border-radius: 20px; padding: 18px; margin-bottom: 15px; border: 2px solid #eee; max-height: 400px; overflow-y: auto; }
+        .pomo-guide summary { font-weight: bold; color: var(--primary); cursor: pointer; outline: none; margin-bottom: 8px; font-size: 1rem; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .pomo-guide h4 { border-left: 5px solid var(--accent); padding-left: 10px; margin: 15px 0 5px 0; color: #111; font-size: 0.95rem; }
+        .point-box { background: #eef6ff; padding: 12px; border-radius: 12px; margin-top: 10px; font-size: 0.8rem; border-left: 4px solid var(--primary); }
+        .en-small { display: block; color: #666; font-size: 0.75rem; margin-top: 2px; line-height: 1.2; }
+
         .timer-display { font-size: 4.5rem; font-weight: 900; color: var(--primary); margin: 10px 0; font-variant-numeric: tabular-nums; }
         .tag-input { width: 90%; padding: 12px; border-radius: 12px; border: 2px solid #ddd; font-size: 1rem; text-align: center; margin-bottom: 10px; -webkit-appearance: none; }
         
@@ -30,20 +35,19 @@
         .btn-tool { background: #95a5a6; color: white; padding: 12px 16px; border-radius: 10px; border: none; font-size: 0.85rem; cursor: pointer; font-weight: bold; }
         .btn-danger { background: #ff4757; }
         
-        /* モーダル */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-content { background: white; padding: 35px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; color: #333; }
+        .modal-content { background: white; padding: 25px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; color: #333; overflow-y: auto; max-height: 90vh; }
         
         .chart-container { height: 280px; margin-top: 10px; }
-        .backup-area { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 10px; border-top: 1px solid #eee; padding-top: 15px; }
-        
-        /* フッターエリア */
         .footer-area { width: 100%; max-width: 480px; text-align: center; margin-top: 25px; padding-bottom: 30px; }
         .footer-link { display: inline-block; color: #fff; text-decoration: none; font-size: 1.1rem; font-weight: bold; padding: 15px 30px; background: #444; border: 2px solid #666; border-radius: 15px; margin-bottom: 20px; }
-        .footer-link:active { background: #666; }
         .copyright { color: #eee; font-size: 0.9rem; }
 
-        /* アラーム停止ボタン */
+        /* タグリストのスタイル改善 */
+        .tag-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; gap: 5px; }
+        .tag-name-clickable { flex: 1; text-align: left; font-weight: bold; cursor: pointer; color: var(--primary); padding: 5px; border-radius: 5px; }
+        .tag-name-clickable:hover { background: #f0f7ff; }
+        
         .btn-alarm-stop { background: #ff4757; font-size: 1.8rem; padding: 25px; animation: pulse 1s infinite; margin-top: 20px; width: 100%; box-shadow: 0 6px 0 #b33030; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
     </style>
@@ -51,48 +55,88 @@
 <body>
 
 <div class="card">
-    <input type="text" id="studyTag" class="tag-input" list="tagHistory" placeholder="例：数学、英語">
-    <datalist id="tagHistory"></datalist>
-    <div id="statusLabel" style="font-weight: bold; color: #666;">集中タイム (Focus Time)</div>
+    <div class="pomo-guide">
+        <details open>
+            <summary>🍅 ポモドーロ・テクニックとは？ <br><span style="font-size:0.8rem; font-weight:normal;">What is the Pomodoro Technique?</span></summary>
+            <p>
+                「25分勉強」は、<b>25分集中＋5分休憩</b>を繰り返す時間管理術です。脳の仕組みに基づき、効率を最大化します。
+                <span class="en-small">A method of 25-min focus + 5-min break to maximize efficiency based on brain science.</span>
+            </p>
+            <details>
+                <summary>📝 やり方 / How to do it</summary>
+                <h4>1. タスクを決める / Set Task</h4>
+                <p>やる内容を決めます。<span class="en-small">Decide what to study (e.g., 10 English words).</span></p>
+                <h4>2. タイマー開始 / Start Timer</h4>
+                <p>25分集中します。<span class="en-small">Focus for 25 minutes. (1 Pomodoro)</span></p>
+                <h4>3. 5分休憩 / 5-min Break</h4>
+                <p>スマホを見ないのがコツ。<span class="en-small">Avoid smartphones to rest your brain.</span></p>
+                <h4>4. 長い休憩 / Long Break</h4>
+                <p>4回毎に30分休みます。<span class="en-small">Take 30-40 mins break after 4 Pomodoros.</span></p>
+            </details>
+            <details>
+                <summary>✨ 効果 / Effects & Tips</summary>
+                <div class="point-box">
+                    <b>🚀 集中力の維持 / Maintain Focus:</b> <br>リセットで疲れ防止 <span class="en-small">Reset tiredness with short breaks.</span><br>
+                    <b>⏰ ダラダラ防止 / Prevent Procrastination:</b> <br>「25分だけ」で即行動 <span class="en-small">Start immediately with "Just 25 mins".</span><br>
+                    <b>📈 習慣化 / Habit Formation:</b> <br>記憶の定着と自信に <span class="en-small">Leads to better memory and confidence.</span><br>
+                    <b>📦 準備 / Preparation:</b> <br>道具を揃えておく <span class="en-small">Clear your desk before starting.</span>
+                </div>
+            </details>
+        </details>
+    </div>
+
+    <div style="position: relative; width: 100%;">
+        <input type="text" id="studyTag" class="tag-input" list="tagHistory" placeholder="例：数学 / Math">
+        <datalist id="tagHistory"></datalist>
+        <button class="btn-tool" style="background: #34495e; padding: 8px 15px; margin-bottom: 12px; width: 90%;" onclick="openTagManager()">🏷 タグを選択・管理 / Select Tags</button>
+    </div>
+    
+    <div id="statusLabel" style="font-weight: bold; color: #666;">集中タイム / Focus Time</div>
     <div class="timer-display" id="timerDisplay">00:05</div>
     <button id="startBtn" class="btn-main" onclick="toggleTimer()">スタート！ / START</button>
 </div>
 
 <div class="card">
     <div style="display:flex; justify-content: center; gap:5px; margin-bottom:10px;">
-        <button class="btn-tool" onclick="changeRange(1, this)">今日</button>
-        <button class="btn-tool" onclick="changeRange(7, this)">1週</button>
-        <button class="btn-tool" onclick="changeRange(30, this)">1月</button>
+        <button class="btn-tool" onclick="changeRange(1, this)">今日 / Day</button>
+        <button class="btn-tool" onclick="changeRange(7, this)">1週 / Week</button>
+        <button class="btn-tool" onclick="changeRange(30, this)">1月 / Month</button>
     </div>
     <div class="chart-container"><canvas id="pomoChart"></canvas></div>
-    <button class="btn-tool btn-danger" id="delTargetBtn" onclick="openDeleteModal()" style="display:none; width:100%; margin-top:10px; padding: 15px;">🗑 データを削除する</button>
-
-    <div class="backup-area">
-        <button class="btn-tool" style="background:#27ae60;" onclick="exportData()">💾 保存</button>
-        <button class="btn-tool" style="background:#2980b9;" onclick="document.getElementById('importFile').click()">📂 復元</button>
+    <button class="btn-tool btn-danger" id="delTargetBtn" onclick="openDeleteModal()" style="display:none; width:100%; margin-top:10px; padding: 15px;">🗑 データ削除 / Delete Data</button>
+    <div style="display:flex; gap:8px; justify-content:center; margin-top:15px; border-top:1px solid #eee; padding-top:10px;">
+        <button class="btn-tool" style="background:#27ae60;" onclick="exportData()">💾 保存 / Save</button>
+        <button class="btn-tool" style="background:#2980b9;" onclick="document.getElementById('importFile').click()">📂 復元 / Load</button>
         <input type="file" id="importFile" style="display:none" onchange="importData(event)">
     </div>
 </div>
 
 <div class="footer-area">
-    <a href="./menu.html" class="footer-link">← メニューへもどる (Back)</a>
-    <div class="copyright">
-        © 2026 KuniFami Soft Studio. <br>All Rights Reserved.
+    <a href="./menu.html" class="footer-link">← メニューへ / Back to Menu</a>
+    <div class="copyright">© 2026 KuniFami Soft Studio. <br>All Rights Reserved.</div>
+</div>
+
+<div id="tagManagerModal" class="modal">
+    <div class="modal-content">
+        <h3 style="margin-top:0;">タグの選択 / Select Tags</h3>
+        <button class="btn-tool" style="width:100%; background:var(--primary); margin-bottom:15px; padding:12px;" onclick="addNewTag()">＋ 新規タグ追加 / Add New Tag</button>
+        <div id="tagListContainer" style="text-align:left; margin-bottom:20px; border-top:1px solid #eee;"></div>
+        <button class="btn-tool" style="width:100%; background:#ccc;" onclick="closeTagManager()">閉じる / Close</button>
     </div>
 </div>
 
 <div id="deleteModal" class="modal">
     <div class="modal-content">
-        <h3 id="delTagTitle" style="color:var(--accent); margin-top:0;">タグ削除</h3>
-        <p id="delDateInfo" style="font-weight:bold;"></p>
+        <h3 id="delTagTitle" style="color:var(--accent); margin-top:0;">タグ削除 / Delete Tag</h3>
+        <p id="delDateInfo"></p>
         <div style="margin:20px 0;">
-            <label><span id="delValDisplay">25</span> 分 削除</label>
+            <label><span id="delValDisplay">25</span> 分 削除 / Mins</label>
             <input type="range" id="delSlider" style="width:100%" step="25" min="25">
         </div>
-        <div style="margin:15px 0;"><label><input type="checkbox" id="delAllCheck" onchange="toggleDelAll(this)"> 全て削除 (Delete All)</label></div>
+        <div style="margin:15px 0;"><label><input type="checkbox" id="delAllCheck" onchange="toggleDelAll(this)"> 全て削除 / All</label></div>
         <div style="display:flex; gap:10px;">
-            <button class="btn-tool" style="flex:1; background:#ccc;" onclick="closeDeleteModal()">戻る</button>
-            <button class="btn-tool btn-danger" style="flex:1;" onclick="executeDelete()">実行</button>
+            <button class="btn-tool" style="flex:1; background:#ccc;" onclick="closeDeleteModal()">戻る / Back</button>
+            <button class="btn-tool btn-danger" style="flex:1;" onclick="executeDelete()">実行 / OK</button>
         </div>
     </div>
 </div>
@@ -100,14 +144,14 @@
 <div id="alarmModal" class="modal">
     <div class="modal-content">
         <h2 id="alarmTitle" style="color:var(--primary); font-size:2.2rem; margin:0;">時間です！</h2>
-        <p style="font-size:1.2rem; margin:15px 0;">お疲れ様でした。</p>
+        <p style="font-size:1.2rem; margin:15px 0;">Time is up!</p>
         <button class="btn-main btn-alarm-stop" onclick="stopAlarm()">止める / OK</button>
     </div>
 </div>
 
 <script>
-    const STUDY_TIME = 5; // テスト用5秒
-    const BREAK_TIME = 3; // テスト用3秒
+    const STUDY_TIME = 5; // Test only
+    const BREAK_TIME = 3; 
     
     let timeLeft = STUDY_TIME;
     let timerIdx = null;
@@ -120,7 +164,6 @@
     let selectedTag = null;
     let selectedDate = null;
     let chartDates = [];
-
     let audioCtx = null;
 
     function initAudio() {
@@ -158,21 +201,15 @@
             btn.textContent = "一時停止 / Pause";
             timerIdx = setInterval(() => {
                 timeLeft--; updateTimerDisplay();
-                if (timeLeft <= 0) { 
-                    clearInterval(timerIdx); timerIdx = null; 
-                    startAlarmLoop();
-                }
+                if (timeLeft <= 0) { clearInterval(timerIdx); timerIdx = null; startAlarmLoop(); }
             }, 1000);
         }
     }
 
     function startAlarmLoop() {
-        document.getElementById('alarmTitle').textContent = isBreak ? "休憩終了！" : "集中終了！";
+        document.getElementById('alarmTitle').textContent = isBreak ? "休憩終了 / Break End" : "集中終了 / Focus End";
         document.getElementById('alarmModal').style.display = 'flex';
-        const trigger = () => {
-            playNotificationSound();
-            if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
-        };
+        const trigger = () => { playNotificationSound(); if (navigator.vibrate) navigator.vibrate([500, 200, 500]); };
         trigger();
         alarmInterval = setInterval(trigger, 1500);
     }
@@ -189,7 +226,7 @@
     }
 
     function handleTimerEnd() {
-        const tag = document.getElementById('studyTag').value.trim() || "その他";
+        const tag = document.getElementById('studyTag').value.trim() || "Etc";
         const today = new Date().toISOString().split('T')[0];
         if (!isBreak) {
             if (!dailyStats[today]) dailyStats[today] = {};
@@ -205,7 +242,7 @@
 
     function updateStatusUI() {
         const label = document.getElementById('statusLabel');
-        label.textContent = isBreak ? "休憩中 (Resting)" : "集中タイム (Focus Time)";
+        label.textContent = isBreak ? "休憩中 / Resting" : "集中タイム / Focus Time";
         label.style.color = isBreak ? "#f39c12" : "#4a90e2";
     }
 
@@ -225,7 +262,6 @@
         const datasets = Object.keys(datasetsMap).map((tag, idx) => ({
             label: tag, data: datasetsMap[tag], backgroundColor: `hsl(${idx * 137.5}, 70%, 60%)`, borderRadius: 5
         }));
-
         if (myChart) myChart.destroy();
         myChart = new Chart(ctx, {
             type: 'bar', data: { labels, datasets },
@@ -239,18 +275,80 @@
                         selectedDate = chartDates[index];
                         const btn = document.getElementById('delTargetBtn');
                         btn.style.display = 'block';
-                        btn.textContent = `🗑 ${selectedDate} の ${selectedTag} を削除`;
+                        btn.textContent = `🗑 ${selectedDate} [${selectedTag}] 削除/Del`;
                     }
                 }
             }
         });
     }
 
-    // 削除機能
+    // タグ管理・選択機能
+    function openTagManager() {
+        const container = document.getElementById('tagListContainer');
+        container.innerHTML = tagHistory.length ? '' : '<p style="text-align:center; padding:20px;">タグ履歴がありません<br>No tag history</p>';
+        tagHistory.forEach(tag => {
+            const item = document.createElement('div');
+            item.className = 'tag-list-item';
+            item.innerHTML = `
+                <div class="tag-name-clickable" onclick="selectTag('${tag}')">${tag}</div>
+                <div style="display:flex; gap:5px;">
+                    <button class="btn-tool" style="background:#2980b9; padding:5px 8px; font-size:0.75rem;" onclick="renameTag('${tag}')">編集/Edit</button>
+                    <button class="btn-tool btn-danger" style="padding:5px 8px; font-size:0.75rem;" onclick="deleteTagHistory('${tag}')">消去/Del</button>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+        document.getElementById('tagManagerModal').style.display = 'flex';
+    }
+
+    function selectTag(tag) {
+        document.getElementById('studyTag').value = tag;
+        closeTagManager();
+    }
+
+    function addNewTag() {
+        const tag = prompt("新しいタグ名を入力してください / Enter new tag name:");
+        if (tag && tag.trim()) {
+            const trimmedTag = tag.trim();
+            if (!tagHistory.includes(trimmedTag)) {
+                tagHistory.push(trimmedTag);
+                save();
+                updateTagList();
+                openTagManager();
+            } else {
+                alert("そのタグは既に存在します / Tag already exists");
+            }
+        }
+    }
+
+    function renameTag(oldName) {
+        const newName = prompt(`新しい名前を入力 / Enter new name for [${oldName}]:`, oldName);
+        if (newName && newName !== oldName) {
+            const idx = tagHistory.indexOf(oldName);
+            if (tagHistory.includes(newName)) { tagHistory.splice(idx, 1); } 
+            else { tagHistory[idx] = newName; }
+            Object.keys(dailyStats).forEach(date => {
+                if (dailyStats[date][oldName]) {
+                    dailyStats[date][newName] = (dailyStats[date][newName] || 0) + dailyStats[date][oldName];
+                    delete dailyStats[date][oldName];
+                }
+            });
+            save(); renderChart(); updateTagList(); openTagManager();
+        }
+    }
+
+    function deleteTagHistory(tag) {
+        if (confirm(`履歴から削除しますか？ / Delete [${tag}] from history?`)) {
+            tagHistory = tagHistory.filter(t => t !== tag);
+            save(); updateTagList(); openTagManager();
+        }
+    }
+
+    function closeTagManager() { document.getElementById('tagManagerModal').style.display = 'none'; }
     function openDeleteModal() {
         const maxTime = dailyStats[selectedDate][selectedTag];
-        document.getElementById('delTagTitle').textContent = `「${selectedTag}」を削除`;
-        document.getElementById('delDateInfo').textContent = `対象日: ${selectedDate}`;
+        document.getElementById('delTagTitle').textContent = `削除 / Delete [${selectedTag}]`;
+        document.getElementById('delDateInfo').textContent = `${selectedDate}`;
         const slider = document.getElementById('delSlider');
         slider.max = maxTime; slider.value = 25; slider.disabled = false;
         document.getElementById('delValDisplay').textContent = 25;
@@ -258,17 +356,15 @@
         slider.oninput = function() { document.getElementById('delValDisplay').textContent = this.value; };
         document.getElementById('deleteModal').style.display = 'flex';
     }
-
     function toggleDelAll(chk) {
         const slider = document.getElementById('delSlider');
         if (chk.checked) { slider.value = dailyStats[selectedDate][selectedTag]; slider.disabled = true; }
         else { slider.disabled = false; slider.value = 25; }
         document.getElementById('delValDisplay').textContent = slider.value;
     }
-
     function executeDelete() {
         const amount = parseInt(document.getElementById('delSlider').value);
-        if (confirm(`${selectedDate} の ${selectedTag} を削除しますか？`)) {
+        if (confirm(`削除しますか？ / Are you sure?`)) {
             dailyStats[selectedDate][selectedTag] -= amount;
             if (dailyStats[selectedDate][selectedTag] <= 0) delete dailyStats[selectedDate][selectedTag];
             save(); renderChart(); closeDeleteModal();
@@ -276,19 +372,16 @@
         }
     }
     function closeDeleteModal() { document.getElementById('deleteModal').style.display = 'none'; }
-
     function save() {
         localStorage.setItem('focus_master_stats', JSON.stringify(dailyStats));
         localStorage.setItem('focus_master_tags', JSON.stringify(tagHistory));
     }
-
     function exportData() {
         const data = JSON.stringify({ stats: dailyStats, tags: tagHistory });
         const blob = new Blob([data], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href = url; a.download = `focus_backup.json`; a.click();
     }
-
     function importData(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -296,17 +389,15 @@
         reader.onload = (e) => {
             const imported = JSON.parse(e.target.result);
             dailyStats = imported.stats; tagHistory = imported.tags;
-            save(); renderChart(); updateTagList(); alert("復元完了！");
+            save(); renderChart(); updateTagList(); alert("Done!");
         };
         reader.readAsText(file);
     }
-
     function changeRange(days, btn) { currentRange = days; renderChart(); }
     function updateTagList() {
         const list = document.getElementById('tagHistory');
         list.innerHTML = tagHistory.map(t => `<option value="${t}">`).join('');
     }
-
     window.onload = () => { updateTimerDisplay(); renderChart(); updateTagList(); };
 </script>
 </body>
