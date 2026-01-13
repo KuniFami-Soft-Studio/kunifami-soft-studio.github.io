@@ -124,6 +124,16 @@
                     <span style="font-size:0.75rem; color:#666;">Data is saved in your browser. Since clearing cache will delete it, please use "💾 Save" below regularly for backups.</span>
                 </div>
             </details>
+
+            <details style="margin-top: 10px;">
+                <summary>📱 画面が消えてしまう場合 <br><span style="font-size:0.75rem;">Keep Screen On</span></summary>
+                <div class="point-box" style="background: #f0f7ff; border-left-color: var(--primary);">
+                    タイマー動作中は画面が消えない設定を試みますが、端末自体の設定が優先される場合があります。
+                    自動ロックを一時的に「なし」に設定することをおすすめします。<br><br>
+                    <b>• iPhone:</b> 「設定」>「画面表示と明るさ」>「自動ロック」を「なし」にする。<br>
+                    <b>• Android:</b> 「設定」>「ディスプレイ」>「画面タイムアウト」を長くする。
+                </div>
+            </details>
         </details>
     </div>
 
@@ -212,11 +222,9 @@
     let timerIdx = null;
     let isBreak = false;
 
-    // Multi-user Support
     let users = JSON.parse(localStorage.getItem('focus_master_users')) || { "default": { name: "デフォルト", stats: {}, tags: [] } };
     let activeUserId = localStorage.getItem('focus_master_active_user') || "default";
 
-    // Legacy Data Migration
     if (localStorage.getItem('focus_master_stats') && activeUserId === "default" && Object.keys(users.default.stats).length === 0) {
         users.default.stats = JSON.parse(localStorage.getItem('focus_master_stats'));
         users.default.tags = JSON.parse(localStorage.getItem('focus_master_tags')) || [];
@@ -234,13 +242,24 @@
 
     async function requestWakeLock() {
         if ('wakeLock' in navigator) {
-            try { wakeLock = await navigator.wakeLock.request('screen'); } catch (err) { console.error(`${err.name}, ${err.message}`); }
+            try { 
+                wakeLock = await navigator.wakeLock.request('screen');
+            } catch (err) { 
+                console.error(`${err.name}, ${err.message}`); 
+            }
         }
     }
 
     function releaseWakeLock() {
         if (wakeLock !== null) { wakeLock.release(); wakeLock = null; }
     }
+
+    // タブが切り替わったりスマホがスリープから戻った時にWake Lockを再要求する
+    document.addEventListener('visibilitychange', async () => {
+        if (timerIdx !== null && document.visibilityState === 'visible') {
+            await requestWakeLock();
+        }
+    });
 
     function jumpTo(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
     function toggleCustomRange() { const box = document.getElementById('customRangeBox'); box.style.display = (box.style.display === 'flex') ? 'none' : 'flex'; }
@@ -402,7 +421,6 @@
         localStorage.setItem('focus_master_active_user', activeUserId);
     }
 
-    // User Management Functions
     function openUserModal() {
         const container = document.getElementById('userListContainer');
         container.innerHTML = Object.keys(users).map(id => `
@@ -462,11 +480,10 @@
         reader.onload = (ev) => { 
             try {
                 const data = JSON.parse(ev.target.result);
-                // Simple validation to check if it's new format or old
-                if (data.stats && data.tags) { // Old format
+                if (data.stats && data.tags) {
                     users[activeUserId].stats = data.stats;
                     users[activeUserId].tags = data.tags;
-                } else { // New multi-user format
+                } else {
                     users = data;
                     activeUserId = Object.keys(users)[0];
                 }
