@@ -199,6 +199,17 @@
     let myChart = null, pieChart = null, lineChart = null;
     let audioCtx = null;
     let selectedTag = null, selectedDate = null;
+    let wakeLock = null;
+
+    async function requestWakeLock() {
+        if ('wakeLock' in navigator) {
+            try { wakeLock = await navigator.wakeLock.request('screen'); } catch (err) { console.error(`${err.name}, ${err.message}`); }
+        }
+    }
+
+    function releaseWakeLock() {
+        if (wakeLock !== null) { wakeLock.release(); wakeLock = null; }
+    }
 
     function jumpTo(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
     function toggleCustomRange() { const box = document.getElementById('customRangeBox'); box.style.display = (box.style.display === 'flex') ? 'none' : 'flex'; }
@@ -320,12 +331,13 @@
     function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
     function toggleTimer() {
         initAudio(); const btn = document.getElementById('startBtn');
-        if (timerIdx) { clearInterval(timerIdx); timerIdx = null; btn.textContent = "再開 / Resume"; }
+        if (timerIdx) { clearInterval(timerIdx); timerIdx = null; btn.textContent = "再開 / Resume"; releaseWakeLock(); }
         else {
             btn.textContent = "一時停止 / Pause";
+            requestWakeLock();
             timerIdx = setInterval(() => {
                 timeLeft--; updateTimerDisplay();
-                if (timeLeft <= 0) { clearInterval(timerIdx); timerIdx = null; startAlarm(); }
+                if (timeLeft <= 0) { clearInterval(timerIdx); timerIdx = null; startAlarm(); releaseWakeLock(); }
             }, 1000);
         }
     }
