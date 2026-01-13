@@ -54,11 +54,27 @@
         .modal-content { background: white; padding: 25px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; color: #333; overflow-y: auto; max-height: 90vh; }
         .btn-alarm-stop { background: #ff4757; font-size: 1.8rem; padding: 25px; animation: pulse 1s infinite; margin-top: 20px; width: 100%; box-shadow: 0 6px 0 #b33030; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+
+        /* User Switcher Styles */
+        .user-switcher { display: flex; align-items: center; justify-content: space-between; background: #f0f7ff; padding: 10px 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #d0e5ff; }
+        .current-user-info { text-align: left; }
+        .current-user-name { font-weight: bold; color: var(--primary); font-size: 1rem; display: block; }
     </style>
 </head>
 <body>
 
 <div class="card">
+    <div class="user-switcher">
+        <div class="current-user-info">
+            <span style="font-size: 0.7rem; color: #777;">現在のユーザー / User</span>
+            <span id="activeUserName" class="current-user-name">デフォルト</span>
+        </div>
+        <div style="display: flex; gap: 5px;">
+            <button class="btn-tool" style="background: #34495e; padding: 5px 10px;" onclick="openUserModal()">切替 / Switch</button>
+            <button class="btn-tool" style="background: #95a5a6; padding: 5px 10px;" onclick="renameCurrentUser()">編集 / Edit</button>
+        </div>
+    </div>
+
     <div class="pomo-guide">
         <details open>
             <summary>🍅 ポモドーロ・テクニックとは？ <br><span style="font-size:0.8rem; font-weight:normal;">What is Pomodoro Technique?</span></summary>
@@ -183,6 +199,8 @@
     <div class="copyright" style="color:#888; font-size:0.8rem;">© 2026 KuniFami Soft Studio.</div>
 </div>
 
+<div id="userModal" class="modal"><div class="modal-content"><h3 style="margin-top:0;">ユーザー切替 / Switch User</h3><button class="btn-tool" style="width:100%; background:var(--primary); margin-bottom:15px;" onclick="addNewUser()">＋ 新規ユーザー追加 / New User</button><div id="userListContainer" style="text-align:left; border-top:1px solid #eee; max-height: 300px; overflow-y: auto;"></div><button class="btn-tool" style="width:100%; background:#ccc; margin-top:15px;" onclick="closeUserModal()">閉じる / Close</button></div></div>
+
 <div id="tagManagerModal" class="modal"><div class="modal-content"><h3 style="margin-top:0;">タグの管理 / Tag Manager</h3><button class="btn-tool" style="width:100%; background:var(--primary); margin-bottom:15px;" onclick="addNewTag()">＋ 新規タグ追加 / New Tag</button><div id="tagListContainer" style="text-align:left; border-top:1px solid #eee;"></div><button class="btn-tool" style="width:100%; background:#ccc; margin-top:15px;" onclick="closeTagManager()">閉じる / Close</button></div></div>
 <div id="alarmModal" class="modal"><div class="modal-content"><h2 id="alarmTitle" style="color:var(--primary); font-size:2.2rem; margin:0;">時間です！</h2><button class="btn-main btn-alarm-stop" onclick="stopAlarm()">止める / OK</button></div></div>
 <div id="deleteModal" class="modal"><div class="modal-content"><h3 id="delTagTitle" style="color:var(--pomo); margin-top:0;">タグ削除 / Delete Tag</h3><p id="delDateInfo"></p><input type="range" id="delSlider" style="width:100%" step="25" min="25"><div style="margin:15px 0;"><label><input type="checkbox" id="delAllCheck" onchange="toggleDelAll(this)"> 全て削除 / Delete All</label></div><div style="display:flex; gap:10px;"><button class="btn-tool" style="flex:1; background:#ccc;" onclick="closeDeleteModal()">戻る / Back</button><button class="btn-tool" style="background:#ff4757; flex:1;" onclick="executeDelete()">実行 / Delete</button></div></div></div>
@@ -193,8 +211,21 @@
     let timeLeft = STUDY_TIME;
     let timerIdx = null;
     let isBreak = false;
-    let dailyStats = JSON.parse(localStorage.getItem('focus_master_stats')) || {};
-    let tagHistory = JSON.parse(localStorage.getItem('focus_master_tags')) || [];
+
+    // Multi-user Support
+    let users = JSON.parse(localStorage.getItem('focus_master_users')) || { "default": { name: "デフォルト", stats: {}, tags: [] } };
+    let activeUserId = localStorage.getItem('focus_master_active_user') || "default";
+
+    // Legacy Data Migration
+    if (localStorage.getItem('focus_master_stats') && activeUserId === "default" && Object.keys(users.default.stats).length === 0) {
+        users.default.stats = JSON.parse(localStorage.getItem('focus_master_stats'));
+        users.default.tags = JSON.parse(localStorage.getItem('focus_master_tags')) || [];
+        localStorage.setItem('focus_master_users', JSON.stringify(users));
+    }
+
+    let dailyStats = users[activeUserId].stats;
+    let tagHistory = users[activeUserId].tags;
+
     let currentRange = 7;
     let myChart = null, pieChart = null, lineChart = null;
     let audioCtx = null;
@@ -275,6 +306,7 @@
         document.getElementById('totalMinutes').innerText = total;
         document.getElementById('activeDays').innerText = activeDays;
         document.getElementById('streakDays').innerText = calculateStreak();
+        document.getElementById('activeUserName').innerText = users[activeUserId].name;
     }
 
     function drawBarChart(labels, chartDates, datasetsMap) {
@@ -363,13 +395,89 @@
         document.getElementById('startBtn').textContent = "スタート！ / START";
     }
 
-    function save() { localStorage.setItem('focus_master_stats', JSON.stringify(dailyStats)); localStorage.setItem('focus_master_tags', JSON.stringify(tagHistory)); }
-    function exportData() { const blob = new Blob([JSON.stringify({stats: dailyStats, tags: tagHistory})], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'focus_backup.json'; a.click(); }
+    function save() { 
+        users[activeUserId].stats = dailyStats;
+        users[activeUserId].tags = tagHistory;
+        localStorage.setItem('focus_master_users', JSON.stringify(users)); 
+        localStorage.setItem('focus_master_active_user', activeUserId);
+    }
+
+    // User Management Functions
+    function openUserModal() {
+        const container = document.getElementById('userListContainer');
+        container.innerHTML = Object.keys(users).map(id => `
+            <div style="padding:12px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; background:${id === activeUserId ? '#f0f7ff' : 'transparent'}">
+                <span style="font-weight:bold; color:${id === activeUserId ? 'var(--primary)' : '#333'}; cursor:pointer;" onclick="switchUser('${id}')">${users[id].name} ${id === activeUserId ? ' (選択中)' : ''}</span>
+                ${id !== 'default' ? `<button class="btn-tool" style="background:#ff4757; padding:5px 10px;" onclick="deleteUser('${id}')">削除</button>` : ''}
+            </div>`).join('');
+        document.getElementById('userModal').style.display = 'flex';
+    }
+    function closeUserModal() { document.getElementById('userModal').style.display = 'none'; }
+
+    function addNewUser() {
+        const name = prompt("ユーザー名を入力してください / Enter User Name:");
+        if (name && name.trim()) {
+            const id = "user_" + Date.now();
+            users[id] = { name: name.trim(), stats: {}, tags: [] };
+            save();
+            switchUser(id);
+            closeUserModal();
+        }
+    }
+
+    function switchUser(id) {
+        if (timerIdx) { alert("タイマー稼働中は切り替えられません / Timer is running"); return; }
+        activeUserId = id;
+        dailyStats = users[activeUserId].stats;
+        tagHistory = users[activeUserId].tags;
+        save();
+        renderAllCharts();
+        updateTagList();
+        closeUserModal();
+    }
+
+    function renameCurrentUser() {
+        const currentName = users[activeUserId].name;
+        const newName = prompt("新しいユーザー名を入力してください / New User Name:", currentName);
+        if (newName && newName.trim() && newName.trim() !== currentName) {
+            users[activeUserId].name = newName.trim();
+            save();
+            updateDashboard(document.getElementById('totalMinutes').innerText, document.getElementById('activeDays').innerText);
+        }
+    }
+
+    function deleteUser(id) {
+        if (id === 'default') return;
+        if (confirm(`ユーザー「${users[id].name}」のデータを完全に削除しますか？`)) {
+            if (activeUserId === id) switchUser('default');
+            delete users[id];
+            save();
+            openUserModal();
+        }
+    }
+
+    function exportData() { const blob = new Blob([JSON.stringify(users)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'focus_backup_all_users.json'; a.click(); }
     function importData(e) {
         const reader = new FileReader();
-        reader.onload = (ev) => { const data = JSON.parse(ev.target.result); dailyStats = data.stats; tagHistory = data.tags; save(); renderAllCharts(); updateTagList(); alert("復元完了 / Restored"); };
+        reader.onload = (ev) => { 
+            try {
+                const data = JSON.parse(ev.target.result);
+                // Simple validation to check if it's new format or old
+                if (data.stats && data.tags) { // Old format
+                    users[activeUserId].stats = data.stats;
+                    users[activeUserId].tags = data.tags;
+                } else { // New multi-user format
+                    users = data;
+                    activeUserId = Object.keys(users)[0];
+                }
+                dailyStats = users[activeUserId].stats;
+                tagHistory = users[activeUserId].tags;
+                save(); renderAllCharts(); updateTagList(); alert("復元完了 / Restored");
+            } catch(e) { alert("ファイル形式が正しくありません"); }
+        };
         reader.readAsText(e.target.files[0]);
     }
+
     function changeRange(d, btn) { currentRange = d; document.getElementById('customRangeBox').style.display='none'; renderAllCharts(); }
 
     function calculateStreak() {
@@ -377,31 +485,17 @@
             const dayData = dailyStats[d];
             return dayData && Object.values(dayData).some(v => v > 0);
         }).sort().reverse();
-        
         if (dates.length === 0) return 0;
-
-        const today = new Date();
-        const todayStr = today.toISOString().split('T')[0];
-        
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
+        const todayStr = new Date().toISOString().split('T')[0];
+        const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
         const yesterdayStr = yesterday.toISOString().split('T')[0];
-
         if (dates[0] !== todayStr && dates[0] !== yesterdayStr) return 0;
-
-        let streak = 0;
-        let checkDate = new Date(dates[0]);
-
+        let streak = 0; let checkDate = new Date(dates[0]);
         while (true) {
             const ds = checkDate.toISOString().split('T')[0];
-            const hasData = dailyStats[ds] && Object.values(dailyStats[ds]).some(val => val > 0);
-            
-            if (hasData) {
-                streak++;
-                checkDate.setDate(checkDate.getDate() - 1);
-            } else {
-                break;
-            }
+            if (dailyStats[ds] && Object.values(dailyStats[ds]).some(val => val > 0)) {
+                streak++; checkDate.setDate(checkDate.getDate() - 1);
+            } else break;
         }
         return streak;
     }
