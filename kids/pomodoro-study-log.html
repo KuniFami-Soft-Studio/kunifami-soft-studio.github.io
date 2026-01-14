@@ -47,6 +47,13 @@
         .chart-container { background: #fff; padding: 15px; border-radius: 20px; border: 1px solid #eee; margin-top: 10px; height: 260px; }
         .chart-title { font-size: 0.85rem; font-weight: bold; margin-bottom: 8px; color: #555; text-align: left; border-left: 4px solid var(--accent); padding-left: 8px; }
 
+        /* Table Styles */
+        .table-container { background: #fff; padding: 15px; border-radius: 20px; border: 1px solid #eee; margin-top: 15px; max-height: 300px; overflow-y: auto; }
+        .stats-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: center; }
+        .stats-table th { background: #f8f9fa; color: #777; padding: 8px; font-weight: bold; position: sticky; top: 0; border-bottom: 2px solid #eee; }
+        .stats-table td { padding: 10px 8px; border-bottom: 1px solid #f0f0f0; color: #333; }
+        .stats-table tr:last-child td { border-bottom: none; }
+
         .footer-area { width: 100%; max-width: 480px; text-align: center; margin-top: 25px; padding-bottom: 30px; }
         .footer-link { display: inline-block; color: #fff; text-decoration: none; font-size: 1.1rem; font-weight: bold; padding: 15px 30px; background: #444; border: 2px solid #666; border-radius: 15px; margin-bottom: 20px; }
 
@@ -151,9 +158,9 @@
 <div class="card" id="analysisCard">
     <div class="dashboard-grid">
         <div class="stat-card" onclick="jumpTo('chartSection')">
-            <div class="stat-label">期間合計<br>Total</div>
+            <div class="stat-label">期間合計<br>Total Time</div>
             <div id="totalMinutes" class="stat-value">0</div>
-            <div class="stat-label">mins</div>
+            <div class="stat-label" id="totalPomoLabel">mins (0 🍅)</div>
         </div>
         <div class="stat-card" onclick="jumpTo('pieSection')">
             <div class="stat-label">実継続<br>Active</div>
@@ -183,6 +190,22 @@
     <div class="chart-container" id="chartSection">
         <div class="chart-title">学習推移 / Daily Log</div>
         <canvas id="pomoChart"></canvas>
+    </div>
+
+    <div class="table-container">
+        <div class="chart-title">詳細記録 / Details</div>
+        <table class="stats-table" id="statsTable">
+            <thead>
+                <tr>
+                    <th>日付 / Date</th>
+                    <th>タグ / Tag</th>
+                    <th>時間 / Min</th>
+                    <th>数 / 🍅</th>
+                </tr>
+            </thead>
+            <tbody id="statsTableBody">
+                </tbody>
+        </table>
     </div>
 
     <div class="chart-container" id="pieSection" style="height: 300px;">
@@ -240,6 +263,12 @@
     let selectedTag = null, selectedDate = null;
     let wakeLock = null;
 
+    function getLocalDate(date = new Date()) {
+        const offset = date.getTimezoneOffset();
+        const localDate = new Date(date.getTime() - (offset * 60 * 1000));
+        return localDate.toISOString().split('T')[0];
+    }
+
     async function requestWakeLock() {
         if ('wakeLock' in navigator) {
             try { 
@@ -254,7 +283,6 @@
         if (wakeLock !== null) { wakeLock.release(); wakeLock = null; }
     }
 
-    // タブが切り替わったりスマホがスリープから戻った時にWake Lockを再要求する
     document.addEventListener('visibilitychange', async () => {
         if (timerIdx !== null && document.visibilityState === 'visible') {
             await requestWakeLock();
@@ -275,12 +303,13 @@
     function renderAllCharts(cStart = null, cEnd = null) {
         const labels = []; const chartDates = [];
         const datasetsMap = {}; const categoryTotals = {};
+        const tableData = []; // 表用のデータ配列
         let rangeTotal = 0, actualActiveDays = 0;
 
         if (cStart && cEnd) {
             let curr = new Date(cStart); const stop = new Date(cEnd);
             while (curr <= stop) {
-                const ds = curr.toISOString().split('T')[0];
+                const ds = getLocalDate(curr);
                 chartDates.push(ds); labels.push(`${curr.getMonth()+1}/${curr.getDate()}`);
                 
                 let dayHasData = false;
@@ -290,7 +319,10 @@
                     datasetsMap[tag].push(val);
                     rangeTotal += val;
                     categoryTotals[tag] = (categoryTotals[tag] || 0) + val;
-                    if(val > 0) dayHasData = true;
+                    if(val > 0) {
+                        dayHasData = true;
+                        tableData.push({ date: ds, tag: tag, minutes: val });
+                    }
                 });
                 if(dayHasData) actualActiveDays++;
                 curr.setDate(curr.getDate() + 1);
@@ -299,7 +331,7 @@
             const end = new Date();
             for (let i = currentRange - 1; i >= 0; i--) {
                 const d = new Date(); d.setDate(end.getDate() - i);
-                const ds = d.toISOString().split('T')[0];
+                const ds = getLocalDate(d);
                 chartDates.push(ds); labels.push(`${d.getMonth()+1}/${d.getDate()}`);
                 
                 let dayHasData = false;
@@ -309,7 +341,10 @@
                     datasetsMap[tag].push(val);
                     rangeTotal += val;
                     categoryTotals[tag] = (categoryTotals[tag] || 0) + val;
-                    if(val > 0) dayHasData = true;
+                    if(val > 0) {
+                        dayHasData = true;
+                        tableData.push({ date: ds, tag: tag, minutes: val });
+                    }
                 });
                 if(dayHasData) actualActiveDays++;
             }
@@ -319,10 +354,33 @@
         drawBarChart(labels, chartDates, datasetsMap);
         drawPieChart(categoryTotals);
         drawLineChart(labels, datasetsMap);
+        renderTable(tableData); // 表の描画
+    }
+
+    // テーブルを描画する関数
+    function renderTable(data) {
+        const tbody = document.getElementById('statsTableBody');
+        // 日付の新しい順に並び替えて表示
+        const sortedData = data.sort((a, b) => b.date.localeCompare(a.date));
+        
+        tbody.innerHTML = sortedData.map(item => `
+            <tr>
+                <td>${item.date.substring(5)}</td>
+                <td style="font-weight:bold; color:var(--primary)">${item.tag}</td>
+                <td>${item.minutes}</td>
+                <td>${item.minutes / 25}</td>
+            </tr>
+        `).join('');
+
+        if (sortedData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="color:#999; padding:20px;">データがありません</td></tr>';
+        }
     }
 
     function updateDashboard(total, activeDays) {
         document.getElementById('totalMinutes').innerText = total;
+        const pomoCount = total / 25;
+        document.getElementById('totalPomoLabel').innerText = `mins (${pomoCount} 🍅)`;
         document.getElementById('activeDays').innerText = activeDays;
         document.getElementById('streakDays').innerText = calculateStreak();
         document.getElementById('activeUserName').innerText = users[activeUserId].name;
@@ -338,6 +396,13 @@
             type: 'bar', data: { labels, datasets },
             options: { 
                 responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => `${context.dataset.label}: ${context.parsed.y}分 (${context.parsed.y / 25} 🍅)`
+                        }
+                    }
+                },
                 onClick: (e, elements) => {
                     if (elements.length > 0) {
                         const { datasetIndex, index } = elements[0];
@@ -363,7 +428,18 @@
         pieChart = new Chart(ctx, {
             type: 'doughnut',
             data: { labels: tags, datasets: [{ data: chartData, backgroundColor: chartColors }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } } }
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { 
+                    legend: { position: 'bottom', labels: { boxWidth: 12 } },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => ` ${context.label}: ${context.parsed}分 (${context.parsed / 25} 🍅)`
+                        }
+                    }
+                } 
+            }
         });
     }
 
@@ -375,7 +451,18 @@
         if (lineChart) lineChart.destroy();
         lineChart = new Chart(ctx, {
             type: 'line', data: { labels, datasets },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => `${context.dataset.label}: ${context.parsed.y}分 (${context.parsed.y / 25} 🍅)`
+                        }
+                    }
+                } 
+            }
         });
     }
 
@@ -403,7 +490,7 @@
     function stopAlarm() { document.getElementById('alarmModal').style.display='none'; handleTimerEnd(); }
     function handleTimerEnd() {
         const tag = document.getElementById('studyTag').value.trim() || "その他 / Others";
-        const today = new Date().toISOString().split('T')[0];
+        const today = getLocalDate();
         if (!isBreak) {
             if (!dailyStats[today]) dailyStats[today] = {};
             dailyStats[today][tag] = (dailyStats[today][tag] || 0) + 25;
@@ -503,13 +590,13 @@
             return dayData && Object.values(dayData).some(v => v > 0);
         }).sort().reverse();
         if (dates.length === 0) return 0;
-        const todayStr = new Date().toISOString().split('T')[0];
+        const todayStr = getLocalDate();
         const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayStr = yesterday.toISOString().split('T')[0];
+        const yesterdayStr = getLocalDate(yesterday);
         if (dates[0] !== todayStr && dates[0] !== yesterdayStr) return 0;
         let streak = 0; let checkDate = new Date(dates[0]);
         while (true) {
-            const ds = checkDate.toISOString().split('T')[0];
+            const ds = getLocalDate(checkDate);
             if (dailyStats[ds] && Object.values(dailyStats[ds]).some(val => val > 0)) {
                 streak++; checkDate.setDate(checkDate.getDate() - 1);
             } else break;
@@ -562,7 +649,7 @@
 
     window.onload = () => { 
         updateTagList(); 
-        document.getElementById('endDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('endDate').value = getLocalDate();
         renderAllCharts(); 
     };
 </script>
