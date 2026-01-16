@@ -11,7 +11,20 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>おちものキャッチ / Fruit Catch</title>
+    
+    <title>おちものキャッチ / Fruit Catch - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] 3〜5歳向け！フルーツをキャッチする無料知育ゲーム。集中力と反射神経を養います。 [EN] Free fruit catching game for kids aged 3-5. No installation required. Play for free in your browser.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,おちもの,フルーツ,3歳,4歳,5歳,暇つぶし,Fruit Catch Game,Free Kids Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="おちものキャッチ / Fruit Catch - 集中マスター Kids">
+    <meta property="og:description" content="100てん とれるかな？ 楽しく遊べる知育ゲーム。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/catch.html">
+    <meta name="twitter:card" content="summary">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
     
     <style>
         :root { --bg: #E8F5E9; --main: #4CAF50; }
@@ -48,6 +61,11 @@
         }
         .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #BF360C; }
 
+        /* Footer for Reliability */
+        .footer-links { margin-top: 15px; }
+        .footer-links a { color: #666; text-decoration: none; font-size: 0.75rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+
         /* --- Game --- */
         #gameScreen { display: none; width: 100%; height: 100vh; position: relative; overflow: hidden; }
         #gameCanvas { background: linear-gradient(to bottom, #81D4FA, #E1F5FE); width: 100%; height: 80%; display: block; }
@@ -83,6 +101,11 @@
 
         <button class="btn-start" onclick="startGame()">Start! / はじめる</button>
         <a href="./menu.html" style="display:block; margin-top:10px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back to Menu</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
     </div>
 </div>
 
@@ -93,6 +116,11 @@
         <p style="font-weight: bold; color: #666;">Goal! You did it!</p>
         <button class="btn-start" onclick="startGame()">Play Again / もういっかい</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none;">← メニューへ / Back to Menu</a>
+        
+        <div class="footer-links" style="margin-top: 20px;">
+            <a href="privacy.html" style="color:#999;">Privacy Policy / 規約</a>
+            <a href="contact.html" style="color:#999;">Contact / お問い合わせ</a>
+        </div>
     </div>
 </div>
 
@@ -104,11 +132,14 @@
 
     <div class="ui-container">
         <div class="ad-bottom">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
             <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        <div class="footer-links" style="margin-bottom: 5px;">
+            <a href="privacy.html" style="font-size: 10px; color:#ccc;">Privacy Policy / 規約</a>
+            <a href="contact.html" style="font-size: 10px; color:#ccc;">Contact / お問い合わせ</a>
+        </div>
     </div>
 </div>
 
@@ -148,7 +179,6 @@
         
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // 難易度に応じた生成率
         let spawnChance = 0.04 + (score / 3000);
         if (Math.random() < spawnChance) {
             const isBomb = Math.random() < 0.15;
@@ -161,14 +191,12 @@
             });
         }
 
-        // 更新と描画
         for (let i = items.length - 1; i >= 0; i--) {
             items[i].y += items[i].speed;
             
-            ctx.font = '55px Arial'; // フルーツを大きく
+            ctx.font = '55px Arial';
             ctx.fillText(items[i].emoji, items[i].x, items[i].y);
 
-            // 当たり判定 (判定を少し広めに)
             if (items[i].y > basket.y && items[i].y < basket.y + 80 &&
                 items[i].x + 40 > basket.x && items[i].x < basket.x + basket.width) {
                 
@@ -191,19 +219,16 @@
             if (items[i].y > canvas.height + 100) items.splice(i, 1);
         }
 
-        // カゴの描画
         ctx.font = '90px Arial';
         ctx.fillText('🧺', basket.x, basket.y + 70);
         
         animationId = requestAnimationFrame(gameLoop);
     }
 
-    // 操作
     function moveHandler(e) {
         if (!gameActive) return;
         let clientX = e.touches ? e.touches[0].clientX : e.clientX;
         basket.x = clientX - basket.width / 2;
-        // 画面外へはみ出さない制限
         if (basket.x < 0) basket.x = 0;
         if (basket.x > canvas.width - basket.width) basket.x = canvas.width - basket.width;
     }
