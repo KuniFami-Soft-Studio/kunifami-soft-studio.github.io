@@ -11,7 +11,18 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ネオンおえかき / Neon Magic Draw</title>
+    
+    <title>ネオンおえかき / Neon Magic Draw - 3〜5歳向け無料知育アプリ</title>
+    <meta name="description" content="[JP] 暗闇にひかるネオンペンで自由にお絵描き！3〜5歳向けの無料知育ゲーム。色彩感覚と創造力を育みます。[EN] Free glowing neon drawing game for kids. Express creativity with magic neon pens. Developed for early childhood education.">
+    <meta name="keywords" content="知育ゲーム,無料,子供向け,お絵描き,ネオン,Neon Draw,Educational Games,Toddler Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="ネオンおえかき / Neon Magic Draw - 集中マスター Kids">
+    <meta property="og:description" content="まほうの ひかるペンで おえかきしよう！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/neon_draw.html">
+    <meta name="twitter:card" content="summary">
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
     
@@ -66,7 +77,11 @@
         
         .btn-clear { background: #ff4757; color: white; padding: 12px 20px; border-radius: 15px; border: none; font-weight: bold; font-size: 1rem; }
 
-        .footer-copyright { margin-top: 15px; font-size: 0.7rem; color: #999; }
+        /* 信頼性向上用リンク */
+        .footer-links { margin-top: 15px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .footer-copyright { margin-top: 10px; font-size: 0.7rem; color: #999; }
     </style>
 </head>
 <body>
@@ -88,6 +103,10 @@
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる (Back)</a>
     
+    <div class="footer-links">
+        <a href="privacy.html">Privacy Policy / 規約</a>
+        <a href="contact.html">Contact / お問い合わせ</a>
+    </div>
     <div class="footer-copyright">
         © 2026 KuniFami Soft Studio. All Rights Reserved.
     </div>
@@ -118,6 +137,7 @@
         document.getElementById('startScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'flex';
         resize();
+        if(typeof gtag === 'function') { gtag('event', 'game_start', {'game_name': 'neon_draw'}); }
     }
 
     function stopGame() {
@@ -157,7 +177,7 @@
         const x = clientX - rect.left;
         const y = clientY - rect.top;
 
-        ctx.lineWidth = 10; // 子供が描きやすいよう少し太めに
+        ctx.lineWidth = 10;
         ctx.lineCap = 'round';
         ctx.strokeStyle = color;
         ctx.shadowBlur = 15;
