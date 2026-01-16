@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>おべんとう箱 / Lunch Box Creator</title>
-    <meta name="description" content="分類して並べる力を養う知育アプリ">
+    
+    <title>Lunch Box Creator / おべんとう箱 - 3〜5歳向け無料知育アプリ</title>
+    <meta name="description" content="[JP] 3〜5歳向け！おかずを自由に並べて、分類する力を養う無料知育ゲーム。しきりを使ってお弁当をきれいに完成させよう。[EN] Free educational game for kids aged 3-5. Create your own lunch box and develop organizational skills. Organize foods using colorful partitions.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,おべんとう,3歳,4歳,5歳,暇つぶし,Lunch Box,Educational Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Lunch Box Creator / おべんとう箱 - 集中マスター Kids">
+    <meta property="og:description" content="おかずを きれいに ならべて、じぶんだけの おべんとうを つくってみよう！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/lunch_box.html">
+    <meta name="twitter:card" content="summary">
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
     <script>
@@ -30,8 +40,8 @@
         /* おかずと仕切りのスタイル */
         .food-item { position: absolute; transform: translate(-50%, -50%); z-index: 10; pointer-events: none; animation: dropIn 0.2s ease-out; }
         .partition-wall { position: absolute; z-index: 5; pointer-events: none; border-radius: 4px; }
-        .wall-v { width: 10px; height: 100%; transform: translateX(-50%); } /* 縦の壁 */
-        .wall-h { width: 100%; height: 10px; transform: translateY(-50%); } /* 横の壁 */
+        .wall-v { width: 10px; height: 100%; transform: translateX(-50%); } 
+        .wall-h { width: 100%; height: 10px; transform: translateY(-50%); } 
         .green-wall { background: #4CAF50; border: 2px solid #2E7D32; }
         .pink-wall { background: #F48FB1; border: 2px solid #AD1457; }
 
@@ -39,15 +49,21 @@
 
         /* タブとメニュー */
         .tabs { display: flex; width: 100%; gap: 2px; margin-bottom: 5px; }
-        .tab { flex: 1; padding: 8px 0; border-radius: 10px 10px 0 0; background: #CFD8DC; border: none; font-size: 0.65rem; font-weight: bold; cursor: pointer; color: #546E7A; }
+        .tab { flex: 1; padding: 8px 0; border-radius: 10px 10px 0 0; background: #CFD8DC; border: none; font-size: 0.6rem; font-weight: bold; cursor: pointer; color: #546E7A; line-height: 1.2; }
         .tab.active { background: var(--tab-active); color: white; }
         .food-menu { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; width: 100%; background: white; padding: 10px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 0 #D7CCC8; min-height: 110px; }
         .food-opt { font-size: 24px; background: #FBE9E7; border: 3px solid transparent; border-radius: 10px; cursor: pointer; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .food-opt.selected { border-color: var(--accent); background: white; transform: scale(1.05); }
 
         .controls { display: flex; gap: 10px; width: 100%; margin-top: 15px; }
-        .btn-sub { flex: 1; background: #8D6E63; color: white; border: none; padding: 12px; border-radius: 15px; font-weight: bold; }
-        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+        .btn-sub { flex: 1; background: #8D6E63; color: white; border: none; padding: 12px; border-radius: 15px; font-weight: bold; font-size: 0.85rem; }
+
+        /* Reliability & AdSense Compliance */
+        .footer-area { width: 100%; padding-bottom: 20px; }
+        .footer-links { margin: 10px 0; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .copyright { font-size: 0.7rem; color: #999; margin: 5px 0; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -56,16 +72,23 @@
     <div class="container">
         <div style="font-size:4.5rem; margin-bottom:10px;">🍱</div>
         <div style="background:white; padding:25px 20px; border-radius:30px; box-shadow:0 8px 0 #BDBDBD; margin-bottom:20px; width:100%;">
-            <h1 style="margin:0; font-size:1.5rem;">おべんとう箱</h1>
-            <p style="margin:5px 0 15px; color:#888;">Lunch Box Creator</p>
+            <h1 style="margin:0; font-size:1.5rem;">Lunch Box Creator / おべんとう箱</h1>
+            <p style="margin:5px 0 15px; color:#888;">Educational Game for Kids</p>
             <p style="text-align:left; font-size:0.85rem; line-height:1.6;">
                 「しきり」の壁(かべ)を使って、おかずやフルーツをきれいに分けてみよう！<br>
                 <small>Use the walls to organize your lunch box!</small>
             </p>
         </div>
         <button onclick="showApp()" style="background:var(--accent); color:white; border:none; padding:18px; border-radius:50px; font-size:1.3rem; font-weight:bold; width:100%; box-shadow:0 5px 0 #C62828;">つくる / START</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
-        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+        
+        <div class="footer-area" style="margin-top: 20px;">
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy / 規約</a>
+                <a href="contact.html">Contact / お問い合わせ</a>
+            </div>
+            <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        </div>
     </div>
 </div>
 
@@ -80,24 +103,23 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="changeTab('main', this)">メイン</button>
-            <button class="tab" onclick="changeTab('veggie', this)">やさい</button>
-            <button class="tab" onclick="changeTab('fruit', this)">フルーツ</button>
-            <button class="tab" onclick="changeTab('pick', this)">ピック</button>
-            <button class="tab" onclick="changeTab('tool', this)">しきり</button>
+            <button class="tab active" onclick="changeTab('main', this)">メイン<br>Main</button>
+            <button class="tab" onclick="changeTab('veggie', this)">やさい<br>Veggie</button>
+            <button class="tab" onclick="changeTab('fruit', this)">フルーツ<br>Fruit</button>
+            <button class="tab" onclick="changeTab('pick', this)">ピック<br>Pick</button>
+            <button class="tab" onclick="changeTab('tool', this)">しきり<br>Wall</button>
         </div>
         <div class="food-menu" id="foodMenu"></div>
 
         <div class="controls">
-            <button class="btn-sub" onclick="clearBox()">やりなおす</button>
-            <button class="btn-sub" onclick="goBack()">おわる</button>
+            <button class="btn-sub" onclick="clearBox()">やりなおす<br>Reset</button>
+            <button class="btn-sub" onclick="goBack()">おわる<br>Finish</button>
         </div>
 
         <div style="margin-top:15px;">
             <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
-        <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
 
@@ -107,7 +129,7 @@
         veggie: ['🥦', '🍅', '🌽', '🥕', '🥔', '🥗', '🥑', '🥒', '🍄', '🎃'],
         fruit: ['🍎', '🍓', '🍌', '🍇', '🍒', '🍍', '🥝', '🍊', '🍑', '🍈'],
         pick: ['🚩', '🏁', '🎌', '🎖️', '🪄', '🌸', '✨'],
-        tool: ['┃', '━', '┇', '┅'] // 縦壁(緑), 横壁(緑), 縦壁(ピンク), 横壁(ピンク)
+        tool: ['┃', '━', '┇', '┅'] 
     };
 
     let currentItem = foodData.main[0];
@@ -156,7 +178,6 @@
         if (currentCategory === 'tool') {
             const wall = document.createElement('div');
             wall.className = 'partition-wall';
-            // アイコンで判定
             if (currentItem === '┃' || currentItem === '┇') {
                 wall.classList.add('wall-v');
                 wall.style.left = x + 'px';
@@ -164,7 +185,6 @@
                 wall.classList.add('wall-h');
                 wall.style.top = y + 'px';
             }
-            // 色判定
             wall.classList.add((currentItem === '┇' || currentItem === '┅') ? 'pink-wall' : 'green-wall');
             box.appendChild(wall);
         } else {
@@ -195,7 +215,7 @@
     }
 
     function goBack() {
-        if(confirm("最初にもどりますか？")) {
+        if(confirm("最初にもどりますか？ / Go back to title?")) {
             clearBox();
             document.getElementById('appScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
