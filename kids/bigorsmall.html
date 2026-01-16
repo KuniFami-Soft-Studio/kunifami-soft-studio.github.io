@@ -11,8 +11,19 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>大きさ比べ / Big or Small</title>
     
+    <title>大きさ比べ / Big or Small - 知育クイズアプリ</title>
+    <meta name="description" content="[JP] 子供向けの知育クイズアプリ「大きさ比べ」。絵文字を使って楽しく大小の比較を学べます。[EN] Educational quiz app for kids 'Big or Small'. Learn to compare sizes with fun emojis.">
+    <meta name="keywords" content="知育アプリ, 大きさ比べ, 子供向けゲーム, クイズ, Educational App, Kids Game, Big or Small, Quiz">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="大きさ比べ / Big or Small">
+    <meta property="og:description" content="楽しく学べる知育クイズアプリ。どちらが大きいか当ててみよう！">
+    <meta property="og:type" content="website">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
     <style>
         :root {
             --bg: #FFF3E0;
@@ -70,7 +81,9 @@
         @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0); } 80% { transform: translate(-50%, -50%) scale(1.2); } 100% { transform: translate(-50%, -50%) scale(1); } }
 
         /* --- 広告・フッター --- */
-        .ad-bottom { margin-top: auto; width: 100%; text-align: center; background: #fff; }
+        .ad-bottom { margin-top: auto; width: 100%; text-align: center; background: #fff; border-top: 1px solid #eee; }
+        .footer-links { padding: 10px 0 0 0; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 12px; margin: 0 10px; }
         .copyright { font-size: 0.6rem; color: #999; padding: 10px; }
         .ui-btn {
             background: #fff; border: 3px solid #FF9800; padding: 10px 25px;
@@ -89,6 +102,11 @@
         <p style="margin: 5px 0; font-weight: bold; color: #FB8C00;">Big or Small Quiz</p>
         <button class="btn-start" onclick="startGame()">Start! / はじめる</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="contact.html">Contact</a>
+        </div>
         <div class="copyright" style="background:transparent;">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -102,7 +120,7 @@
     <div id="successStar" class="success-overlay">⭐️</div>
 
     <div class="choice-container" id="choiceContainer">
-        </div>
+    </div>
 
     <div style="margin-top: 20px;">
         <button class="ui-btn" onclick="nextQuestion()">つぎへ / Next</button>
@@ -110,9 +128,14 @@
     </div>
 
     <div class="ad-bottom">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div style="padding: 10px 0;">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="contact.html">Contact</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -139,7 +162,6 @@
         const container = document.getElementById('choiceContainer');
         container.innerHTML = '';
 
-        // 大きい方を探すか小さい方を探すかランダム
         currentTarget = Math.random() > 0.5 ? "big" : "small";
         
         if (currentTarget === "big") {
@@ -150,14 +172,12 @@
             document.getElementById('qSub').innerText = "Which is smaller?";
         }
 
-        // 絵文字を選択
         const emoji = emojis[Math.floor(Math.random() * emojis.length)];
 
-        // サイズを決定 (大: 160px, 小: 60px)
         const sizes = [
             { id: "choiceA", type: "big", val: "160px" },
             { id: "choiceB", type: "small", val: "60px" }
-        ].sort(() => Math.random() - 0.5); // 左右入れ替え
+        ].sort(() => Math.random() - 0.5);
 
         sizes.forEach(size => {
             const div = document.createElement('div');
