@@ -11,8 +11,19 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>マイフォトパズル / Photo Puzzle</title>
     
+    <title>Photo Puzzle / しゃしんパズル - 3〜5歳向け無料知育ジグソーパズル</title>
+    <meta name="description" content="[JP] 3〜5歳向け！お気に入りの写真で遊べる無料知育パズルゲーム。形を認識する力と集中力を養います。[EN] Free Photo Jigsaw Puzzle for kids aged 3-5. Turn your favorite photos into puzzles. Develops spatial recognition and focus.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,パズル,写真パズル,3歳,4歳,5歳,暇つぶし,Photo Puzzle,Jigsaw Puzzle,Educational Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Photo Puzzle / しゃしんパズル - 集中マスター Kids">
+    <meta property="og:description" content="好きな写真がパズルになるよ！えらんだ写真をバラバラにして、もとにもどせるかな？">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/photo_puzzle.html">
+    <meta name="twitter:card" content="summary">
+
     <style>
         :root { --bg: #E1F5FE; --main: #0288D1; }
         * { -webkit-tap-highlight-color: transparent; user-select: none; box-sizing: border-box; }
@@ -20,6 +31,7 @@
             margin: 0; padding: 0; background: var(--bg);
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            overflow-y: auto;
         }
 
         /* --- Start Screen --- */
@@ -52,14 +64,11 @@
             position: relative; width: 340px; height: 340px;
             background: #fff; border: 6px solid #fff; border-radius: 15px;
             margin: 10px 0; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            /* 下絵（ガイド）用 */
             background-size: cover;
         }
 
-        /* ピースのデザイン改良 */
         .piece {
             position: absolute; cursor: grab;
-            /* 太い白枠で境目を強調 */
             border: 3px solid #fff; 
             background-repeat: no-repeat;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
@@ -79,8 +88,13 @@
             align-items: center; justify-content: center; text-align: center;
         }
 
-        .ad-bottom { width: 100%; text-align: center; margin-top: auto; }
-        .copyright { font-size: 0.6rem; color: #999; padding: 5px; }
+        /* Footer for Reliability & AdSense Compliance */
+        .footer-links { margin: 10px 0; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+
+        .ad-bottom { width: 100%; text-align: center; margin-top: auto; background: rgba(255,255,255,0.8); }
+        .copyright { font-size: 0.6rem; color: #999; padding: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -88,7 +102,7 @@
 <div id="startScreen">
     <div class="start-card">
         <div style="font-size: 4rem;">📸🧩</div>
-        <h1 style="margin: 0; color: #01579B;">しゃしんパズル</h1>
+        <h1 style="margin: 0; color: #01579B;">Photo Puzzle / しゃしんパズル</h1>
         <p style="margin: 0 0 20px 0; color: #0288D1; font-weight: bold;">Photo Jigsaw Puzzle</p>
         
         <label class="upload-area" for="fileInput">
@@ -97,13 +111,19 @@
         </label>
 
         <div id="levelSelection" style="display: none;">
-            <p style="font-weight: bold; color: #666;">なんピースにする？</p>
+            <p style="font-weight: bold; color: #666;">なんピースにする？ / How many pieces?</p>
             <button class="level-btn btn-4" onclick="initPuzzle(2)">4 ピース / Easy</button>
             <button class="level-btn btn-9" onclick="initPuzzle(3)">9 ピース / Normal</button>
             <button class="level-btn btn-16" onclick="initPuzzle(4)">16 ピース / Hard</button>
         </div>
         
-        <a href="./menu.html" style="display:block; margin-top:20px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+        <a href="./menu.html" style="display:block; margin-top:20px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+        
+        <div class="footer-links" style="margin-top: 20px;">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
 
@@ -122,6 +142,11 @@
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -152,7 +177,6 @@
         document.getElementById('startScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'flex';
         
-        // ガイド用の下絵を設定（透明度を下げて表示）
         container.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url(${baseImage})`;
         container.style.backgroundSize = 'cover';
 
@@ -172,7 +196,6 @@
                 const tx = c * pieceSize;
                 const ty = r * pieceSize;
 
-                // バラバラに配置
                 const randX = Math.random() * (totalSize - pieceSize);
                 const randY = Math.random() * (totalSize - pieceSize);
                 piece.style.left = randX + 'px';
@@ -207,7 +230,6 @@
             let x = p.clientX - containerRect.left - offsetX;
             let y = p.clientY - containerRect.top - offsetY;
 
-            // 枠内制限
             x = Math.max(-10, Math.min(x, totalSize - el.offsetWidth + 10));
             y = Math.max(-10, Math.min(y, totalSize - el.offsetHeight + 10));
 
@@ -223,7 +245,6 @@
             const cx = parseInt(el.style.left);
             const cy = parseInt(el.style.top);
 
-            // 判定（30px以内なら吸い付く）
             if (Math.abs(cx - tx) < 30 && Math.abs(cy - ty) < 30) {
                 el.style.left = tx + 'px';
                 el.style.top = ty + 'px';
