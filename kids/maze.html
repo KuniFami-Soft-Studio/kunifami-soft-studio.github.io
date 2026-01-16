@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>なめらかめいろ / Smooth Maze</title>
     
+    <title>なめらかめいろ / Smooth Maze - 3〜5歳向け無料知育アプリ</title>
+    <meta name="description" content="[JP] 指でテントウムシをスライド！3〜5歳向けのなめらか移動迷路。集中力と手先の器用さを育む無料知育ゲーム。[EN] Smooth maze game for kids. Slide the ladybug to the goal. Free educational game for developing concentration.">
+    <meta name="keywords" content="知育ゲーム,迷路,無料,子供向け,なめらかめいろ,3歳,4歳,5歳,Maze,Educational Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="なめらかめいろ / Smooth Maze - 集中マスター Kids">
+    <meta property="og:description" content="テントウムシさんを スルスル〜っと うごかして、ひまわりの ゴールを めざそう！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/smooth_maze.html">
+    <meta name="twitter:card" content="summary">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -37,7 +48,7 @@
         .btn-sub { 
             flex: 1; background: var(--main-color); color: white; border: none; 
             padding: 14px; border-radius: 18px; font-weight: bold; font-size: 0.9rem; 
-            box-shadow: 0 4px 0 #2E7D32;
+            box-shadow: 0 4px 0 #2E7D32; cursor: pointer;
         }
 
         .star { position: absolute; pointer-events: none; font-size: 24px; animation: fly 1s ease-out forwards; z-index: 100; }
@@ -45,7 +56,12 @@
             0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 
             100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0); opacity: 0; } 
         }
-        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+
+        /* 信頼性向上用リンクスタイル */
+        .footer-links { margin: 10px 0; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .copyright { font-size: 0.7rem; color: #999; margin: 10px 0; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -63,7 +79,12 @@
             </p>
         </div>
         <button onclick="showApp()" style="background:#FFA726; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #FB8C00;">はじめる / START</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+        
+        <div class="footer-links" style="margin-top: 25px;">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -74,9 +95,15 @@
             <canvas id="mazeCanvas"></canvas>
         </div>
         <div class="controls">
-            <button class="btn-sub" onclick="initMaze()">ちがうめいろ</button>
-            <button class="btn-sub" onclick="goBack()">おわる</button>
+            <button class="btn-sub" onclick="initMaze()">ちがうめいろ<br>Change</button>
+            <button class="btn-sub" onclick="goBack()">おわる<br>Quit</button>
         </div>
+
+        <div style="margin-top:15px;">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -101,7 +128,6 @@
         canvas.width = size; canvas.height = size;
         cellSize = size / cols;
         playerRadius = cellSize * 0.35;
-        // スタート位置を中心座標で設定
         player.x = cellSize / 2;
         player.y = cellSize / 2;
         isGoal = false;
@@ -126,10 +152,8 @@
         maze[rows-1][cols-1] = 0;
     }
 
-    // 壁判定関数（なめらか移動用）
     function canMoveTo(nx, ny) {
         const margin = playerRadius * 0.8;
-        // テントウムシの四隅（当たり判定ボックス）をチェック
         const points = [
             {x: nx - margin, y: ny - margin},
             {x: nx + margin, y: ny - margin},
@@ -152,22 +176,19 @@
         const touchX = clientX - rect.left;
         const touchY = clientY - rect.top;
 
-        // 現在位置からタッチ位置へ少しずつ近づける（なめらかさの肝）
         const dx = touchX - player.x;
         const dy = touchY - player.y;
         const distance = Math.sqrt(dx*dx + dy*dy);
         
         if (distance > 2) {
-            const speed = 4; // 移動スピード
+            const speed = 4;
             const vx = (dx / distance) * speed;
             const vy = (dy / distance) * speed;
 
-            // X方向とY方向を別々に判定することで壁ずり移動を可能に
             if (canMoveTo(player.x + vx, player.y)) player.x += vx;
             if (canMoveTo(player.x, player.y + vy)) player.y += vy;
         }
 
-        // ゴール判定
         if (player.x > (cols-1)*cellSize && player.y > (rows-1)*cellSize) {
             win();
         }
@@ -215,7 +236,7 @@
     canvas.addEventListener('touchmove', (e) => { e.preventDefault(); movePlayer(e); }, { passive: false });
     canvas.addEventListener('mousemove', (e) => { if(e.buttons > 0) movePlayer(e); });
 
-    function goBack() { if (confirm("もどる？")) location.href = "./menu.html"; }
+    function goBack() { if (confirm("もどる？ / Go back?")) location.href = "./menu.html"; }
 </script>
 </body>
 </html>
