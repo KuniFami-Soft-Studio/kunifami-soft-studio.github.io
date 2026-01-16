@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ゆびスタンプ / Finger Stamp</title>
     
+    <title>Finger Stamp / ゆびスタンプ - 3〜5歳向け無料知育アート</title>
+    <meta name="description" content="[JP] 3〜5歳向け！指でタップして色とりどりのスタンプを楽しむ無料知育アート。色彩感覚と感性を養います。[EN] Free Finger Stamp art for kids aged 3-5. Tap with fingers to create colorful art. Perfect for developing color sense and creativity.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,ゆびスタンプ,お絵かき,3歳,4歳,5歳,暇つぶし,Finger Stamp,Kids Art,Educational Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Finger Stamp / ゆびスタンプ - 集中マスター Kids">
+    <meta property="og:description" content="ポンポン！と ゆびで タップしよう。いろとりどりの スタンプが ひろがるよ！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/finger_stamp.html">
+    <meta name="twitter:card" content="summary">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -29,7 +40,7 @@
             font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
             color: #1565C0;
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow: hidden;
+            min-height: 100vh; overflow-y: auto; /* フッター確認のためスクロールを許可 */
         }
 
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
@@ -87,6 +98,10 @@
         }
         .btn-sub:active { transform: translateY(2px); box-shadow: 0 2px 0 #1E88E5; }
 
+        /* Footer for Reliability & AdSense Compliance */
+        .footer-links { margin-top: 10px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
         .copyright { font-size: 0.7rem; color: #90A4AE; margin: 15px 0; font-weight: bold; }
     </style>
 </head>
@@ -96,7 +111,7 @@
     <div class="container" style="margin-top: 40px;">
         <div style="font-size:5rem; margin-bottom:10px;">☝️</div>
         <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #BBDEFB; margin-bottom:25px; width:100%;">
-            <h1 style="margin:0; font-size:1.6rem;">ゆびスタンプ</h1>
+            <h1 style="margin:0; font-size:1.6rem;">Finger Stamp / ゆびスタンプ</h1>
             <p style="margin:5px 0 20px; color:#64B5F6; font-weight: bold;">Finger Stamp Art</p>
             <p style="text-align:left; font-size:0.9rem; line-height:1.6; color: #546E7A;">
                 ポンポン！と ゆびで タップしよう。<br>
@@ -105,7 +120,12 @@
             </p>
         </div>
         <button onclick="showApp()" style="background:#FF8A65; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #E64A19; cursor:pointer;">あそぶ / PLAY</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -135,6 +155,11 @@
         <div style="margin-top:15px;">
             <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
         </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
@@ -181,14 +206,12 @@
         const stamp = document.createElement('div');
         stamp.className = 'stamp';
         
-        // サイズをランダムに（35px〜65px）
         const size = Math.floor(Math.random() * 30) + 35;
         stamp.style.width = size + 'px';
         stamp.style.height = size + 'px';
         stamp.style.left = x + 'px';
         stamp.style.top = y + 'px';
         
-        // 色の設定
         if(isRainbow) {
             stamp.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         } else {
@@ -197,7 +220,6 @@
 
         canvas.appendChild(stamp);
         
-        // 軽い振動（対応デバイスのみ）
         if (navigator.vibrate) navigator.vibrate(10);
     }
 
@@ -209,7 +231,7 @@
     }
 
     function goBack() {
-        if(confirm("最初にもどりますか？")) {
+        if(confirm("最初にもどりますか？ / Back to Start?")) {
             clearCanvas();
             document.getElementById('appScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
