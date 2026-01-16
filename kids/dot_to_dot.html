@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>点つなぎ / Dot to Dot</title>
     
+    <title>Dot to Dot / 点つなぎ - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] 3〜5歳向け！数字を順番にタップして絵を完成させる無料知育点つなぎゲーム。数字の練習と集中力を養います。[EN] Free Dot-to-Dot game for kids aged 3-5. Connect numbers in order to reveal hidden pictures. Perfect for learning numbers.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,点つなぎ,数字の練習,3歳,4歳,5歳,暇つぶし,Dot to Dot,Connect the dots,Educational Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Dot to Dot / 点つなぎ - 集中マスター Kids">
+    <meta property="og:description" content="1, 2, 3... の じゅんばんに タップできるかな？ たのしく数字を学べる知育パズル。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/dot_to_dot.html">
+    <meta name="twitter:card" content="summary">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -22,7 +33,7 @@
             margin: 0; padding: 0; background-color: var(--bg-blue); 
             font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
             color: #0277BD; display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; overflow: hidden;
+            min-height: 100vh; overflow-y: auto; /* フッター確認のためスクロールを許可 */
         }
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -42,7 +53,11 @@
         }
         .btn-sub:active { transform: translateY(2px); box-shadow: 0 2px 0 #0288D1; }
 
-        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+        /* Footer for Reliability & AdSense Compliance */
+        .footer-links { margin-top: 10px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .copyright { font-size: 0.7rem; color: #999; margin: 10px 0; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -51,7 +66,7 @@
     <div class="container" style="margin-top: 40px;">
         <div style="font-size:5rem; margin-bottom:10px;">🎨</div>
         <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #81D4FA; margin-bottom:25px; width:100%;">
-            <h1 style="margin:0; font-size:1.6rem;">点つなぎ</h1>
+            <h1 style="margin:0; font-size:1.6rem;">Dot to Dot / 点つなぎ</h1>
             <p style="margin:5px 0 20px; color:#039BE5; font-weight: bold;">Dot to Dot Adventure</p>
             <p style="text-align:left; font-size:0.9rem; line-height:1.6; color: #546E7A;">
                 1, 2, 3... のじゅんばんに タップしてね。<br>
@@ -60,7 +75,12 @@
             </p>
         </div>
         <button onclick="showApp()" style="background:#4FC3F7; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #0288D1;">あそぶ / PLAY</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -74,6 +94,11 @@
             <button class="btn-sub" onclick="initGame()">つぎの絵 / Next</button>
             <button class="btn-sub" onclick="goBack()">おわる / Exit</button>
         </div>
+
+        <div class="footer-links" style="margin-top: 20px;">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -83,7 +108,6 @@
     const ctx = canvas.getContext('2d');
     let dots = [], nextDotIndex = 0, isComplete = false, currentEmoji = "";
 
-    // 全10種類のパターンを統合
     const shapes = [
         { emoji: "⭐", pts: [[0.5, 0.1], [0.6, 0.4], [0.9, 0.4], [0.65, 0.6], [0.75, 0.9], [0.5, 0.7], [0.25, 0.9], [0.35, 0.6], [0.1, 0.4], [0.4, 0.4]] },
         { emoji: "🏠", pts: [[0.2, 0.9], [0.8, 0.9], [0.8, 0.5], [0.5, 0.2], [0.2, 0.5]] },
@@ -108,7 +132,6 @@
         canvas.width = size; canvas.height = size;
         nextDotIndex = 0; isComplete = false;
         
-        // ランダムに選出
         const shape = shapes[Math.floor(Math.random() * shapes.length)];
         currentEmoji = shape.emoji;
         dots = shape.pts.map(p => ({ x: p[0] * size, y: p[1] * size }));
@@ -118,7 +141,6 @@
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // 1. 引いた線
         if (nextDotIndex > 0) {
             ctx.beginPath();
             ctx.lineWidth = 6;
@@ -132,7 +154,6 @@
             ctx.stroke();
         }
 
-        // 2. 次へのガイド点線
         if (!isComplete && nextDotIndex < dots.length && nextDotIndex > 0) {
             ctx.beginPath();
             ctx.setLineDash([5, 5]);
@@ -143,7 +164,6 @@
             ctx.setLineDash([]);
         }
 
-        // 3. 点と数字
         dots.forEach((dot, i) => {
             const isActive = (i === nextDotIndex && !isComplete);
             const isDone = (i < nextDotIndex || isComplete);
@@ -162,7 +182,6 @@
             ctx.fillText(i + 1, dot.x, dot.y - 15);
         });
 
-        // 4. クリア
         if (isComplete) {
             ctx.font = (canvas.width * 0.4) + "px serif";
             ctx.textAlign = "center";
