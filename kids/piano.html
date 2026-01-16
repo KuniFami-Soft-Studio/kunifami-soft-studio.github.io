@@ -11,8 +11,19 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kids Piano / ドレミかいだん</title>
     
+    <title>Kids Piano / ドレミかいだん - 3〜5歳向け無料知育アプリ</title>
+    <meta name="description" content="[JP] 3〜5歳向け！タップで楽しく音を鳴らせる無料のキッズピアノ。色彩と音で創造力を育む知育ゲームです。[EN] Free Kids Piano game for ages 3-5. Play with colorful scales and sounds. Developed to enhance musical creativity and visual learning.">
+    <meta name="keywords" content="知育ゲーム,無料,子供向け,ピアノ,ドレミ,Kids Piano,Educational Games,Musical Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Kids Piano / ドレミかいだん - 集中マスター Kids">
+    <meta property="og:description" content="たのしく ひこう！おとが はねるよ！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/piano.html">
+    <meta name="twitter:card" content="summary">
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
     
     <style>
@@ -78,9 +89,12 @@
         .ad-container { width: 100%; min-height: 100px; margin: 10px 0; display: flex; align-items: center; justify-content: center; }
         .btn-main { width: 100%; padding: 18px; background: #2196f3; color: white; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #1976d2; }
 
-        /* コピーライト用のスタイルを追加 */
+        /* 信頼性向上用リンク */
+        .footer-links { margin-top: 20px; }
+        .footer-links a { color: #adb5bd; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
         .footer-copyright {
-            margin-top: 20px; font-size: 0.7rem; color: #ccc;
+            margin-top: 10px; font-size: 0.7rem; color: #ccc;
             text-align: center; font-family: sans-serif;
         }
     </style>
@@ -110,6 +124,10 @@
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
 
+    <div class="footer-links">
+        <a href="privacy.html">Privacy Policy / 規約</a>
+        <a href="contact.html">Contact / お問い合わせ</a>
+    </div>
     <div class="footer-copyright">
         © 2026 KuniFami Soft Studio. All Rights Reserved.
     </div>
@@ -139,7 +157,6 @@
     let particles = [];
 
     const freqs = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
-    const emojis = ['🔴', '🟠', '🟡', '🟢', '🔵', 'Indigo', '🟣', '💖']; // 代替
     const colors = ['#ff5252', '#ff9800', '#ffeb3b', '#4caf50', '#2196f3', '#3f51b5', '#9c27b0', '#e91e63'];
 
     function setSound(type) {
@@ -216,7 +233,7 @@
         particles.forEach(p => {
             p.x += p.vx;
             p.y += p.vy;
-            p.vy += 0.5; // 重力
+            p.vy += 0.5;
             p.life -= 0.02;
             
             ctx.globalAlpha = p.life;
