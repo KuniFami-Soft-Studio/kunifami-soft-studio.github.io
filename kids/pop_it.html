@@ -2,9 +2,20 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ポップイット / Pop It Toy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
+    <title>ポップイット / Pop It Toy - 3〜5歳向け無料知育アプリ</title>
+    <meta name="description" content="[JP] ポコポコおしてあそぼう！ストレス解消にも最適な子供向け無料ポップイットアプリ。指先の感覚を養います。[EN] Free Pop It toy app for kids aged 3-5. Tap and pop colorful bubbles! Perfect for sensory play and stress relief.">
+    <meta name="keywords" content="知育ゲーム,無料,子供向け,ポップイット,指先遊び,Pop It,Educational Games,Sensory Play">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="ポップイット / Pop It Toy - 集中マスター Kids">
+    <meta property="og:description" content="ポコポコ おして あそぼう！ぜんぶ おすと、また もとどおり。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/pop_it.html">
+    <meta name="twitter:card" content="summary">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -54,7 +65,12 @@
             padding: 16px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; 
             box-shadow: 0 5px 0 #AD1457; cursor: pointer; margin-top: 20px;
         }
-        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+        
+        /* 信頼性向上用リンク */
+        .footer-links { margin-top: 20px; }
+        .footer-links a { color: #AD1457; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .copyright { font-size: 0.7rem; color: #999; margin: 10px 0; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -71,8 +87,13 @@
                 <small>Tap the bubbles to pop them! They reset once they're all popped.</small>
             </p>
         </div>
-        <button onclick="showApp()" style="background:#F06292; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #C2185B;">はじめる / START</button>
+        <button onclick="showApp()" style="background:#F06292; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #C2185B; cursor:pointer;">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -96,7 +117,6 @@
     const colors = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF'];
     const totalBubbles = 36;
 
-    // --- 音を鳴らす仕組み ---
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playPopSound() {
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -130,7 +150,7 @@
             const handlePop = () => {
                 if (!bubble.classList.contains('pushed')) {
                     bubble.classList.add('pushed');
-                    playPopSound(); // 音を鳴らす
+                    playPopSound();
                     if (navigator.vibrate) navigator.vibrate(20);
                     checkComplete();
                 }
@@ -155,7 +175,6 @@
     function resetBoard() {
         const bubbles = document.querySelectorAll('.bubble');
         bubbles.forEach(b => b.classList.remove('pushed'));
-        // リセット音（ポロンという感じ）
         playPopSound();
     }
 </script>
