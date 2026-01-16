@@ -8,13 +8,28 @@
     gtag('js', new Date());
     gtag('config', 'G-1V1ELMWFTY');
     </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>カラフル足し算 / Color Math</title>
+    
+    <title>カラフル足し算 / Color Math - 5歳からの色彩知育ゲーム</title>
+    <meta name="description" content="[JP] 色を混ぜて新しい色を作る、5歳からの色彩知育ゲーム。AIが色の名前を判定します。[EN] Educational color mixing game for kids aged 5+. Discover new colors and learn their names with AI.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,色混ぜ,色彩,5歳,暇つぶし,Color Mixing Game,Educational Games for Kids">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="カラフル足し算 / Color Math - 集中マスター Kids">
+    <meta property="og:description" content="えのぐを まぜると どんな色？ 楽しく遊べる色彩知育ゲーム。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/color_math.html">
+    <meta name="twitter:card" content="summary">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
     <style>
         :root { --primary: #FF5722; --secondary: #FFC107; --bg: #1a1a1a; --text: #ffffff; --card-bg: #2a2a2a; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-        body { margin: 0; padding: 0; background-color: var(--bg); font-family: "Hiragino Sans", "Meiryo", sans-serif; color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        body { margin: 0; padding: 0; background-color: var(--bg); font-family: "Hiragino Sans", "Meiryo", sans-serif; color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-y: auto; /* フッター確認のためスクロール許可 */ }
         
         .container { width: 92%; max-width: 420px; margin-top: 20px; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -48,7 +63,12 @@
         .btn-action { background: #f0f0f0; color: #666; border: none; padding: 10px 20px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
         .btn-start { background: var(--primary); color: white; padding: 16px; border-radius: 50px; font-size: 1.1rem; width: 100%; border: none; box-shadow: 0 4px 0 #bf360c; font-weight: bold; cursor: pointer; }
 
-        .copyright { font-size: 0.7rem; color: #666; margin: 20px 0; font-weight: bold; text-align: center; width: 100%; }
+        /* Footer for Reliability & AdSense Compliance */
+        .footer-nav { margin-top: 30px; padding-bottom: 30px; text-align: center; width: 100%; }
+        .footer-links { margin-bottom: 10px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 12px; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .copyright { font-size: 0.7rem; color: #666; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -77,7 +97,14 @@
 
         <button class="btn-start" onclick="showGame()">はじめる / Start</button>
         <a href="./menu.html" style="display:block; margin-top:20px; color:#666; text-decoration:none; font-size:0.8rem; font-weight:bold;">← もどる / Back</a>
-        <div class="copyright" style="margin-top:40px;">© 2026 KuniFami Soft Studio</div>
+        
+        <footer class="footer-nav">
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy / 規約</a>
+                <a href="contact.html">Contact / お問い合わせ</a>
+            </div>
+            <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        </footer>
     </div>
 </div>
 
@@ -105,8 +132,15 @@
                 <button class="btn-action" onclick="resetSelection()">もう一度 / Try Again</button>
             </div>
 
-            <a href="./menu.html" style="display:block; margin-top:15px; color:#ccc; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
-            <div class="copyright">© 2026 KuniFami Soft Studio</div>
+            <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+            
+            <footer class="footer-nav" style="margin-top: 15px;">
+                <div class="footer-links">
+                    <a href="privacy.html" style="color: #ccc;">Privacy / 規約</a>
+                    <a href="contact.html" style="color: #ccc;">Contact / 問合せ</a>
+                </div>
+                <div class="copyright" style="color: #999;">© 2026 KuniFami Soft Studio</div>
+            </footer>
         </div>
     </div>
 </div>
