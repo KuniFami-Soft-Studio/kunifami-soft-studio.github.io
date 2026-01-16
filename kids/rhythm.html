@@ -9,8 +9,22 @@
     gtag('config', 'G-1V1ELMWFTY');
     </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>リズムたたき / Rhythm Tap Challenge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <title>リズムたたき / Rhythm Tap Challenge - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] リズムに合わせてタイミングよくタップ！3〜5歳のお子様がリズム感を養える無料知育ゲームです。[EN] Tap along with the rhythm! A free educational rhythm game for kids aged 3-5 to develop a sense of beat.">
+    <meta name="keywords" content="知育ゲーム,無料,子供向け,リズムゲーム,音楽遊び,Educational Games,Kids Music,Rhythm Game">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="リズムたたき / Rhythm Tap Challenge - 集中マスター Kids">
+    <meta property="og:description" content="リズムに合わせて ⭐ をたたこう！100てんを めざしてね。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/rhythm_tap.html">
+    <meta name="twitter:card" content="summary">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
     <style>
         :root { --primary: #FF6F91; --secondary: #FFD54F; --bg: #F0F4C3; --text: #5D4037; --white: #ffffff; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
@@ -21,7 +35,6 @@
         h1 { color: var(--primary); font-size: 1.6rem; margin: 0; }
         .sub-title { color: #888; font-size: 0.8rem; margin-bottom: 10px; }
         
-        /* ルール説明エリア */
         .rules { background: #FFF9C4; padding: 12px; border-radius: 15px; margin-bottom: 15px; text-align: left; border: 2px solid #FFE082; width: 100%; }
         .rules-title { font-size: 0.85rem; font-weight: bold; color: #E65100; border-bottom: 1px solid #FFE082; margin-bottom: 5px; }
         .rule-item { font-size: 0.75rem; line-height: 1.4; margin-bottom: 4px; color: #5D4037; }
@@ -38,6 +51,11 @@
         .note.star { background: #FF5252; }
         .note.bomb { background: #546E7A; }
         #tapButton { width: 90px; height: 90px; background: radial-gradient(circle, #FFD54F, #FF8F00); border-radius: 50%; border: 6px solid white; box-shadow: 0 6px 15px rgba(0,0,0,0.2); font-weight: 900; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 10px; }
+        
+        /* 信頼性向上用リンク */
+        .footer-links { margin-top: 15px; border-top: 1px dotted #eee; padding-top: 10px; width: 100%; }
+        .footer-links a { color: #AD1457; text-decoration: none; font-size: 0.7rem; margin: 0 10px; font-weight: bold; }
+        .footer-links a:hover { text-decoration: underline; }
         .copyright { font-size: 0.7rem; color: #999; margin: 10px 0; font-weight: bold; width: 100%; text-align: center; }
         #clearMessage { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.95); padding: 30px; border-radius: 30px; border: 6px solid var(--secondary); z-index: 100; font-size: 2rem; font-weight: 900; color: var(--primary); display: none; box-shadow: 0 0 50px rgba(0,0,0,0.2); }
     </style>
@@ -61,10 +79,14 @@
         <button class="btn btn-orange" onclick="startGame(700, true)">はやい / Fast</button>
 
         <a href="./menu.html" style="display:block; margin-top:10px; color:#aaa; text-decoration:none; font-size:0.75rem;">← もどる / Back</a>
-        <div class="copyright" style="margin-top:15px; border-top: 1px dotted #eee; padding-top: 10px;">© 2026 KuniFami Soft Studio</div>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
     <div class="ad-space">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
@@ -191,12 +213,12 @@
             if (n.y > hitZoneTop && n.y < hitZoneBottom) {
                 tapped = true;
                 if (n.type === 'star') {
-                    score += 10; // 10回でクリア
+                    score += 10;
                     playTapSound(880);
                     n.el.innerText = "✨";
                     n.el.style.background = "#FFEB3B";
                 } else {
-                    score = Math.max(0, score - 20); // お邪魔はマイナス20
+                    score = Math.max(0, score - 20);
                     playTapSound(200);
                     n.el.innerText = "💥";
                     n.el.style.background = "#333";
