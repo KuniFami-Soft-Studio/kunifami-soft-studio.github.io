@@ -10,18 +10,32 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Differences / まちがいさがし</title>
+    
+    <title>Differences / まちがいさがし - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] 3〜5歳向け！たくさん並んだ絵の中から1つだけ違うものを探す無料知育ゲーム。集中力と観察力を養います。[EN] Free educational game for kids aged 3-5. Find the one different item among others. Perfect for developing focus and observation skills.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,まちがいさがし,間違い探し,3歳,4歳,5歳,暇つぶし,Spot the Difference,Educational Games for Kids">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Differences / まちがいさがし - 集中マスター Kids">
+    <meta property="og:description" content="どれが ちがうかな？ たのしく遊べる知育まちがいさがし。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/differences.html">
+    <meta name="twitter:card" content="summary">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
     <style>
         :root { --bg: #E3F2FD; --card: #ffffff; --accent: #2196F3; }
         body {
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
-            background: var(--bg); margin: 0; overflow: hidden; touch-action: none;
+            background: var(--bg); margin: 0; overflow-y: auto; /* フッター確認のためスクロールを許可 */
             display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
         }
         .container {
             background: var(--card); padding: 25px; border-radius: 40px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px;
-            border: 6px solid #fff; position: relative; z-index: 10;
+            border: 6px solid #fff; position: relative; z-index: 10; margin: 20px 0;
         }
         #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
         
@@ -50,8 +64,13 @@
         .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 18px; background: #fff; border: 2px solid #eee; border-radius: 15px; font-weight: bold; z-index: 150; }
         .btn-main { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #1565C0; }
 
+        /* Footer for Reliability & AdSense Compliance */
+        .footer-nav { margin-top: 25px; text-align: center; width: 100%; }
+        .footer-links { margin-bottom: 8px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 12px; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
         .footer-copyright {
-            margin-top: 20px; font-size: 0.7rem; color: #ccc;
+            font-size: 0.7rem; color: #ccc;
             text-align: center; font-family: sans-serif;
         }
     </style>
@@ -59,8 +78,8 @@
 <body>
 
 <div class="container" id="startScreen">
-    <h1>🔍 まちがいさがし</h1>
-    <div style="font-size: 0.9rem; color: #999; margin-bottom: 15px;">どれが ちがうかな？</div>
+    <h1>🔍 Differences / まちがいさがし</h1>
+    <div style="font-size: 0.9rem; color: #999; margin-bottom: 15px;">どれが ちがうかな？ / Which one is different?</div>
     <div style="background: #e3f2fd; padding: 15px; border-radius: 20px; text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #90CAF9;">
         <div>💎 <strong>いろんな なかま が 登場！</strong><br>Many items appearing!</div>
         <div style="margin-top:8px;">🎯 <strong>ちがうのを みつけられるかな？</strong><br>Can you find the different one?</div>
@@ -68,9 +87,15 @@
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
     
-    <div class="footer-copyright">
-        © 2026 KuniFami Soft Studio. All Rights Reserved.
-    </div>
+    <footer class="footer-nav">
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
+        <div class="footer-copyright">
+            © 2026 KuniFami Soft Studio. All Rights Reserved.
+        </div>
+    </footer>
 </div>
 
 <div id="gameScreen">
@@ -86,15 +111,15 @@
         {i:'🦁',j:'らいおん',e:'Lion'},{i:'🐮',j:'うし',e:'Cow'},{i:'🐷',j:'ぶた',e:'Pig'},{i:'🐸',j:'かえる',e:'Frog'},{i:'🐵',j:'さる',e:'Monkey'},
         {i:'🐣',j:'ひよこ',e:'Chick'},{i:'🐧',j:'ぺんぎん',e:'Penguin'},{i:'🦒',j:'きりん',e:'Giraffe'},{i:'🐘',j:'ぞう',e:'Elephant'},{i:'🦓',j:'しまうま',e:'Zebra'},
         {i:'🍎',j:'りんご',e:'Apple'},{i:'🍏',j:'あおりんご',e:'Green Apple'},{i:'🍐',j:'なし',e:'Pear'},{i:'🍊',j:'みかん',e:'Orange'},{i:'🍋',j:'れもん',e:'Lemon'},
-        {i:'🍌',j:'ばなな',e:'Banana'},{i:' watermelon ',j:'すいか',e:'Watermelon'},{i:'🍇',j:'ぶどう',e:'Grapes'},{i:'🍓',j:'いちご',e:'Strawberry'},{i:'🍈',j:'めろん',e:'Melon'},
-        {i:'🍒',j:'さくらんぼ',e:'Cherry'},{i:'🍑',j:'もも',e:'Peach'},{i:'🍍',j:'ぱいなっぷる',e:'Pineapple'},{i:'🥝',j:'きうい',e:'Kiwi'},{i:'🍅',j:'とまと',e:'Tomato'},
+        {i:'🍌',j:'ばなな',e:'Banana'},{i:'🍉',j:'すいか',e:'Watermelon'},{i:'🍇',j:'ぶどう',e:'Grapes'},{i:'🍓',j:'いちご',e:'Strawberry'},{i:'🍈',j:'めろん',e:'Melon'},
+        {i:'🍒',j:'さくらんぼ',e:'Cherry'},{i:'桃',j:'もも',e:'Peach'},{i:'🍍',j:'ぱいなっぷる',e:'Pineapple'},{i:'🥝',j:'きうい',e:'Kiwi'},{i:'🍅',j:'とまと',e:'Tomato'},
         {i:'🌽',j:'とうもろこし',e:'Corn'},{i:'🥕',j:'にんじん',e:'Carrot'},{i:'🍄',j:'きのこ',e:'Mushroom'},{i:'🍞',j:'ぱん',e:'Bread'},
         {i:'🍦',j:'あいす',e:'Ice Cream'},{i:'🍩',j:'どーなつ',e:'Donut'},{i:'🍪',j:'くっきー',e:'Cookie'},{i:'🍫',j:'ちょこれーと',e:'Chocolate'},{i:'🍭',j:'あめ',e:'Candy'},
         {i:'🍮',j:'ぷりん',e:'Pudding'},{i:'🍰',j:'けーき',e:'Cake'},{i:'🍕',j:'ぴざ',e:'Pizza'},{i:'🍔',j:'はんばーがー',e:'Hamburger'},{i:'🍟',j:'ぽてと',e:'Fries'},
         {i:'🚗',j:'くるま',e:'Car'},{i:'🚕',j:'たくしー',e:'Taxi'},{i:'🚙',j:'じーぷ',e:'SUV'},{i:'🚌',j:'ばす',e:'Bus'},{i:'🚓',j:'ぱとかー',e:'Police Car'},
         {i:'🚑',j:'きゅうきゅうしゃ',e:'Ambulance'},{i:'🚒',j:'しょうぼうしゃ',e:'Fire Engine'},{i:'🚐',j:'わごんしゃ',e:'Van'},
         {i:'🚚',j:'とらっく',e:'Truck'},{i:'🚜',j:'とらくたー',e:'Tractor'},{i:'🚲',j:'じてんしゃ',e:'Bicycle'},{i:'🛵',j:'すくーたー',e:'Scooter'},{i:'🏍️',j:'おーとばい',e:'Motorcycle'},
-        {i:'🚂',j:'きかんしゃ',e:'Steam Train'},{i:'🚆',j:'でんしゃ',e:'Train'},{i:'🚀',j:'ろけっと',e:'Rocket'},{i:'🚁',j:'へりこぷたー',e:'Helicopter'},{i:'✈️',j:'ひこうき',e:'Airplane'},
+        {i:'🚂',j:'きかんしゃ',e:'Steam Train'},{i:'🚆',j:'でんしゃ',e:'Train'},{i:'🚀',j:'ろけっと',e:'Rocket'},{i:'へ',j:'へりこぷたー',e:'Helicopter'},{i:'✈️',j:'ひこうき',e:'Airplane'},
         {i:'🐙',j:'たこ',e:'Octopus'},{i:'🦑',j:'いか',e:'Squid'},{i:'🦐',j:'えび',e:'Shrimp'},{i:'🦀',j:'かに',e:'Crab'},
         {i:'🐠',j:'さかな',e:'Fish'},{i:'🐬',j:'いるか',e:'Dolphin'},{i:'🐳',j:'くじら',e:'Whale'},{i:'🦈',j:'さめ',e:'Shark'},{i:'🐚',j:'かい',e:'Shell'},
         {i:'🦋',j:'ちょうちょ',e:'Butterfly'},{i:'🐝',j:'はち',e:'Bee'},{i:'🐞',j:'てんとうむし',e:'Ladybug'},{i:'🐜',j:'あり',e:'Ant'},{i:'🐌',j:'かたつむり',e:'Snail'},
