@@ -10,9 +10,22 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>しんけいすいじゃく / Memory Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
+    <title>しんけいすいじゃく / Memory Game - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] かわいい動物のカードで神経衰弱！3〜5歳のお子様が遊びながら記憶力を養える無料知育ゲームです。[EN] A classic memory match game with cute animals! A free educational game for kids aged 3-5 to develop memory skills.">
+    <meta name="keywords" content="知育ゲーム,無料,子供向け,神経衰弱,記憶力,Educational Games,Memory Game,Card Game">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="しんけいすいじゃく - 集中マスター Kids">
+    <meta property="og:description" content="おなじ えを みつけられるかな？たのしく きおくりょくアップ！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/memory_game.html">
+    <meta name="twitter:card" content="summary">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
     <style>
         :root { --bg: #F3E5F5; --main: #9C27B0; }
         * { -webkit-tap-highlight-color: transparent; user-select: none; box-sizing: border-box; }
@@ -54,8 +67,8 @@
         
         #cardGrid {
             display: grid; gap: 8px; 
-            width: 100%; max-width: 500px; /* PCでも広がりすぎない */
-            flex-grow: 1; align-content: center; /* 垂直方向中央寄せ */
+            width: 100%; max-width: 500px;
+            flex-grow: 1; align-content: center;
         }
 
         .card { width: 100%; height: 100%; perspective: 1000px; cursor: pointer; }
@@ -70,7 +83,6 @@
             backface-visibility: hidden; border-radius: 15px;
             display: flex; align-items: center; justify-content: center;
             border: 4px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            /* 絵文字のサイズを自動調整 */
             font-size: min(15vw, 8vh); 
         }
         .card-front { background-color: #BA68C8; color: white; }
@@ -85,6 +97,10 @@
             position: absolute; top: 40%; z-index: 100;
         }
 
+        /* 信頼性向上用リンク */
+        .footer-links { margin-top: 15px; border-top: 1px dotted #ccc; padding-top: 10px; width: 100%; }
+        .footer-links a { color: var(--main); text-decoration: none; font-size: 0.75rem; margin: 0 10px; font-weight: bold; }
+        
         /* --- 広告・フッター --- */
         .ad-bottom { width: 100%; text-align: center; background: #fff; padding-top: 5px; }
         .copyright { font-size: 0.6rem; color: #999; padding: 5px; }
@@ -105,7 +121,12 @@
             <button class="btn-level" onclick="startGame(4, 6)">4 × 6</button>
         </div>
 
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.9rem;">← もどる / Back</a>
+        <a href="./menu.html" style="display:block; margin-top:10px; color:#aaa; text-decoration:none; font-size:0.9rem;">← もどる / Back</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright" style="background:transparent;">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -120,7 +141,6 @@
     </div>
 
     <div class="ad-bottom">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
@@ -142,11 +162,9 @@
         grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
         grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
         
-        // 画面の高さに合わせるための調整
         const cardCount = rows * cols;
         totalPairs = cardCount / 2;
         
-        // 絵文字をランダム選択
         const shuffledAll = [...allEmojis].sort(() => 0.5 - Math.random());
         let selectedEmojis = [];
         for(let i=0; i<totalPairs; i++) {
@@ -156,7 +174,6 @@
 
         grid.innerHTML = '';
         
-        // カードのフォントサイズをグリッド数に応じて可変
         const fontSize = rows > 4 ? 'min(10vw, 5vh)' : 'min(15vw, 8vh)';
 
         selectedEmojis.forEach((emoji) => {
