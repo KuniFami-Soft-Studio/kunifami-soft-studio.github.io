@@ -10,8 +10,19 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>忍び足チェッカー / Ninja Stealth Walk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <title>忍び足チェッカー / Ninja Stealth Walk - 忍者なりきり知育アプリ</title>
+    <meta name="description" content="[JP] スマホのセンサーで「静かに歩く」を判定！子供の体幹と集中力を養う忍者なりきり知育ゲーム。アラームが鳴らないように静かに歩こう。[EN] Test your stealth with phone sensors! A ninja training game for kids to develop focus and body control. Walk quietly to avoid the alarm.">
+    <meta name="keywords" content="知育アプリ,忍者,修行,集中力,体幹トレーニング,無料ゲーム,Ninja Game,Stealth Challenge,Kids Education">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="忍び足チェッカー / Ninja Stealth Walk">
+    <meta property="og:description" content="足音がうるさいとアラームが鳴るぞ！静かに歩いて修行を成功させよう。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/ninja_stealth.html">
+    <meta name="twitter:card" content="summary">
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
     
@@ -84,12 +95,16 @@
         .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #081b33; }
         .btn-exit { position: absolute; top: 15px; right: 15px; padding: 8px 12px; background: rgba(255,255,255,0.1); color: white; border: 1px solid white; border-radius: 10px; font-size: 0.8rem; }
 
+        /* Footer Links for Reliability */
+        .footer-links { margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
+        .footer-links a { color: var(--ninja-blue); text-decoration: none; font-size: 0.7rem; margin: 0 10px; font-weight: bold; }
+
         /* Fail State */
         .fail-bg { background: #600 !important; animation: flash 0.5s infinite; }
         @keyframes flash { 0% { background: #600; } 50% { background: #f00; } 100% { background: #600; } }
         .btn-stop-alarm { background: #fff !important; color: #f00 !important; font-size: 1.5rem; padding: 25px; margin-top: 20px; box-shadow: 0 8px 0 #ccc !important; }
 
-        .footer-copyright { margin-top: 15px; font-size: 0.65rem; color: #999; }
+        .footer-copyright { margin-top: 10px; font-size: 0.65rem; color: #999; }
     </style>
 </head>
 <body>
@@ -99,6 +114,8 @@
 
     <h1>忍び足チェッカー</h1>
     <div class="sub-title">Ninja Stealth Walk Checker</div>
+
+    
 
     <div class="record-board">
         <div class="diff-box">
@@ -143,6 +160,11 @@
     <button class="btn-main" onclick="requestPermission()">修 行 開 始 ! (Start Training)</button>
     <a href="./menu.html" style="display:block; margin-top:12px; color:#aaa; text-decoration:none; font-size:0.75rem;">← もどる (Back)</a>
     
+    <div class="footer-links">
+        <a href="privacy.html">Privacy Policy / 規約</a>
+        <a href="contact.html">Contact / お問い合わせ</a>
+    </div>
+
     <div class="footer-copyright">© 2026 KuniFami Soft Studio. All Rights Reserved.</div>
 </div>
 
@@ -177,10 +199,8 @@
         alarmGain = audioCtx.createGain();
         
         alarmOsc.type = 'sawtooth';
-        // サイレンのように周波数を上下させる
         alarmOsc.frequency.setValueAtTime(440, audioCtx.currentTime);
         
-        // 音量を最大限に近く
         alarmGain.gain.setValueAtTime(0.6, audioCtx.currentTime);
         
         alarmOsc.connect(alarmGain);
@@ -188,7 +208,6 @@
         
         alarmOsc.start();
         
-        // 周波数を揺らしてサイレン音を作る
         const interval = 0.5;
         setInterval(() => {
             if (alarmOsc) {
@@ -290,7 +309,6 @@
         isGaming = false; clearInterval(timerId);
         window.removeEventListener('devicemotion', handleMotion);
         
-        // 失敗UIに切り替え
         document.getElementById('gameScreen').classList.add('fail-bg');
         document.getElementById('ninjaIcon').innerText = "💥";
         document.getElementById('statusText').innerText = "修行失敗！足音がうるさいぞ！\nTRAINING FAILED!";
