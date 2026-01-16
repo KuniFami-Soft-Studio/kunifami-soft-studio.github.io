@@ -11,8 +11,21 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>まほうの花火 / Magic Fireworks</title>
     
+    <title>Magic Fireworks / まほうの花火 - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] 3〜5歳向け！タップするだけで夜空に美しい花火が上がる無料知育ゲーム。色や形の変化を楽しみながら感性を養います。[EN] Free Magic Fireworks game for kids aged 3-5. Tap the night sky to create beautiful fireworks. Encourages creativity and color recognition.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,花火,3歳,4歳,5歳,暇つぶし,Fireworks,Magic Fireworks,Educational Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Magic Fireworks / まほうの花火 - 集中マスター Kids">
+    <meta property="og:description" content="よぞらを タップしてね！いろいろな形の花火が でるよ！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/fireworks.html">
+    <meta name="twitter:card" content="summary">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
     <style>
         :root {
             --bg: #000510;
@@ -26,7 +39,7 @@
         body {
             margin: 0; padding: 0; background: var(--bg);
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
-            overflow: hidden; color: white;
+            overflow-y: auto; color: white;
             display: flex; flex-direction: column; align-items: center;
         }
 
@@ -63,12 +76,17 @@
             pointer-events: auto; backdrop-filter: blur(5px);
         }
 
+        /* Footer for Reliability & AdSense Compliance */
+        .footer-links { margin: 10px 0; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+
         /* Ads & Copyright */
         .ad-bottom {
             position: absolute; bottom: 0; width: 100%;
-            background: rgba(0,0,0,0.7); z-index: 4000; text-align: center;
+            background: rgba(0,0,0,0.8); z-index: 4000; text-align: center;
         }
-        .copyright { font-size: 0.6rem; color: #aaa; padding: 5px; }
+        .copyright { font-size: 0.6rem; color: #aaa; padding: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -76,31 +94,36 @@
 <div class="start-container" id="startScreen">
     <div class="start-card">
         <div style="font-size: 4rem; margin-bottom: 10px;">🎆</div>
-        <h1 style="margin: 0; color: #ffeb3b; text-shadow: 0 0 15px #ffeb3b;">まほうの花火</h1>
+        <h1 style="margin: 0; color: #ffeb3b; text-shadow: 0 0 15px #ffeb3b;">Magic Fireworks / まほうの花火</h1>
         <p style="margin: 5px 0; font-weight: bold; color: #ddd;">Magic Fireworks</p>
         
         <p style="font-size: 0.9rem; color: #ccc; margin-top: 20px;">
             よぞらを タップしてね！<br>
-            いろいろな形が でるよ！
+            いろいろな形が でるよ！<br>
+            <small>Tap the sky to see different shapes!</small>
         </p>
 
         <button class="btn-start" onclick="startGame()">Start! / はじめる</button>
 
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
-        <div class="copyright" style="margin-top:20px;">© 2026 KuniFami Soft Studio</div>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
 
 <div id="gameScreen">
     <div class="ui-top">
-        <div style="color:rgba(255,255,255,0.5); font-size: 0.8rem;">Tap Screen!</div>
+        <div style="color:rgba(255,255,255,0.5); font-size: 0.8rem;">Tap Screen! / タップしてね！</div>
         <button class="ui-btn" onclick="stopGame()">Quit / おわる</button>
     </div>
 
     <canvas id="fireworksCanvas"></canvas>
 
     <div class="ad-bottom">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-5115190227060860"
@@ -108,6 +131,11 @@
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        
+        <div class="footer-links" style="margin: 5px 0;">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -116,6 +144,7 @@
     const canvas = document.getElementById('fireworksCanvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
+    let animationId;
 
     function resize() {
         canvas.width = window.innerWidth;
@@ -157,18 +186,18 @@
     }
 
     function createFirework(x, y) {
-        const type = Math.floor(Math.random() * 6); // 0〜5のタイプ
+        const type = Math.floor(Math.random() * 6);
         const color = `hsl(${Math.random() * 360}, 100%, 60%)`;
         const count = 60;
 
-        if (type === 0) { // 普通のまる
+        if (type === 0) { 
             for (let i = 0; i < count; i++) {
                 const angle = (Math.PI * 2 / count) * i;
                 const speed = Math.random() * 8 + 2;
                 particles.push(new Particle(x, y, color, Math.cos(angle) * speed, Math.sin(angle) * speed));
             }
         } 
-        else if (type === 1) { // ハート形
+        else if (type === 1) { 
             for (let i = 0; i < count; i++) {
                 const t = (Math.PI * 2 / count) * i;
                 const vx = 16 * Math.pow(Math.sin(t), 3);
@@ -177,7 +206,7 @@
                 particles.push(new Particle(x, y, color, vx * speed, vy * speed));
             }
         }
-        else if (type === 2) { // 星形
+        else if (type === 2) { 
             for (let i = 0; i < 5; i++) {
                 const angle = (Math.PI * 2 / 5) * i - Math.PI/2;
                 for (let j = 0; j < 10; j++) {
@@ -186,38 +215,33 @@
                 }
             }
         }
-        else if (type === 3) { // ニコちゃん
-            // 輪郭
+        else if (type === 3) { 
             for (let i = 0; i < 30; i++) {
                 const angle = (Math.PI * 2 / 30) * i;
                 particles.push(new Particle(x, y, color, Math.cos(angle) * 6, Math.sin(angle) * 6));
             }
-            // 目
             particles.push(new Particle(x, y, color, -2, -2, 4));
             particles.push(new Particle(x, y, color, 2, -2, 4));
-            // 口
             for (let i = 0; i < 10; i++) {
                 const angle = (Math.PI / 10) * i + 0.2;
                 particles.push(new Particle(x, y, color, Math.cos(angle) * 3, Math.sin(angle) * 3));
             }
         }
-        else if (type === 4) { // ねこ (耳付き)
+        else if (type === 4) { 
             for (let i = 0; i < 40; i++) {
                 const angle = (Math.PI * 2 / 40) * i;
                 particles.push(new Particle(x, y, color, Math.cos(angle) * 6, Math.sin(angle) * 6));
             }
-            // 耳
             for (let i = 0; i < 5; i++) {
                 particles.push(new Particle(x, y, color, -4 - i*0.5, -5 - i));
                 particles.push(new Particle(x, y, color, 4 + i*0.5, -5 - i));
             }
         }
-        else if (type === 5) { // いぬ (たれ耳風)
+        else if (type === 5) { 
             for (let i = 0; i < 40; i++) {
                 const angle = (Math.PI * 2 / 40) * i;
                 particles.push(new Particle(x, y, color, Math.cos(angle) * 6, Math.sin(angle) * 5));
             }
-            // たれ耳
             for (let i = 0; i < 8; i++) {
                 particles.push(new Particle(x, y, color, -6, i * 0.5));
                 particles.push(new Particle(x, y, color, 6, i * 0.5));
@@ -226,7 +250,7 @@
     }
 
     function animate() {
-        requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
         ctx.fillStyle = 'rgba(0, 5, 16, 0.2)'; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -243,12 +267,14 @@
     function startGame() {
         document.getElementById('startScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'block';
-        animate();
+        if (!animationId) animate();
     }
 
     function stopGame() {
         document.getElementById('startScreen').style.display = 'flex';
         document.getElementById('gameScreen').style.display = 'none';
+        cancelAnimationFrame(animationId);
+        animationId = null;
     }
 
     canvas.addEventListener('mousedown', (e) => createFirework(e.clientX, e.clientY));
