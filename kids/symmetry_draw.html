@@ -2,9 +2,20 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>シンメトリーお絵描き / Symmetry Drawing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
+    <title>シンメトリーお絵描き / Symmetry Drawing - 無料知育アプリ</title>
+    <meta name="description" content="[JP] 左右対称や4分割の魔法のようなお絵描き体験！お子様の創造力と図形感覚を養う無料知育ゲームです。[EN] Experience the magic of symmetry and 4-way mirrored drawing! A free educational game to develop creativity and spatial awareness for kids.">
+    <meta name="keywords" content="知育ゲーム,お絵描き,シンメトリー,左右対称,無料,子供向け,Educational Games,Drawing App,Symmetry">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="シンメトリーお絵描き / Symmetry Drawing">
+    <meta property="og:description" content="はんぶん描くと、もうはんぶんも描ける！まほうのお絵描きを楽しもう。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/symmetry_drawing.html">
+    <meta name="twitter:card" content="summary">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -94,6 +105,10 @@
             padding: 12px; border-radius: 15px; font-weight: bold; font-size: 0.8rem;
         }
 
+        /* 信頼性向上用リンク */
+        .footer-links { margin-top: 15px; border-top: 1px dotted #ccc; padding-top: 10px; width: 100%; }
+        .footer-links a { color: var(--main-purple); text-decoration: none; font-size: 0.75rem; margin: 0 10px; font-weight: bold; }
+        
         .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
     </style>
 </head>
@@ -113,6 +128,11 @@
         </div>
         <button onclick="showApp()" style="background:var(--main-purple); color:white; border:none; padding:20px; border-radius:50px; font-size:1.4rem; font-weight:bold; width:100%; box-shadow:0 5px 0 #512DA8; cursor:pointer;">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -148,6 +168,16 @@
         <div class="controls">
             <button class="btn-sub" onclick="clearCanvas()">やりなおす</button>
             <button class="btn-sub" onclick="goBack()">おわる</button>
+        </div>
+
+        <div style="margin-top:15px; width:100%;">
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-5115190227060860"
+                data-ad-slot="3577508619"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
 
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
@@ -218,17 +248,11 @@
         ctx.strokeStyle = currentColor;
         ctx.beginPath();
         
-        // --- 1. 左右対称 (基本) ---
-        // オリジナル
         ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
-        // 左右反転
         ctx.moveTo(w - x1, y1); ctx.lineTo(w - x2, y2);
         
-        // --- 2. 4分割 (まほうモード) ---
         if (currentMode === 4) {
-            // 上下反転
             ctx.moveTo(x1, h - y1); ctx.lineTo(x2, h - y2);
-            // 左右＋上下反転
             ctx.moveTo(w - x1, h - y1); ctx.lineTo(w - x2, h - y2);
         }
         
