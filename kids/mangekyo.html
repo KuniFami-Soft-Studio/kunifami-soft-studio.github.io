@@ -11,7 +11,20 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>キラキラまんげきょう / Magic Kaleidoscope</title>
+    
+    <title>キラキラまんげきょう / Magic Kaleidoscope - 3〜5歳向け無料知育アプリ</title>
+    <meta name="description" content="[JP] なぞるだけで魔法のような模様が広がる、3〜5歳向けの無料知育万華鏡。色彩感覚と創造力を養います。[EN] Free educational kaleidoscope game for kids. Create magic patterns by tracing. Perfect for developing creativity.">
+    <meta name="keywords" content="知育ゲーム,無料,子供向け,万華鏡,Kaleidoscope,Educational Games,Toddler Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="キラキラまんげきょう / Magic Kaleidoscope - 集中マスター Kids">
+    <meta property="og:description" content="なぞるだけで きれい！じぶんだけの まんげきょうを つくってみよう！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/kaleidoscope.html">
+    <meta name="twitter:card" content="summary">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
     
     <style>
         :root {
@@ -64,6 +77,11 @@
             color: #333; font-size: 0.8rem;
         }
 
+        /* 信頼性・規約エリア */
+        .footer-links { margin-top: 15px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+
         /* 広告エリア */
         .ad-container {
             position: absolute; bottom: 0; width: 100%;
@@ -88,8 +106,13 @@
 
         <button class="btn-start" onclick="startGame()">Start! / はじめる</button>
 
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
-        <div class="copyright" style="background:none;">© 2026 KuniFami Soft Studio</div>
+        <a href="./menu.html" style="display:block; margin-top:5px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
+        <div class="copyright" style="background:none; margin-top:10px;">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
 
@@ -102,7 +125,6 @@
     <canvas id="kaleidoscope"></canvas>
 
     <div class="ad-container">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-5115190227060860"
@@ -131,6 +153,7 @@
         document.getElementById('startScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'block';
         clearCanvas();
+        if(typeof gtag === 'function') { gtag('event', 'game_start', {'game_name': 'kaleidoscope'}); }
     }
 
     function stopGame() {
@@ -149,7 +172,6 @@
         const x = (e.touches ? e.touches[0].clientX : e.clientX);
         const y = (e.touches ? e.touches[0].clientY : e.clientY);
         
-        // 中心からの座標を計算
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         const relX = x - centerX;
@@ -160,16 +182,13 @@
         ctx.lineWidth = 15;
         ctx.lineCap = 'round';
 
-        // 6方向対称に描画
         for (let i = 0; i < 6; i++) {
             ctx.save();
             ctx.translate(centerX, centerY);
             ctx.rotate((i * 60) * Math.PI / 180);
             
-            // 線を描画
             ctx.beginPath();
             ctx.moveTo(relX, relY);
-            // 鏡像効果
             ctx.lineTo(relX, -relY);
             ctx.stroke();
             
