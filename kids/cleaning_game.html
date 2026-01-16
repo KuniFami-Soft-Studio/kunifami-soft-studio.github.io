@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>おそうじゲーム / Cleaning Game</title>
     
+    <title>おそうじゲーム / Cleaning Game - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] 3〜5歳向け！指でなぞってピカピカにする無料のおそうじゲーム。インストール不要で今すぐ遊べます。[EN] Free cleaning game for kids aged 3-5. Simple rub-to-clean interface. No installation required.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,おそうじゲーム,3歳,4歳,5歳,暇つぶし,Cleaning Game,Free Kids Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="おそうじゲーム / Cleaning Game - 集中マスター Kids">
+    <meta property="og:description" content="ゆびで なぞって ぴかぴかにしよう！ 楽しく遊べる知育ゲーム。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/cleaning_game.html">
+    <meta name="twitter:card" content="summary">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -22,7 +33,7 @@
             margin: 0; padding: 0; background-color: var(--bg-yellow); 
             font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
             color: #5D4037; display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; overflow: hidden;
+            min-height: 100vh; overflow-y: auto; /* フッター確認のためスクロールを許可 */
         }
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -45,7 +56,15 @@
             padding: 18px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; 
             box-shadow: 0 5px 0 #EF6C00; cursor: pointer; margin-top: 15px;
         }
-        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+
+        /* Footer for Reliability & AdSense Compliance */
+        .footer-nav {
+            margin-top: 30px; padding-bottom: 30px; text-align: center; width: 100%;
+        }
+        .footer-links { margin-bottom: 10px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 12px; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .copyright { font-size: 0.7rem; color: #999; font-weight: bold; }
         
         #clear-message {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -70,8 +89,15 @@
             </p>
         </div>
         <button onclick="showApp()" style="background:#FFA726; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #E65100;">はじめる / START</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
-        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+        
+        <footer class="footer-nav">
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy / 規約</a>
+                <a href="contact.html">Contact / お問い合わせ</a>
+            </div>
+            <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        </footer>
     </div>
 </div>
 
@@ -84,7 +110,14 @@
         </div>
         <button class="btn-sub" onclick="resetGame()">次のおそうじ / Next</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
-        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        
+        <footer class="footer-nav">
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy / 規約</a>
+                <a href="contact.html">Contact / お問い合わせ</a>
+            </div>
+            <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        </footer>
     </div>
 </div>
 
@@ -116,7 +149,7 @@
         ctx.fillStyle = '#A1887F'; 
         ctx.fillRect(0, 0, size, size);
         
-        // 汚れのテクスチャ（少し薄めにして消えやすく）
+        // 汚れのテクスチャ
         for(let i=0; i<40; i++) {
             ctx.fillStyle = `rgba(62, 39, 35, 0.4)`;
             ctx.beginPath();
@@ -133,23 +166,20 @@
 
         ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
-        // ブラシサイズを 30 -> 55 に拡大
         ctx.arc(x, y, 55, 0, Math.PI * 2);
         ctx.fill();
 
-        // 判定頻度を下げるため、一定の間隔でチェック
         if (Math.random() > 0.8) checkClear();
     }
 
     function checkClear() {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
         let transparentCount = 0;
-        const step = 40; // 判定の細かさ
+        const step = 40; 
         for (let i = 3; i < imageData.length; i += step) {
             if (imageData[i] === 0) transparentCount++;
         }
         
-        // 90% -> 70% に緩和。少し残っていてもクリア！
         if (transparentCount > (imageData.length / step) * 0.7) {
             isCleared = true;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
