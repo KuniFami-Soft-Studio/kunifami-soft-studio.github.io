@@ -10,8 +10,20 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe Kids</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Tic-Tac-Toe Kids / 三目並べ - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] 3〜5歳向け！CPUと対戦できる無料の三目並べ（まるばつ）ゲーム。思考力と集中力を育む知育アプリです。[EN] Free Tic-Tac-Toe game for kids aged 3-5. Play against a smart CPU. Developed to enhance thinking and concentration skills.">
+    <meta name="keywords" content="知育ゲーム,無料,子供向け,三目並べ,まるばつ,Tic Tac Toe,Educational Games,Kids Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Tic-Tac-Toe Kids / 三目並べ - 集中マスター Kids">
+    <meta property="og:description" content="たて・よこ・ななめに3つならべよう！最強CPUに勝てるかな？">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/tic_tac_toe.html">
+    <meta name="twitter:card" content="summary">
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
     
     <style>
@@ -48,7 +60,6 @@
         }
         .manual-section h2 { font-size: 1.1rem; margin-top: 0; color: #f59f00; display: flex; align-items: center; gap: 5px; }
         .manual-item { margin-bottom: 12px; line-height: 1.4; }
-        .lang-en { display: block; font-weight: normal; color: #999; font-size: 0.75rem; margin-top: 2px; }
 
         .ad-placeholder {
             width: 100%; min-height: 100px; background: #fff;
@@ -100,9 +111,12 @@
         }
         .btn-secondary:hover { background: #dee2e6; }
 
-        /* コピーライト用のスタイルを追加 */
+        /* 信頼性向上用リンクスタイル */
+        .footer-links { margin-top: 20px; }
+        .footer-links a { color: #adb5bd; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
         .footer-copyright {
-            margin-top: 20px; font-size: 0.7rem; color: #ccc;
+            margin-top: 10px; font-size: 0.7rem; color: #ccc;
             text-align: center; font-family: sans-serif;
         }
     </style>
@@ -136,8 +150,12 @@
         </div>
 
         <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
-        <a href="./menu.html" class="home-link">← Back to Kids menu / もどる</a>
+        <a href="./menu.html" class="home-link">← Back / もどる</a>
 
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="footer-copyright">
             © 2026 KuniFami Soft Studio. All Rights Reserved.
         </div>
@@ -187,6 +205,10 @@
 
         <button class="btn-main" style="margin-top:25px;" onclick="resetGame()">Try Again / もういっかい</button>
         <button class="btn-secondary" onclick="showTitle()">Title / タイトルにもどる</button>
+
+        <div class="footer-copyright">
+            © 2026 KuniFami Soft Studio
+        </div>
     </div>
 </div>
 
