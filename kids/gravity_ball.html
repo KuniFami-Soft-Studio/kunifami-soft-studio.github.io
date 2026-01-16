@@ -9,13 +9,26 @@
     gtag('js', new Date());
     gtag('config', 'G-1V1ELMWFTY');
     </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>重力ボール / Gravity Ball</title>
+    
+    <title>Gravity Ball / 重力ワンちゃん - 3〜5歳向け無料知育アクション</title>
+    <meta name="description" content="[JP] 3〜5歳向け！スマホを傾けてワンちゃんを操作する無料知育ゲーム。バランス感覚と集中力を養います。[EN] Free Gravity Action game for kids aged 3-5. Tilt your phone to guide the doggy. Develops balance and concentration.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,重力ボール,3歳,4歳,5歳,暇つぶし,Gravity Ball,Kids Action,Educational Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Gravity Ball / 重力ワンちゃん - 集中マスター Kids">
+    <meta property="og:description" content="スマホを かたむけて ワンちゃんを うごかそう！⭐をあつめて 🏠をめざしてね。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/gravity_ball.html">
+    <meta name="twitter:card" content="summary">
+
     <style>
         :root { --primary: #4CAF50; --bg: #f0f0f0; --text: #333333; --card-bg: #ffffff; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-        body { margin: 0; padding: 0; background-color: var(--bg); font-family: sans-serif; color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        body { margin: 0; padding: 0; background-color: var(--bg); font-family: sans-serif; color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-y: auto; }
         .container { width: 92%; max-width: 420px; margin: 20px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
         .hidden { display: none !important; }
@@ -38,7 +51,11 @@
         #gameCanvas { background: #ffffff; border-radius: 15px; width: 100%; aspect-ratio: 4 / 5; display: block; touch-action: none; }
         .hud { display: flex; justify-content: space-between; padding: 5px 10px 10px; font-weight: bold; color: #555; }
         
-        .copyright { font-size: 0.7rem; color: #999; margin: 20px 0; font-weight: bold; width: 100%; text-align: center; }
+        /* Footer for Reliability & AdSense Compliance */
+        .footer-links { margin-top: 10px; margin-bottom: 10px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; width: 100%; text-align: center; }
     </style>
 </head>
 <body>
@@ -46,7 +63,7 @@
 <div id="startScreen" class="screen">
     <div class="container">
         <div style="font-size:3rem;">🐶</div>
-        <div style="font-weight:bold; font-size:1.2rem; margin-bottom:10px;">重力ワンちゃん / Gravity Doggy</div>
+        <div style="font-weight:bold; font-size:1.2rem; margin-bottom:10px;">Gravity Ball / 重力ワンちゃん</div>
 
         <div class="rules">
             <span class="rules-title">📜 ルール / Rules</span>
@@ -88,6 +105,11 @@
         
         <button class="btn-start" onclick="startGame()">はじめる / START</button>
         <a href="./menu.html" style="color:#999; text-decoration:none; font-size:0.8rem; display:block; margin-bottom:10px;">← もどる / Back</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -101,6 +123,11 @@
             </div>
             <canvas id="gameCanvas"></canvas>
             <button onclick="backToTitle()" style="background:#fff; border:1px solid #ccc; padding:12px 24px; border-radius:25px; margin-top:15px; font-weight:bold; color:#666;">やめる / Exit</button>
+        </div>
+        
+        <div class="footer-links" style="margin-top: 20px;">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
         </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
@@ -213,7 +240,6 @@
         ball.vx *= friction; ball.vy *= friction;
         ball.x += ball.vx; ball.y += ball.vy;
 
-        // 速度に基づいて角度を計算
         if (Math.abs(ball.vx) > 0.1 || Math.abs(ball.vy) > 0.1) {
             ball.angle = Math.atan2(ball.vy, ball.vx);
         }
@@ -253,15 +279,13 @@
         ctx.font = '24px Arial';
         stars.forEach(s => { if (!s.collected) ctx.fillText('⭐', s.x, s.y + 8); });
 
-        // ★★★ 絵文字の回転描画処理 ★★★
         ctx.save();
         ctx.translate(ball.x, ball.y);
         
-        // 左方向に進んでいる時は、絵文字が逆さまにならないように反転させる
         let flip = (ball.angle > Math.PI/2 || ball.angle < -Math.PI/2);
         if (flip) {
-            ctx.rotate(ball.angle + Math.PI); // 180度回転
-            ctx.scale(-1, 1); // 左右反転
+            ctx.rotate(ball.angle + Math.PI);
+            ctx.scale(-1, 1);
         } else {
             ctx.rotate(ball.angle);
         }
