@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,8 +11,21 @@
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>シール貼り遊び / Sticker Fun</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <title>シール貼り遊び / Sticker Fun - 子供向け無料知育アプリ</title>
+    <meta name="description" content="[JP] タップするだけで簡単に遊べるシール貼り知育ゲーム。指先の感覚を養い、自由に表現する楽しさを体験できます。[EN] A simple sticker educational game for kids. Develop finger coordination and enjoy free expression through creative play.">
+    <meta name="keywords" content="知育アプリ,無料,子供向け,シール貼り,モンテッソーリ,Educational Games,Kids App,Sticker Fun">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="シール貼り遊び / Sticker Fun">
+    <meta property="og:description" content="ペタペタはってお絵かきしよう！好きなシールをえらんでタップするだけ！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/sticker_fun.html">
+    <meta name="twitter:card" content="summary">
+
     <style>
         :root {
             --primary-pink: #FFB7D5;
@@ -55,7 +66,7 @@
             border-radius: 20px; border: 4px dashed #FFD54F;
             position: relative; overflow: hidden; cursor: crosshair;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
-            touch-action: none; /* Scroll prevention */
+            touch-action: none;
         }
         
         .sticker-on-canvas {
@@ -87,7 +98,10 @@
             padding: 12px; border-radius: 15px; font-weight: bold; font-size: 0.9rem;
         }
 
-        .copyright { font-size: 0.7rem; color: #999; margin: 20px 0; font-weight: bold; }
+        /* 信頼性向上用リンク */
+        .footer-links { margin-top: 15px; border-top: 1px dotted #ccc; padding-top: 10px; }
+        .footer-links a { color: #FF8A65; text-decoration: none; font-size: 0.75rem; margin: 0 10px; font-weight: bold; }
+        .copyright { font-size: 0.7rem; color: #999; margin: 10px 0; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -105,6 +119,11 @@
         </div>
         <button class="btn-start" onclick="showApp()">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+        
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -172,7 +191,6 @@
     }
 
     function placeSticker(e) {
-        // Prevent default zoom/scroll on mobile
         if(e.type === 'touchstart') e.preventDefault();
 
         const hint = document.getElementById('hintText');
@@ -181,7 +199,6 @@
         const canvas = document.getElementById('canvasArea');
         const rect = canvas.getBoundingClientRect();
         
-        // Use client coords for accuracy
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
