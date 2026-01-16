@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>むし捕り / Bug Catching</title>
+    
+    <title>むし捕り / Bug Catching - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] 3〜5歳向け！タップで楽しむ無料のむし捕りゲーム。インストール不要で今すぐ遊べます。[EN] Free bug catching game for kids aged 3-5. No installation required. Play for free in your browser.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,むし捕り,3歳,4歳,5歳,暇つぶし,Bug Catching Game,Free Kids Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="むし捕り / Bug Catching - 集中マスター Kids">
+    <meta property="og:description" content="10ぴき つかまえられるかな？ 楽しく遊べる知育ゲーム。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/bug_catch.html">
+    <meta name="twitter:card" content="summary">
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
     <script>
@@ -22,7 +33,7 @@
             margin: 0; padding: 0; background-color: var(--sky-blue); 
             font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
             color: #33691E; display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; overflow: hidden;
+            min-height: 100vh; overflow-y: auto; /* フッターが見えるようスクロールを許可 */
         }
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -73,7 +84,15 @@
             padding: 16px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; 
             box-shadow: 0 5px 0 #33691E; cursor: pointer; margin-top: 10px;
         }
-        .copyright { font-size: 0.7rem; color: #999; margin: 15px 0; font-weight: bold; }
+
+        /* Footer for AdSense Compliance */
+        .footer-nav {
+            margin-top: 30px; padding-bottom: 30px; text-align: center; width: 100%;
+        }
+        .footer-links { margin-bottom: 10px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 12px; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .copyright { font-size: 0.7rem; color: #999; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -91,8 +110,15 @@
             </p>
         </div>
         <button onclick="showApp()" style="background:#689F38; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #33691E;">はじめる / START</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
-        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back  </a>
+        
+        <footer class="footer-nav">
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy / 規約</a>
+                <a href="contact.html">Contact / お問い合わせ</a>
+            </div>
+            <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        </footer>
     </div>
 </div>
 
@@ -113,7 +139,14 @@
             </div>
         </div>
         <button class="btn-sub" onclick="goBack()">おわる / Exit</button>
-        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+
+        <footer class="footer-nav">
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy / 規約</a>
+                <a href="contact.html">Contact / お問い合わせ</a>
+            </div>
+            <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        </footer>
     </div>
 </div>
 
