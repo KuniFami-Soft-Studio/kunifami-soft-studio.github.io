@@ -11,7 +11,19 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>キラキラフルーツ争奪戦 / Fruit Tap Battle</title>
+    
+    <title>Fruit Tap Battle / キラキラフルーツ争奪戦 - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] 3〜5歳向け！流れてくるフルーツをタップして集める無料知育アクションゲーム。最大3人で対戦プレイが可能です。[EN] Free Fruit Tap Battle for kids aged 3-5. Tap the falling fruits to score. Support for up to 3 players. Develops concentration and reflexes.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,フルーツ争奪戦,対戦ゲーム,3歳,4歳,5歳,暇つぶし,Fruit Tap Battle,Educational Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Fruit Tap Battle / キラキラフルーツ争奪戦 - 集中マスター Kids">
+    <meta property="og:description" content="キラキラ流れるフルーツを タッチして あつめよう！最大3人で あそべるよ。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/fruit_battle.html">
+    <meta name="twitter:card" content="summary">
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
     
     <style>
@@ -28,12 +40,12 @@
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             background: var(--bg);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh; margin: 0; overflow: hidden; touch-action: none;
+            min-height: 100vh; margin: 0; overflow-y: auto; touch-action: none;
         }
         .container {
             background: var(--card); padding: 25px; border-radius: 40px;
             box-shadow: var(--shadow); text-align: center; width: 90%; max-width: 450px;
-            border: 6px solid #fff; position: relative; z-index: 10;
+            border: 6px solid #fff; position: relative; z-index: 10; margin: 20px 0;
         }
 
         #gameScreen { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
@@ -69,10 +81,13 @@
         .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #fcc419; }
         .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: rgba(255,255,255,0.2); color: white; border: 2px solid white; border-radius: 12px; cursor: pointer; z-index: 150; }
 
-        /* コピーライト用のスタイルを追加 */
+        /* Reliability & AdSense Compliance */
+        .footer-links { margin: 15px 0; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
         .footer-copyright {
-            margin-top: 20px; font-size: 0.7rem; color: #ccc;
-            text-align: center; font-family: sans-serif;
+            margin-top: 5px; font-size: 0.7rem; color: #ccc;
+            text-align: center; font-family: sans-serif; font-weight: bold;
         }
     </style>
 </head>
@@ -101,8 +116,12 @@
     </div>
 
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
-    <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+    <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
     
+    <div class="footer-links">
+        <a href="privacy.html">Privacy Policy / 規約</a>
+        <a href="contact.html">Contact / お問い合わせ</a>
+    </div>
     <div class="footer-copyright">
         © 2026 KuniFami Soft Studio. All Rights Reserved.
     </div>
