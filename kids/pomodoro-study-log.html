@@ -12,7 +12,17 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>集中マスター Pro / Focus Master Pro</title>
+    
+    <title>集中マスター Pro / Focus Master Pro - ポモドーロ知育タイマー</title>
+    <meta name="description" content="[JP] 集中力を高めるポモドーロ・テクニックを活用した知育タイマー。学習記録をグラフで可視化し、子供のやる気を引き出します。[EN] An educational timer using the Pomodoro Technique to boost focus. Visualize study logs with charts to motivate children.">
+    <meta name="keywords" content="知育, ポモドーロ, タイマー, 集中力, 学習管理, Pomodoro, Timer, Focus, Study Tracker, Kids Education">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="集中マスター Pro / Focus Master Pro">
+    <meta property="og:description" content="25分の集中で学習効率を最大化。楽しく続く知育タイマー。">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --primary: #4a90e2; --accent: #ff00ff; --bg: #111; --card: #ffffff; --pomo: #e74c3c; }
@@ -56,6 +66,11 @@
 
         .footer-area { width: 100%; max-width: 480px; text-align: center; margin-top: 25px; padding-bottom: 30px; }
         .footer-link { display: inline-block; color: #fff; text-decoration: none; font-size: 1.1rem; font-weight: bold; padding: 15px 30px; background: #444; border: 2px solid #666; border-radius: 15px; margin-bottom: 20px; }
+        
+        /* New Privacy/Contact Links */
+        .legal-links { margin-top: 15px; }
+        .legal-links a { color: #bbb; text-decoration: none; font-size: 0.8rem; margin: 0 10px; }
+        .legal-links a:hover { text-decoration: underline; }
 
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; }
         .modal-content { background: white; padding: 25px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; color: #333; overflow-y: auto; max-height: 90vh; }
@@ -229,7 +244,11 @@
 
 <div class="footer-area">
     <a href="./menu.html" class="footer-link">← メニューへ / Back to Menu</a>
-    <div class="copyright" style="color:#888; font-size:0.8rem;">© 2026 KuniFami Soft Studio.</div>
+    <div class="legal-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="contact.html">Contact</a>
+    </div>
+    <div class="copyright" style="color:#888; font-size:0.8rem; margin-top:15px;">© 2026 KuniFami Soft Studio.</div>
 </div>
 
 <div id="userModal" class="modal"><div class="modal-content"><h3 style="margin-top:0;">ユーザー切替 / Switch User</h3><button class="btn-tool" style="width:100%; background:var(--primary); margin-bottom:15px;" onclick="addNewUser()">＋ 新規ユーザー追加 / New User</button><div id="userListContainer" style="text-align:left; border-top:1px solid #eee; max-height: 300px; overflow-y: auto;"></div><button class="btn-tool" style="width:100%; background:#ccc; margin-top:15px;" onclick="closeUserModal()">閉じる / Close</button></div></div>
@@ -303,7 +322,7 @@
     function renderAllCharts(cStart = null, cEnd = null) {
         const labels = []; const chartDates = [];
         const datasetsMap = {}; const categoryTotals = {};
-        const tableData = []; // 表用のデータ配列
+        const tableData = [];
         let rangeTotal = 0, actualActiveDays = 0;
 
         if (cStart && cEnd) {
@@ -354,13 +373,11 @@
         drawBarChart(labels, chartDates, datasetsMap);
         drawPieChart(categoryTotals);
         drawLineChart(labels, datasetsMap);
-        renderTable(tableData); // 表の描画
+        renderTable(tableData);
     }
 
-    // テーブルを描画する関数
     function renderTable(data) {
         const tbody = document.getElementById('statsTableBody');
-        // 日付の新しい順に並び替えて表示
         const sortedData = data.sort((a, b) => b.date.localeCompare(a.date));
         
         tbody.innerHTML = sortedData.map(item => `
