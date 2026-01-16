@@ -11,8 +11,21 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ふくわらい / Funny Face Maker</title>
     
+    <title>Funny Face Maker / 究極！ふくわらい - 3〜5歳向け無料知育ゲーム</title>
+    <meta name="description" content="[JP] 3〜5歳向け！パーツを自由に動かして面白い顔を作る無料知育ふくわらいゲーム。想像力と感性を養います。[EN] Free Funny Face Maker (Fukuwarai) for kids aged 3-5. Move parts to create hilarious faces. Encourages creativity and imagination.">
+    <meta name="keywords" content="知育ゲーム,子供向け,無料,ふくわらい,おもちゃ,3歳,4歳,5歳,暇つぶし,Funny Face Maker,Fukuwarai,Educational Games">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Funny Face Maker / 究極！ふくわらい - 集中マスター Kids">
+    <meta property="og:description" content="パーツをえらんで、おもしろい顔をつくろう！ 100種類以上の絵文字パーツで遊べる知育ゲーム。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/funny_face.html">
+    <meta name="twitter:card" content="summary">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
     <style>
         :root {
             --bg: #fdfae1;
@@ -28,7 +41,7 @@
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             background: var(--bg);
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; margin: 0; overflow: hidden;
+            min-height: 100vh; margin: 0; overflow-y: auto; /* フッターリンク確認のため変更 */
             touch-action: none;
         }
 
@@ -109,14 +122,18 @@
         .btn-main { width: 80%; padding: 15px; background: #ff7043; color: #fff; border: none; border-radius: 35px; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 6px 0 #d84315; margin: 10px 0; }
         .btn-exit { position: absolute; top: 15px; right: 15px; padding: 8px 12px; background: #fff; border: 2px solid #ff7043; border-radius: 12px; color: #ff7043; font-weight: bold; z-index: 3000; font-size: 0.8rem;}
         
-        .copyright { font-size: 0.7rem; color: #999; margin-top: 15px; }
+        /* Footer Links for Compliance */
+        .footer-links { margin: 10px 0; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+        .copyright { font-size: 0.7rem; color: #999; margin-top: 10px; font-weight: bold; }
         .link-back { display: block; margin-top: 15px; color: #ff7043; text-decoration: none; font-size: 0.9rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container" id="startScreen">
-    <h1 style="margin-bottom: 5px;">究極！ふくわらい</h1>
+    <h1 style="margin-bottom: 5px;">Funny Face Maker / 究極！ふくわらい</h1>
     <p style="margin-top: 0; color: #ff7043; font-weight: bold;">Ultimate Funny Face Maker</p>
     
     <div style="color:#666; margin: 20px 0; font-size: 0.9rem; line-height: 1.6;">
@@ -128,6 +145,10 @@
     
     <a href="./menu.html" class="link-back">← Back to Menu / メニューにもどる</a>
 
+    <div class="footer-links" style="margin-top: 20px;">
+        <a href="privacy.html">Privacy Policy / 規約</a>
+        <a href="contact.html">Contact / お問い合わせ</a>
+    </div>
     <div class="copyright">© 2026 KuniFami Soft Studio</div>
 </div>
 
@@ -142,6 +163,10 @@
 
     <div style="width: 100%; text-align: center; background: #fff; padding-bottom: 20px;">
         <button class="btn-main" onclick="resetAll()">Clear All / ぜんぶ消す</button>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
@@ -192,7 +217,6 @@
         
         gameScreen.appendChild(container);
         
-        // 中央座標を計算して配置
         container.style.left = (rect.left + rect.width/2 - 50) + 'px'; 
         container.style.top = (rect.top + rect.height/2 - 50) + 'px';
 
