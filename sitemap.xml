@@ -4,39 +4,83 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
 <url>
   <loc>https://kunifami-soft-studio.com/</loc>
-  <lastmod>2026-01-14T03:17:09+00:00</lastmod>
+  <lastmod>2026-01-17T16:00:00+00:00</lastmod>
   <priority>1.00</priority>
 </url>
+
 <url>
   <loc>https://kunifami-soft-studio.com/kids/menu.html</loc>
-  <lastmod>2026-01-14T03:17:09+00:00</lastmod>
-  <priority>0.80</priority>
+  <lastmod>2026-01-17T16:00:00+00:00</lastmod>
+  <priority>0.90</priority>
 </url>
+<url><loc>https://kunifami-soft-studio.com/kids/magic.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/neon.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/fukuwarai.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/mangekyo.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/scratch.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/sticker_fun.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/symmetry_draw.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/pomodoro-study-log.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/ox.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/math_quiz.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/color_math.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/shadow.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/difference.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/colorsort.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/bigorsmall.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/odd_one_out.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/pattern_quiz.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/puzzle.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/jigsaw.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/sinkeisuizyaku.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/dot_to_dot.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/maze.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/lunch_box.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/pitch-match.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/pop_it.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/firework.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/balloon.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/kirakira.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/zoo.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/piano.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/rhythm.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/catch.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/bug_catch.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/gravity_ball.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/cleaning_game.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/finger_stamp.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/sinobi.html</loc></url>
+
 <url>
   <loc>https://kunifami-soft-studio.com/form-mirror-pro-iphone/</loc>
-  <lastmod>2026-01-13T11:54:40+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://kunifami-soft-studio.com/form-mirror-pro-pc/</loc>
-  <lastmod>2026-01-13T13:35:23+00:00</lastmod>
   <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kunifami-soft-studio.com/privacy.html</loc>
-  <lastmod>2026-01-14T03:17:09+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://kunifami-soft-studio.com/index.html</loc>
-  <lastmod>2026-01-14T03:17:09+00:00</lastmod>
-  <priority>0.64</priority>
 </url>
 
+<url><loc>https://kunifami-soft-studio.com/guide/getting-started.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/smart-sync-recording.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/video-delay-guide.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/ghost-mode-guide.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/faq.html</loc></url>
+
+<url><loc>https://kunifami-soft-studio.com/guide/golf-swing-check-tips.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/dance-form-improvement.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/gym-training-tips.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/baseball-softball-tips.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/tennis-badminton-tips.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/volleyball-basketball-tips.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/bowling-form-tips.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/archery-form-tips.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/guide/instruments-others-tips.html</loc></url>
+
+<url><loc>https://kunifami-soft-studio.com/privacy.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/contact.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/privacy.html</loc></url>
+<url><loc>https://kunifami-soft-studio.com/kids/contact.html</loc></url>
 
 </urlset>
