@@ -62,6 +62,37 @@
         .spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .spec-card { background: #fdfdfd; padding: 25px; border-radius: 12px; border: 1px solid #eee; }
 
+/* Gear Section Styles */
+        .gear-section { border: 2px solid var(--accent); background: #ffffff; }
+        .gear-box-jp { 
+            background: #f9fbe7; 
+            padding: 20px; border-radius: 10px; border: 1px dashed var(--primary); 
+            margin-top: 15px;
+        }
+        .gear-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .gear-item {
+            background: white; padding: 15px; border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center;
+            border: 1px solid #eee;
+        }
+        .gear-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+        .gear-title { font-weight: bold; margin: 0 0 5px; color: #333; font-size: 1rem; }
+        .gear-desc { font-size: 0.8rem; color: #666; min-height: 40px; margin-bottom: 10px; line-height: 1.4; }
+        
+        .amazon-btn {
+            background: #ff9900; color: white; text-decoration: none; 
+            padding: 8px 18px; border-radius: 20px; font-weight: bold; font-size: 0.85rem;
+            display: inline-block; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .amazon-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+
+        
         footer { text-align: center; margin-top: 80px; padding: 40px 0; border-top: 1px solid #ddd; }
         .footer-links a { color: #555; text-decoration: none; margin: 0 15px; font-size: 0.95rem; }
 
@@ -139,6 +170,71 @@
             <h3>🎥 Recording Tip: Smart Sync</h3>
             <span class="lang-en">Use **Smart Sync** to record along with a model. See how well your timing and dynamics match the instructor's.</span>
             <p class="lang-jp"><strong>スマート・シンクロ</strong>を使って、お手本に合わせて録画。タイミングや強弱（ダイナミクス）がお手本と一致しているかを一目で確認できます。</p>
+        </section>
+
+        
+<section class="card gear-section">
+            <h3>📸 Essential Gear / 撮影機材ガイド</h3>
+            
+            <div style="margin-bottom: 20px;">
+                <p class="lang-en">
+                    To analyze your form precisely, <strong>fixing your smartphone is essential.</strong><br>
+                    <span style="font-size: 0.9rem; color: #555;">(Global Users: Please search for <b>"Smartphone Tripod"</b> or <b>"Wide Lens"</b> on your local Amazon.)</span>
+                </p>
+                <p class="lang-jp">
+                    フォーム分析には「固定」と「画角」が重要です。<br>
+                    練習環境に合わせて、最適なツールを選びましょう。
+                </p>
+            </div>
+
+            <div class="gear-box-jp">
+                <div style="text-align: center;">
+                    <span style="background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
+                        🇯🇵 For Users in Japan / 日本の方へおすすめ
+                    </span>
+                </div>
+                
+                <div class="gear-grid">
+                    
+                    <div class="gear-item">
+                        <span class="gear-icon">🔭</span>
+                        <p class="gear-title">軽量スマホ三脚</p>
+                        <p class="gear-desc">
+                            基本の1本。練習場など地面から全身を撮るのに最適。
+                        </p>
+                        <a href="https://amzn.to/4sRh7G4" target="_blank" rel="nofollow" class="amazon-btn">
+                            Amazonで見る
+                        </a>
+                    </div>
+
+                    <div class="gear-item">
+                        <span class="gear-icon">🐙</span>
+                        <p class="gear-title">くねくね三脚</p>
+                        <p class="gear-desc">
+                            柱に巻き付けたり、卓上に置ける便利な小型タイプ。
+                        </p>
+                        <a href="https://amzn.to/3NPKdFu" target="_blank" rel="nofollow" class="amazon-btn">
+                            Amazonで見る
+                        </a>
+                    </div>
+
+                    <div class="gear-item">
+                        <span class="gear-icon">📷</span>
+                        <p class="gear-title">広角レンズ</p>
+                        <p class="gear-desc">
+                            狭い室内でも全身が映る！クリップ式広角レンズ。
+                        </p>
+                  <a href="https://amzn.to/4sNsn63" target="_blank" rel="nofollow" class="amazon-btn">
+                            Amazonで見る
+                        </a>
+                    </div>
+
+                </div>
+                
+                <p style="font-size: 0.7rem; color: #999; text-align: right; margin-top: 15px;">
+                    ※Amazonアソシエイトリンクを利用しています
+                </p>
+            </div>
         </section>
     </main>
 
