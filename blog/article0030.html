@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5115190227060860" crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="keywords" content="知育ゲーム, リズムゲーム, 音ゲー, リトミック, 3歳, 4歳, 5歳, 無料ゲーム, インストール不要, Educational Game, Rhythm Game, Music, Reflexes, No Install">
+    
+    <title>【0秒起動】リズム感を鍛える！「リズムたたき」音楽ゲーム（ここですぐ遊べます） | KuniFami Blog</title>
+    <meta name="description" content="インストール不要・ギガを使わない！流れてくる星をタイミングよく叩く、3〜5歳向けの無料リズム知育ゲーム。リズム感と反射神経を楽しく育みます。今すぐ遊べます。 / Instant Play! Tap the stars to the rhythm. Develops musical sense and reflexes. No install needed.">
+    
+    <link rel="icon" href="../Logo3.jpg" type="image/jpg">
+    <style>
+        :root {
+            --primary: #007AFF;
+            --text: #333;
+            --bg: #f9f9f9;
+            --white: #fff;
+            --gray: #ddd;
+            --accent: #FF9500;
+            --rhythm-pink: #FF6F91;
+        }
+
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.8; color: var(--text); background: var(--bg); margin: 0; padding: 0; }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* ヘッダー */
+        header { background: var(--white); border-bottom: 1px solid var(--gray); padding: 15px 20px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; box-sizing: border-box; }
+        .site-logo { font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; color: #000; }
+        .site-logo img { width: 30px; height: 30px; border-radius: 6px; }
+
+        /* 言語切り替えボタン */
+        .lang-switch { display: flex; gap: 5px; }
+        .lang-btn { border: 1px solid #ccc; background: white; padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
+        .lang-btn.active { background: var(--text); color: white; border-color: var(--text); }
+
+        /* レイアウト */
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; }
+        @media (max-width: 800px) { .container { grid-template-columns: 1fr; } header { flex-direction: column; gap: 10px; } }
+
+        /* 記事エリア */
+        .article-card { background: var(--white); padding: 40px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .article-meta { font-size: 0.9rem; color: #888; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; }
+        .tag { background: #E1F5FE; color: #0277BD; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+        h1 { margin: 0 0 20px 0; font-size: 2rem; line-height: 1.3; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        
+        /* 記事本文 */
+        .post-body h2 { border-left: 5px solid var(--rhythm-pink); padding: 10px 15px; background: #FFF0F5; margin-top: 50px; margin-bottom: 20px; font-size: 1.5rem; border-radius: 0 8px 8px 0; }
+        .post-body h3 { border-bottom: 2px solid var(--rhythm-pink); padding-bottom: 5px; margin-top: 40px; font-size: 1.2rem; }
+        .post-body p { margin-bottom: 20px; font-size: 1.05rem; }
+        
+        /* ゲーム埋め込み用スタイル */
+        .game-embed-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px auto;
+            border: 4px solid #FF80AB;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #F0F4C3;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        iframe {
+            width: 100%;
+            height: 600px; /* ゲーム画面の高さに合わせて調整 */
+            border: none;
+            display: block;
+        }
+        .play-fullscreen-btn {
+            display: block;
+            width: 80%;
+            max-width: 300px;
+            margin: 10px auto 30px;
+            padding: 15px;
+            background: var(--rhythm-pink);
+            color: white;
+            text-align: center;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 0 #C2185B;
+            transition: transform 0.1s;
+        }
+        .play-fullscreen-btn:active { transform: translateY(4px); box-shadow: none; }
+
+        /* 広告枠 */
+        .ad-space { margin: 30px 0; text-align: center; background: #fdfdfd; padding: 10px; border: 1px dashed #eee; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .ad-label { font-size: 10px; color: #ccc; margin-bottom: 5px; display: block; }
+
+        /* CTA */
+        .app-cta { background: linear-gradient(135deg, #007AFF, #00C6FF); color: white; padding: 30px; border-radius: 12px; text-align: center; margin: 60px 0; box-shadow: 0 4px 15px rgba(0,122,255,0.3); }
+        .app-cta h3 { margin-top: 0; color: white; border: none; font-size: 1.4rem; }
+        .cta-btn { display: inline-block; background: var(--accent); color: white; padding: 15px 40px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: blink 2s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.9; transform: scale(1.02); } 100% { opacity: 1; } }
+
+        /* サイドバー */
+        aside .widget { background: var(--white); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; }
+        .widget-title { font-weight: bold; margin-bottom: 15px; display: block; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 1rem; }
+        .profile-img { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 10px; display: block; border: 2px solid #eee; }
+        .profile-text { font-size: 0.9rem; text-align: center; line-height: 1.5; }
+        
+        footer { text-align: center; padding: 30px; font-size: 0.8rem; color: #888; border-top: 1px solid #ddd; margin-top: 40px; }
+
+        /* 言語切り替え用クラス */
+        [lang="en"] { display: none; }
+        body.en-mode [lang="ja"] { display: none; }
+        body.en-mode [lang="en"] { display: block; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="site-logo">
+            <img src="../Logo3.jpg" alt="Logo">
+            KuniFami Blog
+        </a>
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="switchLang('ja')">🇯🇵 日本語</button>
+            <button class="lang-btn" onclick="switchLang('en')">🇺🇸 English</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <article class="article-card">
+                <div class="article-meta">
+                    <span class="tag">Kids & Education</span>
+                    <time>2026.01.20</time>
+                </div>
+
+                <h1 lang="ja">【0秒起動】リズム感を鍛える！「リズムたたき」音楽ゲーム（ここですぐ遊べます）</h1>
+                <h1 lang="en">Instant Play! "Rhythm Tap Challenge" Music Game (No Install Needed)</h1>
+                
+                <div id="toc">
+                    <span class="title" lang="ja">目次</span>
+                    <span class="title" lang="en">Table of Contents</span>
+                </div>
+
+                <div class="ad-space">
+                    <span class="ad-label">SPONSORED</span>
+                    <ins class="adsbygoogle" style="display:block; width:100%;" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+
+                <div class="post-body">
+                    <div lang="ja">
+                        <p>「子供にリズム感をつけさせたい」「楽しく遊べる簡単な音楽ゲームはないかな？」</p>
+                        <p>そんな親御さんのために、<strong>「音楽に合わせてタイミングよくボタンを叩く」</strong>シンプルなリズム知育ゲームを作りました。</p>
+                        <p><strong>「アプリの削除も不要」「ギガを使わない」「広告動画なし」</strong>。3段階の難易度で、小さなお子様から楽しめます。</p>
+
+                        <h2>論より証拠。まずはここで遊んでみてください👇</h2>
+                        <p>アプリストアに行く必要はありません。この下の画面で「かんたん」を押すだけ。0秒でスタートします。</p>
+                        
+                        <div class="game-embed-container">
+                            <iframe src="../kids/rhythm.html" title="リズムたたきゲーム"></iframe>
+                        </div>
+                        <p style="text-align:center; font-size:0.9rem; color:#666;">
+                            👆 落ちてくる「⭐」がワクに来たら、ボタンをTAPしてね！
+                        </p>
+                        
+                        <a href="../kids/rhythm.html" class="play-fullscreen-btn">
+                            📱 スマホ全画面で遊ぶ<br>
+                            <span style="font-size:0.8rem; font-weight:normal;">(インストール不要・0秒起動)</span>
+                        </a>
+
+                        <h2>このゲームの「3つの知育効果」</h2>
+                        <p>ただ叩くだけではありません。音楽と視覚を連動させる脳のトレーニングになります。</p>
+                        
+                        <h3>1. リズム感とタイミングの習得</h3>
+                        <p>一定のテンポで落ちてくる星に合わせて体を動かすことで、音楽の基礎となるリズム感が自然と身につきます。<br>リトミックのような効果が期待できます。</p>
+
+                        <h3>2. 反射神経と集中力</h3>
+                        <p>「今だ！」という瞬間に指を動かす反射神経を鍛えます。<br>特に「ふつう・はやい」モードでは、お邪魔キャラ（爆弾）を避けながら星だけを叩く必要があり、高い集中力が養われます。</p>
+
+                        <h3>3. 達成感（100点を目指す）</h3>
+                        <p>1回成功するごとに10点プラス。「100点取れた！」というわかりやすいゴールがあるため、子供は夢中になって繰り返し挑戦し、達成感を味わえます。</p>
+
+                        <h2>親御さんに嬉しい「安心設計」</h2>
+                        <ul>
+                            <li>✅ <strong>インストール不要 (No Install)</strong>：ストレージ容量を圧迫しません。</li>
+                            <li>✅ <strong>アプリの削除も不要</strong>：ブラウザを閉じるだけでお片付け完了。</li>
+                            <li>✅ <strong>ギガを使わない</strong>：一度読み込めば、通信量をほとんど使いません。</li>
+                        </ul>
+
+                        <h2>まとめ：親子でリズムに乗ろう！</h2>
+                        <p>「タン、タン、タン！」と声をかけながら、親子で一緒にリズム遊びを楽しんでください。<br>難易度「はやい」は大人でもやりごたえがありますよ！</p>
+                        <p>他にも楽しいキッズゲームをご用意しています。ぜひチェックしてみてください。</p>
+                        
+                        <div style="text-align:center; margin-top:30px;">
+                            <a href="../kids/menu.html" style="font-weight:bold; color:#FF9800; text-decoration:underline;">👉 キッズゲーム一覧を見る (Kids Menu)</a>
+                        </div>
+                    </div>
+
+                    <div lang="en">
+                        <p>"I want to improve my child's sense of rhythm..."<br>"I'm looking for a simple music game."</p>
+                        <p>For such parents, I created a simple rhythm educational game where you <strong>"tap the button in time with the music."</strong></p>
+                        <p>With <strong>"No Install Needed," "Data Saving," and "No Video Ads,"</strong> kids can start playing instantly. It offers 3 difficulty levels.</p>
+
+                        <h2>Try it right here, right now 👇</h2>
+                        <p>No need to visit the App Store. Just tap "Easy" below. It starts instantly.</p>
+                        
+                        <div class="game-embed-container">
+                            <iframe src="../kids/rhythm.html" title="Rhythm Tap Game"></iframe>
+                        </div>
+                        <p style="text-align:center; font-size:0.9rem; color:#666;">
+                            👆 Tap the button when the "⭐" reaches the target zone!
+                        </p>
+                        
+                        <a href="../kids/rhythm.html" class="play-fullscreen-btn">
+                            📱 Play Full Screen<br>
+                            <span style="font-size:0.8rem; font-weight:normal;">(No Install / Instant Start)</span>
+                        </a>
+
+                        <h2>3 Educational Benefits of This Game</h2>
+                        <p>It connects music and vision, providing excellent brain training.</p>
+                        
+                        <h3>1. Rhythm and Timing</h3>
+                        <p>Moving to the tempo of the falling stars naturally develops a sense of rhythm, similar to eurhythmics.</p>
+
+                        <h3>2. Reflexes and Concentration</h3>
+                        <p>It trains reflexes to react at the "Now!" moment.<br>In "Normal/Fast" modes, kids must avoid obstacles (bombs), which nurtures high concentration.</p>
+
+                        <h3>3. Achievement (Aim for 100)</h3>
+                        <p>Get 10 points for each success. The clear goal of "Reach 100 points!" keeps kids engaged and gives them a sense of accomplishment.</p>
+
+                        <h2>Safe Design for Parents</h2>
+                        <ul>
+                            <li>✅ <strong>No Install Needed</strong>: Play without worrying about storage space.</li>
+                            <li>✅ <strong>No Need to Delete</strong>: Just close the browser to finish.</li>
+                            <li>✅ <strong>No Storage Required</strong>: Uses almost no data once loaded.</li>
+                        </ul>
+
+                        <h2>Summary: Enjoy the Rhythm Together!</h2>
+                        <p>Clap along and enjoy rhythm play together!<br>The "Fast" mode is challenging even for adults.</p>
+                        <p>We have other fun kids' games available. Please check them out.</p>
+                        
+                        <div style="text-align:center; margin-top:30px;">
+                            <a href="../kids/menu.html" style="font-weight:bold; color:#FF9800; text-decoration:underline;">👉 View Kids Game Menu</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ad-space">
+                    <span class="ad-label">SPONSORED</span>
+                    <ins class="adsbygoogle" style="display:block; width:100%;" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+
+                <div class="app-cta">
+                    <h3 lang="ja">\ パパ・ママの練習にはこちら /</h3>
+                    <h3 lang="en">\ For Mom & Dad's Practice /</h3>
+                    
+                    <p lang="ja">AI骨格検知で<br>ゴルフ・ダンスのフォームを劇的に改善！</p>
+                    <p lang="en">Improve your form dramatically with<br> AI Skeleton tracking!</p>
+                    
+                    <a href="../form-mirror-pro-iphone/form_mirror_sync.html" class="cta-btn">
+                        <span lang="ja">今すぐ試す (ブラウザで起動)</span>
+                        <span lang="en">Launch Form Mirror Pro</span>
+                    </a>
+                </div>
+
+            </article>
+        </main>
+
+        <aside>
+            <div class="widget">
+                <span class="widget-title" lang="ja">運営者</span>
+                <span class="widget-title" lang="en">Developer</span>
+                <img src="../Logo3.jpg" alt="KuniFami" class="profile-img">
+                <div class="profile-text">
+                    <strong>KuniFami Soft Studio</strong><br>
+                    <span lang="ja">愛犬と子供が大好きなエンジニア。「欲しいものを自分で作る」がモットー。</span>
+                    <span lang="en">Indie Developer. An engineer who loves dogs and kids. My motto is 'I build what I want to use.'"</span>
+                </div>
+                <div style="text-align:center; margin-top:10px;">
+                    <a href="https://x.com/kunifami2025" target="_blank" style="color:#1DA1F2; font-weight:bold;">𝕏 Follow Me</a>
+                </div>
+            </div>
+
+            <div class="widget">
+                <span class="widget-title">Sponsor</span>
+                <div class="ad-space" style="margin:0; min-height:250px;">
+                    <ins class="adsbygoogle" style="display:block; width:100%;" data-ad-client="ca-pub-5115190227060860" data-ad-slot="3577508619" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+            </div>
+
+            <div class="widget">
+                <span class="widget-title" lang="ja">おすすめ記事</span>
+                <span class="widget-title" lang="en">Recommended</span>
+                <ul id="random-posts" style="padding-left:20px; font-size:0.9rem; line-height: 1.6;"></ul>
+            </div>
+        </aside>
+
+    </div>
+
+    <footer>
+        <p><a href="../index.html">Home</a> | <a href="../contact.html">Contact</a> | <a href="../privacy.html">Privacy</a></p>
+        <p>&copy; 2026 KuniFami Soft Studio</p>
+    </footer>
+
+    <script src="blog-data.js"></script>
+    <script>
+        // 言語切り替え
+        function switchLang(lang) {
+            document.body.classList.remove('en-mode');
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            
+            if (lang === 'en') {
+                document.body.classList.add('en-mode');
+                document.querySelectorAll('.lang-btn')[1].classList.add('active');
+            } else {
+                document.querySelectorAll('.lang-btn')[0].classList.add('active');
+            }
+            generateToc();
+        }
+
+        // 初期設定
+        const userLang = navigator.language || navigator.userLanguage;
+        if (!userLang.startsWith('ja')) {
+            switchLang('en');
+        }
+
+        // 目次生成
+        function generateToc() {
+            const toc = document.getElementById('toc');
+            const oldList = toc.querySelector('ul');
+            if(oldList) oldList.remove();
+
+            const list = document.createElement('ul');
+            const isEn = document.body.classList.contains('en-mode');
+            const selector = isEn ? '.post-body div[lang="en"] h2' : '.post-body div[lang="ja"] h2';
+            const headers = document.querySelectorAll(selector);
+            
+            if (headers.length === 0) return;
+
+            headers.forEach((header, index) => {
+                const id = 'chapter-' + index;
+                header.id = id;
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#' + id;
+                a.textContent = header.textContent;
+                li.appendChild(a);
+                list.appendChild(li);
+            });
+            toc.appendChild(list);
+        }
+
+        document.addEventListener('DOMContentLoaded', generateToc);
+    </script>
+
+</body>
+</html>
