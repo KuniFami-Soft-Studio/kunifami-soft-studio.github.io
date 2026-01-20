@@ -1,6 +1,6 @@
 /**
  * 広告・上達支援コンテンツ管理マネージャー (../ad-manager.js)
- * 機能：1件ランダムバナー + 5件ランダムリスト + 折りたたみ表示
+ * 機能：1件ランダムバナー + 5件ランダムリスト + もっと見るで追加5件（最大10件）
  * 対応：テキストリンク形式 / HTML直接記述形式（A8タグ用）
  */
 
@@ -27,8 +27,6 @@
                 '☕️ ツールを気に入ったら開発を支援する<br><small>If you like this tool, please support the developer.</small>'
             ],
             // リソース（リスト用）
-            // text/sub/url形式: サイトのデザインに合わせて整形されます
-            // html形式: A8などのタグをそのまま表示します
             resources: [
                 // 1. 軽量スマホ三脚
                 { text: '🔭 軽量スマホ三脚', sub: '基本の1本。練習場など地面から全身を撮るのに最適。', url: 'https://amzn.to/4sRh7G4' },
@@ -44,8 +42,18 @@
                 { html: '<a href="https://px.a8.net/svt/ejp?a8mat=4AV9KC+AO0LYQ+4QI2+5ZEMQ" rel="nofollow" target="_blank" style="color:#007AFF; text-decoration:none; font-weight:500;">💃 継続率98%のオンラインダンスレッスン【スポとも】<br><small style="color:#888; font-size:10px;">Dance Lesson</small></a><img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=4AV9KC+AO0LYQ+4QI2+5ZEMQ" alt="">' },
                 // 7. サンクチュアリゴルフ (A8)
                 { html: '<a href="https://px.a8.net/svt/ejp?a8mat=4AV9KC+AJUKQA+3BTW+5YJRM" rel="nofollow" target="_blank" style="color:#007AFF; text-decoration:none; font-weight:500;">⛳️ 初心者専用ゴルフスクール【サンクチュアリ】<br><small style="color:#888; font-size:10px;">Golf School</small></a><img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=4AV9KC+AJUKQA+3BTW+5YJRM" alt="">' },
-                // 8. RIZAP GOLF (A8)
+                // 8. RIZAP GOLF (A8) - New
                 { html: '<a href="https://px.a8.net/svt/ejp?a8mat=4AV9KC+AG9Z3M+CW6+BF23HE" rel="nofollow" target="_blank" style="color:#007AFF; text-decoration:none; font-weight:500;">⛳️ RIZAP GOLF<br><small style="color:#888; font-size:10px;">Pro Golf Lesson</small></a><img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4AV9KC+AG9Z3M+CW6+BF23HE" alt="">' },
+                // 9. スポーツデポ (A8) - New
+                { html: '<a href="https://px.a8.net/svt/ejp?a8mat=4AVACA+9KQ01E+3OSK+5YJRM" rel="nofollow" target="_blank" style="color:#007AFF; text-decoration:none; font-weight:500;">🏃 【最短翌日配送】スポーツデポ公式ストア<br><small style="color:#888; font-size:10px;">Sports Depot Online</small></a><img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4AVACA+9KQ01E+3OSK+5YJRM" alt="">' },
+                // 10. Victoria Golf (A8) - New
+                { html: '<a href="https://px.a8.net/svt/ejp?a8mat=4AVACA+958QB6+4ABU+BX3J6" rel="nofollow" target="_blank" style="color:#007AFF; text-decoration:none; font-weight:500;">⛳️ ゴルフ用品通販【VictoriaGolf】<br><small style="color:#888; font-size:10px;">Golf Gear Shop</small></a><img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4AVACA+958QB6+4ABU+BX3J6" alt="">' },
+                // 11. Victoria Surf&Snow (A8) - New
+                { html: '<a href="https://px.a8.net/svt/ejp?a8mat=4AVACA+9MIAUQ+4ABU+NW4IA" rel="nofollow" target="_blank" style="color:#007AFF; text-decoration:none; font-weight:500;">🏂 マリン＆スノースポーツ用品【Victoria】<br><small style="color:#888; font-size:10px;">Surf & Snow Gear</small></a><img border="0" width="1" height="1" src="https://www12.a8.net/0.gif?a8mat=4AVACA+9MIAUQ+4ABU+NW4IA" alt="">' },
+                // 12. Voicecaddie (A8) - New
+                { html: '<a href="https://px.a8.net/svt/ejp?a8mat=4AVACA+A8JC8I+5316+5YRHE" rel="nofollow" target="_blank" style="color:#007AFF; text-decoration:none; font-weight:500;">📏 ゴルフ用距離計測器 Voicecaddie<br><small style="color:#888; font-size:10px;">Golf Distance Meter</small></a><img border="0" width="1" height="1" src="https://www12.a8.net/0.gif?a8mat=4AVACA+A8JC8I+5316+5YRHE" alt="">' },
+                // 13. ムラサキスポーツ (A8) - New
+                { html: '<a href="https://px.a8.net/svt/ejp?a8mat=4AVACA+AABN1U+5MZI+5YJRM" rel="nofollow" target="_blank" style="color:#007AFF; text-decoration:none; font-weight:500;">🏄 自由なスタイルを【ムラサキスポーツ】<br><small style="color:#888; font-size:10px;">Action Sports Gear</small></a><img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4AVACA+AABN1U+5MZI+5YJRM" alt="">' },
                 // 開発支援
                 { text: '☕️ 開発を支援する (Buy Me a Coffee)', sub: 'Support the developer', url: 'https://buymeacoffee.com/kunifami20w' }
             ]
@@ -58,7 +66,7 @@
                 '☕️ Love this tool? Buy me a coffee!'
             ],
             resources: [
-                { text: '☕️ 開発を支援する (Buy Me a Coffee)', sub: 'Support the developer', url: 'https://buymeacoffee.com/kunifami20w' }
+                { text: '☕️ Support the Developer (Buy Me a Coffee)', sub: 'Support the developer', url: 'https://buymeacoffee.com/kunifami20w' }
             ]
         },
         
@@ -69,7 +77,7 @@
                 '☕️ Keep this project alive! Buy me a coffee.'
             ],
             resources: [
-                { text: '☕️ 開発を支援する (Buy Me a Coffee)', sub: 'Support the developer', url: 'https://buymeacoffee.com/kunifami20w' }
+                { text: '☕️ Support the Developer (Buy Me a Coffee)', sub: 'Support the developer', url: 'https://buymeacoffee.com/kunifami20w' }
             ]
         }
     };
@@ -86,18 +94,20 @@
         suggestionArea.innerHTML = currentData.suggestions[Math.floor(Math.random() * currentData.suggestions.length)];
     }
 
-    // 3. リソースリスト（5件ランダム + 折りたたみ）
+    // 3. リソースリスト（最初の5件 ＋ 折りたたみ内5件）
     const resourceList = document.getElementById('resourceList');
     if (resourceList) {
-        // シャッフル
+        // 全リソースをシャッフル
         const shuffled = [...currentData.resources].sort(() => 0.5 - Math.random());
         
+        // 最初の5件を取り出す
         const top5 = shuffled.slice(0, 5);
-        const others = shuffled.slice(5);
+        // 次の5件（6件目〜10件目）を取り出す（残りは表示しない）
+        const next5 = shuffled.slice(5, 10);
 
         let html = '<p style="font-size: 10px; color: #999; margin-bottom: 8px; text-transform: uppercase;">Recommended</p>';
         
-        // アイテム生成関数（HTMLタグ直接指定に対応）
+        // アイテム生成関数
         const createItem = (item) => {
             if (item.html) {
                 // A8などのHTMLタグが指定されている場合
@@ -112,13 +122,13 @@
             }
         };
 
-        // 最初の5件
+        // 最初の5件を表示
         top5.forEach(item => {
             html += createItem(item);
         });
 
-        // 6件目以降がある場合は折りたたむ
-        if (others.length > 0) {
+        // 次の5件がある場合のみ「もっと見る」を表示
+        if (next5.length > 0) {
             html += `
             <details style="margin-top: 10px;">
                 <summary style="font-size: 12px; color: #007AFF; cursor: pointer; font-weight: bold; outline: none; padding: 5px 0;">
@@ -126,7 +136,7 @@
                 </summary>
                 <div style="margin-top: 10px; padding-left: 5px; border-left: 2px solid #eee;">
             `;
-            others.forEach(item => {
+            next5.forEach(item => {
                 html += createItem(item);
             });
             html += `</div></details>`;
