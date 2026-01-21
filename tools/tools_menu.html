@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>KuniFami Labs. | Digital Tools for Daily Life</title>
+    <meta name="description" content="[EN] KuniFami Labs provides free web tools to update your daily life. Featuring 'Focus Master', a Pomodoro timer. [JP] 日常をアップデートする無料Webツール集。ポモドーロタイマー『Focus Master』公開中。">
+    <meta name="keywords" content="Web Apps, Productivity, Pomodoro Timer, Webアプリ, 便利ツール, ポモドーロタイマー, ライフハック">
+    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="KuniFami Labs.">
+    <meta property="og:description" content="Digital Tools for Your Daily Life. 日常をアップデートするWebツール集。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kunifami-soft-studio.com/index.html">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <style>
+        :root {
+            --bg-color: #fcfcfc;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666;
+            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            --card-hover-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; padding: 0;
+            color: var(--text-primary);
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: radial-gradient(circle at top, #f3f4f6, transparent);
+        }
+        .hero h1 {
+            font-size: 2.8rem; margin-bottom: 10px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800; letter-spacing: -1px;
+        }
+        .hero-sub {
+            font-size: 1.2rem; font-weight: 600; color: #444; margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 0.95rem; color: var(--text-secondary);
+            max-width: 600px; margin: 0 auto; line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            width: 100%; max-width: 900px;
+            margin: 0 auto; padding: 0 20px;
+            flex: 1;
+        }
+
+        /* Grid Layout */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        /* App Card */
+        .app-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+        }
+        .app-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        /* Focus Master Special Style */
+        .app-card.featured {
+            border-top: 4px solid #FF6B6B;
+        }
+        .app-card.featured::before {
+            content: "NEW";
+            position: absolute; top: 15px; right: 15px;
+            background: #FF6B6B; color: white;
+            font-size: 0.7rem; font-weight: bold;
+            padding: 4px 10px; border-radius: 20px;
+        }
+
+        .icon-area {
+            font-size: 3rem; margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 1.4rem; font-weight: bold; margin: 0 0 15px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        
+        /* Description Styling */
+        .desc-en {
+            font-size: 0.95rem; font-weight: 600; color: #333;
+            margin-bottom: 6px; line-height: 1.4;
+        }
+        .desc-jp {
+            font-size: 0.85rem; color: #777; line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .action-link {
+            font-weight: bold; color: #4facfe;
+            display: flex; align-items: center; gap: 5px;
+            font-size: 0.9rem; margin-top: auto; /* Push to bottom */
+        }
+        .app-card:hover .action-link { text-decoration: underline; }
+
+        /* Coming Soon Card */
+        .app-card.coming-soon {
+            background: #fcfcfc;
+            border: 2px dashed #e0e0e0;
+            box-shadow: none;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .app-card.coming-soon .card-title { color: #999; }
+        .badge-soon {
+            font-size: 0.7rem; background: #eee; color: #888;
+            padding: 4px 8px; border-radius: 4px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #eee;
+            padding: 40px 0; text-align: center;
+            background: white;
+        }
+        .footer-links { margin-bottom: 20px; }
+        .footer-links a {
+            color: var(--text-secondary); text-decoration: none;
+            margin: 0 15px; font-size: 0.85rem; transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text-primary); }
+        .copyright { color: #aaa; font-size: 0.8rem; }
+
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <h1>KuniFami Labs.</h1>
+        <div class="hero-sub">Digital Tools for Your Daily Life.</div>
+        <p>
+            日常をアップデートする、デジタルの実験室。<br>
+            We create simple and useful web apps for productivity and creativity.
+        </p>
+    </header>
+
+    <div class="container">
+        
+        <div class="app-grid">
+            
+            <a href="#" onclick="launchApp('pomo', 'pomodoro-study-log.html')" class="app-card featured">
+                <div class="icon-area">🍅</div>
+                <div class="card-title">Focus Master</div>
+                <div class="desc-en">
+                    Maximize your focus with the Pomodoro Technique.<br>
+                    A professional timer with task logging and analytics.
+                </div>
+                <div class="desc-jp">
+                    ポモドーロ・テクニックで集中力を最大化。<br>
+                    作業ログの記録と分析が可能な、プロフェッショナル向けタイマー。
+                </div>
+                <div class="action-link">Open App / アプリを開く <span>→</span></div>
+            </a>
+
+            <div class="app-card coming-soon">
+                <div class="icon-area">📝</div>
+                <div class="card-title">
+                    Memo Pad Lite <span class="badge-soon">Coming Soon</span>
+                </div>
+                <div class="desc-en">
+                    Ultra-lightweight memo pad saved in your browser.<br>
+                    Organize your thoughts simply.
+                </div>
+                <div class="desc-jp">
+                    ブラウザに保存できる、超軽量のメモ帳。<br>
+                    思考の整理をシンプルに。
+                </div>
+            </div>
+
+            <div class="app-card coming-soon">
+                <div class="icon-area">🧘</div>
+                <div class="card-title">
+                    Breathe Rhythm <span class="badge-soon">Coming Soon</span>
+                </div>
+                <div class="desc-en">
+                    Breathing guide for mindfulness.<br>
+                    1-minute refresh tool.
+                </div>
+                <div class="desc-jp">
+                    心を整えるための呼吸法ガイド。<br>
+                    1分間のリフレッシュツール。
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="kids/menu.html">Kids Games</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <p class="copyright">&copy; 2026 KuniFami Soft Studio. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function launchApp(id, url) {
+            if(typeof gtag === 'function') {
+                gtag('event', 'select_item', { 'item_list_id': 'main_apps', 'item_id': id });
+            }
+            setTimeout(() => { location.href = url; }, 100);
+        }
+    </script>
+
+</body>
+</html>
