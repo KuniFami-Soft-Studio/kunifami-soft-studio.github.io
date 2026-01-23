@@ -1,7 +1,13 @@
 /**
  * 広告・上達支援コンテンツ管理マネージャー (../ad-manager.js)
- * 機能：1件ランダムバナー + 5件ランダムリスト + もっと見るで追加5件（最大10件）
- * 対応：テキストリンク形式 / HTML直接記述形式（A8タグ用）
+ * 機能：確率調整付きバナー + 5件ランダムリスト + もっと見るで追加5件（最大10件）
+ * * ■ バナー確率設定（prob）について
+ * 0.0 〜 1.0 の間で「候補に残る確率（予選通過率）」を設定します。
+ * * - prob: 1.0 ... 【確定】100% 候補に残る。
+ * - prob: 0.5 ... 【半々】50% の確率で候補に残る。
+ * - prob: 0.1 ... 【レア】10% の確率でしか候補に残らない。
+ * * ※ 最終的に候補に残ったものの中から、ランダムで1つが表示されます。
+ * ※ probを書かない場合は、自動的に 1.0 (100%候補) になります。
  */
 
 (function() {
@@ -19,13 +25,27 @@
         // --- 日本向け (JP) ---
         jp: {
             message: "新しい自分、新しい世界への第一歩をここから。<br><small>Step into a new world and a new you from here.</small>",
-            // 提案（バナー用）
+            
+            // 提案（バナー用）：prob (0.0〜1.0) で候補に残る確率を設定
             suggestions: [
-                '⛳️ AI解析で限界を感じたら、プロの視点で答え合わせ<br><small>Struggling with self-analysis? Get professional feedback.</small>',
-                '🚀 独学を加速させる。高品質な指導を体験する<br><small>Accelerate your self-study with high-quality coaching.</small>',
-                '📱 安定撮影が上達の近道。推奨スタンドを見る<br><small>Stable recording is the shortcut to improvement.</small>',
-                '☕️ ツールを気に入ったら開発を支援する<br><small>If you like this tool, please support the developer.</small>'
+                { 
+                    text: '⛳️ AI解析で限界を感じたら、プロの視点で答え合わせ<br><small>Struggling with self-analysis? Get professional feedback.</small>', 
+                    prob: 1.0 // 100% 候補に入る
+                },
+                { 
+                    text: '🚀 独学を加速させる。高品質な指導を体験する<br><small>Accelerate your self-study with high-quality coaching.</small>', 
+                    prob: 1.0 // 100% 候補に入る
+                },
+                { 
+                    text: '📱 安定撮影が上達の近道。推奨スタンドを見る<br><small>Stable recording is the shortcut to improvement.</small>', 
+                    prob: 1.0 // 100% 候補に入る
+                },
+                { 
+                    text: '☕️ ツールを気に入ったら開発を支援する<br><small>If you like this tool, please support the developer.</small>', 
+                    prob: 0.3 // 30% の確率でのみ候補に入る（たまに出る）
+                }
             ],
+
             // リソース（リスト用）
             resources: [
                 // 1. 軽量スマホ三脚
@@ -63,7 +83,7 @@
         us: {
             message: "Take your first step toward a new level today.<br><small>今日、新しいレベルへの第一歩を踏み出しましょう。</small>",
             suggestions: [
-                '☕️ Love this tool? Buy me a coffee!'
+                { text: '☕️ Love this tool? Buy me a coffee!', prob: 1.0 }
             ],
             resources: [
                 { text: '☕️ Support the Developer (Buy Me a Coffee)', sub: 'Support the developer', url: 'https://buymeacoffee.com/kunifami20w' }
@@ -74,7 +94,7 @@
         x: {
             message: "Start your journey to mastery right here.",
             suggestions: [
-                '☕️ Keep this project alive! Buy me a coffee.'
+                { text: '☕️ Keep this project alive! Buy me a coffee.', prob: 1.0 }
             ],
             resources: [
                 { text: '☕️ Support the Developer (Buy Me a Coffee)', sub: 'Support the developer', url: 'https://buymeacoffee.com/kunifami20w' }
@@ -88,10 +108,35 @@
     const msgArea = document.getElementById('positiveMessage');
     if (msgArea) msgArea.innerHTML = currentData.message;
 
-    // 2. バナー（1件ランダム）
+    // 2. バナー（1件ランダム・確率判定方式）
     const suggestionArea = document.getElementById('randomSuggestion');
     if (suggestionArea && currentData.suggestions.length > 0) {
-        suggestionArea.innerHTML = currentData.suggestions[Math.floor(Math.random() * currentData.suggestions.length)];
+        
+        // データを正規化（文字列だけで来ても対応）
+        const items = currentData.suggestions.map(item => {
+            if (typeof item === 'string') {
+                return { text: item, prob: 1.0 }; // デフォルト 100%候補
+            }
+            return item;
+        });
+
+        // 予選フェーズ：確率に基づいて候補リストを作成
+        let candidates = items.filter(item => {
+            const probability = (item.prob !== undefined ? item.prob : 1.0);
+            // 乱数(0.0~1.0) が 設定確率未満なら当選
+            return Math.random() < probability;
+        });
+
+        // もし全員落選してしまった場合（確率設定が全体的に低い場合など）
+        // 誰も表示されないのを防ぐため、全員を復活させる（またはデフォルトを表示する）
+        if (candidates.length === 0) {
+            candidates = items;
+        }
+
+        // 決勝フェーズ：候補の中からランダムで1つ選出
+        const selectedItem = candidates[Math.floor(Math.random() * candidates.length)];
+
+        suggestionArea.innerHTML = selectedItem.text;
     }
 
     // 3. リソースリスト（最初の5件 ＋ 折りたたみ内5件）
