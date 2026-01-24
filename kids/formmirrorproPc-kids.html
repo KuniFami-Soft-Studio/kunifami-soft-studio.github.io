@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>まねっこミラー PC - Form Mirror Kids</title>
+    <meta name="description" content="PCのカメラを使って、動画と自分の動きを比べてみよう！ダンスやスポーツの練習に。安心・安全な子供向けツール。[EN] Compare your form with videos on PC! Safe and fun practice tool for kids.">
+    <meta name="robots" content="index, follow">
+    <meta name="google" content="notranslate">
+
+    <meta property="og:title" content="まねっこミラー PC (Form Mirror Kids)">
+    <meta property="og:type" content="website">
+
+    <meta name="ad-mode" content="kids">
+    <script src="/js/ads.js" defer></script>
+    
+    <style>
+        :root {
+            --primary: #FF9800;
+            --accent: #00BCD4;
+            --danger: #FF453A;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --text-main: #333;
+        }
+
+        body { 
+            margin: 0; background: #000; color: #fff; 
+            font-family: "Hiragino Sans", "Meiryo", sans-serif; 
+            overflow: hidden; width: 100%; height: 100%;
+            user-select: none; 
+        }
+        
+        canvas { width: 100vw; height: 100vh; object-fit: contain; background: #000; display: block; cursor: crosshair; }
+        
+        .fade-ui { transition: opacity 0.3s ease, transform 0.3s ease; opacity: 0; pointer-events: none; }
+        .ui-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+        /* 上部バー */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            padding: 15px 20px;
+            display: flex; justify-content: center; align-items: center; gap: 15px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            z-index: 100;
+            pointer-events: none;
+        }
+        .top-bar > * { pointer-events: auto; }
+
+        /* 下部パネル */
+        .bottom-panel {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(20px);
+            width: 90%; max-width: 950px;
+            padding: 15px 20px;
+            background: var(--bg-glass); border-top-left-radius: 24px; border-top-right-radius: 24px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column; gap: 10px; z-index: 100;
+            margin-bottom: 10px; border-radius: 24px; color: #333;
+        }
+        .bottom-panel.ui-visible { transform: translateX(-50%) translateY(0); }
+
+        .sliders-row { display: flex; align-items: center; gap: 20px; justify-content: center; }
+        .slider-group { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold; }
+        input[type="range"] { width: 100px; height: 8px; accent-color: var(--primary); cursor: pointer; border-radius: 4px; background: #ddd; }
+
+        .transport-row { display: flex; justify-content: center; align-items: center; gap: 20px; }
+        
+        button { 
+            background: #eee; border: none; color: #555; 
+            padding: 8px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; 
+            transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 12px; display:flex; align-items:center; gap:5px;
+        }
+        button:hover { background: #ddd; }
+        .active-btn { background: var(--primary) !important; color: white !important; }
+
+        .play-btn-circle { width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; font-size: 24px; box-shadow: 0 4px 0 #E65100; border: none; justify-content: center; }
+        .play-btn-circle:active { transform: translateY(2px); box-shadow: 0 2px 0 #E65100; }
+        
+        .rec-btn { background: #fff; border: 2px solid var(--danger); color: var(--danger); min-width: 100px; justify-content:center; }
+        .is-recording { animation: pulse 1s infinite; background: var(--danger) !important; color: white !important; border: none; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        .tools-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 5px; }
+        
+        /* お絵かきツールバー */
+        .draw-toolbar { display: none; background: #f9f9f9; padding: 10px; border-radius: 15px; margin-bottom: 5px; gap: 10px; align-items: center; justify-content: center; border: 2px solid var(--primary); }
+        .color-dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer; }
+        .color-dot.selected { border-color: #333; transform: scale(1.2); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        /* --- スタート画面 --- */
+        #loginOverlay {
+            position: fixed; inset: 0; 
+            background: linear-gradient(135deg, #FFF3E0 0%, #81D4FA 100%);
+            z-index: 9000;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+            padding: 20px; overflow-y: auto; color: #333;
+        }
+
+        .title-emoji { font-size: 50px; margin-bottom: 5px; }
+
+        .intro-box { 
+            max-width: 600px; text-align: center; line-height: 1.6; margin-bottom: 20px; 
+            background: #fff; padding: 25px; border-radius: 25px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 4px solid var(--primary);
+        }
+
+        .privacy-alert {
+            background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 15px;
+            padding: 15px; margin-top: 15px; text-align: left; font-size: 13px; color: #2E7D32; line-height: 1.5;
+        }
+
+        .btn-container { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 300px; margin-top: 10px; }
+
+        .btn-proceed { 
+            background: var(--primary); font-size: 20px; padding: 15px; width: 100%; 
+            border: none; border-radius: 40px; color: white; font-weight: 800; cursor: pointer; 
+            box-shadow: 0 6px 0 #E65100; transition: transform 0.1s;
+        }
+        .btn-proceed:active { transform: translateY(4px); box-shadow: 0 2px 0 #E65100; }
+        
+        .btn-en { background: #00BCD4; box-shadow: 0 6px 0 #0097A7; }
+        .btn-en:active { transform: translateY(4px); box-shadow: 0 2px 0 #0097A7; }
+
+        .btn-manual {
+            background: #8BC34A; font-size: 16px; padding: 12px; width: 100%;
+            border-radius: 40px; color: white; border: none; font-weight: bold;
+            box-shadow: 0 4px 0 #558B2F; cursor: pointer; display: block; text-decoration: none; text-align: center;
+        }
+
+        .btn-home { color: #888; text-decoration: none; font-size: 14px; margin-top: 20px; font-weight: bold; }
+        
+        #countdownOverlay {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 150px; font-weight: 900; color: #FFD700; z-index: 5000; 
+            pointer-events: none; display: none; text-shadow: 4px 4px 0 #000;
+        }
+
+        #saveContainer { 
+            display: none; position: fixed; inset: 0; z-index: 9500; background: rgba(255,255,255,0.95);
+            flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+        }
+        #saveTitle { color: #333; font-size: 24px; margin-bottom: 10px; }
+        #previewVid { max-width: 80%; max-height: 60vh; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); background: #000; }
+    </style>
+</head>
+<body>
+
+    <div id="countdownOverlay"></div>
+
+    <div id="loginOverlay">
+        <div class="title-emoji">🤸‍♂️🎥</div>
+        <h1 style="margin: 0 0 10px; color: var(--primary); font-weight: 900; font-size: 24px;">まねっこミラー PC</h1>
+        <p style="margin: 0 0 15px; color: #666; font-size: 14px; font-weight: bold;">Form Mirror Kids for PC</p>
+        
+        <div class="intro-box">
+            <p style="font-size: 16px; margin: 0 0 10px 0; color: #333; font-weight: bold; line-height: 1.5;">
+                PCのカメラで、お手本と自分をならべて<br>
+                楽しくれんしゅう しよう！<br>
+                <span style="font-size:13px; font-weight:normal; color:#555;">
+                    Compare your form side-by-side with a video using your PC camera!
+                </span>
+            </p>
+            <p style="font-size: 13px; color: #666; line-height: 1.4;">
+                スポーツ、ダンス、楽器(がっき)の練習(れんしゅう)に。<br>
+                <span style="font-size:12px;">Perfect for sports, dance, and music practice.</span>
+            </p>
+
+            <div class="privacy-alert">
+                ✅ <strong>あんしん・あんぜん / Safety</strong><br>
+                カメラの映像は、<strong>このパソコンの中だけで</strong> 動きます。<br>
+                インターネットには送られません。<br>
+                <span style="font-size:11px; color:#2E7D32;">
+                    Camera video is processed <strong>locally on this PC</strong>. It is NOT sent to the internet.
+                </span>
+                <br><br>
+                ✅ <strong>広告について / About Ads</strong><br>
+                子供向け（COPPA準拠）の安全な広告のみ表示されます。<br>
+                <span style="font-size:11px; color:#2E7D32;">
+                    Only safe, COPPA-compliant ads for kids are shown.
+                </span>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-proceed" onclick="initAppWithLang('ja')">🇯🇵 日本語でスタート</button>
+            <button class="btn-proceed btn-en" onclick="initAppWithLang('en')">🇺🇸 Start in English</button>
+            <a href="guide/FormMirrorProforPC‐User Manual.html" target="_blank" class="btn-manual">📖 マニュアル (Manual)</a>
+        </div>
+        
+        <a href="/kids/menu.html" class="btn-home">🏠 ホームに戻る / Home</a>
+
+        <footer style="margin-top: auto; padding: 20px 0; text-align: center; border-top: 1px solid #eee; width: 100%; max-width: 400px;">
+            <div style="margin-bottom: 10px;">
+                <a href="contact.html" style="color: #999; text-decoration: none; font-size: 12px; margin: 0 15px;">Contact / お問い合わせ</a>
+                <a href="privacy.html" style="color: #999; text-decoration: none; font-size: 12px; margin: 0 15px;">Privacy Policy / 規約</a>
+            </div>
+            <p style="color: #bbb; font-size: 10px;">&copy; 2026 KuniFami Soft Studio</p>
+        </footer>
+    </div>
+
+    <div id="topPanel" class="top-bar fade-ui">
+        <input type="file" id="fileInput" accept="video/*" onchange="loadVideo(event)" style="display:none;">
+        <button id="loadBtn" onclick="document.getElementById('fileInput').click()">📂 動画をよむ</button>
+        <button id="layoutBtn" onclick="switchLayout()">📺 ならべる</button>
+        <button id="cameraBtn" onclick="switchCamera()">🔄 カメラ</button>
+        <button id="recordBtn" class="rec-btn" onclick="handleRecordClick()">● ろくが</button>
+    </div>
+
+    <canvas id="mainCanvas"></canvas>
+
+    <div id="bottomPanel" class="bottom-panel fade-ui">
+        <div id="drawToolbar" class="draw-toolbar">
+            <button id="btnModeFree" class="active-btn" onclick="setDrawShape('free')">〰 じゆう</button>
+            <button id="btnModeLine" onclick="setDrawShape('line')">📏 ちょくせん</button>
+            <button id="btnModeCircle" onclick="setDrawShape('circle')">⚪ まる</button>
+            <div style="width:1px; height:20px; background:#ccc;"></div>
+            <div id="colorPalette" style="display:flex; gap:5px;"></div>
+            <div style="width:1px; height:20px; background:#ccc;"></div>
+            <span style="font-size:12px;" id="lblWidth">太さ</span>
+            <input type="range" id="drawWidthRange" min="2" max="20" value="5" style="width:60px;">
+            <div style="width:1px; height:20px; background:#ccc;"></div>
+            <button id="btnUndo" onclick="undoDraw()">↩ もどす</button>
+            <button id="btnClearDraw" onclick="clearDraw()" style="background:#FF453A; color:white;">🗑 ぜんぶけす</button>
+        </div>
+
+        <div class="sliders-row">
+            <div class="slider-group">
+                <span id="lblGhost">👻 かさねる</span>
+                <input type="range" id="ghostRange" min="0" max="100" value="0">
+            </div>
+            <div class="slider-group">
+                <span id="lblBright">💡 あかるさ</span>
+                <input type="range" id="brightnessRange" min="100" max="400" value="100">
+            </div>
+            <div class="slider-group">
+                <span id="lblZoom">🔍 ズーム</span>
+                <input type="range" id="zoomRange" min="1" max="5" step="0.1" value="1" oninput="handleZoomSlider(this.value)">
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+            <span id="timeDisplay" style="font-size: 12px; min-width: 80px; font-weight: bold; color: #555;">00:00 / 00:00</span>
+            <input type="range" id="seekBar" value="0" step="0.1" style="flex: 1;">
+        </div>
+
+        <div class="transport-row">
+            <button id="btnLoop" onclick="toggleLoop()">🔁 くりかえし</button>
+            <button onclick="modelVid.currentTime -= 5">⏪ 5秒</button>
+            <button class="play-btn-circle" id="playPauseBtn" onclick="togglePlay()">▶</button>
+            <button onclick="modelVid.currentTime += 5">5秒 ⏩</button>
+            <div style="background: #eee; padding: 5px 10px; border-radius: 20px; display: flex; gap: 5px;">
+                <button id="cd3" onclick="setCD(3)" class="active-btn">3秒</button>
+                <button id="cd5" onclick="setCD(5)">5秒</button>
+                <button id="cd7" onclick="setCD(7)">7秒</button>
+            </div>
+        </div>
+
+        <div class="tools-grid">
+            <button id="drawToggleBtn" onclick="toggleDrawMode()">✏️ おえかき</button>
+            <button id="memoBtn" onclick="setMemo()">📝 メモ</button>
+            <div style="width:1px; background:#ddd; margin:0 5px;"></div>
+            <button id="mirrorModelBtn" class="active-btn" onclick="toggleMirror('model')">🪞 お手本はんてん</button>
+            <button id="mirrorMeBtn" class="active-btn" onclick="toggleMirror('me')">🤳 自分はんてん</button>
+            <button id="gridBtn" onclick="cycleGrid()"># せん</button>
+            <button id="btnSpeed" onclick="changeSpeed()">⚡ はやさ x1.0</button>
+            <button id="delayBtn" onclick="cycleDelay()">⏱ 0秒 おくれ</button>
+            <button id="qualityBtn" onclick="cycleQuality()">🎬 画質: ふつう</button>
+            <button id="fitModeBtn" onclick="toggleFitMode()">↔ 全体 / 拡大</button>
+            <button id="btnA" onclick="setPoint('A')">📍 ここから</button>
+            <button id="btnB" onclick="setPoint('B')">📍 ここまで</button>
+            <button id="backABtn" style="background: var(--primary); color:white;" onclick="startCountdown('reset')">↩ くりかえし</button>
+        </div>
+    </div>
+
+    <div id="saveContainer">
+        <h2 id="saveLabel" style="color:#333;">ろくが しました！</h2>
+        <video id="previewVid" controls></video>
+        <div style="display:flex; gap:20px;">
+            <button id="closeSaveBtn" onclick="closeSaveUI()" style="padding: 10px 30px; background: #ddd; color: #333;">とじる</button>
+            <button id="downloadBtn" onclick="downloadVideo()" style="padding: 10px 30px; background: var(--primary); color: white;">PCにほぞん</button>
+        </div>
+    </div>
+
+    <video id="modelVideo" loop playsinline style="display:none;"></video>
+    <video id="myCamera" autoplay muted playsinline style="display:none;"></video>
+
+    <script>
+        // --- 言語辞書 ---
+        const i18n = {
+            ja: {
+                load: "📂 動画をよむ",
+                layout: "📺 ならべる",
+                camera: "🔄 カメラ",
+                recStart: "● ろくが",
+                recStop: "■ とめる",
+                ghost: "👻 かさねる",
+                bright: "💡 あかるさ",
+                zoom: "🔍 ズーム",
+                loop: "🔁 くりかえし",
+                mirrorModel: "🪞 お手本はんてん",
+                mirrorMe: "🤳 自分はんてん",
+                grid: "# せん",
+                speed: "⚡ はやさ",
+                delay: "⏱ おくれ",
+                quality: "🎬 画質",
+                fit: "↔ 全体 / 拡大",
+                pointA: "📍 ここから",
+                pointB: "📍 ここまで",
+                backA: "↩ くりかえし",
+                saveLabel: "ろくが しました！",
+                close: "とじる",
+                download: "PCにほぞん",
+                sec: "秒",
+                draw: "✏️ おえかき",
+                memo: "📝 メモ",
+                drawFree: "〰 じゆう",
+                drawLine: "📏 ちょくせん",
+                drawCircle: "⚪ まる",
+                undo: "↩ もどす",
+                clear: "🗑 ぜんぶけす",
+                width: "太さ",
+                memoPrompt: "メモを入力してね:"
+            },
+            en: {
+                load: "📂 Load Video",
+                layout: "📺 Layout",
+                camera: "🔄 Camera",
+                recStart: "● Record",
+                recStop: "■ Stop",
+                ghost: "👻 Ghost",
+                bright: "💡 Bright",
+                zoom: "🔍 Zoom",
+                loop: "🔁 Loop",
+                mirrorModel: "🪞 Mirror Model",
+                mirrorMe: "🤳 Mirror Me",
+                grid: "# Grid",
+                speed: "⚡ Speed",
+                delay: "⏱ Delay",
+                quality: "🎬 Quality",
+                fit: "↔ Fit / Fill",
+                pointA: "📍 Point A",
+                pointB: "📍 Point B",
+                backA: "↩ Loop A",
+                saveLabel: "Recording Done!",
+                close: "Close",
+                download: "Save to PC",
+                sec: "s",
+                draw: "✏️ Draw",
+                memo: "📝 Memo",
+                drawFree: "〰 Free",
+                drawLine: "📏 Line",
+                drawCircle: "⚪ Circle",
+                undo: "↩ Undo",
+                clear: "🗑 Clear",
+                width: "Width",
+                memoPrompt: "Enter memo:"
+            }
+        };
+
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const modelVid = document.getElementById('modelVideo');
+        const myCam = document.getElementById('myCamera');
+        const seekBar = document.getElementById('seekBar');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const recordBtn = document.getElementById('recordBtn');
+        const cdOverlay = document.getElementById('countdownOverlay');
+
+        let displayMode = 0;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let pointA = 0;
+        let pointB = 0;
+        let isLooping = false;
+        let lastBlob = null;
+        let speeds = [1.0, 0.75, 0.5, 0.25, 1.25, 1.5];
+        let speedIdx = 0;
+        let delayTimes = [0, 3, 5, 7];
+        let delayIdx = 0;
+        let gridMode = 0;
+        let countdownSec = 3;
+        let isCountingDown = false;
+        let mirrorModel = true;
+        let mirrorMe = true;
+        let fitMode = "contain";
+        let uiTimer = null;
+        let cameraBuffer = [];
+        let videoDevices = [];
+        let currentDeviceIdx = 0;
+        let currentLang = 'ja';
+
+        // お絵かき・メモ変数
+        let isDrawingMode = false;
+        let drawColor = '#FF0000';
+        let drawShape = 'free'; // free, line, circle
+        let drawings = []; // {type, points:[], color, width}
+        let currentStroke = null;
+        let memoText = "";
+        const drawColors = ['#FF0000', '#0000FF', '#FFFF00', '#00FF00', '#FFFFFF'];
+
+        const qualityModes = [
+            { label: 'Low', bps: 1500000 },
+            { label: 'Standard', bps: 5000000 },
+            { label: 'High', bps: 15000000 }
+        ];
+        let qualityIdx = 1;
+
+        const transformModel = { x: 0, y: 0, scale: 1.0 };
+        const transformMe = { x: 0, y: 0, scale: 1.0 };
+        let isDragging = false;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let activeTransform = null;
+
+        canvas.width = 1280;
+        canvas.height = 720;
+
+        function formatTime(s) {
+            if (isNaN(s) || s < 0) return "00:00";
+            const m = Math.floor(s / 60);
+            const sec = Math.floor(s % 60);
+            return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        }
+
+        function getTargetTransform(clientX) {
+            if (displayMode === 0) {
+                return clientX < window.innerWidth / 2 ? transformModel : transformMe;
+            } else if (displayMode === 1) {
+                return transformModel;
+            } else {
+                return transformMe;
+            }
+        }
+
+        // --- マウス・タッチ操作 ---
+        canvas.addEventListener('mousedown', (e) => {
+            if(isDrawingMode) {
+                handleDrawStart(e);
+            } else {
+                isDragging = true;
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+                activeTransform = getTargetTransform(e.clientX);
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if(isDrawingMode) {
+                handleDrawMove(e);
+            } else {
+                if (!isDragging || !activeTransform) return;
+                const dx = (e.clientX - lastMouseX);
+                const dy = (e.clientY - lastMouseY);
+                const scaleX = canvas.width / window.innerWidth;
+                const scaleY = canvas.height / window.innerHeight;
+                activeTransform.x += (dx * scaleX) / activeTransform.scale;
+                activeTransform.y += (dy * scaleY) / activeTransform.scale;
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+            }
+        });
+
+        window.addEventListener('mouseup', () => { 
+            if(isDrawingMode) {
+                handleDrawEnd();
+            } else {
+                isDragging = false; 
+                activeTransform = null; 
+            }
+        });
+
+        canvas.addEventListener('wheel', (e) => {
+            if(isDrawingMode) return;
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            const target = getTargetTransform(e.clientX);
+            target.scale = Math.min(Math.max(0.1, target.scale * delta), 10);
+            if(target === transformMe) {
+                document.getElementById('zoomRange').value = target.scale;
+            }
+        }, { passive: false });
+
+        // --- お絵かきロジック ---
+        function getCanvasPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX - rect.left) * (canvas.width / rect.width),
+                y: (e.clientY - rect.top) * (canvas.height / rect.height)
+            };
+        }
+
+        function handleDrawStart(e) {
+            const pos = getCanvasPos(e);
+            const w = document.getElementById('drawWidthRange').value;
+            currentStroke = { 
+                type: drawShape, 
+                color: drawColor, 
+                width: w,
+                points: [pos] 
+            };
+            if (drawShape !== 'free') currentStroke.end = pos; 
+        }
+
+        function handleDrawMove(e) {
+            if (!currentStroke) return;
+            const pos = getCanvasPos(e);
+            if (drawShape === 'free') {
+                currentStroke.points.push(pos);
+            } else {
+                currentStroke.end = pos;
+            }
+        }
+
+        function handleDrawEnd() {
+            if (currentStroke) {
+                drawings.push(currentStroke);
+                currentStroke = null;
+            }
+        }
+
+        function toggleDrawMode() {
+            isDrawingMode = !isDrawingMode;
+            const btn = document.getElementById('drawToggleBtn');
+            const toolbar = document.getElementById('drawToolbar');
+            if(isDrawingMode) {
+                btn.classList.add('active-btn');
+                toolbar.style.display = 'flex';
+                canvas.style.cursor = 'crosshair';
+            } else {
+                btn.classList.remove('active-btn');
+                toolbar.style.display = 'none';
+                canvas.style.cursor = 'move';
+            }
+        }
+
+        function initColorPalette() {
+            const p = document.getElementById('colorPalette');
+            p.innerHTML = '';
+            drawColors.forEach(c => {
+                const d = document.createElement('div');
+                d.className = 'color-dot';
+                d.style.backgroundColor = c;
+                if(c === drawColor) d.classList.add('selected');
+                d.onclick = () => {
+                    drawColor = c;
+                    document.querySelectorAll('.color-dot').forEach(el => el.classList.remove('selected'));
+                    d.classList.add('selected');
+                };
+                p.appendChild(d);
+            });
+        }
+
+        function setDrawShape(s) {
+            drawShape = s;
+            document.getElementById('btnModeFree').classList.toggle('active-btn', s === 'free');
+            document.getElementById('btnModeLine').classList.toggle('active-btn', s === 'line');
+            document.getElementById('btnModeCircle').classList.toggle('active-btn', s === 'circle');
+        }
+
+        function undoDraw() { drawings.pop(); }
+        function clearDraw() { if(confirm(i18n[currentLang].clear + '?')) drawings = []; }
+
+        function setMemo() {
+            const txt = prompt(i18n[currentLang].memoPrompt, memoText);
+            if(txt !== null) memoText = txt;
+        }
+
+        // --- 初期化 & 言語設定 ---
+        async function initAppWithLang(lang) {
+            currentLang = lang;
+            document.getElementById('loginOverlay').style.display = 'none';
+            updateUIText();
+            initColorPalette();
+
+            try {
+                await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                videoDevices = devices.filter(d => d.kind === 'videoinput');
+                
+                await startCamera();
+                showUI();
+                requestAnimationFrame(render);
+            } catch (e) {
+                alert("Camera/Audio Error: " + e.message);
+            }
+        }
+
+        function updateUIText() {
+            const t = i18n[currentLang];
+            document.getElementById('loadBtn').innerText = t.load;
+            document.getElementById('layoutBtn').innerText = t.layout;
+            document.getElementById('cameraBtn').innerText = t.camera;
+            document.getElementById('recordBtn').innerText = t.recStart;
+            document.getElementById('lblGhost').innerText = t.ghost;
+            document.getElementById('lblBright').innerText = t.bright;
+            document.getElementById('lblZoom').innerText = t.zoom;
+            document.getElementById('btnLoop').innerText = t.loop;
+            document.getElementById('mirrorModelBtn').innerText = t.mirrorModel;
+            document.getElementById('mirrorMeBtn').innerText = t.mirrorMe;
+            document.getElementById('gridBtn').innerText = t.grid;
+            document.getElementById('btnSpeed').innerText = `${t.speed} x${speeds[speedIdx]}`;
+            document.getElementById('delayBtn').innerText = `${t.delay} 0${t.sec}`;
+            document.getElementById('qualityBtn').innerText = `${t.quality}: Standard`;
+            document.getElementById('fitModeBtn').innerText = t.fit;
+            document.getElementById('btnA').innerText = `${t.pointA} --:--`;
+            document.getElementById('btnB').innerText = `${t.pointB} --:--`;
+            document.getElementById('backABtn').innerText = t.backA;
+            document.getElementById('saveLabel').innerText = t.saveLabel;
+            document.getElementById('closeSaveBtn').innerText = t.close;
+            document.getElementById('downloadBtn').innerText = t.download;
+            
+            document.getElementById('drawToggleBtn').innerText = t.draw;
+            document.getElementById('memoBtn').innerText = t.memo;
+            document.getElementById('btnModeFree').innerText = t.drawFree;
+            document.getElementById('btnModeLine').innerText = t.drawLine;
+            document.getElementById('btnModeCircle').innerText = t.drawCircle;
+            document.getElementById('btnUndo').innerText = t.undo;
+            document.getElementById('btnClearDraw').innerText = t.clear;
+            document.getElementById('lblWidth').innerText = t.width;
+
+            [3,5,7].forEach(s => document.getElementById('cd'+s).innerText = `${s}${t.sec}`);
+        }
+
+        async function startCamera() {
+            if (myCam.srcObject) {
+                myCam.srcObject.getTracks().forEach(t => t.stop());
+            }
+            const constraints = { 
+                video: { 
+                    deviceId: videoDevices[currentDeviceIdx]?.deviceId ? { exact: videoDevices[currentDeviceIdx].deviceId } : undefined,
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
+                audio: true
+            };
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            myCam.srcObject = stream;
+            cameraBuffer = [];
+            myCam.onloadedmetadata = () => myCam.play();
+        }
+
+        async function switchCamera() {
+            if (videoDevices.length <= 1) return;
+            currentDeviceIdx = (currentDeviceIdx + 1) % videoDevices.length;
+            await startCamera();
+        }
+
+        function handleZoomSlider(val) { transformMe.scale = parseFloat(val); }
+
+        function render() {
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (myCam.readyState >= 2) {
+                const temp = document.createElement('canvas');
+                temp.width = myCam.videoWidth;
+                temp.height = myCam.videoHeight;
+                temp.getContext('2d').drawImage(myCam, 0, 0);
+                cameraBuffer.push(temp);
+                if (cameraBuffer.length > 60 * 8) {
+                    cameraBuffer.shift();
+                }
+            }
+
+            const delayFrames = Math.floor(delayTimes[delayIdx] * 60);
+            const camFrame = cameraBuffer.length > delayFrames 
+                             ? cameraBuffer[cameraBuffer.length - 1 - delayFrames] 
+                             : (cameraBuffer[0] || myCam);
+
+            const br = document.getElementById('brightnessRange').value;
+            const ghost = document.getElementById('ghostRange').value / 100;
+
+            if (displayMode === 0) {
+                draw(modelVid, 0, 0, 640, 720, mirrorModel, 100, 1, transformModel);
+                draw(camFrame, 640, 0, 640, 720, mirrorMe, br, 1, transformMe);
+                if (ghost > 0) draw(modelVid, 640, 0, 640, 720, mirrorModel, 100, ghost, transformModel);
+            } else if (displayMode === 1) {
+                draw(modelVid, 0, 0, 1280, 720, mirrorModel, 100, 1, transformModel);
+            } else {
+                draw(camFrame, 0, 0, 1280, 720, mirrorMe, br, 1, transformMe);
+                if (ghost > 0) draw(modelVid, 0, 0, 1280, 720, mirrorModel, 100, ghost, transformModel);
+            }
+
+            // お絵かき描画 (リセットして描画)
+            ctx.setTransform(1,0,0,1,0,0);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            drawings.forEach(d => drawStroke(d));
+            if(currentStroke) drawStroke(currentStroke);
+
+            // メモ描画
+            if(memoText) {
+                ctx.save();
+                ctx.font = "bold 30px sans-serif";
+                ctx.fillStyle = "white";
+                ctx.strokeStyle = "black";
+                ctx.lineWidth = 4;
+                ctx.textAlign = "center";
+                ctx.strokeText(memoText, canvas.width/2, 50);
+                ctx.fillText(memoText, canvas.width/2, 50);
+                ctx.restore();
+            }
+
+            if (gridMode > 0) drawGrids();
+            requestAnimationFrame(render);
+        }
+
+        function drawStroke(s) {
+            ctx.beginPath();
+            ctx.strokeStyle = s.color;
+            ctx.lineWidth = s.width;
+            if (s.type === 'free') {
+                if (s.points.length > 0) {
+                    ctx.moveTo(s.points[0].x, s.points[0].y);
+                    for (let i = 1; i < s.points.length; i++) ctx.lineTo(s.points[i].x, s.points[i].y);
+                }
+            } else if (s.type === 'line') {
+                ctx.moveTo(s.points[0].x, s.points[0].y);
+                ctx.lineTo(s.end.x, s.end.y);
+            } else if (s.type === 'circle') {
+                const r = Math.sqrt(Math.pow(s.end.x - s.points[0].x, 2) + Math.pow(s.end.y - s.points[0].y, 2));
+                ctx.arc(s.points[0].x, s.points[0].y, r, 0, Math.PI * 2);
+            }
+            ctx.stroke();
+        }
+
+        function draw(v, x, y, w, h, mirror, br, alpha, trans) {
+            const isVideo = v instanceof HTMLVideoElement;
+            if (isVideo && v.readyState < 2) return;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x, y, w, h);
+            ctx.clip();
+            ctx.globalAlpha = alpha;
+            ctx.filter = `brightness(${br}%)`;
+            ctx.translate(x + w / 2, y + h / 2);
+            ctx.scale(trans.scale, trans.scale);
+            ctx.translate(trans.x, trans.y);
+            if (mirror) ctx.scale(-1, 1);
+
+            const vw = isVideo ? v.videoWidth : v.width;
+            const vh = isVideo ? v.videoHeight : v.height;
+            if (!vw || !vh) { ctx.restore(); return; }
+
+            const ratio = fitMode === "cover" ? Math.max(w/vw, h/vh) : Math.min(w/vw, h/vh);
+            ctx.drawImage(v, -vw*ratio/2, -vh*ratio/2, vw*ratio, vh*ratio);
+            ctx.restore();
+        }
+
+        function drawGrids() {
+            ctx.save();
+            ctx.strokeStyle = "rgba(255,255,255,0.4)";
+            ctx.lineWidth = 1;
+            const counts = [0, 0, 3, 5, 8, 12, 16];
+            const n = counts[gridMode];
+            if (gridMode === 1) {
+                ctx.strokeStyle = "rgba(255,204,0,0.6)";
+                ctx.beginPath(); ctx.moveTo(canvas.width/2, 0); ctx.lineTo(canvas.width/2, canvas.height); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, canvas.height/2); ctx.lineTo(canvas.width, canvas.height/2); ctx.stroke();
+            } else {
+                for(let i=1; i<n; i++){
+                    ctx.beginPath(); ctx.moveTo(canvas.width*(i/n), 0); ctx.lineTo(canvas.width*(i/n), canvas.height); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(0, canvas.height*(i/n)); ctx.lineTo(canvas.width, canvas.height*(i/n)); ctx.stroke();
+                }
+            }
+            ctx.restore();
+        }
+
+        function switchLayout() { displayMode = (displayMode + 1) % 3; resetUITimer(); }
+
+        function toggleMirror(target) {
+            if(target === 'model') mirrorModel = !mirrorModel;
+            else mirrorMe = !mirrorMe;
+            document.getElementById('mirrorModelBtn').classList.toggle('active-btn', mirrorModel);
+            document.getElementById('mirrorMeBtn').classList.toggle('active-btn', mirrorMe);
+            resetUITimer();
+        }
+
+        function cycleGrid() { gridMode = (gridMode + 1) % 7; resetUITimer(); }
+
+        function cycleDelay() {
+            delayIdx = (delayIdx + 1) % delayTimes.length;
+            updateDelayLabel();
+        }
+
+        function updateDelayLabel() {
+            const timeStr = formatTime(delayTimes[delayIdx]);
+            document.getElementById('delayBtn').innerText = `⏱ ${timeStr} ${i18n[currentLang].delay}`;
+        }
+
+        function cycleQuality() {
+            qualityIdx = (qualityIdx + 1) % qualityModes.length;
+            const t = i18n[currentLang];
+            document.getElementById('qualityBtn').innerText = `${t.quality}: ${qualityModes[qualityIdx].label}`;
+            resetUITimer();
+        }
+
+        function toggleFitMode() { fitMode = (fitMode === "contain" ? "cover" : "contain"); resetUITimer(); }
+
+        function changeSpeed() {
+            speedIdx = (speedIdx + 1) % speeds.length;
+            modelVid.playbackRate = speeds[speedIdx];
+            document.getElementById('btnSpeed').innerText = `⚡ x${speeds[speedIdx].toFixed(1)}`;
+        }
+
+        function setCD(s) {
+            countdownSec = s;
+            [3, 5, 7].forEach(v => {
+                document.getElementById(`cd${v}`).classList.toggle('active-btn', v === s);
+            });
+        }
+        
+        function handleRecordClick() {
+            if (mediaRecorder?.state === "recording") stopRecording();
+            else startCountdown('record');
+        }
+
+        function startCountdown(type) {
+            isCountingDown = true;
+            hideUI();
+            let count = countdownSec;
+            cdOverlay.style.display = 'block';
+            cdOverlay.innerText = count;
+            modelVid.pause();
+            const timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    cdOverlay.innerText = count;
+                } else {
+                    clearInterval(timer);
+                    cdOverlay.style.display = 'none';
+                    isCountingDown = false;
+                    if (type === 'record') executeRecording();
+                    else {
+                        modelVid.currentTime = pointA;
+                        modelVid.play();
+                        playPauseBtn.innerText = "⏸";
+                    }
+                }
+            }, 1000);
+        }
+
+        async function executeRecording() {
+            const stream = canvas.captureStream(60);
+            let audioTracks = [];
+            if(myCam.srcObject) audioTracks = [...audioTracks, ...myCam.srcObject.getAudioTracks()];
+            const combinedStream = new MediaStream([...stream.getVideoTracks(), ...audioTracks]);
+
+            recordedChunks = [];
+            try {
+                mediaRecorder = new MediaRecorder(combinedStream, { 
+                    mimeType: 'video/webm;codecs=vp9', 
+                    videoBitsPerSecond: qualityModes[qualityIdx].bps 
+                });
+                
+                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+                mediaRecorder.onstop = () => {
+                    lastBlob = new Blob(recordedChunks, { type: 'video/webm' });
+                    document.getElementById('previewVid').src = URL.createObjectURL(lastBlob);
+                    document.getElementById('saveContainer').style.display = 'flex';
+                };
+                
+                mediaRecorder.start();
+                recordBtn.innerText = i18n[currentLang].recStop; 
+                recordBtn.classList.add('is-recording');
+                modelVid.currentTime = pointA; 
+                modelVid.play(); 
+                playPauseBtn.innerText = "⏸";
+            } catch (err) {
+                alert("録画開始エラー: " + err.message);
+                showUI();
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+            modelVid.pause();
+            playPauseBtn.innerText = "▶";
+            recordBtn.innerText = i18n[currentLang].recStart;
+            recordBtn.classList.remove('is-recording');
+            showUI();
+        }
+
+        function togglePlay() {
+            if (modelVid.paused) { modelVid.play(); playPauseBtn.innerText = "⏸"; } 
+            else { modelVid.pause(); playPauseBtn.innerText = "▶"; }
+        }
+
+        function loadVideo(e) {
+            const f = e.target.files[0];
+            if(f) {
+                modelVid.src = URL.createObjectURL(f);
+                modelVid.onloadedmetadata = () => {
+                    seekBar.max = modelVid.duration;
+                    pointA = 0;
+                    pointB = modelVid.duration;
+                    updatePointLabels();
+                };
+            }
+        }
+
+        function setPoint(p) {
+            if (p === 'A') pointA = modelVid.currentTime;
+            else pointB = modelVid.currentTime;
+            updatePointLabels();
+        }
+
+        function updatePointLabels() {
+            const t = i18n[currentLang];
+            document.getElementById('btnA').innerText = `${t.pointA} ${formatTime(pointA)}`;
+            document.getElementById('btnB').innerText = `${t.pointB} ${formatTime(pointB)}`;
+        }
+
+        function toggleLoop() {
+            isLooping = !isLooping;
+            document.getElementById('btnLoop').classList.toggle('active-btn', isLooping);
+        }
+
+        function showUI() { 
+            // お絵かきモード中は隠さない
+            if(!isDrawingMode) {
+                document.querySelectorAll('.fade-ui').forEach(u => u.classList.add('ui-visible')); 
+                resetUITimer(); 
+            }
+        }
+        function hideUI() { 
+            if(!modelVid.paused || isCountingDown) {
+                document.querySelectorAll('.fade-ui').forEach(u => u.classList.remove('ui-visible'));
+            }
+        }
+        function resetUITimer() { if (uiTimer) clearTimeout(uiTimer); uiTimer = setTimeout(hideUI, 4000); }
+
+        canvas.addEventListener('click', () => { if(!isDrawingMode) showUI(); });
+
+        function closeSaveUI() { document.getElementById('saveContainer').style.display = 'none'; }
+
+        function downloadVideo() {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(lastBlob);
+            a.download = `FormMirrorKids_${Date.now()}.webm`;
+            a.click();
+        }
+
+        seekBar.oninput = () => { modelVid.currentTime = seekBar.value; };
+
+        modelVid.ontimeupdate = () => {
+            if (isLooping && modelVid.currentTime >= pointB) { modelVid.currentTime = pointA; }
+            seekBar.value = modelVid.currentTime;
+            timeDisplay.innerText = `${formatTime(modelVid.currentTime)} / ${formatTime(modelVid.duration || 0)}`;
+        };
+    </script>
+</body>
+</html>
