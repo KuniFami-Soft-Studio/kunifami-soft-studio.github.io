@@ -18,7 +18,6 @@
     <title>キッズメニュー | 3〜5歳向け無料知育ゲーム集 - 集中マスター Kids</title>
     <meta name="description" content="[JP] 3〜5歳向け！35種類以上の無料知育ゲーム. お絵描きやパズルなど、待ち時間の暇つぶしに最適. [EN] Educational games for kids aged 3-5. Over 35 free browser games including drawing and puzzles.">
     <meta name="keywords" content="知育ゲーム,子供向けアプリ,無料,3歳,4歳,5歳,暇つぶし,インストール不要,ブラウザゲーム,集中マスター,Educational Games,Free Kids Apps,No Install">
-    <meta name="author" content="KuniFami Soft Studio">
     <meta name="robots" content="index, follow">
     
     <meta property="og:title" content="キッズメニュー | 3〜5歳向け無料知育ゲーム集">
@@ -34,6 +33,7 @@
             --kids-card: #FFFFFF;
             --category-title: #555;
             --text: #333;
+            --support-bg: #E3F2FD;
         }
         body {
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
@@ -61,6 +61,19 @@
             margin: 0 0 10px 10px; display: flex; align-items: center; gap: 8px;
         }
 
+        /* Form Mirror Specific Grid */
+        .form-mirror-list {
+            display: flex; flex-direction: column; gap: 10px; width: 100%;
+        }
+        .app-row {
+            background: var(--kids-card); border-radius: 15px; padding: 12px 15px;
+            display: flex; align-items: center; gap: 15px;
+            text-decoration: none; color: inherit;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s; border: 2px solid #FFCC00;
+        }
+        .app-row:active { transform: scale(0.98); }
+
         .app-grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
             gap: 12px;
@@ -75,19 +88,27 @@
         .app-card:active { transform: scale(0.95); }
         .app-card.ready { border-color: #FFCC00; border-width: 3px; border-style: solid; }
         
-        .icon { font-size: 2.2rem; margin-bottom: 8px; }
+        .icon { font-size: 2.2rem; }
         .app-name { font-weight: bold; font-size: 0.85rem; text-align: center; line-height: 1.2; }
         .app-lang { font-size: 0.65rem; color: #888; margin-top: 3px; }
         .target-age { font-size: 0.65rem; color: #FF9500; font-weight: bold; margin-top: 5px; }
+
+        .support-box {
+            background: var(--support-bg); border-radius: 15px; padding: 20px;
+            width: 100%; max-width: 400px; text-align: center;
+            font-size: 0.85rem; margin-top: 20px; box-sizing: border-box;
+        }
+        .support-links { display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        .btn-coffee { background: #FFDD00; color: #000; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; }
+        .btn-ofuse { background: #000; color: #fff; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; }
 
         .back-home {
             margin-top: 20px; margin-bottom: 20px; color: #555; text-decoration: none; font-size: 0.9rem;
             padding: 10px; border-bottom: 1px solid #ccc;
         }
 
-        /* Footer for Reliability */
         .footer-nav {
-            margin-top: 40px; padding: 20px 0; text-align: center; 
+            margin-top: 20px; padding: 20px 0; text-align: center; 
             border-top: 1px solid #ddd; width: 100%; max-width: 400px;
         }
         .footer-nav a {
@@ -108,14 +129,45 @@
     </header>
 
     <div class="manual-box">
-        <strong>[Parents / おうちのかたへ]</strong><br>
-        • Safe: No personal data is collected or uploaded.<br>
-        • 安心：<strong>個人データの収集や送信は行われません。</strong><br>
-        • We provide 35+ educational games designed to foster creativity and logical thinking for toddlers and preschoolers. Perfect for learning habits during travel or waiting time.<br>
-        • 指先を使う表現遊びや論理的思考を育むパズルなど、3〜5歳の発達段階に合わせた知育ゲームを35種類以上掲載しています。移動中や待ち時間の学習習慣づくりにご活用ください。
+        <strong>[Parents & Educators / おうちの方・教育関係の方へ]</strong><br>
+        • <strong>Completely Free & No Install:</strong> All tools are free to use on your browser.<br>
+        • <strong>完全無料・インストール不要：</strong>ブラウザですぐに遊べます。<br>
+        • <strong>Safe:</strong> No personal data is collected or uploaded. Secure for school and home use.<br>
+        • <strong>安心：個人データの収集や送信は行われません。</strong>ご家庭や教育現場でも安心してご利用いただけます。<br>
+        • <strong>COPPA Compliant:</strong> Only child-safe ads are displayed.<br>
+        • <strong>広告について：</strong>子供向け（COPPA準拠）の安全な広告のみ表示されます。<br>
+        • Designed to foster creativity and logical thinking. Perfect for learning habits.<br>
+        • 指先を使う表現遊びや論理的思考を育むゲームを通じて、お子様の豊かな創造力を育みます。
     </div>
 
     <main>
+        <div class="category-section">
+            <h2 class="category-name">🪞 Form Mirror / まねっこミラー</h2>
+            <div class="form-mirror-list">
+                <a href="#" onclick="launchApp('form_iphone', 'formmirrorproIphone-kids.html')" class="app-row">
+                    <span class="icon">📱</span>
+                    <div>
+                        <div class="app-name">Manekko Mirror for iPhone/iPad(Mobile/Tablet)</div>
+                        <div class="app-lang">まねっこミラー (スマホ・タブレット版)</div>
+                    </div>
+                </a>
+                <a href="#" onclick="launchApp('form_pc', 'formmirrorproPc-kids.html')" class="app-row">
+                    <span class="icon">💻</span>
+                    <div>
+                        <div class="app-name">Manekko Mirror (PC)</div>
+                        <div class="app-lang">まねっこミラー (パソコン版)</div>
+                    </div>
+                </a>
+                <a href="#" onclick="launchApp('form_sync', 'formmirrorproSync-kids.html')" class="app-row">
+                    <span class="icon">👯</span>
+                    <div>
+                        <div class="app-name">Manekko Mirror Sync for iPhone/iPad</div>
+                        <div class="app-lang">まねっこミラー シンクロ for iPhone/iPad</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
         <div class="category-section">
             <h2 class="category-name">🎨 Creative / おえかき・表現</h2>
             <div class="app-grid">
@@ -213,6 +265,10 @@
                     <span class="icon">🍱</span><span class="app-name">Lunch Box</span>
                     <span class="app-lang">おべんとう箱</span><span class="target-age">4yrs~</span>
                 </a>
+                <a href="#" onclick="launchApp('memory_grid', 'memory_grid.html')" class="app-card ready">
+                    <span class="icon">🧠</span><span class="app-name">Memory Grid</span>
+                    <span class="app-lang">ばしょをおぼえて！</span><span class="target-age">4yrs~</span>
+                </a>
             </div>
         </div>
 
@@ -280,6 +336,16 @@
     </main>
 
     <a href="../index.html" class="back-home">← Back to Main / 練習モードへ戻る</a>
+
+    <div class="support-box">
+        <strong>Support Our Project / 開発支援のお願い</strong><br>
+        <p>To parents and educators: If you enjoy this site, please consider supporting our development.<br>
+        おうちの方・教育関係の方へ：本ページの開発を継続するため、温かいご支援をいただけますと幸いです。</p>
+        <div class="support-links">
+            <a href="https://buymeacoffee.com/kunifami20w" target="_blank" class="btn-coffee">☕ Buy Me a Coffee</a>
+            <a href="https://ofuse.me/dfee538b" target="_blank" class="btn-ofuse">OFUSEで応援</a>
+        </div>
+    </div>
 
     <footer class="footer-nav">
         <div>
