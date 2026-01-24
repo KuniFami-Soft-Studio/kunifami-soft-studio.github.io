@@ -582,23 +582,37 @@
             const w = canvas.width, h = canvas.height;
             const ghost = document.getElementById('ghostRange').value / 100, bri = document.getElementById('brightnessRange').value;
 
-            // --- 修正版 同期ロジック (Refined Sync) ---
+            // --- 最終調整版 同期ロジック (Proportional Sync) ---
             if (!vidA.paused && !vidB.paused) {
                 const targetB = vidA.currentTime + syncOffset;
-                const drift = vidB.currentTime - targetB;
+                const drift = vidB.currentTime - targetB; // drift < 0 means B is late
                 const targetRate = speeds[speedIdx];
 
-                // 2.0秒以上の巨大なズレは強制シーク
-                if (Math.abs(drift) > 2.0) {
+                // 1.0秒以上の巨大なズレは強制シーク（事故防止）
+                if (Math.abs(drift) > 1.0) {
                     vidB.currentTime = targetB;
                 } 
-                // 閾値を0.03->0.02に厳格化（体感ラグを減らす）
-                else if (Math.abs(drift) > 0.02) {
-                    // Bが遅れている(drift < 0)時は、強めに加速(+0.25)して即座に追いつく
-                    // Bが進んでいる(drift > 0)時は、優しく減速(-0.15)してカクつき防止
-                    let nudge = drift > 0 ? -0.15 : 0.25;
-                    vidB.playbackRate = targetRate + nudge;
+                // 閾値を 0.01秒 (10ms) まで狭める
+                else if (Math.abs(drift) > 0.01) {
+                    let correction = 0;
+                    
+                    if (drift < 0) {
+                        // 遅れている場合 (B is Late)
+                        // ズレ量に応じて加速させる (比例制御)
+                        // 例: 0.02秒遅れ -> 0.02 * 20 = +0.4倍速 (かなり強力に追いつく)
+                        correction = Math.abs(drift) * 20.0;
+                        // 最大でも+1.5倍速上乗せまで（速すぎると不自然なのでキャップ）
+                        if (correction > 1.5) correction = 1.5;
+                    } else {
+                        // 進んでいる場合 (B is Ahead)
+                        // 行き過ぎないよう、ブレーキは少し優しく
+                        correction = -Math.abs(drift) * 10.0;
+                        if (correction < -1.0) correction = -1.0; // 逆再生はしない
+                    }
+
+                    vidB.playbackRate = targetRate + correction;
                 } else {
+                    // 閾値内なら指定速度どおり
                     vidB.playbackRate = targetRate;
                 }
             }
