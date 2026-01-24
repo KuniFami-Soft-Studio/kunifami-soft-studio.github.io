@@ -396,8 +396,9 @@
         let mediaRecorder = null, recordedChunks = [], isRecording = false, lastBlob = null;
         let lastTouchDist = 0, lastX = 0, lastY = 0;
 
-        // 同期用の変数を追加
+        // 同期用の変数を追加（初期値0）
         let syncOffset = 0;
+        let lastTimeA = 0;
 
         function updateUIText() {
             const t = TRANSLATIONS[currentLang];
@@ -519,7 +520,10 @@
             v.src = url; 
             v.onloadedmetadata = () => { if(target==='A') seekA.max = v.duration; else seekB.max = v.duration; };
             v.load();
-            if(target === 'B') { v.muted = true; v.volume = 0; } 
+            if(target === 'B') { 
+                v.muted = true; v.volume = 0; 
+                syncOffset = 0; // B読み込み時にオフセットリセット
+            } 
             else if(target === 'A') { v.muted = false; v.volume = 1.0; } 
         }
 
@@ -533,8 +537,7 @@
             resumeAudioContext();
             
             if(vidA.paused) { 
-                // 録画開始時に再生も開始する場合、オフセットを保存して再生
-                syncOffset = vidB.currentTime - vidA.currentTime;
+                // 録画開始時に再生
                 vidA.play(); 
                 vidB.play(); 
             }
@@ -571,24 +574,46 @@
             else { const a = document.createElement('a'); a.href = URL.createObjectURL(lastBlob); a.download = file.name; a.click(); }
         }
 
+        // オフセット更新処理（手動操作時のみ呼ぶ）
+        function updateSyncOffset() {
+            syncOffset = vidB.currentTime - vidA.currentTime;
+        }
+
         function render() {
             ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
             const w = canvas.width, h = canvas.height;
             const ghost = document.getElementById('ghostRange').value / 100, bri = document.getElementById('brightnessRange').value;
 
-            // --- 同期ズレ修正ロジック (Sync Fix) ---
+            // --- 新・同期ズレ補正ロジック (Smooth Sync) ---
             if (!vidA.paused && !vidB.paused) {
-                // Aの時間 + 記録したオフセット がBの本来あるべき時間
+                // Aの時間 + 固定オフセット が本来あるべきBの時間
                 const targetB = vidA.currentTime + syncOffset;
-                // ズレが0.05秒（約1.5フレーム）を超えたら強制補正
-                if (Math.abs(vidB.currentTime - targetB) > 0.05) {
+                const drift = vidB.currentTime - targetB;
+                const targetRate = speeds[speedIdx];
+
+                // 0.5秒以上の大きなズレは強制シークで直す（フリーズ復帰など）
+                if (Math.abs(drift) > 0.5) {
                     vidB.currentTime = targetB;
+                } 
+                // 0.04秒以上のズレは再生速度で微調整する（ピッチを変えずに追いつく）
+                else if (Math.abs(drift) > 0.04) {
+                    // 遅れていれば速く、進んでいれば遅く
+                    // P制御的なアプローチ: ズレが大きいほど強く補正
+                    let correction = drift * 0.5; 
+                    // 補正しすぎないように制限
+                    if(correction > 0.2) correction = 0.2;
+                    if(correction < -0.2) correction = -0.2;
+                    
+                    vidB.playbackRate = targetRate - correction;
+                } else {
+                    // ズレがほぼなければ基本速度に戻す
+                    vidB.playbackRate = targetRate;
                 }
             }
 
             if (loopEnabled && loopEnd !== null && vidA.currentTime >= loopEnd) {
                 vidA.currentTime = loopStart || 0;
-                // ループ時もオフセットを考慮してBをセット
+                // ループ時はオフセットを維持してBも戻す
                 vidB.currentTime = vidA.currentTime + syncOffset; 
             }
 
@@ -720,13 +745,15 @@
         async function togglePlay() {
             resumeAudioContext(); 
             if(vidA.paused) { 
-                // 再生開始時に現在のズレ(オフセット)を記録
-                syncOffset = vidB.currentTime - vidA.currentTime;
                 vidA.play(); 
                 vidB.play(); 
+                // Playback開始時は速度同期ロジックに任せるので、ここでは強制移動しない
+                // オフセットは変更しない
             } else { 
                 vidA.pause(); 
-                vidB.pause(); 
+                vidB.pause();
+                // 停止時はピタッと合わせる
+                vidB.currentTime = vidA.currentTime + syncOffset;
             }
         }
 
@@ -751,11 +778,14 @@
         }
 
         function formatTime(v) { const m=Math.floor(v/60), s=Math.floor(v%60), ms=Math.floor((v%1)*100); return `${m}:${s.toString().padStart(2,'0')}.${ms.toString().padStart(2,'0')}`; }
-        function nudgeA(sec) { vidA.currentTime = Math.max(0, vidA.currentTime + sec); }
-        function nudgeB(sec) { vidB.currentTime = Math.max(0, vidB.currentTime + sec); }
+        function nudgeA(sec) { vidA.currentTime = Math.max(0, vidA.currentTime + sec); updateSyncOffset(); }
+        function nudgeB(sec) { vidB.currentTime = Math.max(0, vidB.currentTime + sec); updateSyncOffset(); }
         function seekRelative(sec) { vidA.currentTime += sec; vidB.currentTime += sec; }
         function changeFrame(dir) { const step = 1/30; vidA.currentTime += dir * step; vidB.currentTime += dir * step; }
-        function seekInput(target, val) { if(target === 'A') vidA.currentTime = parseFloat(val); else vidB.currentTime = parseFloat(val); }
+        function seekInput(target, val) { 
+            if(target === 'A') { vidA.currentTime = parseFloat(val); }
+            else { vidB.currentTime = parseFloat(val); updateSyncOffset(); }
+        }
         function updateTimeDisplay() {
             document.getElementById('timeA').innerText = `A: ${formatTime(vidA.currentTime)}`;
             document.getElementById('timeB').innerText = `B: ${formatTime(vidB.currentTime)}`;
