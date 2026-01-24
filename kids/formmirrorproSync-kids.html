@@ -398,7 +398,6 @@
 
         // 同期用の変数を追加（初期値0）
         let syncOffset = 0;
-        let lastTimeA = 0;
 
         function updateUIText() {
             const t = TRANSLATIONS[currentLang];
@@ -537,7 +536,6 @@
             resumeAudioContext();
             
             if(vidA.paused) { 
-                // 録画開始時に再生
                 vidA.play(); 
                 vidB.play(); 
             }
@@ -584,27 +582,23 @@
             const w = canvas.width, h = canvas.height;
             const ghost = document.getElementById('ghostRange').value / 100, bri = document.getElementById('brightnessRange').value;
 
-            // --- 新・同期ズレ補正ロジック (Smooth Sync) ---
+            // --- 修正版 同期ロジック (Smooth Rate Control) ---
             if (!vidA.paused && !vidB.paused) {
                 // Aの時間 + 固定オフセット が本来あるべきBの時間
                 const targetB = vidA.currentTime + syncOffset;
                 const drift = vidB.currentTime - targetB;
                 const targetRate = speeds[speedIdx];
 
-                // 0.5秒以上の大きなズレは強制シークで直す（フリーズ復帰など）
-                if (Math.abs(drift) > 0.5) {
+                // 2.0秒以上の巨大なズレ（フリーズ復帰など）のみ強制シークで直す
+                if (Math.abs(drift) > 2.0) {
                     vidB.currentTime = targetB;
                 } 
-                // 0.04秒以上のズレは再生速度で微調整する（ピッチを変えずに追いつく）
-                else if (Math.abs(drift) > 0.04) {
-                    // 遅れていれば速く、進んでいれば遅く
-                    // P制御的なアプローチ: ズレが大きいほど強く補正
-                    let correction = drift * 0.5; 
-                    // 補正しすぎないように制限
-                    if(correction > 0.2) correction = 0.2;
-                    if(correction < -0.2) correction = -0.2;
-                    
-                    vidB.playbackRate = targetRate - correction;
+                // 0.03秒以上のズレは「再生速度」を微妙に変えて追いつく
+                else if (Math.abs(drift) > 0.03) {
+                    // 遅れていれば(drift < 0) 速く、進んでいれば(drift > 0) 遅く
+                    // iOSなどでの不自然さを防ぐため、変更幅を ±0.15 に制限
+                    let nudge = drift > 0 ? -0.15 : 0.15;
+                    vidB.playbackRate = targetRate + nudge;
                 } else {
                     // ズレがほぼなければ基本速度に戻す
                     vidB.playbackRate = targetRate;
@@ -613,7 +607,7 @@
 
             if (loopEnabled && loopEnd !== null && vidA.currentTime >= loopEnd) {
                 vidA.currentTime = loopStart || 0;
-                // ループ時はオフセットを維持してBも戻す
+                // ループで戻る時は瞬間的なのでシークを使用
                 vidB.currentTime = vidA.currentTime + syncOffset; 
             }
 
@@ -747,8 +741,6 @@
             if(vidA.paused) { 
                 vidA.play(); 
                 vidB.play(); 
-                // Playback開始時は速度同期ロジックに任せるので、ここでは強制移動しない
-                // オフセットは変更しない
             } else { 
                 vidA.pause(); 
                 vidB.pause();
