@@ -582,25 +582,23 @@
             const w = canvas.width, h = canvas.height;
             const ghost = document.getElementById('ghostRange').value / 100, bri = document.getElementById('brightnessRange').value;
 
-            // --- 修正版 同期ロジック (Smooth Rate Control) ---
+            // --- 修正版 同期ロジック (Refined Sync) ---
             if (!vidA.paused && !vidB.paused) {
-                // Aの時間 + 固定オフセット が本来あるべきBの時間
                 const targetB = vidA.currentTime + syncOffset;
                 const drift = vidB.currentTime - targetB;
                 const targetRate = speeds[speedIdx];
 
-                // 2.0秒以上の巨大なズレ（フリーズ復帰など）のみ強制シークで直す
+                // 2.0秒以上の巨大なズレは強制シーク
                 if (Math.abs(drift) > 2.0) {
                     vidB.currentTime = targetB;
                 } 
-                // 0.03秒以上のズレは「再生速度」を微妙に変えて追いつく
-                else if (Math.abs(drift) > 0.03) {
-                    // 遅れていれば(drift < 0) 速く、進んでいれば(drift > 0) 遅く
-                    // iOSなどでの不自然さを防ぐため、変更幅を ±0.15 に制限
-                    let nudge = drift > 0 ? -0.15 : 0.15;
+                // 閾値を0.03->0.02に厳格化（体感ラグを減らす）
+                else if (Math.abs(drift) > 0.02) {
+                    // Bが遅れている(drift < 0)時は、強めに加速(+0.25)して即座に追いつく
+                    // Bが進んでいる(drift > 0)時は、優しく減速(-0.15)してカクつき防止
+                    let nudge = drift > 0 ? -0.15 : 0.25;
                     vidB.playbackRate = targetRate + nudge;
                 } else {
-                    // ズレがほぼなければ基本速度に戻す
                     vidB.playbackRate = targetRate;
                 }
             }
