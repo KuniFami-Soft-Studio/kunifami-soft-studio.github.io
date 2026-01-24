@@ -6,7 +6,12 @@
 
 const blogPosts = [
     // ▼ 最新の記事をここに追加してください
-    {
+   {
+       url: "article0039.html",
+       ja: "【0秒起動】動画と並べてダンス練習！「まねっこミラー」フォーム確認",
+       en: "Instant Play! Dance & Sports Practice \"Manekko Mirror\""
+   },
+   {
         url: "article0038.html",
         ja: "【0秒起動】瞬間記憶で脳を鍛える！「場所覚えゲーム」Memory Grid",
         en: "Instant Play! Brain Training for Kids \"Memory Grid\""
