@@ -392,8 +392,7 @@
         let skelWidthIdx = 1; 
         const skelWidths = [2, 6, 12, 20, 30]; 
 
-        let audioCtx, gainNodeA, analyserA, dataA;
-        let gainNodeB; // B用のGainNode
+        let audioCtx, gainNodeA, destNode, analyserA, dataA;
         let mediaRecorder = null, recordedChunks = [], isRecording = false, lastBlob = null;
         let lastTouchDist = 0, lastX = 0, lastY = 0;
 
@@ -452,9 +451,10 @@
             await setupAudio();
             vidA.load();
             vidB.load();
-            // vidBもmuted=falseにするが、GainNodeで音量を0にするので聞こえない
-            vidB.muted = false;
-            vidB.volume = 1.0; 
+            
+            // VidBは完全ミュート（WebAudioにも繋がない）
+            vidB.muted = true;
+            vidB.volume = 0;
             
             resize();
             requestAnimationFrame(render);
@@ -491,37 +491,21 @@
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 audioCtx = new AudioContext();
                 
-                // --- Video A Setup (音声あり) ---
+                // --- Video A Setup (音声あり、録画にも使う) ---
                 const srcA = audioCtx.createMediaElementSource(vidA);
                 gainNodeA = audioCtx.createGain();
                 analyserA = audioCtx.createAnalyser();
-                const destNodeA = audioCtx.createMediaStreamDestination(); // 録画用
+                destNode = audioCtx.createMediaStreamDestination();
                 
                 srcA.connect(gainNodeA); 
                 srcA.connect(analyserA);
                 gainNodeA.connect(audioCtx.destination); // スピーカーへ
-                gainNodeA.connect(destNodeA);
+                gainNodeA.connect(destNode); // 録画へ
                 
-                // --- Video B Setup (音声なしだがハードウェアクロック同期用) ---
-                const srcB = audioCtx.createMediaElementSource(vidB);
-                gainNodeB = audioCtx.createGain();
-                gainNodeB.gain.value = 0; // 音量はゼロ（無音）
-                
-                srcB.connect(gainNodeB);
-                gainNodeB.connect(audioCtx.destination); // 出力に繋ぐことでクロックを有効化
-
-                vidA.muted = false; 
+                vidA.muted = false; // AはWebAudio経由で鳴らす
                 vidA.volume = 1.0;
                 
-                // Bもミュート解除（重要：Web Audio APIにデータを流すため）
-                vidB.muted = false; 
-                vidB.volume = 1.0;
-
                 dataA = new Uint8Array(analyserA.frequencyBinCount);
-                
-                // 録画用のストリーム準備
-                destNode = destNodeA; // 録画にはAの音だけ使う
-                
             } catch(e) { console.warn("Audio Error", e); }
         }
 
@@ -540,14 +524,14 @@
             v.onloadedmetadata = () => { if(target==='A') seekA.max = v.duration; else seekB.max = v.duration; };
             v.load();
             
-            // 読み込み直後もWeb Audio接続のためmuted=falseを維持
-            // GainNodeBが0なので音は出ない
             if(target === 'B') { 
-                v.muted = false; 
-                v.volume = 1.0;
+                // Bは常にミュート（音声競合を避けるため）
+                v.muted = true; 
+                v.volume = 0; 
                 syncOffset = 0; 
             } 
             else if(target === 'A') { 
+                // Aは音声を出す
                 v.muted = false; 
                 v.volume = 1.0; 
             } 
@@ -609,27 +593,35 @@
             const w = canvas.width, h = canvas.height;
             const ghost = document.getElementById('ghostRange').value / 100, bri = document.getElementById('brightnessRange').value;
 
-            // --- クロック同期モード ---
-            // A, BともにAudioContextに接続されているため、基本的にはハードウェアクロックで同期するはず
-            // それでも生じる微細なドリフトのみ補正する (滑らかさ優先)
+            // --- 精密同期ロジック (Precise Proportional Sync) ---
             if (!vidA.paused && !vidB.paused) {
                 const targetB = vidA.currentTime + syncOffset;
-                const drift = vidB.currentTime - targetB;
+                const drift = vidB.currentTime - targetB; // drift < 0 means B is late
                 const targetRate = speeds[speedIdx];
 
-                // 2.0秒以上の巨大なズレ（フリーズ等）のみ強制シーク
+                // 2.0秒以上の巨大なズレは強制シーク（フリーズ復帰などの緊急用）
                 if (Math.abs(drift) > 2.0) {
                     vidB.currentTime = targetB;
                 } 
-                // 微細なズレは速度調整のみで対応（ワープなし）
-                else if (Math.abs(drift) > 0.02) {
+                // 0.01秒（10ms）以上のわずかなズレでも反応する
+                else if (Math.abs(drift) > 0.01) {
                     let correction = 0;
-                    // クロック同期しているはずなので、補正量はマイルドに
-                    if (drift < 0) correction = 0.1; // 少し遅れ -> 少し加速
-                    else correction = -0.1;          // 少し進み -> 少し減速
                     
+                    if (drift < 0) {
+                        // 遅れている場合 (B is Late)
+                        // 強く加速して即座に追いつく
+                        correction = Math.abs(drift) * 20.0;
+                        if (correction > 1.5) correction = 1.5;
+                    } else {
+                        // 進んでいる場合 (B is Ahead)
+                        // 優しく減速
+                        correction = -Math.abs(drift) * 10.0;
+                        if (correction < -1.0) correction = -1.0; 
+                    }
+
                     vidB.playbackRate = targetRate + correction;
                 } else {
+                    // 閾値内なら指定速度どおり
                     vidB.playbackRate = targetRate;
                 }
             }
