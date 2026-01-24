@@ -7,6 +7,11 @@
 const blogPosts = [
     // ▼ 最新の記事をここに追加してください
    {
+       url: "article0041.html",
+       ja: "【0秒起動】動画比較アプリ「まねっこミラー・シンクロ」for iPhone",
+       en: "Instant Play! Video Comparison \"Manekko Mirror Sync\" (iPhone)"
+   },
+   {
        url: "article0040.html",
        ja: "【0秒起動】PCの大画面でダンス練習！「まねっこミラーPC」",
        en: "Instant Play! Practice Dance on PC \"Manekko Mirror\""
