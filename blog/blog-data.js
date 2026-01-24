@@ -8,7 +8,11 @@ const blogPosts = [
     // ▼ 最新の記事をここに追加してください
     
 
-
+	{
+	    url: "article0038.html",
+	    ja: "【0秒起動】瞬間記憶で脳を鍛える！「場所覚えゲーム」Memory Grid",
+	    en: "Instant Play! Brain Training for Kids \\"Memory Grid\\""
+	},
 	{
 	    url: "article0037.html",
 	    ja: "【0秒起動】100種類の動物が登場！「どうぶつずかん」音声知育ゲーム",
