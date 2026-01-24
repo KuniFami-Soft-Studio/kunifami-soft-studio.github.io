@@ -7,6 +7,11 @@
 const blogPosts = [
     // ▼ 最新の記事をここに追加してください
    {
+       url: "article0040.html",
+       ja: "【0秒起動】PCの大画面でダンス練習！「まねっこミラーPC」",
+       en: "Instant Play! Practice Dance on PC \"Manekko Mirror\""
+   },
+   {
        url: "article0039.html",
        ja: "【0秒起動】動画と並べてダンス練習！「まねっこミラー」フォーム確認",
        en: "Instant Play! Dance & Sports Practice \"Manekko Mirror\""
