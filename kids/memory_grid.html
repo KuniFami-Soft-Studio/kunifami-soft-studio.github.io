@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-1V1ELMWFTY');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Memory Grid / ばしょをおぼえて！ - 子供向け瞬間記憶ゲーム</title>
+<meta name="description" content="[JP] 絵文字の場所を覚えて当てる知育ゲーム！2x2から7x7まで難易度を選べます。集中力と記憶力を鍛えよう。[EN] Memory Grid Game for Kids! Remember where the emojis are and find the target. Develops memory and focus skills.">
+<meta name="keywords" content="知育ゲーム,子供向け,無料,記憶ゲーム,神経衰弱,3歳,4歳,5歳,Memory Game,Educational Games">
+<meta name="author" content="KuniFami Soft Studio">
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="Memory Grid - ばしょをおぼえて！">
+<meta property="og:description" content="絵がどこにあったか覚えているかな？">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kunifami-soft-studio.com/kids/memory_grid.html">
+<meta name="twitter:card" content="summary">
+
+<meta name="ad-mode" content="kids">
+<script src="/js/ads.js" defer></script>
+
+<style>
+    :root { --bg: #FFF3E0; --card-bg: #ffffff; --accent: #FF9800; --text: #5D4037; --wrong: #FFCDD2; --correct: #C8E6C9; }
+    body {
+        font-family: "Hiragino Sans", "Meiryo", sans-serif;
+        background: var(--bg); margin: 0; overflow-y: auto;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+        color: var(--text); touch-action: manipulation;
+    }
+    
+    /* --- Layout Components --- */
+    .container {
+        background: var(--card-bg); padding: 20px; border-radius: 30px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 500px;
+        border: 5px solid #fff; margin: 20px 0;
+    }
+    
+    h1 { margin: 10px 0; font-size: 1.5rem; color: var(--accent); }
+    h2 { font-size: 1rem; color: #888; margin-bottom: 20px; font-weight: normal; }
+
+    /* --- Settings Section --- */
+    .settings-group { margin-bottom: 15px; text-align: left; }
+    .settings-label { font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; display: block; color: var(--text); }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    
+    .setting-btn {
+        flex: 1; padding: 10px 5px; border: 2px solid #ddd; background: #fff;
+        border-radius: 15px; cursor: pointer; font-weight: bold; color: #888;
+        transition: all 0.2s; min-width: 50px;
+    }
+    .setting-btn.active {
+        background: var(--accent); color: white; border-color: var(--accent);
+        box-shadow: 0 4px 0 #E65100; transform: translateY(-2px);
+    }
+    
+    .lang-switch {
+        display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;
+    }
+    .lang-btn {
+        padding: 8px 16px; border-radius: 20px; border: 2px solid #ddd; background: white; cursor: pointer; font-weight: bold;
+    }
+    .lang-btn.active {
+        background: var(--accent); color: white; border-color: var(--accent);
+    }
+
+    /* --- Game Screen --- */
+    #gameScreen { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: env(safe-area-inset-top); }
+
+    .header-area {
+        width: 100%; padding: 10px 20px; box-sizing: border-box;
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .btn-exit { padding: 8px 16px; background: #fff; border: 2px solid #ddd; border-radius: 20px; font-weight: bold; color: #666; cursor: pointer; }
+
+    .target-area {
+        margin: 10px 0 20px; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.3s;
+    }
+    .target-area.visible { opacity: 1; }
+    .target-emoji { font-size: 3.5rem; animation: bounce 1s infinite; }
+    .instruction { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
+
+    /* --- Grid & Cards --- */
+    .game-grid {
+        display: grid; gap: 8px; padding: 10px;
+        background: #fff; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin: 0 auto;
+    }
+    
+    .card {
+        aspect-ratio: 1; position: relative; perspective: 1000px; cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        /* フォントサイズはJSで制御 */
+    }
+    .card-inner {
+        position: relative; width: 100%; height: 100%; text-align: center;
+        transition: transform 0.6s; transform-style: preserve-3d;
+    }
+    .card.flipped .card-inner { transform: rotateY(180deg); }
+
+    .card-front, .card-back {
+        position: absolute; width: 100%; height: 100%;
+        -webkit-backface-visibility: hidden; backface-visibility: hidden;
+        border-radius: 12px; display: flex; align-items: center; justify-content: center;
+        padding: 0; line-height: 1; overflow: hidden;
+        border: 2px solid #eee;
+    }
+    
+    .card-front { background: #fff; color: #333; } 
+    .card-back { background: var(--accent); color: white; transform: rotateY(180deg); } 
+
+    /* Card Animations */
+    .card.shake { animation: shake 0.4s; }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+    /* --- Footer --- */
+    .footer-nav { margin-top: 25px; text-align: center; width: 100%; }
+    .footer-links a { color: #999; text-decoration: none; font-size: 12px; margin: 0 10px; }
+    .footer-copyright { font-size: 0.7rem; color: #ccc; margin-top: 5px; }
+
+    /* Main Action Button */
+    .btn-main {
+        width: 100%; padding: 18px; background: var(--accent); color: white;
+        border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem;
+        cursor: pointer; box-shadow: 0 6px 0 #E65100; margin-top: 10px;
+        transition: transform 0.1s;
+    }
+    .btn-main:active { transform: translateY(4px); box-shadow: 0 2px 0 #E65100; }
+
+    /* Timer Bar */
+    #timerBarContainer { width: 80%; height: 10px; background: #eee; border-radius: 5px; margin: 10px auto; overflow: hidden; display: none; }
+    #timerBar { width: 100%; height: 100%; background: #4CAF50; transition: width 0.1s linear; }
+
+</style>
+</head>
+<body>
+
+<div class="container" id="startScreen">
+    <div class="lang-switch">
+        <button id="langJa" class="lang-btn active" onclick="setLang('ja')">🇯🇵 日本語</button>
+        <button id="langEn" class="lang-btn" onclick="setLang('en')">🇺🇸 English</button>
+    </div>
+
+    <h1 id="titleText">🧠 Memory Grid<br><span style="font-size:1rem;">ばしょを おぼえて！</span></h1>
+    <h2 id="subtitleText">絵がどこにあったか 当ててね！</h2>
+
+    <div class="settings-group">
+        <span class="settings-label" id="labelSize">1. おおきさ (Size)</span>
+        <div class="btn-row" id="sizeButtons">
+            </div>
+    </div>
+
+    <div class="settings-group">
+        <span class="settings-label" id="labelTime">2. じかん (Seconds)</span>
+        <div class="btn-row" id="timeButtons">
+            <button class="setting-btn" onclick="selectTime(3)">3s</button>
+            <button class="setting-btn active" onclick="selectTime(5)">5s</button>
+            <button class="setting-btn" onclick="selectTime(10)">10s</button>
+            <button class="setting-btn" onclick="selectTime(15)">15s</button>
+        </div>
+    </div>
+
+    <button class="btn-main" onclick="startGame()" id="btnStart">スタート！</button>
+    <a href="./menu.html" style="display:block; margin-top:20px; color:#aaa; text-decoration:none; font-size:0.9rem;" id="btnBack">← もどる</a>
+
+    <footer class="footer-nav">
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-copyright">
+            © 2026 KuniFami Soft Studio. All Rights Reserved.
+        </div>
+    </footer>
+</div>
+
+<div id="gameScreen">
+    <div class="header-area">
+        <div style="font-weight:bold; color:#666;">Memory Grid</div>
+        <button class="btn-exit" onclick="stopGame()" id="btnQuit">おわる</button>
+    </div>
+
+    <div id="timerBarContainer"><div id="timerBar"></div></div>
+
+    <div class="target-area" id="targetArea">
+        <div class="instruction" id="instructionText">これ は どこ？</div>
+        <div class="target-emoji" id="targetEmoji">❓</div>
+    </div>
+
+    <div class="game-grid" id="gameGrid"></div>
+</div>
+
+<script>
+// --- Data & Variables ---
+const masterData = [
+{i:'🐶',j:'いぬ',e:'Dog'},{i:'🐱',j:'ねこ',e:'Cat'},{i:'🐭',j:'ねずみ',e:'Mouse'},{i:'🐹',j:'はむすたー',e:'Hamster'},{i:'🐰',j:'うさぎ',e:'Rabbit'},
+{i:'🦊',j:'きつね',e:'Fox'},{i:'🐻',j:'くま',e:'Bear'},{i:'🐼',j:'ぱんだ',e:'Panda'},{i:'🐨',j:'こあら',e:'Koala'},{i:'🐯',j:'とら',e:'Tiger'},
+{i:'🦁',j:'らいおん',e:'Lion'},{i:'🐮',j:'うし',e:'Cow'},{i:'🐷',j:'ぶた',e:'Pig'},{i:'🐸',j:'かえる',e:'Frog'},{i:'🐵',j:'さる',e:'Monkey'},
+{i:'🐣',j:'ひよこ',e:'Chick'},{i:'🐧',j:'ぺんぎん',e:'Penguin'},{i:'🦒',j:'きりん',e:'Giraffe'},{i:'🐘',j:'ぞう',e:'Elephant'},{i:'🦓',j:'しまうま',e:'Zebra'},
+{i:'🍎',j:'りんご',e:'Apple'},{i:'🍏',j:'あおりんご',e:'Green Apple'},{i:'🍐',j:'なし',e:'Pear'},{i:'🍊',j:'みかん',e:'Orange'},{i:'🍋',j:'れもん',e:'Lemon'},
+{i:'🍌',j:'ばなな',e:'Banana'},{i:'🍉',j:'すいか',e:'Watermelon'},{i:'🍇',j:'ぶどう',e:'Grapes'},{i:'🍓',j:'いちご',e:'Strawberry'},{i:'🍈',j:'めろん',e:'Melon'},
+{i:'🍒',j:'さくらんぼ',e:'Cherry'},{i:'🍑',j:'もも',e:'Peach'},{i:'🍍',j:'ぱいなっぷる',e:'Pineapple'},{i:'🥝',j:'きうい',e:'Kiwi'},{i:'🍅',j:'とまと',e:'Tomato'},
+{i:'🌽',j:'とうもろこし',e:'Corn'},{i:'🥕',j:'にんじん',e:'Carrot'},{i:'🍄',j:'きのこ',e:'Mushroom'},{i:'🍞',j:'ぱん',e:'Bread'},
+{i:'🍦',j:'あいす',e:'Ice Cream'},{i:'🍩',j:'どーなつ',e:'Donut'},{i:'🍪',j:'くっきー',e:'Cookie'},{i:'🍫',j:'ちょこれーと',e:'Chocolate'},{i:'🍭',j:'あめ',e:'Candy'},
+{i:'🍮',j:'ぷりん',e:'Pudding'},{i:'🍰',j:'けーき',e:'Cake'},{i:'🍕',j:'ぴざ',e:'Pizza'},{i:'🍔',j:'はんばーがー',e:'Hamburger'},{i:'🍟',j:'ぽてと',e:'Fries'},
+{i:'🚗',j:'くるま',e:'Car'},{i:'🚕',j:'たくしー',e:'Taxi'},{i:'🚙',j:'じーぷ',e:'SUV'},{i:'🚌',j:'ばす',e:'Bus'},{i:'🚓',j:'ぱとかー',e:'Police Car'},
+{i:'🚑',j:'きゅうきゅうしゃ',e:'Ambulance'},{i:'🚒',j:'しょうぼうしゃ',e:'Fire Engine'},{i:'🚐',j:'わごんしゃ',e:'Van'},
+{i:'🚚',j:'とらっく',e:'Truck'},{i:'🚜',j:'とらくたー',e:'Tractor'},{i:'🚲',j:'じてんしゃ',e:'Bicycle'},{i:'🛵',j:'すくーたー',e:'Scooter'},{i:'🏍️',j:'おーとばい',e:'Motorcycle'},
+{i:'🚂',j:'きかんしゃ',e:'Steam Train'},{i:'🚆',j:'でんしゃ',e:'Train'},{i:'🚀',j:'ろけっと',e:'Rocket'},{i:'🚁',j:'へりこぷたー',e:'Helicopter'},{i:'✈️',j:'ひこうき',e:'Airplane'},
+{i:'🐙',j:'たこ',e:'Octopus'},{i:'🦑',j:'いか',e:'Squid'},{i:'🦐',j:'えび',e:'Shrimp'},{i:'🦀',j:'かに',e:'Crab'},
+{i:'🐠',j:'さかな',e:'Fish'},{i:'🐬',j:'いるか',e:'Dolphin'},{i:'🐳',j:'くじら',e:'Whale'},{i:'🦈',j:'さめ',e:'Shark'},{i:'🐚',j:'かい',e:'Shell'},
+{i:'🦋',j:'ちょうちょ',e:'Butterfly'},{i:'🐝',j:'はち',e:'Bee'},{i:'🐞',j:'てんとうむし',e:'Ladybug'},{i:'🐜',j:'あり',e:'Ant'},{i:'🐌',j:'かたつむり',e:'Snail'},
+{i:'🕷️',j:'くも',e:'Spider'},{i:'🐢',j:'かめ',e:'Turtle'},{i:'🐍',j:'へび',e:'Snake'},{i:'🦖',j:'恐竜',e:'Dinosaur'},{i:'👾',j:'かいじゅう',e:'Monster'},
+{i:'☀️',j:'たいよう',e:'Sun'},{i:'🌙',j:'つき',e:'Moon'},{i:'⭐',j:'ほし',e:'Star'},{i:'☁️',j:'くも',e:'Cloud'},{i:'☔',j:'あめ',e:'Rain'},
+{i:'⚽',j:'さっかー',e:'Soccer'},{i:'🏀',j:'ばすけ',e:'Basketball'},{i:'⚾',j:'やきゅう',e:'Baseball'},{i:'🎾',j:'てにす',e:'Tennis'},{i:'🎁',j:'ぷれぜんと',e:'Present'}
+];
+
+const i18n = {
+    ja: {
+        title: "ばしょを おぼえて！",
+        subtitle: "絵がどこにあったか 当ててね！",
+        size: "1. おおきさ",
+        time: "2. じかん",
+        start: "スタート！",
+        back: "← もどる",
+        quit: "おわる",
+        memorize: "おぼえてね",
+        where: " は どこ？",
+        correct: "せいかい！",
+        wrong: "ちがうよ"
+    },
+    en: {
+        title: "Memory Grid",
+        subtitle: "Remember where the items were!",
+        size: "1. Size",
+        time: "2. Time",
+        start: "Start Game",
+        back: "← Back",
+        quit: "Quit",
+        memorize: "Memorize!",
+        where: "Where is ",
+        correct: "Correct!",
+        wrong: "Try again"
+    }
+};
+
+let currentLang = 'ja';
+let selectedSize = 3; 
+let selectedTime = 5; 
+let currentItems = []; 
+let targetItem = null;
+let isMemorizing = false;
+let isAnswerPhase = false;
+let timerInterval = null;
+
+// --- Init ---
+window.onload = function() {
+    const sizeContainer = document.getElementById('sizeButtons');
+    for (let i = 2; i <= 7; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'setting-btn' + (i === 3 ? ' active' : '');
+        btn.onclick = () => selectSize(i, btn);
+        btn.innerText = `${i}x${i}`;
+        sizeContainer.appendChild(btn);
+    }
+    updateUIText();
+};
+
+function setLang(lang) {
+    currentLang = lang;
+    document.getElementById('langJa').classList.toggle('active', lang === 'ja');
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    updateUIText();
+}
+
+function updateUIText() {
+    const t = i18n[currentLang];
+    document.getElementById('titleText').innerHTML = `🧠 Memory Grid<br><span style="font-size:1rem;">${t.title}</span>`;
+    document.getElementById('subtitleText').innerText = t.subtitle;
+    document.getElementById('labelSize').innerText = t.size;
+    document.getElementById('labelTime').innerText = t.time;
+    document.getElementById('btnStart').innerText = t.start;
+    document.getElementById('btnBack').innerText = t.back;
+    document.getElementById('btnQuit').innerText = t.quit;
+}
+
+function selectSize(n, btn) {
+    selectedSize = n;
+    const btns = document.querySelectorAll('#sizeButtons .setting-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+
+function selectTime(n) {
+    selectedTime = n;
+    const btns = document.querySelectorAll('#timeButtons .setting-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+// --- Game Logic ---
+
+function startGame() {
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('gameScreen').style.display = 'flex';
+    nextRound();
+}
+
+function stopGame() {
+    clearInterval(timerInterval);
+    window.speechSynthesis.cancel();
+    document.getElementById('gameScreen').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'block';
+}
+
+function nextRound() {
+    isMemorizing = true;
+    isAnswerPhase = false;
+    document.getElementById('targetArea').classList.remove('visible');
+    document.getElementById('timerBarContainer').style.display = 'block';
+    
+    const grid = document.getElementById('gameGrid');
+    grid.innerHTML = '';
+    grid.style.gridTemplateColumns = `repeat(${selectedSize}, 1fr)`;
+    const maxSize = Math.min(window.innerWidth - 40, 500);
+    grid.style.width = maxSize + 'px';
+    grid.style.height = maxSize + 'px'; 
+
+    const totalCells = selectedSize * selectedSize;
+    let indices = [];
+    while(indices.length < totalCells) {
+        let r = Math.floor(Math.random() * masterData.length);
+        if(!indices.includes(r)) indices.push(r);
+    }
+    
+    currentItems = [];
+    const cellSize = maxSize / selectedSize;
+    const emojiSize = Math.floor(cellSize * 0.75);
+
+    for(let i=0; i<totalCells; i++) {
+        const itemData = masterData[indices[i]];
+        currentItems.push({ item: itemData, index: i });
+        
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.fontSize = emojiSize + "px";
+
+        const inner = document.createElement('div');
+        inner.className = 'card-inner';
+
+        const front = document.createElement('div');
+        front.className = 'card-front';
+        front.innerText = itemData.i; 
+        
+        const back = document.createElement('div');
+        back.className = 'card-back';
+        back.innerText = "❓";
+        back.style.fontSize = (emojiSize * 0.6) + "px";
+
+        inner.appendChild(front);
+        inner.appendChild(back);
+        card.appendChild(inner);
+        
+        card.onclick = () => onCardClick(card, itemData);
+        grid.appendChild(card);
+    }
+
+    const t = i18n[currentLang];
+    speak(t.memorize);
+    
+    const bar = document.getElementById('timerBar');
+    bar.style.width = '100%';
+    
+    const startTime = Date.now();
+    const duration = selectedTime * 1000;
+
+    clearInterval(timerInterval);
+
+    timerInterval = setInterval(() => {
+        const now = Date.now();
+        const elapsed = now - startTime;
+        const remain = duration - elapsed;
+        
+        const pct = Math.max(0, (remain / duration) * 100);
+        bar.style.width = pct + '%';
+        
+        if (remain <= 0) {
+            clearInterval(timerInterval);
+            startAnswerPhase();
+        }
+    }, 50); 
+}
+
+function startAnswerPhase() {
+    if(!isMemorizing) return; 
+    isMemorizing = false;
+    
+    document.getElementById('timerBarContainer').style.display = 'none';
+
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(c => c.classList.add('flipped'));
+
+    const targetObj = currentItems[Math.floor(Math.random() * currentItems.length)];
+    targetItem = targetObj.item;
+
+    setTimeout(() => {
+        document.getElementById('targetEmoji').innerText = targetItem.i;
+        document.getElementById('targetArea').classList.add('visible');
+        isAnswerPhase = true;
+        
+        const t = i18n[currentLang];
+        let textToRead = "";
+        
+        if(currentLang === 'ja') {
+            document.getElementById('instructionText').innerText = targetItem.j + t.where;
+            textToRead = targetItem.j + t.where;
+        } else {
+            document.getElementById('instructionText').innerText = t.where + targetItem.e + "?";
+            textToRead = t.where + targetItem.e;
+        }
+        
+        speak(textToRead);
+    }, 600);
+}
+
+function onCardClick(cardElement, itemData) {
+    if (!isAnswerPhase) return;
+    
+    cardElement.classList.remove('flipped');
+    const t = i18n[currentLang];
+    
+    if (itemData.i === targetItem.i) {
+        isAnswerPhase = false; 
+        cardElement.style.backgroundColor = "#C8E6C9"; 
+        speak(t.correct);
+        
+        setTimeout(() => {
+            nextRound();
+        }, 2000);
+        
+    } else {
+        speak(t.wrong);
+        cardElement.classList.add('shake');
+        cardElement.style.backgroundColor = "#FFCDD2"; 
+        
+        setTimeout(() => {
+            cardElement.classList.add('flipped'); 
+            cardElement.classList.remove('shake');
+            cardElement.style.backgroundColor = ""; 
+        }, 1000);
+    }
+}
+
+function speak(text) {
+    window.speechSynthesis.cancel();
+    const uttr = new SpeechSynthesisUtterance(text);
+    uttr.lang = (currentLang === 'ja') ? 'ja-JP' : 'en-US';
+    uttr.rate = 1.0;
+    window.speechSynthesis.speak(uttr);
+}
+
+</script>
+</body>
+</html>
