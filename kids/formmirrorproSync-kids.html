@@ -271,8 +271,8 @@
         </div>
         
         <div class="seek-container">
-            <input type="range" id="seekBarA" class="seek-a" min="0" step="0.001" value="0" oninput="seekInput('A', this.value)">
-            <input type="range" id="seekBarB" class="seek-b" min="0" step="0.001" value="0" oninput="seekInput('B', this.value)">
+            <input type="range" id="seekBarA" class="seek-a" min="0" step="0.001" value="0" onpointerdown="startSeek()" oninput="seeking('A', this.value)" onchange="endSeek('A', this.value)">
+            <input type="range" id="seekBarB" class="seek-b" min="0" step="0.001" value="0" onpointerdown="startSeek()" oninput="seeking('B', this.value)" onchange="endSeek('B', this.value)">
         </div>
 
         <div class="transport-row">
@@ -398,6 +398,7 @@
 
         // 同期用の変数を追加（初期値0）
         let syncOffset = 0;
+        let isSeeking = false; // シーク中フラグ
 
         function updateUIText() {
             const t = TRANSLATIONS[currentLang];
@@ -583,7 +584,30 @@
             else { const a = document.createElement('a'); a.href = URL.createObjectURL(lastBlob); a.download = file.name; a.click(); }
         }
 
-        // オフセット更新処理（手動操作時のみ呼ぶ）
+        // --- シーク・同期関連の関数 ---
+        function startSeek() {
+            isSeeking = true;
+        }
+
+        function seeking(target, val) {
+            if(target === 'A') vidA.currentTime = parseFloat(val);
+            else vidB.currentTime = parseFloat(val);
+        }
+
+        function endSeek(target, val) {
+            isSeeking = false;
+            // シーク終了後に今の位置関係を正として記憶
+            if(target === 'B') {
+                vidB.currentTime = parseFloat(val);
+                syncOffset = vidB.currentTime - vidA.currentTime;
+                // 変な速度になっていたらリセット
+                vidB.playbackRate = vidA.playbackRate;
+            } else {
+                vidA.currentTime = parseFloat(val);
+                syncOffset = vidB.currentTime - vidA.currentTime;
+            }
+        }
+
         function updateSyncOffset() {
             syncOffset = vidB.currentTime - vidA.currentTime;
         }
@@ -593,13 +617,13 @@
             const w = canvas.width, h = canvas.height;
             const ghost = document.getElementById('ghostRange').value / 100, bri = document.getElementById('brightnessRange').value;
 
-            // --- 精密同期ロジック (Precise Proportional Sync) ---
-            if (!vidA.paused && !vidB.paused) {
+            // --- 精密同期ロジック (シーク中は停止) ---
+            if (!isSeeking && !vidA.paused && !vidB.paused) {
                 const targetB = vidA.currentTime + syncOffset;
                 const drift = vidB.currentTime - targetB; // drift < 0 means B is late
                 const targetRate = speeds[speedIdx];
 
-                // 2.0秒以上の巨大なズレは強制シーク（フリーズ復帰などの緊急用）
+                // 2.0秒以上の巨大なズレは強制シーク
                 if (Math.abs(drift) > 2.0) {
                     vidB.currentTime = targetB;
                 } 
@@ -608,13 +632,11 @@
                     let correction = 0;
                     
                     if (drift < 0) {
-                        // 遅れている場合 (B is Late)
-                        // 強く加速して即座に追いつく
+                        // 遅れている場合: 強く加速
                         correction = Math.abs(drift) * 20.0;
                         if (correction > 1.5) correction = 1.5;
                     } else {
-                        // 進んでいる場合 (B is Ahead)
-                        // 優しく減速
+                        // 進んでいる場合: 優しく減速
                         correction = -Math.abs(drift) * 10.0;
                         if (correction < -1.0) correction = -1.0; 
                     }
@@ -628,7 +650,6 @@
 
             if (loopEnabled && loopEnd !== null && vidA.currentTime >= loopEnd) {
                 vidA.currentTime = loopStart || 0;
-                // ループで戻る時は瞬間的なのでシークを使用
                 vidB.currentTime = vidA.currentTime + syncOffset; 
             }
 
@@ -800,10 +821,12 @@
             else { vidB.currentTime = parseFloat(val); updateSyncOffset(); }
         }
         function updateTimeDisplay() {
-            document.getElementById('timeA').innerText = `A: ${formatTime(vidA.currentTime)}`;
-            document.getElementById('timeB').innerText = `B: ${formatTime(vidB.currentTime)}`;
-            if(document.activeElement !== seekA) { seekA.max = vidA.duration || 100; seekA.value = vidA.currentTime; }
-            if(document.activeElement !== seekB) { seekB.max = vidB.duration || 100; seekB.value = vidB.currentTime; }
+            if(!isSeeking) {
+                document.getElementById('timeA').innerText = `A: ${formatTime(vidA.currentTime)}`;
+                document.getElementById('timeB').innerText = `B: ${formatTime(vidB.currentTime)}`;
+                if(document.activeElement !== seekA) { seekA.max = vidA.duration || 100; seekA.value = vidA.currentTime; }
+                if(document.activeElement !== seekB) { seekB.max = vidB.duration || 100; seekB.value = vidB.currentTime; }
+            }
             document.getElementById('playBtn').innerText = !vidA.paused ? "⏸" : "▶";
         }
         function drawWaveforms() {
