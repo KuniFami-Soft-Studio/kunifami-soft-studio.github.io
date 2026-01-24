@@ -396,6 +396,9 @@
         let mediaRecorder = null, recordedChunks = [], isRecording = false, lastBlob = null;
         let lastTouchDist = 0, lastX = 0, lastY = 0;
 
+        // 同期用の変数を追加
+        let syncOffset = 0;
+
         function updateUIText() {
             const t = TRANSLATIONS[currentLang];
             document.getElementById('lblFileA').childNodes[0].nodeValue = t.fileA;
@@ -529,7 +532,12 @@
             if (!audioCtx) await setupAudio();
             resumeAudioContext();
             
-            if(vidA.paused) { vidA.play(); vidB.play(); }
+            if(vidA.paused) { 
+                // 録画開始時に再生も開始する場合、オフセットを保存して再生
+                syncOffset = vidB.currentTime - vidA.currentTime;
+                vidA.play(); 
+                vidB.play(); 
+            }
 
             const canvasStream = canvas.captureStream(30);
             const combinedStream = new MediaStream([...canvasStream.getVideoTracks(), ...destNode.stream.getAudioTracks()]);
@@ -568,9 +576,20 @@
             const w = canvas.width, h = canvas.height;
             const ghost = document.getElementById('ghostRange').value / 100, bri = document.getElementById('brightnessRange').value;
 
+            // --- 同期ズレ修正ロジック (Sync Fix) ---
+            if (!vidA.paused && !vidB.paused) {
+                // Aの時間 + 記録したオフセット がBの本来あるべき時間
+                const targetB = vidA.currentTime + syncOffset;
+                // ズレが0.05秒（約1.5フレーム）を超えたら強制補正
+                if (Math.abs(vidB.currentTime - targetB) > 0.05) {
+                    vidB.currentTime = targetB;
+                }
+            }
+
             if (loopEnabled && loopEnd !== null && vidA.currentTime >= loopEnd) {
                 vidA.currentTime = loopStart || 0;
-                vidB.currentTime = vidA.currentTime; 
+                // ループ時もオフセットを考慮してBをセット
+                vidB.currentTime = vidA.currentTime + syncOffset; 
             }
 
             if(showSkeleton && detector && !poseBusy) {
@@ -700,7 +719,15 @@
 
         async function togglePlay() {
             resumeAudioContext(); 
-            if(vidA.paused) { vidA.play(); vidB.play(); } else { vidA.pause(); vidB.pause(); }
+            if(vidA.paused) { 
+                // 再生開始時に現在のズレ(オフセット)を記録
+                syncOffset = vidB.currentTime - vidA.currentTime;
+                vidA.play(); 
+                vidB.play(); 
+            } else { 
+                vidA.pause(); 
+                vidB.pause(); 
+            }
         }
 
         function toggleUI() { 
@@ -793,12 +820,10 @@
             
             // 音飛び防止（ピッチ補正の切り替え）
             if(s !== 1.0) {
-                // 早回し・スロー時はピッチ補正を切る（音程が変わるが滑らかになる）
                 if('preservesPitch' in vidA) { vidA.preservesPitch = false; vidB.preservesPitch = false; }
                 else if('mozPreservesPitch' in vidA) { vidA.mozPreservesPitch = false; vidB.mozPreservesPitch = false; }
                 else if('webkitPreservesPitch' in vidA) { vidA.webkitPreservesPitch = false; vidB.webkitPreservesPitch = false; }
             } else {
-                // 等倍速時は元に戻す
                 if('preservesPitch' in vidA) { vidA.preservesPitch = true; vidB.preservesPitch = true; }
                 else if('mozPreservesPitch' in vidA) { vidA.mozPreservesPitch = true; vidB.mozPreservesPitch = true; }
                 else if('webkitPreservesPitch' in vidA) { vidA.webkitPreservesPitch = true; vidB.webkitPreservesPitch = true; }
