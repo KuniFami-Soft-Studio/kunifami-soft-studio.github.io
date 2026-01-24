@@ -41,31 +41,57 @@
         
         canvas { width: 100vw; height: 100vh; object-fit: contain; background: #000; display: block; cursor: crosshair; }
         
-        .fade-ui { transition: opacity 0.3s ease, transform 0.3s ease; opacity: 0; pointer-events: none; }
-        .ui-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        /* UIの表示・非表示制御 */
+        .fade-ui { 
+            transition: opacity 0.3s ease, transform 0.3s ease; 
+            opacity: 0; 
+            pointer-events: none; 
+        }
+        .fade-ui.ui-visible { 
+            opacity: 1; 
+            pointer-events: auto; 
+            transform: translateY(0); 
+        }
 
         /* 上部バー */
         .top-bar {
             position: fixed; top: 0; left: 0; right: 0;
             padding: 15px 20px;
-            display: flex; justify-content: center; align-items: center; gap: 15px;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
             background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
             z-index: 100;
+            transform: translateY(-100%);
             pointer-events: none;
         }
         .top-bar > * { pointer-events: auto; }
 
         /* 下部パネル */
         .bottom-panel {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(20px);
+            position: fixed; bottom: 0; left: 50%; 
+            transform: translateX(-50%) translateY(100%);
             width: 90%; max-width: 950px;
-            padding: 15px 20px;
+            padding: 35px 20px 15px; 
             background: var(--bg-glass); border-top-left-radius: 24px; border-top-right-radius: 24px;
             box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
             display: flex; flex-direction: column; gap: 10px; z-index: 100;
-            margin-bottom: 10px; border-radius: 24px; color: #333;
+            margin-bottom: 0; border-radius: 24px 24px 0 0; color: #333;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: visible; 
         }
-        .bottom-panel.ui-visible { transform: translateX(-50%) translateY(0); }
+        
+        #bottomPanel.ui-visible { 
+            transform: translateX(-50%) translateY(0); 
+        }
+
+        .toggle-menu-btn {
+            position: absolute; top: -45px; left: 20px;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: #fff; border: 2px solid #FF9800;
+            color: #FF9800; font-size: 20px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 110; pointer-events: auto;
+        }
 
         .sliders-row { display: flex; align-items: center; gap: 20px; justify-content: center; }
         .slider-group { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold; }
@@ -88,14 +114,15 @@
         .is-recording { animation: pulse 1s infinite; background: var(--danger) !important; color: white !important; border: none; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
+        /* 音声切替ボタン用スタイル */
+        .audio-toggle-btn { border: 2px solid var(--accent); color: var(--accent); background: #fff; }
+
         .tools-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 5px; }
         
-        /* お絵かきツールバー */
         .draw-toolbar { display: none; background: #f9f9f9; padding: 10px; border-radius: 15px; margin-bottom: 5px; gap: 10px; align-items: center; justify-content: center; border: 2px solid var(--primary); }
         .color-dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer; }
         .color-dot.selected { border-color: #333; transform: scale(1.2); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
-        /* --- スタート画面 --- */
         #loginOverlay {
             position: fixed; inset: 0; 
             background: linear-gradient(135deg, #FFF3E0 0%, #81D4FA 100%);
@@ -211,12 +238,16 @@
         <button id="loadBtn" onclick="document.getElementById('fileInput').click()">📂 動画をよむ</button>
         <button id="layoutBtn" onclick="switchLayout()">📺 ならべる</button>
         <button id="cameraBtn" onclick="switchCamera()">🔄 カメラ</button>
+        <div style="width:2px; height:20px; background:rgba(255,255,255,0.3);"></div>
+        <button id="audioSourceBtn" class="audio-toggle-btn" onclick="toggleAudioSource()">🎤 音声: カメラ</button>
         <button id="recordBtn" class="rec-btn" onclick="handleRecordClick()">● ろくが</button>
     </div>
 
     <canvas id="mainCanvas"></canvas>
 
-    <div id="bottomPanel" class="bottom-panel fade-ui">
+    <div id="bottomPanel" class="bottom-panel">
+        <div class="toggle-menu-btn" onclick="toggleMenu()" id="toggleBtn">▼</div>
+
         <div id="drawToolbar" class="draw-toolbar">
             <button id="btnModeFree" class="active-btn" onclick="setDrawShape('free')">〰 じゆう</button>
             <button id="btnModeLine" onclick="setDrawShape('line')">📏 ちょくせん</button>
@@ -299,6 +330,8 @@
                 load: "📂 動画をよむ",
                 layout: "📺 ならべる",
                 camera: "🔄 カメラ",
+                audioCam: "🎤 音声: カメラ",
+                audioModel: "🎵 音声: お手本",
                 recStart: "● ろくが",
                 recStop: "■ とめる",
                 ghost: "👻 かさねる",
@@ -333,6 +366,8 @@
                 load: "📂 Load Video",
                 layout: "📺 Layout",
                 camera: "🔄 Camera",
+                audioCam: "🎤 Audio: Mic",
+                audioModel: "🎵 Audio: Model",
                 recStart: "● Record",
                 recStop: "■ Stop",
                 ghost: "👻 Ghost",
@@ -374,6 +409,9 @@
         const playPauseBtn = document.getElementById('playPauseBtn');
         const recordBtn = document.getElementById('recordBtn');
         const cdOverlay = document.getElementById('countdownOverlay');
+        const bottomPanel = document.getElementById('bottomPanel');
+        const topPanel = document.getElementById('topPanel');
+        const toggleBtn = document.getElementById('toggleBtn');
 
         let displayMode = 0;
         let mediaRecorder = null;
@@ -397,12 +435,13 @@
         let videoDevices = [];
         let currentDeviceIdx = 0;
         let currentLang = 'ja';
+        let audioSource = 'camera'; // 'camera' or 'model'
 
         // お絵かき・メモ変数
         let isDrawingMode = false;
         let drawColor = '#FF0000';
-        let drawShape = 'free'; // free, line, circle
-        let drawings = []; // {type, points:[], color, width}
+        let drawShape = 'free'; 
+        let drawings = []; 
         let currentStroke = null;
         let memoText = "";
         const drawColors = ['#FF0000', '#0000FF', '#FFFF00', '#00FF00', '#FFFFFF'];
@@ -520,7 +559,7 @@
             }
         }
 
-        function handleDrawEnd() {
+        function handleDrawEnd(e) {
             if (currentStroke) {
                 drawings.push(currentStroke);
                 currentStroke = null;
@@ -535,10 +574,12 @@
                 btn.classList.add('active-btn');
                 toolbar.style.display = 'flex';
                 canvas.style.cursor = 'crosshair';
+                if (uiTimer) clearTimeout(uiTimer);
             } else {
                 btn.classList.remove('active-btn');
                 toolbar.style.display = 'none';
                 canvas.style.cursor = 'move';
+                resetUITimer();
             }
         }
 
@@ -627,6 +668,9 @@
             document.getElementById('btnClearDraw').innerText = t.clear;
             document.getElementById('lblWidth').innerText = t.width;
 
+            const audioBtn = document.getElementById('audioSourceBtn');
+            audioBtn.innerText = (audioSource === 'camera') ? t.audioCam : t.audioModel;
+
             [3,5,7].forEach(s => document.getElementById('cd'+s).innerText = `${s}${t.sec}`);
         }
 
@@ -652,6 +696,13 @@
             if (videoDevices.length <= 1) return;
             currentDeviceIdx = (currentDeviceIdx + 1) % videoDevices.length;
             await startCamera();
+        }
+
+        // 音声ソース切り替え
+        function toggleAudioSource() {
+            audioSource = (audioSource === 'camera') ? 'model' : 'camera';
+            updateUIText();
+            resetUITimer();
         }
 
         function handleZoomSlider(val) { transformMe.scale = parseFloat(val); }
@@ -690,14 +741,12 @@
                 if (ghost > 0) draw(modelVid, 0, 0, 1280, 720, mirrorModel, 100, ghost, transformModel);
             }
 
-            // お絵かき描画 (リセットして描画)
             ctx.setTransform(1,0,0,1,0,0);
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             drawings.forEach(d => drawStroke(d));
             if(currentStroke) drawStroke(currentStroke);
 
-            // メモ描画
             if(memoText) {
                 ctx.save();
                 ctx.font = "bold 30px sans-serif";
@@ -853,7 +902,21 @@
         async function executeRecording() {
             const stream = canvas.captureStream(60);
             let audioTracks = [];
-            if(myCam.srcObject) audioTracks = [...audioTracks, ...myCam.srcObject.getAudioTracks()];
+            
+            // 音声ソースの選択
+            if(audioSource === 'camera' && myCam.srcObject) {
+                audioTracks = myCam.srcObject.getAudioTracks();
+            } else if(audioSource === 'model' && modelVid.src) {
+                // お手本ビデオから音声をキャプチャ（ブラウザ制限により不可能な場合はマイクにフォールバック）
+                try {
+                    const modelStream = modelVid.captureStream ? modelVid.captureStream() : modelVid.mozCaptureStream();
+                    audioTracks = modelStream.getAudioTracks();
+                } catch(e) {
+                    console.warn("Could not capture model audio, falling back to mic.");
+                    if(myCam.srcObject) audioTracks = myCam.srcObject.getAudioTracks();
+                }
+            }
+
             const combinedStream = new MediaStream([...stream.getVideoTracks(), ...audioTracks]);
 
             recordedChunks = [];
@@ -926,21 +989,56 @@
             document.getElementById('btnLoop').classList.toggle('active-btn', isLooping);
         }
 
+        function toggleMenu() {
+            const panel = document.getElementById('bottomPanel');
+            const top = document.getElementById('topPanel');
+            const btn = document.getElementById('toggleBtn');
+            
+            if (panel.classList.contains('ui-visible')) {
+                panel.classList.remove('ui-visible');
+                top.classList.remove('ui-visible');
+                btn.innerText = "▲";
+                if(uiTimer) clearTimeout(uiTimer);
+            } else {
+                showUI();
+                btn.innerText = "▼";
+            }
+        }
+
         function showUI() { 
-            // お絵かきモード中は隠さない
+            document.getElementById('topPanel').classList.add('ui-visible');
+            document.getElementById('bottomPanel').classList.add('ui-visible');
+            const btn = document.getElementById('toggleBtn');
+            if(btn) btn.innerText = "▼";
             if(!isDrawingMode) {
-                document.querySelectorAll('.fade-ui').forEach(u => u.classList.add('ui-visible')); 
                 resetUITimer(); 
             }
         }
+
         function hideUI() { 
             if(!modelVid.paused || isCountingDown) {
-                document.querySelectorAll('.fade-ui').forEach(u => u.classList.remove('ui-visible'));
+                document.getElementById('topPanel').classList.remove('ui-visible');
+                document.getElementById('bottomPanel').classList.remove('ui-visible');
+                const btn = document.getElementById('toggleBtn');
+                if(btn) btn.innerText = "▲";
             }
         }
-        function resetUITimer() { if (uiTimer) clearTimeout(uiTimer); uiTimer = setTimeout(hideUI, 4000); }
 
-        canvas.addEventListener('click', () => { if(!isDrawingMode) showUI(); });
+        function resetUITimer() { 
+            if (uiTimer) clearTimeout(uiTimer); 
+            if (!modelVid.paused) {
+                uiTimer = setTimeout(hideUI, 4000); 
+            }
+        }
+
+        canvas.addEventListener('click', () => { 
+            if(!isDrawingMode) {
+                const panel = document.getElementById('bottomPanel');
+                if(!panel.classList.contains('ui-visible')) {
+                    showUI();
+                }
+            } 
+        });
 
         function closeSaveUI() { document.getElementById('saveContainer').style.display = 'none'; }
 
