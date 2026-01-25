@@ -489,8 +489,9 @@
         async function setupAudio() {
             if (audioCtx) return;
             try {
+                // AudioContext初期化（レイテンシーヒント：playback）
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
-                audioCtx = new AudioContext();
+                audioCtx = new AudioContext({ latencyHint: "playback" });
                 
                 // --- Video A Setup (音声あり、録画にも使う) ---
                 const srcA = audioCtx.createMediaElementSource(vidA);
@@ -548,8 +549,9 @@
             resumeAudioContext();
             
             if(vidA.paused) { 
-                vidA.play(); 
-                vidB.play(); 
+                const t = vidA.currentTime;
+                vidB.currentTime = t + syncOffset;
+                await Promise.all([vidA.play(), vidB.play()]);
             }
 
             const canvasStream = canvas.captureStream(30);
@@ -600,8 +602,6 @@
             if(target === 'B') {
                 vidB.currentTime = parseFloat(val);
                 syncOffset = vidB.currentTime - vidA.currentTime;
-                // 変な速度になっていたらリセット
-                vidB.playbackRate = vidA.playbackRate;
             } else {
                 vidA.currentTime = parseFloat(val);
                 syncOffset = vidB.currentTime - vidA.currentTime;
@@ -611,42 +611,42 @@
         function updateSyncOffset() {
             syncOffset = vidB.currentTime - vidA.currentTime;
         }
+        
+        // --- 再生速度による追従方式（音飛び回避） ---
+        let lastSync = 0;
+        
+        function syncVideos() {
+            const now = performance.now();
+            if (now - lastSync < 33) return; // 約30fps制限
+            lastSync = now;
+        
+            if (isSeeking) return;
+            if (vidA.paused || vidB.paused) return;
+        
+            const target = vidA.currentTime + syncOffset;
+            const diff   = vidB.currentTime - target;
+            const rate = vidA.playbackRate;
+        
+            const HARD_LIMIT = rate === 1.0 ? 0.003 : 0.03;
+            const SOFT_LIMIT = rate === 1.0 ? 0.001 : 0.01;
+        
+            if (Math.abs(diff) > HARD_LIMIT) {
+                vidB.currentTime = target;
+            } else if (Math.abs(diff) > SOFT_LIMIT) {
+                const correction = Math.max(-0.05, Math.min(0.05, diff * 2.5));
+                vidB.playbackRate = rate - correction;
+            } else {
+                vidB.playbackRate = rate;
+            }
+        }
 
         function render() {
             ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
             const w = canvas.width, h = canvas.height;
             const ghost = document.getElementById('ghostRange').value / 100, bri = document.getElementById('brightnessRange').value;
 
-            // --- 精密同期ロジック (シーク中は停止) ---
-            if (!isSeeking && !vidA.paused && !vidB.paused) {
-                const targetB = vidA.currentTime + syncOffset;
-                const drift = vidB.currentTime - targetB; // drift < 0 means B is late
-                const targetRate = speeds[speedIdx];
-
-                // 2.0秒以上の巨大なズレは強制シーク
-                if (Math.abs(drift) > 2.0) {
-                    vidB.currentTime = targetB;
-                } 
-                // 0.01秒（10ms）以上のわずかなズレでも反応する
-                else if (Math.abs(drift) > 0.01) {
-                    let correction = 0;
-                    
-                    if (drift < 0) {
-                        // 遅れている場合: 強く加速
-                        correction = Math.abs(drift) * 20.0;
-                        if (correction > 1.5) correction = 1.5;
-                    } else {
-                        // 進んでいる場合: 優しく減速
-                        correction = -Math.abs(drift) * 10.0;
-                        if (correction < -1.0) correction = -1.0; 
-                    }
-
-                    vidB.playbackRate = targetRate + correction;
-                } else {
-                    // 閾値内なら指定速度どおり
-                    vidB.playbackRate = targetRate;
-                }
-            }
+            // --- 精密同期ロジック呼び出し ---
+            syncVideos();
 
             if (loopEnabled && loopEnd !== null && vidA.currentTime >= loopEnd) {
                 vidA.currentTime = loopStart || 0;
@@ -781,8 +781,9 @@
         async function togglePlay() {
             resumeAudioContext(); 
             if(vidA.paused) { 
-                vidA.play(); 
-                vidB.play(); 
+                const t = vidA.currentTime;
+                vidB.currentTime = t + syncOffset; // Pre-align for hard sync
+                await Promise.all([vidA.play(), vidB.play()]);
             } else { 
                 vidA.pause(); 
                 vidB.pause();
@@ -814,8 +815,19 @@
         function formatTime(v) { const m=Math.floor(v/60), s=Math.floor(v%60), ms=Math.floor((v%1)*100); return `${m}:${s.toString().padStart(2,'0')}.${ms.toString().padStart(2,'0')}`; }
         function nudgeA(sec) { vidA.currentTime = Math.max(0, vidA.currentTime + sec); updateSyncOffset(); }
         function nudgeB(sec) { vidB.currentTime = Math.max(0, vidB.currentTime + sec); updateSyncOffset(); }
-        function seekRelative(sec) { vidA.currentTime += sec; vidB.currentTime += sec; }
-        function changeFrame(dir) { const step = 1/30; vidA.currentTime += dir * step; vidB.currentTime += dir * step; }
+        
+        // --- 修正された移動ロジック (A基準でBを強制追従) ---
+        function seekRelative(sec) { 
+            vidA.currentTime += sec; 
+            vidB.currentTime = vidA.currentTime + syncOffset; 
+        }
+        
+        function changeFrame(dir) { 
+            const step = 1/30; 
+            vidA.currentTime += dir * step; 
+            vidB.currentTime = vidA.currentTime + syncOffset; 
+        }
+
         function seekInput(target, val) { 
             if(target === 'A') { vidA.currentTime = parseFloat(val); }
             else { vidB.currentTime = parseFloat(val); updateSyncOffset(); }
