@@ -7,6 +7,11 @@
 const blogPosts = [
     // ▼ 最新の記事をここに追加してください
    {
+    url: "article0042.html",
+    ja: "【完全ガイド】広告が安全！子供に安心して渡せるWebサイトの見分け方",
+    en: "[Complete Guide] How to Identify Safe Websites for Kids (COPPA)"
+   },
+   {
        url: "article0041.html",
        ja: "【0秒起動】動画比較アプリ「まねっこミラー・シンクロ」for iPhone",
        en: "Instant Play! Video Comparison \"Manekko Mirror Sync\" (iPhone)"
