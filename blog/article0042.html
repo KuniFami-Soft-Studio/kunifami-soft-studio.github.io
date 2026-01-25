@@ -31,8 +31,7 @@
             --white: #fff;
             --gray: #ddd;
             
-            /* JSで値をセットするヘッダー高さ変数 */
-            /* ▼▼▼ 修正：初期値を0pxから100pxに変更（読み込み時の被り防止） ▼▼▼ */
+            /* JSで値をセットするヘッダー高さ変数（初期値100px） */
             --header-height: 100px;
         }
 
@@ -47,21 +46,16 @@
             overflow-x: hidden;
         }
         
-        /* ▼▼▼ 修正：ヘッダーを完全固定(fixed)に変更 ▼▼▼ */
+        /* ヘッダー (Fixed) */
         header { 
             background: var(--white); 
             border-bottom: 1px solid var(--gray); 
             padding: 15px 20px; 
-            
-            /* StickyをやめてFixedにする */
             position: fixed; 
-            
-            /* Safe Areaの直下に配置 */
             top: env(safe-area-inset-top); 
             left: 0;
             right: 0;
             z-index: 1000;
-            
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
@@ -103,13 +97,20 @@
             border-color: var(--primary);
         }
 
-        /* ▼▼▼ 修正：コンテナの余白を計算式で完全固定 ▼▼▼ */
+        /* ▼▼▼ レイアウト修正（Grid対応） ▼▼▼ */
         .container {
-            max-width: 800px;
+            /* サイドバーが入るため幅を拡張 */
+            max-width: 1100px; 
             margin: 0 auto;
-            background: #fff;
             
-            padding: 40px; /* 横と下のベース */
+            /* グリッドレイアウト（記事:サイドバー = 自動:300px） */
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+            
+            /* 横の余白 */
+            padding-left: 20px;
+            padding-right: 20px;
             
             /* ヘッダー高さ + Safe Area + 余白 を合算して物理的に下げる */
             padding-top: calc(
@@ -118,40 +119,70 @@
                 env(safe-area-inset-top)
             );
             
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             box-sizing: border-box;
             width: 100%;
         }
+
+        /* 記事部分のデザイン（白いカード化） */
+        .post-body {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
         
-        /* ▼▼▼ H1スタイル ▼▼▼ */
+        /* ▼▼▼ サイドバーのスタイル ▼▼▼ */
+        aside .widget { 
+            background: var(--white); 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            border: 1px solid #eee; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .widget-title { 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            display: block; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 5px; 
+            font-size: 1rem; 
+        }
+        .profile-img { 
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%; 
+            margin: 0 auto 10px; 
+            display: block; 
+            border: 2px solid #eee; 
+        }
+        .profile-text { 
+            font-size: 0.9rem; 
+            text-align: center; 
+            line-height: 1.5; 
+        }
+
+        /* ▼▼▼ フッター ▼▼▼ */
+        footer { 
+            text-align: center; 
+            padding: 30px; 
+            font-size: 0.8rem; 
+            color: #888; 
+            border-top: 1px solid #ddd; 
+            margin-top: 40px; 
+            background: #f4f4f4;
+        }
+        footer a { color: #555; text-decoration: none; margin: 0 5px; }
+        
+        /* H1スタイル */
         h1 { 
             font-size: 1.8rem; 
             line-height: 1.6;
             border-bottom: 3px solid var(--primary); 
-            
-            padding-top: 20px;
+            padding-top: 0;
             padding-bottom: 20px;
-            
-            /* Fixedヘッダーの下に潜り込まないようさらにマージン確保 */
-            margin-top: 20px;     
             margin-bottom: 40px;
-            
             overflow-wrap: break-word; 
-            word-wrap: break-word;     
-            word-break: break-word;
-            
-            width: 100%;
-            box-sizing: border-box;
-
-            /* アンカーリンク位置調整もSafe Areaを考慮 */
-            scroll-margin-top: calc(
-                var(--header-height) + 
-                env(safe-area-inset-top) + 
-                20px
-            );
-
-            position: relative;
-            z-index: 1;
         }
         
         .post-meta {
@@ -167,7 +198,6 @@
         h2 { font-size: 1.5rem; background: var(--bg-light); padding: 10px 15px; border-left: 5px solid var(--accent); margin-top: 40px; }
         h3 { font-size: 1.2rem; border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-top: 30px; }
         p { margin-bottom: 20px; }
-        .highlight { background: linear-gradient(transparent 60%, #fff9c4 60%); font-weight: bold; }
         
         /* 内部リンクプロモーション */
         .internal-promo-link {
@@ -186,7 +216,7 @@
         }
         .internal-promo-link:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-        /* レコメンドボックス */
+        /* レコメンドボックス（記事内） */
         .recommend-box {
             margin-top: 50px;
             padding: 25px;
@@ -215,33 +245,24 @@
             display: block;
         }
 
-        /* ▼▼▼ 言語表示制御の修正（汎用セレクタを使用） ▼▼▼ */
-        /* 日本語モード時：英語属性を持つ要素を非表示 */
+        /* 言語表示制御 */
         body:not(.en-mode) [lang="en"] { display: none !important; }
-        
-        /* 英語モード時：日本語属性を持つ要素を非表示 */
         body.en-mode [lang="ja"] { display: none !important; }
 
         /* ▼▼▼ スマホ対応調整 ▼▼▼ */
         @media (max-width: 800px) {
             .container { 
-                padding-left: 20px;
-                padding-right: 20px;
-                /* padding-top は共通設定の calc() が効くのでここでは上書き不要ですが、微調整したい場合はここにも calc を記述 */
+                /* スマホでは1カラムに戻す */
+                grid-template-columns: 1fr;
             }
             
             header { flex-direction: column; gap: 15px; align-items: flex-start; }
             .header-right { width: 100%; justify-content: space-between; margin-top: 5px; }
 
-            h1 { 
-                font-size: 1.5rem !important;
-                line-height: 1.6 !important;
-                padding-top: 20px;
-                padding-bottom: 20px;
-                margin-bottom: 40px; 
-            }
-            .post-meta {
-                padding-top: 10px;
+            h1 { font-size: 1.5rem !important; }
+            
+            .post-body {
+                padding: 20px; /* スマホでは余白を減らす */
             }
         }
     </style>
@@ -266,236 +287,268 @@
 
     <div class="container">
 
-        <article class="post-body">
-            <div lang="ja">
-                <h1>【完全ガイド】広告が怖い？子供に安心して渡せる「安全なWebサイト」の見分け方（COPPAとは）</h1>
-                
-                <div class="post-meta">
-                    <time>2026.01.25</time> | <span class="tag">Lifehack & Tech</span>
-                </div>
-
-                <p>
-                    「子供にスマホを貸したら、変な広告をクリックしてしまった…」<br>
-                    「YouTubeを見ていたら、教育上よくないCMが流れてヒヤッとした」
-                </p>
-                <p>
-                    こんな経験はありませんか？<br>
-                    デジタルネイティブ世代の子育てにおいて、**「どんなコンテンツを見せるか」と同じくらい「どんな環境（サイト）で見せるか」**というリスク管理が重要になっています。
-                </p>
-                <p>
-                    今回は、ITリテラシーを高めたい大人や保護者の方向けに、**「安全なWebサイトの見分け方」**と、キーワードとなる法律**「COPPA」**について解説します。
-                </p>
-
-                <h2>COPPA（児童オンラインプライバシー保護法）とは？</h2>
-                <p>
-                    COPPA（Children's Online Privacy Protection Act）は、アメリカで制定された法律ですが、現在ではGoogleやAppleを含むグローバルなWebサービスの事実上のスタンダードになっています。
-                </p>
-                <ul>
-                    <li><strong>13歳未満の子供</strong>の個人情報を、保護者の同意なしに収集してはならない。</li>
-                    <li>子供をターゲットにした広告（行動ターゲティング広告）を表示してはならない。</li>
-                </ul>
-                <p>
-                    つまり、**「COPPA準拠（COPPA Compliant）」**を謳っているサイトやアプリは、意図しないデータの抜き取りや、不適切な追跡型広告が表示されないよう設計されている「安全地帯」と言えます。
-                </p>
-
-                <div class="img-placeholder">
-                    <img src="images/article0042/placeholder.jpg" alt="COPPAの仕組み図解">
-                </div>
-
-                <h2>安全なサイトを見分ける3つのポイント</h2>
-                <p>
-                    では、一見してどうやって判断すればいいのでしょうか？初心者必見のチェックポイントは以下の3つです。
-                </p>
-
-                <h3>1. プライバシーポリシーの明記</h3>
-                <p>
-                    ページの下部（フッター）を見てください。「Privacy Policy」のリンクがあり、そこに「子供のデータは収集しない」「Cookieの使用を制限している」といった記述があるか確認しましょう。
-                </p>
-
-                <h3>2. 広告の種類を確認する</h3>
-                <p>
-                    広告が全くないのが理想ですが、無料サービスでは難しい場合もあります。<br>
-                    重要なのは**「何の広告が出るか」**です。COPPA準拠のサイトでは、ユーザーの閲覧履歴に基づく広告ではなく、サイトの内容に関連した安全な広告（コンテキスト広告）のみが表示される設定になっています。
-                </p>
-
-                <div style="margin: 40px 0;">
-                    <h3>💡 実際に安全な設計のアプリを見てみましょう</h3>
-                    <p>
-                        百聞は一見に如かず。例えば、当サイトで公開しているこの**「瞬間記憶ゲーム」**は、個人情報を一切取得せず、インストールも不要な安全設計で作られています。<br>
-                        広告が表示される場合でも、子供向けのフィルタリングが適用されています。
-                    </p>
-                    <a href="../kids/memory_grid.html" class="internal-promo-link">
-                        🧠 3秒で脳トレ！安全・安心な「Memory Grid」を試す<br>
-                        <small style="color:#666; font-weight:normal;">(インストール不要・0秒起動)</small>
-                    </a>
-                    <p>
-                        このように、**「ブラウザだけで完結する（端末にデータを残さない）」**という点も、セキュリティリスクを下げる一つの指標になります。
-                    </p>
-                </div>
-
-                <h3>3. 「インストール不要」のメリット</h3>
-                <p>
-                    アプリストアからダウンロードするアプリは、カメラやマイク、連絡先へのアクセス権限を求めてくることがあります。<br>
-                    一方、Webブラウザ上で動くツール（PWAなど）は、サンドボックスという隔離された環境で動くため、システムの中枢に勝手にアクセスすることができません。
-                </p>
-                <p>
-                    **「アプリの削除も不要」「ギガを使わない」**という手軽さは、実はセキュリティの観点からも**「リスクを最小限にする（使わなくなったらアクセスしなければいいだけ）」**という大きなメリットがあるのです。
-                </p>
-
-                <h2>まとめ：大人が選別する目が、子供を守る</h2>
-                <p>
-                    便利さとリスクは隣り合わせです。<br>
-                    しかし、**「インストール不要」「COPPA準拠」**といったキーワードを知っているだけで、リスクを大幅に減らすことができます。
-                </p>
-                <p>
-                    まずは身近なツールから、安全性を意識して選んでみてはいかがでしょうか？<br>
-                    それは結果として、スマホの容量節約や、余計な通知に悩まされない**「快適なデジタルライフ」**にもつながります。
-                </p>
-
-                <div class="recommend-box">
-                    <h3>🎮 息抜きにWebアプリはいかがですか？</h3>
-                    <p>当サイトでは、インストール不要・0秒ですぐに使える、プライバシーに配慮したツールを公開しています。</p>
-                    <ul style="list-style:none; padding:0;">
-                        <li style="margin-bottom:15px;">
-                            <a href="../kids/memory_grid.html" style="font-weight:bold; color:#0A84FF; text-decoration:none; font-size:1.1rem;">
-                                🧠 Memory Grid / 瞬間記憶ゲーム
-                            </a><br>
-                            <small style="color:#555;">
-                                The brain training game mentioned earlier. Perfect for business people to reset their concentration in a short time.
-                            </small>
-                        </li>
-                        <li style="margin-bottom:15px;">
-                            <a href="../tools/pomodoro-study-log.html" style="font-weight:bold; color:#FF9800; text-decoration:none; font-size:1.1rem;">
-                                🍅 Focus Master / Pomodoro Timer
-                            </a><br>
-                            <small style="color:#555;">
-                                A tool for adults to maximize work efficiency. Manage tasks without worrying about data leaks, as everything is saved locally.
-                            </small>
-                        </li>
-                    </ul>
-                    <div style="text-align:center; margin-top:20px;">
-                        <a href="../kids/menu.html" style="display:inline-block; padding:12px 30px; background:#333; color:#fff; text-decoration:none; border-radius:30px; font-weight:bold;">
-                            🏠 View All Safe Apps
-                        </a>
+        <main>
+            <article class="post-body">
+                <div lang="ja">
+                    <h1>【完全ガイド】広告が怖い？子供に安心して渡せる「安全なWebサイト」の見分け方（COPPAとは）</h1>
+                    
+                    <div class="post-meta">
+                        <time>2026.01.25</time> | <span class="tag">Lifehack & Tech</span>
                     </div>
+
+                    <p>
+                        「子供にスマホを貸したら、変な広告をクリックしてしまった…」<br>
+                        「YouTubeを見ていたら、教育上よくないCMが流れてヒヤッとした」
+                    </p>
+                    <p>
+                        こんな経験はありませんか？<br>
+                        デジタルネイティブ世代の子育てにおいて、**「どんなコンテンツを見せるか」と同じくらい「どんな環境（サイト）で見せるか」**というリスク管理が重要になっています。
+                    </p>
+                    <p>
+                        今回は、ITリテラシーを高めたい大人や保護者の方向けに、**「安全なWebサイトの見分け方」**と、キーワードとなる法律**「COPPA」**について解説します。
+                    </p>
+
+                    <h2>COPPA（児童オンラインプライバシー保護法）とは？</h2>
+                    <p>
+                        COPPA（Children's Online Privacy Protection Act）は、アメリカで制定された法律ですが、現在ではGoogleやAppleを含むグローバルなWebサービスの事実上のスタンダードになっています。
+                    </p>
+                    <ul>
+                        <li><strong>13歳未満の子供</strong>の個人情報を、保護者の同意なしに収集してはならない。</li>
+                        <li>子供をターゲットにした広告（行動ターゲティング広告）を表示してはならない。</li>
+                    </ul>
+                    <p>
+                        つまり、**「COPPA準拠（COPPA Compliant）」**を謳っているサイトやアプリは、意図しないデータの抜き取りや、不適切な追跡型広告が表示されないよう設計されている「安全地帯」と言えます。
+                    </p>
+
+                    <div class="img-placeholder">
+                        <img src="images/article0042/placeholder.jpg" alt="COPPAの仕組み図解">
+                    </div>
+
+                    <h2>安全なサイトを見分ける3つのポイント</h2>
+                    <p>
+                        では、一見してどうやって判断すればいいのでしょうか？初心者必見のチェックポイントは以下の3つです。
+                    </p>
+
+                    <h3>1. プライバシーポリシーの明記</h3>
+                    <p>
+                        ページの下部（フッター）を見てください。「Privacy Policy」のリンクがあり、そこに「子供のデータは収集しない」「Cookieの使用を制限している」といった記述があるか確認しましょう。
+                    </p>
+
+                    <h3>2. 広告の種類を確認する</h3>
+                    <p>
+                        広告が全くないのが理想ですが、無料サービスでは難しい場合もあります。<br>
+                        重要なのは**「何の広告が出るか」**です。COPPA準拠のサイトでは、ユーザーの閲覧履歴に基づく広告ではなく、サイトの内容に関連した安全な広告（コンテキスト広告）のみが表示される設定になっています。
+                    </p>
+
+                    <div style="margin: 40px 0;">
+                        <h3>💡 実際に安全な設計のアプリを見てみましょう</h3>
+                        <p>
+                            百聞は一見に如かず。例えば、当サイトで公開しているこの**「瞬間記憶ゲーム」**は、個人情報を一切取得せず、インストールも不要な安全設計で作られています。<br>
+                            広告が表示される場合でも、子供向けのフィルタリングが適用されています。
+                        </p>
+                        <a href="../kids/memory_grid.html" class="internal-promo-link">
+                            🧠 3秒で脳トレ！安全・安心な「Memory Grid」を試す<br>
+                            <small style="color:#666; font-weight:normal;">(インストール不要・0秒起動)</small>
+                        </a>
+                        <p>
+                            このように、**「ブラウザだけで完結する（端末にデータを残さない）」**という点も、セキュリティリスクを下げる一つの指標になります。
+                        </p>
+                    </div>
+
+                    <h3>3. 「インストール不要」のメリット</h3>
+                    <p>
+                        アプリストアからダウンロードするアプリは、カメラやマイク、連絡先へのアクセス権限を求めてくることがあります。<br>
+                        一方、Webブラウザ上で動くツール（PWAなど）は、サンドボックスという隔離された環境で動くため、システムの中枢に勝手にアクセスすることができません。
+                    </p>
+                    <p>
+                        **「アプリの削除も不要」「ギガを使わない」**という手軽さは、実はセキュリティの観点からも**「リスクを最小限にする（使わなくなったらアクセスしなければいいだけ）」**という大きなメリットがあるのです。
+                    </p>
+
+                    <h2>まとめ：大人が選別する目が、子供を守る</h2>
+                    <p>
+                        便利さとリスクは隣り合わせです。<br>
+                        しかし、**「インストール不要」「COPPA準拠」**といったキーワードを知っているだけで、リスクを大幅に減らすことができます。
+                    </p>
+                    <p>
+                        まずは身近なツールから、安全性を意識して選んでみてはいかがでしょうか？<br>
+                        それは結果として、スマホの容量節約や、余計な通知に悩まされない**「快適なデジタルライフ」**にもつながります。
+                    </p>
+
+                    <div class="recommend-box">
+                        <h3>🎮 息抜きにWebアプリはいかがですか？</h3>
+                        <p>当サイトでは、インストール不要・0秒ですぐに使える、プライバシーに配慮したツールを公開しています。</p>
+                        <ul style="list-style:none; padding:0;">
+                            <li style="margin-bottom:15px;">
+                                <a href="../kids/memory_grid.html" style="font-weight:bold; color:#0A84FF; text-decoration:none; font-size:1.1rem;">
+                                    🧠 Memory Grid / 瞬間記憶ゲーム
+                                </a><br>
+                                <small style="color:#555;">
+                                    The brain training game mentioned earlier. Perfect for business people to reset their concentration in a short time.
+                                </small>
+                            </li>
+                            <li style="margin-bottom:15px;">
+                                <a href="../tools/pomodoro-study-log.html" style="font-weight:bold; color:#FF9800; text-decoration:none; font-size:1.1rem;">
+                                    🍅 Focus Master / Pomodoro Timer
+                                </a><br>
+                                <small style="color:#555;">
+                                    A tool for adults to maximize work efficiency. Manage tasks without worrying about data leaks, as everything is saved locally.
+                                </small>
+                            </li>
+                        </ul>
+                        <div style="text-align:center; margin-top:20px;">
+                            <a href="../kids/menu.html" style="display:inline-block; padding:12px 30px; background:#333; color:#fff; text-decoration:none; border-radius:30px; font-weight:bold;">
+                                🏠 View All Safe Apps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div lang="en">
+                    <h1>[Complete Guide] How to Identify Safe Websites for Kids (What is COPPA?)</h1>
+                    
+                    <div class="post-meta">
+                        <time>2026.01.25</time> | <span class="tag">Lifehack & Tech</span>
+                    </div>
+
+                    <p>
+                        "I let my child use my phone, and they clicked on a weird ad..."<br>
+                        "I was worried when an inappropriate commercial played on YouTube."
+                    </p>
+                    <p>
+                        Have you ever experienced this?<br>
+                        In raising digital natives, managing the risk of <strong>"where (which environment)"</strong> they view content is just as important as <strong>"what"</strong> they view.
+                    </p>
+                    <p>
+                        This article explains <strong>"how to identify safe websites"</strong> and the key law <strong>"COPPA"</strong> for adults and parents who want to improve their IT literacy.
+                    </p>
+
+                    <h2>What is COPPA (Children's Online Privacy Protection Act)?</h2>
+                    <p>
+                        COPPA is a United States federal law, but it has become the de facto global standard for web services, including Google and Apple.
+                    </p>
+                    <ul>
+                        <li>Personal information of <strong>children under 13</strong> must not be collected without parental consent.</li>
+                        <li>Behavioral targeting ads aimed at children must not be displayed.</li>
+                    </ul>
+                    <p>
+                        In other words, sites and apps that claim to be <strong>"COPPA Compliant"</strong> are "safe zones" designed to prevent unintended data extraction and inappropriate tracking ads.
+                    </p>
+
+                    <div class="img-placeholder">
+                        <img src="images/article0042/placeholder.jpg" alt="COPPA Illustration">
+                    </div>
+
+                    <h2>3 Must-Read Tips to Identify Safe Sites</h2>
+                    <p>
+                        So, how can you tell at a glance? Here are three checkpoints for beginners.
+                    </p>
+
+                    <h3>1. Check the Privacy Policy</h3>
+                    <p>
+                        Look at the bottom (footer) of the page. Check the "Privacy Policy" link for statements like "We do not collect data from children" or "Cookie usage is restricted."
+                    </p>
+
+                    <h3>2. Check the Type of Ads</h3>
+                    <p>
+                        While ad-free is ideal, it can be difficult for free services.<br>
+                        The important thing is <strong>"what kind of ads are shown."</strong> COPPA-compliant sites are configured to show only safe, context-based ads related to the site's content, rather than ads based on user browsing history.
+                    </p>
+
+                    <div style="margin: 40px 0;">
+                        <h3>💡 Let's Look at a Safe App Design</h3>
+                        <p>
+                            Seeing is believing. For example, this <strong>"Memory Grid"</strong> game on our site is designed safely: it collects no personal data and requires no installation.<br>
+                            Even if ads are displayed, child-friendly filtering is applied.
+                        </p>
+                        <a href="../kids/memory_grid.html" class="internal-promo-link">
+                            🧠 Brain Training in 3 Secs! Try the Safe "Memory Grid"<br>
+                            <small style="color:#666; font-weight:normal;">(No Install Needed, Instant Play)</small>
+                        </a>
+                        <p>
+                            The fact that it <strong>"runs entirely in the browser (leaving no data on the device)"</strong> is also a key indicator of lower security risk.
+                        </p>
+                    </div>
+
+                    <h3>3. The Benefits of "No Install Needed"</h3>
+                    <p>
+                        Apps downloaded from stores often request permissions for your camera, microphone, or contacts.<br>
+                        On the other hand, web tools (like PWAs) that run in a browser operate in an isolated environment called a "sandbox," preventing them from accessing your system's core without permission.
+                    </p>
+                    <p>
+                        The convenience of <strong>"No need to delete apps"</strong> and <strong>"No storage required"</strong> is actually a significant security benefit: <strong>"Minimizing risk (just stop accessing it when you're done)."</strong>
+                    </p>
+
+                    <h2>Summary: Adult Screening Protects Children</h2>
+                    <p>
+                        Convenience and risk go hand in hand.<br>
+                        However, simply knowing keywords like <strong>"No Install"</strong> and <strong>"COPPA Compliant"</strong> can significantly reduce risks.
+                    </p>
+                    <p>
+                        Why not start choosing tools with safety in mind?<br>
+                        This will also lead to a <strong>"comfortable digital life"</strong> where you don't have to worry about smartphone storage or annoying notifications.
+                    </p>
+
+                    <div class="recommend-box">
+                        <h3>🎮 Try Our Web Apps for a Break!</h3>
+                        <p>We offer privacy-safe tools that require no installation and start in 0 seconds.</p>
+                        <ul style="list-style:none; padding:0;">
+                            <li style="margin-bottom:15px;">
+                                <a href="../kids/memory_grid.html" style="font-weight:bold; color:#0A84FF; text-decoration:none; font-size:1.1rem;">
+                                    🧠 Memory Grid
+                                </a><br>
+                                <small style="color:#555;">
+                                    The brain training game mentioned earlier. Perfect for business people to reset their concentration in a short time.
+                                </small>
+                            </li>
+                            <li style="margin-bottom:15px;">
+                                <a href="../tools/pomodoro-study-log.html" style="font-weight:bold; color:#FF9800; text-decoration:none; font-size:1.1rem;">
+                                    🍅 Focus Master / Pomodoro Timer
+                                </a><br>
+                                <small style="color:#555;">
+                                    A tool for adults to maximize work efficiency. Manage tasks without worrying about data leaks, as everything is saved locally.
+                                </small>
+                            </li>
+                        </ul>
+                        <div style="text-align:center; margin-top:20px;">
+                            <a href="../kids/menu.html" style="display:inline-block; padding:12px 30px; background:#333; color:#fff; text-decoration:none; border-radius:30px; font-weight:bold;">
+                                🏠 View All Safe Apps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <aside>
+            <div class="widget">
+                <span class="widget-title" lang="ja">運営者</span>
+                <span class="widget-title" lang="en">Developer</span>
+                <img src="../Logo1.jpg" alt="KuniFami" class="profile-img">
+                <div class="profile-text">
+                    <strong>KuniFami Soft Studio</strong><br>
+                    <span lang="ja">愛犬と子供が大好きなエンジニア。「欲しいものを自分で作る」がモットー。</span>
+                    <span lang="en">Indie Developer. An engineer who loves dogs and kids. My motto is 'I build what I want to use.'"</span>
+                </div>
+                <div style="text-align:center; margin-top:10px;">
+                    <a href="https://x.com/kunifami2025" target="_blank" style="color:#1DA1F2; font-weight:bold;">𝕏 Follow Me</a>
                 </div>
             </div>
 
-            <div lang="en">
-                <h1>[Complete Guide] How to Identify Safe Websites for Kids (What is COPPA?)</h1>
-                
-                <div class="post-meta">
-                    <time>2026.01.25</time> | <span class="tag">Lifehack & Tech</span>
-                </div>
-
-                <p>
-                    "I let my child use my phone, and they clicked on a weird ad..."<br>
-                    "I was worried when an inappropriate commercial played on YouTube."
-                </p>
-                <p>
-                    Have you ever experienced this?<br>
-                    In raising digital natives, managing the risk of <strong>"where (which environment)"</strong> they view content is just as important as <strong>"what"</strong> they view.
-                </p>
-                <p>
-                    This article explains <strong>"how to identify safe websites"</strong> and the key law <strong>"COPPA"</strong> for adults and parents who want to improve their IT literacy.
-                </p>
-
-                <h2>What is COPPA (Children's Online Privacy Protection Act)?</h2>
-                <p>
-                    COPPA is a United States federal law, but it has become the de facto global standard for web services, including Google and Apple.
-                </p>
-                <ul>
-                    <li>Personal information of <strong>children under 13</strong> must not be collected without parental consent.</li>
-                    <li>Behavioral targeting ads aimed at children must not be displayed.</li>
-                </ul>
-                <p>
-                    In other words, sites and apps that claim to be <strong>"COPPA Compliant"</strong> are "safe zones" designed to prevent unintended data extraction and inappropriate tracking ads.
-                </p>
-
-                <div class="img-placeholder">
-                    <img src="images/article0042/placeholder.jpg" alt="COPPA Illustration">
-                </div>
-
-                <h2>3 Must-Read Tips to Identify Safe Sites</h2>
-                <p>
-                    So, how can you tell at a glance? Here are three checkpoints for beginners.
-                </p>
-
-                <h3>1. Check the Privacy Policy</h3>
-                <p>
-                    Look at the bottom (footer) of the page. Check the "Privacy Policy" link for statements like "We do not collect data from children" or "Cookie usage is restricted."
-                </p>
-
-                <h3>2. Check the Type of Ads</h3>
-                <p>
-                    While ad-free is ideal, it can be difficult for free services.<br>
-                    The important thing is <strong>"what kind of ads are shown."</strong> COPPA-compliant sites are configured to show only safe, context-based ads related to the site's content, rather than ads based on user browsing history.
-                </p>
-
-                <div style="margin: 40px 0;">
-                    <h3>💡 Let's Look at a Safe App Design</h3>
-                    <p>
-                        Seeing is believing. For example, this <strong>"Memory Grid"</strong> game on our site is designed safely: it collects no personal data and requires no installation.<br>
-                        Even if ads are displayed, child-friendly filtering is applied.
-                    </p>
-                    <a href="../kids/memory_grid.html" class="internal-promo-link">
-                        🧠 Brain Training in 3 Secs! Try the Safe "Memory Grid"<br>
-                        <small style="color:#666; font-weight:normal;">(No Install Needed, Instant Play)</small>
-                    </a>
-                    <p>
-                        The fact that it <strong>"runs entirely in the browser (leaving no data on the device)"</strong> is also a key indicator of lower security risk.
-                    </p>
-                </div>
-
-                <h3>3. The Benefits of "No Install Needed"</h3>
-                <p>
-                    Apps downloaded from stores often request permissions for your camera, microphone, or contacts.<br>
-                    On the other hand, web tools (like PWAs) that run in a browser operate in an isolated environment called a "sandbox," preventing them from accessing your system's core without permission.
-                </p>
-                <p>
-                    The convenience of <strong>"No need to delete apps"</strong> and <strong>"No storage required"</strong> is actually a significant security benefit: <strong>"Minimizing risk (just stop accessing it when you're done)."</strong>
-                </p>
-
-                <h2>Summary: Adult Screening Protects Children</h2>
-                <p>
-                    Convenience and risk go hand in hand.<br>
-                    However, simply knowing keywords like <strong>"No Install"</strong> and <strong>"COPPA Compliant"</strong> can significantly reduce risks.
-                </p>
-                <p>
-                    Why not start choosing tools with safety in mind?<br>
-                    This will also lead to a <strong>"comfortable digital life"</strong> where you don't have to worry about smartphone storage or annoying notifications.
-                </p>
-
-                <div class="recommend-box">
-                    <h3>🎮 Try Our Web Apps for a Break!</h3>
-                    <p>We offer privacy-safe tools that require no installation and start in 0 seconds.</p>
-                    <ul style="list-style:none; padding:0;">
-                        <li style="margin-bottom:15px;">
-                            <a href="../kids/memory_grid.html" style="font-weight:bold; color:#0A84FF; text-decoration:none; font-size:1.1rem;">
-                                🧠 Memory Grid
-                            </a><br>
-                            <small style="color:#555;">
-                                The brain training game mentioned earlier. Perfect for business people to reset their concentration in a short time.
-                            </small>
-                        </li>
-                        <li style="margin-bottom:15px;">
-                            <a href="../tools/pomodoro-study-log.html" style="font-weight:bold; color:#FF9800; text-decoration:none; font-size:1.1rem;">
-                                🍅 Focus Master / Pomodoro Timer
-                            </a><br>
-                            <small style="color:#555;">
-                                A tool for adults to maximize work efficiency. Manage tasks without worrying about data leaks, as everything is saved locally.
-                            </small>
-                        </li>
-                    </ul>
-                    <div style="text-align:center; margin-top:20px;">
-                        <a href="../kids/menu.html" style="display:inline-block; padding:12px 30px; background:#333; color:#fff; text-decoration:none; border-radius:30px; font-weight:bold;">
-                            🏠 View All Safe Apps
-                        </a>
-                    </div>
-                </div>
+            <div class="widget">
+                <span class="widget-title" lang="ja">おすすめ記事</span>
+                <span class="widget-title" lang="en">Recommended</span>
+                <ul id="random-posts" style="padding-left:20px; font-size:0.9rem; line-height: 1.6;"></ul>
             </div>
-        </article>
+        </aside>
+
     </div>
+
+    <footer>
+        <p><a href="../index.html">Home</a> | <a href="../contact.html">Contact</a> | <a href="../privacy.html">Privacy</a></p>
+        <p>&copy; 2026 KuniFami Soft Studio</p>
+    </footer>
+
+    <script src="blog-data.js"></script>
 
     <script>
         // 言語切り替え
@@ -517,7 +570,7 @@
             switchLang('en');
         }
 
-        // ▼▼▼ 追加：ヘッダー高さを自動取得してCSS変数にセットする関数 ▼▼▼
+        // ▼▼▼ ヘッダー高さ自動調整スクリプト ▼▼▼
         function setHeaderOffset() {
             const header = document.querySelector("header");
             if (header) {
@@ -529,7 +582,7 @@
             }
         }
 
-        // 読み込み時とリサイズ時に実行（フォント読み込み遅延対策込み）
+        // 読み込み時とリサイズ時に実行
         window.addEventListener("load", () => {
             setHeaderOffset();
             setTimeout(setHeaderOffset, 100);
