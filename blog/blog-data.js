@@ -6,6 +6,11 @@
 
 const blogPosts = [
     // ▼ 最新の記事をここに追加してください
+{
+    url: "article0043.html",
+    ja: "【完全ガイド】お金をかけずに脳を鍛える！「無料・インストール不要」の知育アプリ活用術",
+    en: "[Complete Guide] Boost Your Brain for Free! Smart Ways to Use No-Install Apps"
+},
    {
     url: "article0042.html",
     ja: "【完全ガイド】広告が安全！子供に安心して渡せるWebサイトの見分け方",
