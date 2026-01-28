@@ -15,98 +15,124 @@
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>たしざん・ひきざん / Math Fun - 3〜5歳向け無料知育アプリ</title>
-    <meta name="description" content="[JP] 3〜5歳向け！たし算と引き算をドットのヒントで楽しく学べる無料知育ゲーム。算数の基礎を育みます。[EN] Free math game for kids aged 3-5. Learn addition and subtraction with visual hints. Developed for early childhood education.">
-    <meta name="keywords" content="知育ゲーム,算数,無料,子供向け,たしざん,ひきざん,3歳,4歳,5歳,Math Games,Educational Games">
+    <title>脳トレ計算ドリル / Math Brain Training - シニア向け無料アプリ / Free for Seniors</title>
+    <meta name="description" content="[JP] シニア・大人向け！難易度が選べる無料の脳トレ計算ドリル。足し算、引き算、掛け算で脳を活性化。[EN] Free math brain training for seniors. Select difficulty levels and keep your brain active.">
+    <meta name="keywords" content="脳トレ,計算ドリル,シニア,ボケ防止,無料,足し算,引き算,掛け算,Brain Training,Math for Seniors">
     <meta name="author" content="KuniFami Soft Studio">
     <meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="たしざん・ひきざん / Math Fun - 集中マスター Kids">
-    <meta property="og:description" content="かずの もんだいに チャレンジ！ドットのヒントで 楽しく さんすうを 学ぼう。">
+    <meta property="og:title" content="脳トレ計算ドリル / Math Brain Training">
+    <meta property="og:description" content="毎日3分！計算で脳を活性化しましょう。 / Stimulate your brain with math in 3 minutes daily.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kunifami-soft-studio.com/kids/math_fun.html">
     <meta name="twitter:card" content="summary">
 
     <style>
-        :root { --main-purple: #9C27B0; --bg-blue: #E3F2FD; }
+        :root { --main-color: #3F51B5; --accent-color: #FF4081; --bg-color: #F5F5F5; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
         body { 
-            margin: 0; padding: 0; background-color: var(--bg-blue); 
+            margin: 0; padding: 0; background-color: var(--bg-color); 
             font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
-            color: #1A237E; display: flex; flex-direction: column; align-items: center; 
+            color: #333; display: flex; flex-direction: column; align-items: center; 
             min-height: 100vh; overflow-y: auto;
         }
-        .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
+        .container { width: 92%; max-width: 480px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
         .hidden { display: none !important; }
 
-        .math-card {
-            background: white; border-radius: 35px; padding: 25px;
-            box-shadow: 0 10px 0 #BBDEFB; width: 100%; margin-bottom: 20px;
+        .title-box {
+            background: white; padding: 30px 20px; border-radius: 20px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 25px; width: 100%;
         }
-        .formula { font-size: 3.5rem; font-weight: bold; margin: 20px 0; color: #1565C0; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        h1 { margin: 0; font-size: 1.8rem; color: var(--main-color); }
+        .sub-title { font-size: 1rem; color: #666; margin-top: 5px; }
+
+        .btn-level {
+            width: 100%; padding: 20px; margin-bottom: 15px; border-radius: 15px;
+            border: none; color: white; font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.1s;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .btn-level span { font-size: 0.9rem; font-weight: normal; opacity: 0.9; margin-top: 2px; }
+        .btn-level:active { transform: scale(0.98); }
+        .lvl-easy { background: #4CAF50; }
+        .lvl-normal { background: #2196F3; }
+        .lvl-hard { background: #FF5722; }
+
+        .math-card {
+            background: white; border-radius: 20px; padding: 30px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1); width: 100%; margin-bottom: 20px;
+            min-height: 250px; display: flex; flex-direction: column; justify-content: center;
+        }
+        .formula { font-size: 4rem; font-weight: bold; margin: 20px 0; color: #333; }
         
-        .visual-hint { display: flex; justify-content: center; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; min-height: 40px; }
-        .hint-dot { width: 15px; height: 15px; background: #FF4081; border-radius: 50%; }
+        .visual-hint { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; min-height: 20px; }
+        .hint-dot { width: 12px; height: 12px; background: var(--accent-color); border-radius: 50%; opacity: 0.7; }
 
         .answer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; }
         .ans-btn {
-            background: #FFF; border: 4px solid #90CAF9; border-radius: 20px;
-            padding: 15px; font-size: 2rem; font-weight: bold; color: #1565C0;
-            cursor: pointer; box-shadow: 0 5px 0 #90CAF9; transition: 0.1s;
+            background: #FFF; border: 2px solid #ddd; border-radius: 15px;
+            padding: 20px; font-size: 2.2rem; font-weight: bold; color: #333;
+            cursor: pointer; box-shadow: 0 4px 0 #ccc; transition: 0.1s;
         }
-        .ans-btn:active { transform: translateY(5px); box-shadow: none; }
+        .ans-btn:active { transform: translateY(4px); box-shadow: none; background: #f0f0f0; }
 
-        .btn-sub { 
-            width: 100%; background: var(--main-purple); color: white; border: none; 
-            padding: 16px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; 
-            box-shadow: 0 5px 0 #7B1FA2; cursor: pointer; margin-top: 10px;
-        }
+        .back-link { display: block; margin-top: 20px; color: #888; text-decoration: none; font-size: 1rem; padding: 10px; }
         
-        /* 信頼性向上用リンクスタイル */
-        .footer-links { margin: 10px 0; }
-        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
-        .footer-links a:hover { text-decoration: underline; }
-        .copyright { font-size: 0.7rem; color: #999; margin: 10px 0; font-weight: bold; }
+        .footer-links { margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px; width: 100%; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.8rem; margin: 0 10px; }
+        .copyright { font-size: 0.8rem; color: #999; margin: 10px 0; }
     </style>
 </head>
 <body>
 
 <div id="startScreen" class="screen">
     <div class="container" style="margin-top: 40px;">
-        <div style="font-size:5rem; margin-bottom:10px;">🧮</div>
-        <div style="background:white; padding:30px 20px; border-radius:35px; box-shadow:0 8px 0 #BBDEFB; margin-bottom:25px; width:100%;">
-            <h1 style="margin:0; font-size:1.6rem;">たしざん・ひきざん</h1>
-            <p style="margin:5px 0 20px; color:#1565C0; font-weight: bold;">Addition & Subtraction</p>
-            <p style="text-align:left; font-size:0.9rem; line-height:1.6; color: #5D4037;">
-                かずの もんだいに チャレンジ！<br>
-                ただしい こたえを えらんでね。<br>
-                <small>Challenge math problems! Tap the correct answer.</small>
+        <div style="font-size:4rem; margin-bottom:10px;">🧠</div>
+        <div class="title-box">
+            <h1>脳トレ計算ドリル</h1>
+            <p class="sub-title">Math Brain Training</p>
+            <p style="text-align:left; font-size:1rem; line-height:1.6; color: #444; margin-top: 20px;">
+                毎日の習慣に。<br>
+                ご自身に合った難易度を選んでください。<br>
+                <small style="color:#666;">Choose a difficulty level that suits you.</small>
             </p>
         </div>
-        <button onclick="showApp()" style="background:#448AFF; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #1565C0;">はじめる / START</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+
+        <button onclick="startGame('easy')" class="btn-level lvl-easy">
+            🔰 かんたん (1桁)
+            <span>Easy (1 digit)</span>
+        </button>
+        <button onclick="startGame('normal')" class="btn-level lvl-normal">
+            🔷 ふつう (2桁)
+            <span>Normal (2 digits)</span>
+        </button>
+        <button onclick="startGame('hard')" class="btn-level lvl-hard">
+            🔥 むずかしい (掛算)
+            <span>Hard (Multiplication)</span>
+        </button>
+
+        <a href="./menu.html" class="back-link">← メニューに戻る / Back to Menu</a>
         
-        <div class="footer-links" style="margin-top: 25px;">
-            <a href="privacy.html">Privacy Policy / 規約</a>
-            <a href="contact.html">Contact / お問い合わせ</a>
+        <div class="footer-links">
+            <a href="privacy.html">利用規約 / Privacy</a>
+            <a href="contact.html">お問い合わせ / Contact</a>
+            <div class="copyright">© 2026 KuniFami Soft Studio</div>
         </div>
-        <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
 
 <div id="appScreen" class="screen hidden">
     <div class="container">
+        <div style="text-align: left; margin-bottom: 10px;">
+            <button onclick="backToMenu()" style="background:none; border:none; color:#666; font-size:1rem; cursor:pointer;">◀ レベル選択へ / Back</button>
+        </div>
         <div class="math-card">
             <div id="hintArea" class="visual-hint"></div>
             <div class="formula" id="formula">1 + 1 = ?</div>
             <div class="answer-grid" id="ansGrid"></div>
         </div>
-        
-        <button class="btn-sub" onclick="generateProblem()">つぎのもんだい / Next</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
-        
-        <div class="copyright">© 2026 KuniFami Soft Studio</div>
+        <div id="message" style="height: 30px; color: var(--main-color); font-weight: bold; font-size: 1.2rem;"></div>
     </div>
 </div>
 
@@ -123,45 +149,91 @@
         osc.start(); osc.stop(audioCtx.currentTime + duration);
     }
 
+    let currentLevel = 'easy';
     let currentAnswer = 0;
 
-    function showApp() {
+    function startGame(level) {
+        currentLevel = level;
         document.getElementById('startScreen').classList.add('hidden');
         document.getElementById('appScreen').classList.remove('hidden');
         generateProblem();
     }
 
+    function backToMenu() {
+        document.getElementById('appScreen').classList.add('hidden');
+        document.getElementById('startScreen').classList.remove('hidden');
+    }
+
     function generateProblem() {
-        const isPlus = Math.random() > 0.5;
-        let n1, n2;
-        if (isPlus) {
-            n1 = Math.floor(Math.random() * 6) + 1; // 1-6
-            n2 = Math.floor(Math.random() * 4) + 1; // 1-4
-            currentAnswer = n1 + n2;
-        } else {
-            n1 = Math.floor(Math.random() * 6) + 4; // 4-9
-            n2 = Math.floor(Math.random() * n1) + 1; // 1 to n1
-            currentAnswer = n1 - n2;
+        document.getElementById('message').innerText = "";
+        let n1, n2, operator;
+        const hintArea = document.getElementById('hintArea');
+        hintArea.innerHTML = ""; // 初期化
+
+        if (currentLevel === 'easy') {
+            // かんたん: 1桁の足し算・引き算
+            const isPlus = Math.random() > 0.5;
+            if (isPlus) {
+                n1 = Math.floor(Math.random() * 9) + 1; // 1-9
+                n2 = Math.floor(Math.random() * 9) + 1;
+                operator = '+';
+                currentAnswer = n1 + n2;
+            } else {
+                n1 = Math.floor(Math.random() * 9) + 2; // 2-10
+                n2 = Math.floor(Math.random() * (n1 - 1)) + 1; // 引く数はn1より小さい
+                operator = '-';
+                currentAnswer = n1 - n2;
+            }
+            // ヒント表示（かんたんのみ）
+            for(let i=0; i<n1; i++) hintArea.innerHTML += '<div class="hint-dot"></div>';
+
+        } else if (currentLevel === 'normal') {
+            // ふつう: 2桁の計算（簡単め）
+            const isPlus = Math.random() > 0.5;
+            if (isPlus) {
+                n1 = Math.floor(Math.random() * 40) + 10; // 10-49
+                n2 = Math.floor(Math.random() * 40) + 10;
+                operator = '+';
+                currentAnswer = n1 + n2;
+            } else {
+                n1 = Math.floor(Math.random() * 40) + 50; // 50-89
+                n2 = Math.floor(Math.random() * 40) + 10;
+                operator = '-';
+                currentAnswer = n1 - n2;
+            }
+
+        } else if (currentLevel === 'hard') {
+            // むずかしい: 掛け算 (九九)
+            n1 = Math.floor(Math.random() * 9) + 1; // 1-9
+            n2 = Math.floor(Math.random() * 9) + 1;
+            operator = '×';
+            currentAnswer = n1 * n2;
         }
 
-        document.getElementById('formula').innerText = `${n1} ${isPlus ? '+' : '-'} ${n2} = ?`;
-        
-        // 視覚的ヒント（ドットを表示）
-        const hintArea = document.getElementById('hintArea');
-        hintArea.innerHTML = "";
-        for(let i=0; i<n1; i++) hintArea.innerHTML += '<div class="hint-dot"></div>';
+        document.getElementById('formula').innerText = `${n1} ${operator} ${n2} = ?`;
 
         // 選択肢作成
-        const choices = [currentAnswer];
-        while(choices.length < 4) {
-            let fake = Math.floor(Math.random() * 11);
-            if(!choices.includes(fake)) choices.push(fake);
+        const choices = new Set([currentAnswer]);
+        while(choices.size < 4) {
+            let fake;
+            if (currentLevel === 'easy') {
+                fake = Math.floor(Math.random() * 20); // 0-19
+            } else if (currentLevel === 'normal') {
+                // 正解に近い数字をダミーにする
+                fake = currentAnswer + Math.floor(Math.random() * 20) - 10;
+                if (fake < 0) fake = 0;
+            } else {
+                // 掛け算のダミー（九九の範囲）
+                fake = Math.floor(Math.random() * 81) + 1;
+            }
+            if (fake !== currentAnswer) choices.add(fake);
         }
-        choices.sort(() => Math.random() - 0.5);
+        
+        const choicesArray = Array.from(choices).sort(() => Math.random() - 0.5);
 
         const grid = document.getElementById('ansGrid');
         grid.innerHTML = "";
-        choices.forEach(c => {
+        choicesArray.forEach(c => {
             const btn = document.createElement('button');
             btn.className = 'ans-btn';
             btn.innerText = c;
@@ -172,16 +244,16 @@
 
     function checkAnswer(val, btn) {
         if (val === currentAnswer) {
-            playBeep(880, 0.2);
-            btn.style.background = "#C8E6C9";
+            playBeep(880, 0.15); // 正解音
+            btn.style.background = "#C8E6C9"; // 薄い緑
+            document.getElementById('message').innerText = "正解！ ⭕ Correct!";
             setTimeout(() => {
-                alert("せいかい！ 🎉 Correct!");
                 generateProblem();
-            }, 200);
+            }, 800);
         } else {
-            playBeep(220, 0.2);
-            btn.style.background = "#FFCDD2";
-            if (navigator.vibrate) navigator.vibrate(50);
+            playBeep(220, 0.3); // 不正解音
+            btn.style.background = "#FFCDD2"; // 薄い赤
+            if (navigator.vibrate) navigator.vibrate(100);
             setTimeout(() => btn.style.background = "#FFF", 500);
         }
     }
