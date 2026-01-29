@@ -17,7 +17,7 @@
     
     <title>KuniFami Labs. | Digital Tools for Daily Life</title>
     <meta name="description" content="[EN] KuniFami Labs provides free web tools to update your daily life. Featuring 'Focus Master', a Pomodoro timer. [JP] 日常をアップデートする無料Webツール集。ポモドーロタイマー『Focus Master』公開中。">
-    <meta name="keywords" content="Web Apps, Productivity, Pomodoro Timer, Webアプリ, 便利ツール, ポモドーロタイマー, ライフハック">
+    <meta name="keywords" content="Web Apps, Productivity, Pomodoro Timer, Compass, Level, Webアプリ, 便利ツール, ポモドーロタイマー, コンパス, 水平器">
     <meta name="author" content="KuniFami Soft Studio">
     <meta name="robots" content="index, follow">
     
@@ -103,12 +103,20 @@
         .app-card.featured {
             border-top: 4px solid #FF6B6B;
         }
-        .app-card.featured::before {
+        /* Tactical Compass Special Style */
+        .app-card.tech {
+            border-top: 4px solid #00f2ff;
+        }
+
+        .app-card.featured::before, .app-card.tech::before {
             content: "NEW";
             position: absolute; top: 15px; right: 15px;
             background: #FF6B6B; color: white;
             font-size: 0.7rem; font-weight: bold;
             padding: 4px 10px; border-radius: 20px;
+        }
+        .app-card.tech::before {
+            background: #00f2ff; color: #000;
         }
 
         .icon-area {
@@ -191,6 +199,20 @@
                 <div class="desc-jp">
                     ポモドーロ・テクニックで集中力を最大化。<br>
                     作業ログの記録と分析が可能な、プロフェッショナル向けタイマー。
+                </div>
+                <div class="action-link">Open App / アプリを開く <span>→</span></div>
+            </a>
+
+            <a href="#" onclick="launchApp('compass', 'tool_compass.html')" class="app-card tech">
+                <div class="icon-area">🧭</div>
+                <div class="card-title">Tactical Compass HUD</div>
+                <div class="desc-en">
+                    High-precision Compass & Spirit Level.<br>
+                    Visualize direction and tilt with a HUD interface.
+                </div>
+                <div class="desc-jp">
+                    高精度な方位磁石と水平器（傾斜計）を統合。<br>
+                    HUDスタイルの画面で、方角と傾きをリアルタイムに可視化します。
                 </div>
                 <div class="action-link">Open App / アプリを開く <span>→</span></div>
             </a>
