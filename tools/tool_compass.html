@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-1V1ELMWFTY');
+</script>
+
+<meta name="ad-mode" content="adult">
+<script src="/js/ads.js" defer></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+<title>Tactical Compass HUD V1 - Status Indicator for iPhone / 状態可視化版</title>
+<meta name="description" content="[JP] ゼロ点補正（キャリブレーション）の状態を可視化したV1。補正中はボタンが点灯し、リセットされたかどうかが一目で判別可能。[EN] Tactical Compass V1 with visual indicators for calibration status. 'SET 0°' button lights up when active.">
+<meta name="keywords" content="コンパス, 水平器, 傾斜計, iPhone, Webツール, ガジェット, Compass, Zero Snap, HUD">
+<meta name="author" content="KuniFami Soft Studio">
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="Tactical Compass HUD V1">
+<meta property="og:description" content="補正状態が一目でわかる。プロ仕様デジタルコンパス。">
+<meta property="og:type" content="website">
+
+<style>
+    :root { 
+        --primary: #00f2ff; 
+        --accent: #ff0055; 
+        --success: #00ff9d; 
+        --warning: #ffcc00; 
+        --danger: #ff4444; 
+        --bg: #050505; 
+        --card: #111; 
+        --text: #eee; 
+        --grid: #222; 
+    }
+    body { 
+        font-family: "Hiragino Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+        background: var(--bg); 
+        color: var(--text); 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        padding: 10px; 
+        padding-top: 20px; 
+        box-sizing: border-box; 
+        min-height: 100vh; 
+        min-height: 100svh; 
+        overflow-x: hidden; 
+        touch-action: manipulation; 
+    }
+
+    /* Tactical Grid Background */
+    body::before {
+        content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-image: 
+            linear-gradient(var(--grid) 1px, transparent 1px), 
+            linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+        background-size: 50px 50px; opacity: 0.15; z-index: -1;
+    }
+
+    .card { background: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 0 40px rgba(0,242,255,0.05); text-align: center; width: 100%; max-width: 480px; border: 1px solid #333; margin-bottom: 20px; box-sizing: border-box; position: relative; overflow: hidden; }
+    
+    /* Cyber Decoration */
+    .card::before { content: ""; position: absolute; top: 0; left: 0; width: 20px; height: 20px; border-top: 2px solid var(--primary); border-left: 2px solid var(--primary); }
+    .card::after { content: ""; position: absolute; bottom: 0; right: 0; width: 20px; height: 20px; border-bottom: 2px solid var(--primary); border-right: 2px solid var(--primary); }
+
+    h1 { font-size: 1.2rem; margin: 0 0 15px 0; color: #fff; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    h1 span { font-size: 0.7rem; color: var(--success); margin-left: 10px; vertical-align: middle; background: rgba(0,255,157,0.1); padding: 2px 6px; border-radius: 4px; }
+
+    /* Permission Screen */
+    #startScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 350px; }
+    .permission-note { font-size: 0.8rem; color: #aaa; margin: 10px 0; line-height: 1.6; text-align: left; background: #1a1a1a; padding: 15px; border-radius: 10px; border-left: 3px solid var(--primary); }
+    
+    .accuracy-note { font-size: 0.75rem; color: #aaa; text-align: left; background: rgba(255,204,0,0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--warning); margin-bottom: 10px; line-height: 1.5; }
+    .accuracy-note strong { color: var(--warning); display:block; margin-bottom:4px; font-size:0.85rem;}
+
+    .warning-note { 
+        font-size: 0.75rem; color: #ffcccc; text-align: left; 
+        background: rgba(255, 68, 68, 0.15); 
+        padding: 12px; border-radius: 8px; 
+        border: 1px solid var(--danger);
+        margin-bottom: 20px; line-height: 1.5;
+    }
+    .warning-note strong { color: var(--danger); display:block; margin-bottom:4px; font-size:0.85rem;}
+
+    .btn-main { width: 100%; padding: 16px; background: linear-gradient(135deg, #00c6ff, #0072ff); color: #fff; border: none; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 15px rgba(0,114,255,0.3); transition: 0.2s; }
+    .btn-main:active { transform: scale(0.98); opacity: 0.8; }
+
+    /* --- Compass & Horizon UI --- */
+    #compassApp { display: none; width: 100%; }
+    
+    /* Main Display Area */
+    .hud-container { position: relative; width: 280px; height: 280px; margin: 10px auto 10px auto; border-radius: 50%; background: #000; border: 2px solid #444; overflow: hidden; box-shadow: inset 0 0 30px rgba(0,0,0,1); }
+
+    /* 1. Compass Dial */
+    .compass-dial { width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 50%; will-change: transform; 
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" r="98" fill="none" stroke="%23333" stroke-width="1"/><path d="M100 0 L100 10 M100 190 L100 200 M0 100 L10 100 M190 100 L200 100" stroke="%23666" stroke-width="2"/><path d="M100 0 L100 15" stroke="%23ff0055" stroke-width="4"/><text x="100" y="35" text-anchor="middle" fill="%23ff0055" font-size="20" font-family="sans-serif" font-weight="bold">N</text><text x="100" y="52" text-anchor="middle" fill="%23ff0055" font-size="12" font-family="sans-serif">北</text><text x="100" y="170" text-anchor="middle" fill="%23eee" font-size="20" font-family="sans-serif" font-weight="bold">S</text><text x="100" y="185" text-anchor="middle" fill="%23999" font-size="12" font-family="sans-serif">南</text><text x="170" y="105" text-anchor="middle" fill="%23eee" font-size="20" font-family="sans-serif" font-weight="bold">E</text><text x="170" y="120" text-anchor="middle" fill="%23999" font-size="12" font-family="sans-serif">東</text><text x="30" y="105" text-anchor="middle" fill="%23eee" font-size="20" font-family="sans-serif" font-weight="bold">W</text><text x="30" y="120" text-anchor="middle" fill="%23999" font-size="12" font-family="sans-serif">西</text><path d="M135 65 L128 72 M65 65 L72 72 M135 135 L128 128 M65 135 L72 128" stroke="%23444" stroke-width="2"/></svg>') no-repeat center; background-size: contain; 
+    }
+
+    /* 2. Artificial Horizon Overlay */
+    .horizon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 180px; height: 180px; border-radius: 50%; border: 1px dashed rgba(255,255,255,0.2); overflow: hidden; z-index: 5; }
+    
+    /* Green Horizon Line (Moving) */
+    .horizon-bar { 
+        position: absolute; 
+        top: 50%; left: -20%; width: 140%; height: 3px; 
+        background: var(--success); 
+        box-shadow: 0 0 10px var(--success), 0 0 2px #fff; 
+        will-change: transform;
+        margin-top: -1.5px; 
+    }
+    
+    /* Yellow Crosshair (Fixed) */
+    .horizon-plane { 
+        position: absolute; 
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 6; 
+        pointer-events: none; 
+    }
+    .crosshair-h { 
+        position: absolute; top: 50%; left: 50%; 
+        width: 60px; height: 4px; 
+        background: var(--warning); border-radius: 2px; 
+        box-shadow: 0 0 5px rgba(0,0,0,0.5); 
+        transition: background 0.2s; 
+        transform: translate(-50%, -50%); 
+    }
+    .crosshair-v { 
+        position: absolute; top: 50%; left: 50%; 
+        width: 4px; height: 40px; 
+        background: var(--warning); border-radius: 2px; 
+        box-shadow: 0 0 5px rgba(0,0,0,0.5); 
+        transition: background 0.2s; 
+        transform: translate(-50%, -50%); 
+    }
+    .crosshair-center { 
+        position: absolute; top: 50%; left: 50%; 
+        width: 8px; height: 8px; 
+        background: var(--warning); border-radius: 50%; border: 2px solid #000; z-index: 7; 
+        transition: background 0.2s; 
+        transform: translate(-50%, -50%); 
+    }
+
+    /* 3. Blue Top Indicator */
+    .top-indicator { 
+        position: absolute; top: 5px; left: 50%; 
+        transform: translateX(-50%); 
+        width: 0; height: 0; 
+        border-left: 8px solid transparent; 
+        border-right: 8px solid transparent; 
+        border-top: 12px solid var(--primary); 
+        z-index: 10; 
+        filter: drop-shadow(0 0 5px var(--primary)); 
+    }
+    
+    /* Target Lock Marker */
+    .target-marker { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; transition: transform 0.1s; display: none; }
+    .target-marker::after { content: "▼"; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); color: var(--success); font-size: 16px; text-shadow: 0 0 5px var(--success); }
+
+    /* Digital Readouts */
+    .main-readout { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; padding: 0 10px; }
+    .degree-box { text-align: left; }
+    .degree-val { font-size: 2.8rem; font-weight: 900; color: #fff; font-variant-numeric: tabular-nums; line-height: 1; }
+    .direction-text { font-size: 1.1rem; color: var(--primary); font-weight: bold; letter-spacing: 1px; }
+    
+    .target-box { text-align: right; opacity: 0.5; transition: 0.3s; }
+    .target-box.active { opacity: 1; }
+    .target-label { font-size: 0.7rem; color: var(--success); text-transform: uppercase; }
+    .target-val { font-size: 1.2rem; font-weight: bold; font-family: monospace; color: var(--success); display:flex; flex-direction:column; align-items:flex-end; line-height:1.2; }
+    .target-val span { font-size: 0.7rem; color: var(--success); font-weight: normal; }
+
+    /* Digital Level */
+    .angle-readout { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; background: #1a1a1a; padding: 10px; border-radius: 12px; border: 1px solid #333; }
+    .angle-box { text-align: center; width: 100px; }
+    .angle-label { font-size: 0.6rem; color: #888; display: block; margin-bottom: 2px; }
+    .angle-value { font-size: 1.4rem; font-weight: bold; color: var(--warning); font-family: monospace; }
+
+    /* Controls */
+    .controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .btn-sub { background: #222; border: 1px solid #444; color: #ccc; padding: 10px 5px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+    .btn-sub span { font-size: 1.2rem; }
+    .btn-sub div { display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+    .btn-sub:hover { background: #333; color: #fff; }
+    .btn-sub:active { transform: translateY(2px); }
+    
+    /* Active States */
+    .btn-sub.active { background: rgba(0,255,157,0.15); border-color: var(--success); color: var(--success); box-shadow: 0 0 10px rgba(0,255,157,0.2); }
+    .btn-sub.calib-active { background: rgba(255,204,0,0.15); border-color: var(--warning); color: var(--warning); box-shadow: 0 0 10px rgba(255,204,0,0.2); }
+
+    .calibration-msg { font-size: 0.75rem; color: #888; margin-top: 10px; padding: 8px; border: 1px dashed #444; border-radius: 8px; display: none; line-height: 1.5; }
+
+    .footer-area { width: 100%; max-width: 480px; text-align: center; margin-top: 25px; padding-bottom: 30px; }
+    .footer-link { display: inline-block; color: #888; text-decoration: none; font-size: 0.9rem; font-weight: bold; padding: 10px 25px; background: #111; border: 1px solid #333; border-radius: 20px; margin-bottom: 20px; transition: 0.2s; }
+    .footer-link:hover { background: #222; color: #fff; border-color: #666; }
+
+    .legal-links { margin-top: 10px; }
+    .legal-links a { color: #555; text-decoration: none; font-size: 0.75rem; margin: 0 10px; }
+    .legal-links a:hover { color: #999; text-decoration: underline; }
+
+</style>
+</head>
+<body>
+
+<div class="card" id="startScreen">
+    <div style="font-size:4rem; margin-bottom:10px; filter: drop-shadow(0 0 10px var(--primary));">🧭</div>
+    <h1>
+        Tactical Compass HUD for iPhone
+        <span>Pro Tools V1</span>
+    </h1>
+    
+    <div class="permission-note">
+        <b>📱 iPhone/iPadの方へ (iOS Users)</b><br>
+        本ツールは、方位センサーとジャイロセンサーを使用します。画面回転にも対応した人工水平儀を表示するため、次のポップアップで<b>「許可 (Allow)」</b>を選択してください。<br>
+        <span style="font-size:0.75rem; color:#777; display:block; margin-top:8px;">Requires sensor access for HUD. Please tap "Allow" on the popup.</span>
+    </div>
+
+    <div class="accuracy-note">
+        <strong>⚠️ センサー誤差について / Sensor Offset</strong>
+        カメラの突起やケースの厚みで、平らな場所に置いても「斜め」と判定されることがあります。<br>
+        平らな場所に置き、<b>「SET 0° / 0点設定」</b>ボタンを押して補正してください。<br>
+        <span style="font-size:0.75rem; color:#777; display:block; margin-top:5px;">If the level is off due to phone case bumps, place on flat surface and tap "SET 0°" to calibrate.</span>
+    </div>
+
+    <div class="warning-note">
+        <strong>🚫 業務・人命に関わる用途での使用禁止</strong>
+        本アプリはホビー・実験用途です。登山、航海、航空など、正確な方位・水平が安全に直結する場面では、必ず専用の計測機器を使用してください。<br>
+        <span style="font-size:0.75rem; color:#f88; display:block; margin-top:5px;">
+            <b>FOR HOBBY USE ONLY.</b><br>
+            DO NOT use for critical navigation (hiking, aviation, etc.).
+        </span>
+    </div>
+
+    <button class="btn-main" onclick="requestPermission()">AGREE & START / 同意して起動</button>
+</div>
+
+<div class="card" id="compassApp">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span style="font-size:0.7rem; color:var(--success); border:1px solid var(--success); padding:2px 6px; border-radius:4px;">SCREEN AWAKE / 常時点灯</span>
+        <span id="calibStatus" style="font-size:0.7rem; color:#666; transition:color 0.3s;">RAW DATA</span>
+    </div>
+    
+    <div class="main-readout">
+        <div class="degree-box">
+            <div class="degree-val" id="degreeDisplay">0°</div>
+            <div class="direction-text" id="directionDisplay">N (北)</div>
+        </div>
+        <div class="target-box" id="targetBox">
+            <div class="target-label">Target Lock / 目標</div>
+            <div class="target-val" id="targetDisplay">---</div>
+        </div>
+    </div>
+
+    <div class="hud-container">
+        <div class="compass-dial" id="dial"></div>
+        <div class="target-marker" id="targetMarker"></div>
+
+        <div class="horizon-overlay">
+            <div class="horizon-bar" id="horizonBar"></div>
+            <div class="horizon-plane">
+                <div class="crosshair-h"></div>
+                <div class="crosshair-v"></div>
+                <div class="crosshair-center"></div>
+            </div>
+        </div>
+
+        <div class="top-indicator"></div>
+    </div>
+
+    <div class="angle-readout">
+        <div class="angle-box">
+            <span class="angle-label">PITCH (前後/Tilt)</span>
+            <span class="angle-value" id="pitchVal">0°</span>
+        </div>
+        <div class="angle-box">
+            <span class="angle-label">ROLL (左右/Roll)</span>
+            <span class="angle-value" id="rollVal">0°</span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-sub" onclick="toggleLock()" id="lockBtn">
+            <span>🎯</span> 
+            <div>LOCK<br><span style="font-size:0.6rem; color:#888;">固定</span></div>
+        </button>
+        <button class="btn-sub calib" onclick="calibrateLevel()" id="calibBtn">
+            <span>⚖️</span> 
+            <div>SET 0°<br><span style="font-size:0.6rem; color:var(--warning);">0点設定</span></div>
+        </button>
+        <button class="btn-sub" onclick="resetAll()">
+            <span>🔄</span> 
+            <div>RESET<br><span style="font-size:0.6rem; color:#888;">解除</span></div>
+        </button>
+    </div>
+
+    <div class="calibration-msg" id="calibMsg"></div>
+</div>
+
+<div class="footer-area">
+    <a href="./tools_menu.html" class="footer-link">← ツールメニュー / Tools Menu</a>
+    <div class="legal-links">
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../contact.html">Contact</a>
+    </div>
+    <div class="copyright" style="color:#444; font-size:0.75rem; margin-top:15px;">© 2026 KuniFami Soft Studio.</div>
+</div>
+
+<script>
+    const dial = document.getElementById('dial');
+    const degreeDisplay = document.getElementById('degreeDisplay');
+    const directionDisplay = document.getElementById('directionDisplay');
+    const horizonBar = document.getElementById('horizonBar');
+    const calibMsg = document.getElementById('calibMsg');
+    const calibStatus = document.getElementById('calibStatus');
+    
+    const pitchVal = document.getElementById('pitchVal');
+    const rollVal = document.getElementById('rollVal');
+    
+    const targetBox = document.getElementById('targetBox');
+    const targetDisplay = document.getElementById('targetDisplay');
+    const targetMarker = document.getElementById('targetMarker');
+    
+    const lockBtn = document.getElementById('lockBtn');
+    const calibBtn = document.getElementById('calibBtn'); // V1 New
+
+    let targetHeading = null;
+
+    let curHeading = 0;
+    let curPitch = 0;
+    let curRoll = 0;
+
+    let rawHeading = 0;
+    let rawPitch = 0;
+    let rawRoll = 0;
+
+    let calibPitch = 0;
+    let calibRoll = 0;
+    let isCalibrated = false;
+
+    const SMOOTHING = 0.1; 
+    let wakeLock = null;
+
+    const directions = [
+        { label: "N (北/North)", min: 337.5, max: 360 },
+        { label: "N (北/North)", min: 0, max: 22.5 },
+        { label: "NE (北東/N-East)", min: 22.5, max: 67.5 },
+        { label: "E (東/East)", min: 67.5, max: 112.5 },
+        { label: "SE (南東/S-East)", min: 112.5, max: 157.5 },
+        { label: "S (南/South)", min: 157.5, max: 202.5 },
+        { label: "SW (南西/S-West)", min: 202.5, max: 247.5 },
+        { label: "W (西/West)", min: 247.5, max: 292.5 },
+        { label: "NW (北西/N-West)", min: 292.5, max: 337.5 }
+    ];
+
+    async function requestWakeLock() {
+        if ('wakeLock' in navigator) {
+            try {
+                wakeLock = await navigator.wakeLock.request('screen');
+            } catch (err) {
+                console.log("Wake Lock Error: " + err);
+            }
+        }
+    }
+
+    document.addEventListener('visibilitychange', async () => {
+        if (wakeLock !== null && document.visibilityState === 'visible') {
+            await requestWakeLock();
+        }
+    });
+
+    function requestPermission() {
+        requestWakeLock();
+
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then(response => {
+                    if (response === 'granted') {
+                        showApp();
+                    } else {
+                        alert("センサーの許可が必要です。\nPermission required.");
+                    }
+                })
+                .catch(console.error);
+        } else {
+            showApp();
+        }
+    }
+
+    function showApp() {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('compassApp').style.display = 'block';
+        
+        window.addEventListener('deviceorientation', handleOrientation);
+        window.addEventListener('orientationchange', handleScreenRotation);
+        
+        handleScreenRotation();
+        requestAnimationFrame(updateLoop);
+    }
+
+    let screenAngle = window.orientation || 0;
+    
+    function handleScreenRotation() {
+        screenAngle = window.orientation || 0;
+        setTimeout(() => {
+            curHeading = rawHeading;
+            curPitch = rawPitch;
+            curRoll = rawRoll;
+        }, 100);
+    }
+
+    function handleOrientation(event) {
+        let heading = 0;
+        if (event.webkitCompassHeading) {
+            heading = event.webkitCompassHeading;
+        } else if (event.alpha) {
+            heading = 360 - event.alpha; 
+        }
+        
+        if (screenAngle === 90) heading += 90;
+        if (screenAngle === -90) heading -= 90;
+        if (screenAngle === 180) heading += 180;
+
+        heading = (heading + 360) % 360;
+        rawHeading = heading;
+
+        const beta = event.beta || 0;
+        const gamma = event.gamma || 0;
+
+        if (screenAngle === 0) {
+            rawPitch = beta;
+            rawRoll = gamma;
+        } else if (screenAngle === 90) {
+            rawPitch = -gamma;
+            rawRoll = beta;
+        } else if (screenAngle === -90) {
+            rawPitch = gamma;
+            rawRoll = -beta;
+        } else if (screenAngle === 180) {
+            rawPitch = -beta;
+            rawRoll = -gamma;
+        }
+    }
+
+    function updateLoop() {
+        let delta = rawHeading - curHeading;
+        if (delta > 180) delta -= 360;
+        if (delta < -180) delta += 360;
+        curHeading += delta * SMOOTHING;
+
+        // Apply Calibration
+        let targetPitch = rawPitch - calibPitch;
+        let targetRoll = rawRoll - calibRoll;
+
+        curPitch += (targetPitch - curPitch) * SMOOTHING;
+        curRoll += (targetRoll - curRoll) * SMOOTHING;
+
+        updateUI(curHeading, curPitch, curRoll);
+        requestAnimationFrame(updateLoop);
+    }
+
+    function updateUI(heading, pitch, roll) {
+        let displayHeading = Math.round(heading % 360);
+        if (displayHeading < 0) displayHeading += 360;
+
+        const rPitch = Math.round(pitch); 
+        const rRoll = Math.round(roll);   
+
+        dial.style.transform = `rotate(-${heading}deg)`;
+        degreeDisplay.textContent = `${displayHeading}°`;
+        const dir = directions.find(d => displayHeading >= d.min && displayHeading < d.max);
+        directionDisplay.textContent = dir ? dir.label : "N (北/North)";
+
+        let drawPitch = pitch;
+        let drawRoll = roll;
+
+        // Zero Snap
+        if (Math.abs(pitch) < 0.3) drawPitch = 0;
+        if (Math.abs(roll) < 0.3) drawRoll = 0;
+
+        let yShift = drawPitch * 2.5; 
+        if (yShift > 85) yShift = 85;
+        if (yShift < -85) yShift = -85;
+
+        horizonBar.style.transform = `translateY(${yShift}px) rotate(${drawRoll}deg)`;
+
+        const showPitch = (Math.abs(rPitch) === 0) ? 0 : rPitch;
+        const showRoll = (Math.abs(rRoll) === 0) ? 0 : rRoll;
+        
+        pitchVal.textContent = `${showPitch}°`;
+        rollVal.textContent = `${showRoll}°`;
+
+        if (Math.abs(showPitch) < 1 && Math.abs(showRoll) < 1) {
+            document.querySelector('.crosshair-h').style.backgroundColor = "var(--success)";
+            document.querySelector('.crosshair-v').style.backgroundColor = "var(--success)";
+            document.querySelector('.crosshair-center').style.backgroundColor = "var(--success)";
+        } else {
+            document.querySelector('.crosshair-h').style.backgroundColor = "var(--warning)";
+            document.querySelector('.crosshair-v').style.backgroundColor = "var(--warning)";
+            document.querySelector('.crosshair-center').style.backgroundColor = "var(--warning)";
+        }
+
+        if (targetHeading !== null) {
+            let tDiff = targetHeading - displayHeading;
+            if (tDiff < -180) tDiff += 360;
+            if (tDiff > 180) tDiff -= 360;
+
+            targetMarker.style.transform = `rotate(${tDiff}deg)`;
+            
+            if (Math.abs(tDiff) < 5) {
+                document.documentElement.style.setProperty('--primary', '#00ff9d'); 
+                targetDisplay.style.color = "#fff";
+                targetDisplay.innerHTML = `LOCKED<br><span>(固定中)</span>`;
+            } else {
+                document.documentElement.style.setProperty('--primary', '#00f2ff'); 
+                targetDisplay.style.color = "var(--success)";
+                targetDisplay.textContent = `${targetHeading}°`;
+            }
+        } else {
+            document.documentElement.style.setProperty('--primary', '#00f2ff');
+        }
+    }
+
+    function toggleLock() {
+        let current = Math.round(curHeading % 360);
+        if (current < 0) current += 360;
+        targetHeading = current;
+        
+        targetBox.classList.add('active');
+        targetDisplay.textContent = `${targetHeading}°`;
+        targetMarker.style.display = 'block';
+        lockBtn.classList.add('active');
+    }
+
+    // V1: Visual Feedback for Calibration
+    function calibrateLevel() {
+        calibPitch = rawPitch;
+        calibRoll = rawRoll;
+        isCalibrated = true;
+        
+        calibMsg.innerHTML = "✅ 補正完了 / Zero Set<br>現在位置を0度としました。<br><span style='font-size:0.7rem'>Current position set as 0°.</span>";
+        calibMsg.style.display = 'block';
+        
+        // Update Status & Button
+        calibStatus.textContent = "CALIBRATED / 補正中";
+        calibStatus.style.color = "var(--warning)";
+        calibBtn.classList.add('calib-active');
+
+        setTimeout(() => { calibMsg.style.display = 'none'; }, 4000);
+    }
+
+    // V1: Visual Feedback for Reset
+    function resetAll() {
+        targetHeading = null;
+        targetBox.classList.remove('active');
+        targetDisplay.textContent = "---";
+        targetMarker.style.display = 'none';
+        lockBtn.classList.remove('active');
+        document.documentElement.style.setProperty('--primary', '#00f2ff');
+        
+        calibPitch = 0;
+        calibRoll = 0;
+        isCalibrated = false;
+
+        // Reset Status & Button
+        calibStatus.textContent = "RAW DATA / 未補正";
+        calibStatus.style.color = "#666";
+        calibBtn.classList.remove('calib-active');
+
+        calibMsg.innerHTML = "🔄 リセット / Reset<br>補正とロックを解除しました。<br><span style='font-size:0.7rem'>Calibration and lock cleared.</span>";
+        calibMsg.style.display = 'block';
+        setTimeout(() => { calibMsg.style.display = 'none'; }, 3000);
+    }
+
+    handleScreenRotation();
+
+</script>
+
+</body>
+</html>
