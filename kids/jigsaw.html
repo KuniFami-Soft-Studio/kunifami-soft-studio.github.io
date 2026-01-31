@@ -17,24 +17,16 @@
     
     <title>Photo Puzzle / しゃしんパズル - 3〜5歳向け無料知育ジグソーパズル</title>
     <meta name="description" content="[JP] 3〜5歳向け！お気に入りの写真で遊べる無料知育パズルゲーム。形を認識する力と集中力を養います。[EN] Free Photo Jigsaw Puzzle for kids aged 3-5. Turn your favorite photos into puzzles. Develops spatial recognition and focus.">
-    <meta name="keywords" content="知育ゲーム,子供向け,無料,パズル,写真パズル,3歳,4歳,5歳,暇つぶし,Photo Puzzle,Jigsaw Puzzle,Educational Games">
-    <meta name="author" content="KuniFami Soft Studio">
-    <meta name="robots" content="index, follow">
-
-    <meta property="og:title" content="Photo Puzzle / しゃしんパズル - 集中マスター Kids">
-    <meta property="og:description" content="好きな写真がパズルになるよ！えらんだ写真をバラバラにして、もとにもどせるかな？">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kunifami-soft-studio.com/kids/photo_puzzle.html">
-    <meta name="twitter:card" content="summary">
-
+    
     <style>
         :root { --bg: #E1F5FE; --main: #0288D1; }
         * { -webkit-tap-highlight-color: transparent; user-select: none; box-sizing: border-box; }
         body {
             margin: 0; padding: 0; background: var(--bg);
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-            overflow-y: auto;
+            display: flex; flex-direction: column; align-items: center; 
+            height: 100vh; /* 画面いっぱいに固定 */
+            overflow: hidden; /* スクロール禁止 */
         }
 
         /* --- Start Screen --- */
@@ -42,10 +34,12 @@
             position: fixed; inset: 0; z-index: 5000;
             background: linear-gradient(135deg, #81D4FA 0%, #0288D1 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow-y: auto;
         }
         .start-card {
             background: white; padding: 30px; border-radius: 40px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 90%; max-width: 420px; text-align: center;
+            margin: 20px 0;
         }
         .upload-area {
             border: 4px dashed #0288D1; border-radius: 20px; padding: 30px;
@@ -61,22 +55,33 @@
         .btn-16 { background: #9575CD; }
 
         /* --- Game Screen --- */
-        #gameScreen { display: none; width: 100%; flex-direction: column; align-items: center; padding: 10px; }
+        #gameScreen { 
+            display: none; 
+            width: 100%; 
+            height: 100%;
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; /* 縦方向も中央揃え */
+            padding: 10px; 
+        }
         
         .puzzle-container {
-            position: relative; width: 340px; height: 340px;
-            background: #fff; border: 6px solid #fff; border-radius: 15px;
-            margin: 10px 0; box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            position: relative; 
+            /* width, heightはJSで設定 */
+            background: #fff; border: 4px solid #fff; border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             background-size: cover;
+            margin: auto; /* 上下左右中央 */
+            flex-shrink: 0; 
         }
 
         .piece {
             position: absolute; cursor: grab;
-            border: 3px solid #fff; 
+            border: 2px solid #fff; 
             background-repeat: no-repeat;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             touch-action: none; z-index: 10;
-            border-radius: 8px;
+            border-radius: 5px;
             transition: transform 0.1s;
         }
         .piece:active { transform: scale(1.05); z-index: 1000; }
@@ -91,13 +96,19 @@
             align-items: center; justify-content: center; text-align: center;
         }
 
-        /* Footer for Reliability & AdSense Compliance */
-        .footer-links { margin: 10px 0; }
-        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
-        .footer-links a:hover { text-decoration: underline; }
+        /* Controls Area (Bottom) */
+        .controls-area {
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            flex-shrink: 0;
+        }
 
-        .ad-bottom { width: 100%; text-align: center; margin-top: auto; background: rgba(255,255,255,0.8); }
-        .copyright { font-size: 0.6rem; color: #999; padding: 5px; font-weight: bold; }
+        /* Footer */
+        .footer-links { margin: 5px 0; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
+        .copyright { font-size: 0.6rem; color: #999; padding-bottom: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -105,8 +116,7 @@
 <div id="startScreen">
     <div class="start-card">
         <div style="font-size: 4rem;">📸🧩</div>
-        <h1 style="margin: 0; color: #01579B;">Photo Puzzle / しゃしんパズル</h1>
-        <p style="margin: 0 0 20px 0; color: #0288D1; font-weight: bold;">Photo Jigsaw Puzzle</p>
+        <h1 style="margin: 0; color: #01579B;">Photo Puzzle<br><span style="font-size:1rem;">しゃしんパズル</span></h1>
         
         <label class="upload-area" for="fileInput">
             <div style="font-weight: bold; color: #0288D1;">ここを おして しゃしんを えらんでね<br>Tap to choose a photo</div>
@@ -123,8 +133,7 @@
         <a href="./menu.html" style="display:block; margin-top:20px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
         
         <div class="footer-links" style="margin-top: 20px;">
-            <a href="privacy.html">Privacy Policy / 規約</a>
-            <a href="contact.html">Contact / お問い合わせ</a>
+            <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a>
         </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
@@ -139,12 +148,12 @@
 
 <div id="gameScreen">
     <div class="puzzle-container" id="puzzleContainer"></div>
-    <button class="level-btn btn-4" style="width: 160px; background: #90A4AE; font-size: 1rem; padding: 10px;" onclick="location.reload()">Quit / やめる</button>
-
-    <div class="ad-bottom">       
+    
+    <div class="controls-area">
+        <button class="level-btn btn-4" style="width: 160px; background: #90A4AE; font-size: 1rem; padding: 10px; margin:0;" onclick="location.reload()">Quit / やめる</button>
+        
         <div class="footer-links">
-            <a href="privacy.html">Privacy Policy / 規約</a>
-            <a href="contact.html">Contact / お問い合わせ</a>
+            <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a>
         </div>
         <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
@@ -156,7 +165,11 @@
     const container = document.getElementById('puzzleContainer');
     let baseImage = "";
     let gridSize = 2;
-    const totalSize = 340;
+    
+    // 縦と横のサイズを個別に管理
+    let puzzleWidth = 300;
+    let puzzleHeight = 300;
+    let imgObj = null; // 画像サイズ取得用
 
     fileInput.onchange = (e) => {
         const file = e.target.files[0];
@@ -164,9 +177,15 @@
         const reader = new FileReader();
         reader.onload = (event) => {
             baseImage = event.target.result;
-            levelSelection.style.display = 'block';
-            fileInput.parentElement.style.background = '#E8F5E9';
-            fileInput.parentElement.style.borderColor = '#4CAF50';
+            
+            // 画像の本来のサイズ（アスペクト比）を取得する
+            imgObj = new Image();
+            imgObj.onload = () => {
+                levelSelection.style.display = 'block';
+                fileInput.parentElement.style.background = '#E8F5E9';
+                fileInput.parentElement.style.borderColor = '#4CAF50';
+            };
+            imgObj.src = baseImage;
         };
         reader.readAsDataURL(file);
     };
@@ -174,39 +193,68 @@
     function initPuzzle(size) {
         gridSize = size;
         document.getElementById('startScreen').style.display = 'none';
-        document.getElementById('gameScreen').style.display = 'flex';
+        const gameScreen = document.getElementById('gameScreen');
+        gameScreen.style.display = 'flex';
+        
+        // --- 画面サイズに合わせてパズルサイズを最大化 ---
+        const maxW = window.innerWidth - 20; // 左右マージン
+        const maxH = window.innerHeight - 150; // 下部エリア分確保
+        
+        // 画像のアスペクト比と、画面枠のアスペクト比を比較
+        const imgRatio = imgObj.width / imgObj.height;
+        const screenRatio = maxW / maxH;
+
+        if (imgRatio > screenRatio) {
+            // 画像の方が横長（または画面幅が足りない）→ 幅を基準にする
+            puzzleWidth = maxW;
+            puzzleHeight = maxW / imgRatio;
+        } else {
+            // 画像の方が縦長（または画面高さが足りない）→ 高さを基準にする
+            puzzleHeight = maxH;
+            puzzleWidth = maxH * imgRatio;
+        }
+
+        // サイズ適用
+        container.style.width = puzzleWidth + 'px';
+        container.style.height = puzzleHeight + 'px';
+        // ---------------------------------------------
         
         container.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url(${baseImage})`;
-        container.style.backgroundSize = 'cover';
+        container.style.backgroundSize = '100% 100%'; // コンテナに合わせて伸縮
 
         container.innerHTML = '';
-        const pieceSize = totalSize / gridSize;
+        
+        // ピースの1つあたりのサイズ（長方形になる可能性あり）
+        const pieceW = puzzleWidth / gridSize;
+        const pieceH = puzzleHeight / gridSize;
 
         for (let r = 0; r < gridSize; r++) {
             for (let c = 0; c < gridSize; c++) {
                 const piece = document.createElement('div');
                 piece.className = 'piece';
-                piece.style.width = pieceSize + 'px';
-                piece.style.height = pieceSize + 'px';
+                piece.style.width = pieceW + 'px';
+                piece.style.height = pieceH + 'px';
                 piece.style.backgroundImage = `url(${baseImage})`;
-                piece.style.backgroundSize = `${totalSize}px ${totalSize}px`;
-                piece.style.backgroundPosition = `-${c * pieceSize}px -${r * pieceSize}px`;
+                // 背景サイズもパズル全体サイズに合わせる
+                piece.style.backgroundSize = `${puzzleWidth}px ${puzzleHeight}px`;
+                piece.style.backgroundPosition = `-${c * pieceW}px -${r * pieceH}px`;
 
-                const tx = c * pieceSize;
-                const ty = r * pieceSize;
+                const tx = c * pieceW;
+                const ty = r * pieceH;
 
-                const randX = Math.random() * (totalSize - pieceSize);
-                const randY = Math.random() * (totalSize - pieceSize);
+                // ピースを散らばらせる範囲
+                const randX = Math.random() * (puzzleWidth - pieceW);
+                const randY = Math.random() * (puzzleHeight - pieceH);
                 piece.style.left = randX + 'px';
                 piece.style.top = randY + 'px';
 
-                addEvents(piece, tx, ty);
+                addEvents(piece, tx, ty, pieceW, pieceH);
                 container.appendChild(piece);
             }
         }
     }
 
-    function addEvents(el, tx, ty) {
+    function addEvents(el, tx, ty, pW, pH) {
         let isDragging = false;
         let offsetX, offsetY;
 
@@ -229,8 +277,9 @@
             let x = p.clientX - containerRect.left - offsetX;
             let y = p.clientY - containerRect.top - offsetY;
 
-            x = Math.max(-10, Math.min(x, totalSize - el.offsetWidth + 10));
-            y = Math.max(-10, Math.min(y, totalSize - el.offsetHeight + 10));
+            // 枠からはみ出ないように制御（個別の幅・高さを使用）
+            x = Math.max(-10, Math.min(x, puzzleWidth - el.offsetWidth + 10));
+            y = Math.max(-10, Math.min(y, puzzleHeight - el.offsetHeight + 10));
 
             el.style.left = x + 'px';
             el.style.top = y + 'px';
@@ -244,7 +293,11 @@
             const cx = parseInt(el.style.left);
             const cy = parseInt(el.style.top);
 
-            if (Math.abs(cx - tx) < 30 && Math.abs(cy - ty) < 30) {
+            // 吸着判定（ピースサイズの1/3程度で吸着）
+            const snapX = Math.max(30, pW / 4);
+            const snapY = Math.max(30, pH / 4);
+
+            if (Math.abs(cx - tx) < snapX && Math.abs(cy - ty) < snapY) {
                 el.style.left = tx + 'px';
                 el.style.top = ty + 'px';
                 el.classList.add('placed');
