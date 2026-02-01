@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
         script.setAttribute('data-tag-for-child-directed-treatment', 'true');
         console.log('Ads: Kids Mode (COPPA Tag Added)');
     } else {
-        // Adultモード：通常読み込み
-        console.log('Ads: Adult Mode (Standard)');
+        // Generalモード：通常読み込み
+        console.log('Ads: General Mode (Standard)');
     }
 
     // HTMLのヘッダーにスクリプトを注入（これで審査ロボットに見つかります）
