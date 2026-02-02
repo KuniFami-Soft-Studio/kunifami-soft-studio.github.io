@@ -224,12 +224,12 @@ const blogPosts = [
 
     // ▼ 固定で入れておきたいリンク（アプリの使い方など）
     {
-        url: "../form-mirror-pro-iphone/guide/FormMirrorProforiphone‐User Manual.html",
+        url: "../form-mirror-pro-iphone/guide/FormMirrorProforiphoneUserManual.html",
         ja: "完全無料！リアルタイムフォームチェックiPhone版アプリの使い方ガイド",
         en: "Free! iPhone Guide: Real-time Check"
     },
     {
-        url: "../form-mirror-pro-iphone/guide/FormMirrorSyncforiphone‐UserManual.html",
+        url: "../form-mirror-pro-iphone/guide/FormMirrorSyncforiphoneUserManual.html",
         ja: "完全無料！動画比較iPhone版アプリの使い方ガイド",
         en: "Free! iPhone Guide: Video Comparison"
     },
@@ -239,7 +239,7 @@ const blogPosts = [
         en: "Kids Educational Games"
     },
     {
-        url: "../form-mirror-pro-pc/guide/FormMirrorProforPC‐User Manual.html",
+        url: "../form-mirror-pro-pc/guide/FormMirrorProforPCUserManual.html",
         ja: "完全無料！リアルタイムフォームチェックPC版アプリの使い方ガイド",
         en: "Free! PC Guide: Real-time Check"
     },
