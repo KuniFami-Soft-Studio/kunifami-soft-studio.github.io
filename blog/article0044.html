@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    <meta name="ad-mode" content="adult">
+    <script src="/js/ads.js" defer></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <meta name="keywords" content="子供の才能, 知育ゲーム, 無料アプリ, 習い事選び, コスパ, タイパ, 音感テスト, 論理的思考, Child Talent, Educational Games, Free Apps, Parenting Tips">
+    <meta name="description" content="【完全ガイド】高額な習い事はまだ早い？無料のWebアプリを使って、子供の「隠れた才能（音楽・論理・芸術）」を0円で見抜く方法。効率的な教育投資のための「適性テスト」活用術。 / [Complete Guide] Is your child a genius? How to use free web apps to discover hidden talents (music, logic, art) before spending money on lessons.">
+    
+    <title>【完全ガイド】うちの子、天才かも？「子供の才能」を見抜く無料ゲームの選び方（裏技） | KuniFami Blog</title>
+    
+    <link rel="icon" href="../Logo1.jpg" type="image/jpg">
+    <link rel="stylesheet" href="css/blog-style.css"> 
+    <style>
+        /* ▼▼▼ CSS変数定義 (article0043踏襲) ▼▼▼ */
+        :root {
+            --primary: #FF9800;
+            --accent: #00BCD4;
+            --text-main: #333;
+            --bg-light: #f9f9f9;
+            --white: #fff;
+            --gray: #ddd;
+            --header-height: 100px;
+        }
+
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            line-height: 1.8;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        
+        /* ヘッダー (Fixed) */
+        header { 
+            background: var(--white);
+            border-bottom: 1px solid var(--gray); 
+            padding: 15px 20px; 
+            position: fixed; 
+            top: env(safe-area-inset-top); 
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            box-sizing: border-box; 
+        }
+        .site-logo { 
+            font-weight: bold;
+            font-size: 1.2rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            color: #000; 
+            text-decoration: none;
+        }
+        .site-logo img { 
+            width: 30px;
+            height: 30px; 
+            border-radius: 6px; 
+        }
+
+        /* ヘッダー右側 */
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .home-link { font-weight: bold; font-size: 0.9rem; color: #555; display: flex; align-items: center; gap: 5px; text-decoration: none; }
+        
+        /* 言語切り替えボタン */
+        .lang-switch { display: flex; gap: 5px; }
+        .lang-btn { 
+            padding: 5px 15px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* レイアウト */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: calc(40px + var(--header-height) + env(safe-area-inset-top));
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        /* 記事部分 */
+        .post-body {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        /* サイドバー */
+        aside .widget { 
+            background: var(--white);
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            border: 1px solid #eee; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .widget-title { 
+            font-weight: bold;
+            margin-bottom: 15px; 
+            display: block; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 5px; 
+            font-size: 1rem;
+        }
+        .profile-img { 
+            width: 80px;
+            height: 80px; 
+            border-radius: 50%; 
+            margin: 0 auto 10px; 
+            display: block; 
+            border: 2px solid #eee;
+        }
+        .profile-text { 
+            font-size: 0.9rem;
+            text-align: center; 
+            line-height: 1.5; 
+        }
+
+        /* フッター */
+        footer { 
+            text-align: center;
+            padding: 30px; 
+            font-size: 0.8rem; 
+            color: #888; 
+            border-top: 1px solid #ddd; 
+            margin-top: 40px; 
+            background: #f4f4f4;
+        }
+        footer a { color: #555; text-decoration: none; margin: 0 5px; }
+        
+        /* 記事内スタイル */
+        h1 { 
+            font-size: 1.8rem;
+            line-height: 1.6;
+            border-bottom: 3px solid var(--primary); 
+            padding-top: 0;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            overflow-wrap: break-word;
+        }
+        .post-meta {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            display: block;
+            padding-top: 10px;
+            clear: both;
+        }
+        h2 { font-size: 1.5rem; background: var(--bg-light); padding: 10px 15px; border-left: 5px solid var(--accent); margin-top: 40px; }
+        h3 { font-size: 1.2rem; border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-top: 30px; }
+        p { margin-bottom: 20px; }
+        
+        /* 内部リンクプロモーション */
+        .internal-promo-link {
+            display: block;
+            background: #E3F2FD;
+            border: 2px solid #2196F3;
+            color: #0D47A1;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 30px 0;
+            transition: transform 0.2s;
+            overflow-wrap: break-word;
+        }
+        .internal-promo-link:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* レコメンドボックス */
+        .recommend-box {
+            margin-top: 50px;
+            padding: 25px;
+            background: #fffbf0;
+            border: 2px solid #ffe082;
+            border-radius: 15px;
+        }
+        .recommend-box h3 { margin-top: 0; color: #ff6f00; border-bottom: none; }
+        
+        /* SVGコンテナ */
+        .img-container {
+            width: 100%;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .img-container svg {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            background: white;
+        }
+
+        /* 言語表示制御 */
+        body:not(.en-mode) [lang="en"] { display: none !important; }
+        body.en-mode [lang="ja"] { display: none !important; }
+
+        /* スマホ対応 */
+        @media (max-width: 800px) {
+            .container { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 15px; align-items: flex-start; }
+            .header-right { width: 100%; justify-content: space-between; margin-top: 5px; }
+            h1 { font-size: 1.5rem !important; }
+            .post-body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="site-logo">
+            <img src="../Logo1.jpg" alt="Logo">
+            KuniFami Blog
+        </a>
+        
+        <div class="header-right">
+            <a href="../index.html" class="home-link">🏠 Home</a>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="switchLang('ja')">🇯🇵 日本語</button>
+                <button class="lang-btn" onclick="switchLang('en')">🇺🇸 English</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <main>
+            <article class="post-body">
+                <div lang="ja">
+                    <h1>【完全ガイド】うちの子、天才かも？「子供の才能」を見抜く無料ゲームの選び方（裏技）</h1>
+                    
+                    <div class="post-meta">
+                        <time>2026.01.27</time> | <span class="tag">Lifehack & Tech</span>
+                    </div>
+
+                    <p>
+                        「ピアノを習わせたけど、すぐ飽きてやめてしまった…」<br>
+                        「プログラミング教室に通わせるか迷うけど、初期費用が高すぎる…」
+                    </p>
+                    <p>
+                        教育熱心な親御さんなら誰しも、<strong>「子供の才能を早期に見つけて伸ばしてあげたい」</strong>と思うものです。<br>
+                        しかし、手当たり次第に習い事をさせるのは、時間もお金もリスクが高いですよね。
+                    </p>
+                    <p>
+                        実は、高額な教室に通う前に、<strong>無料のWebゲームを使って「子供の適性（向き不向き）」をテストする</strong>という、賢い方法があるのをご存知でしょうか？<br>
+                        今回は、ITツールを活用して効率的に子供の「得意」を見つける、大人のための戦略的子育てハックを解説します。
+                    </p>
+
+                    <h2>ただの「遊び」ではない。「A/Bテスト」としてのゲーム</h2>
+                    <p>
+                        ビジネスの世界では、どちらが優れているか試す「A/Bテスト」が常識です。<br>
+                        子育ても同じです。いきなり高額なピアノを買うのではなく、まずは無料のツールで<strong>「音に対する反応」</strong>を観察しましょう。
+                    </p>
+                    <p>
+                        以下は、子供の興味から推測できる「才能のジャンル」をまとめた図解です。
+                    </p>
+
+                    <div class="img-container">
+                        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+                            <style>
+                                .title-en { font-size: 22px; font-weight: bold; fill: #333; font-family: sans-serif; }
+                                .title-ja { font-size: 14px; fill: #555; font-family: sans-serif; }
+                                .label-en { font-size: 14px; font-weight: bold; font-family: sans-serif; fill: white; }
+                                .label-ja { font-size: 12px; font-family: sans-serif; fill: white; }
+                                .node-text { font-size: 13px; font-family: sans-serif; fill: #333; }
+                            </style>
+                            <rect width="800" height="450" fill="#ffffff" rx="10" ry="10"/>
+                            
+                            <text x="400" y="40" text-anchor="middle" class="title-en">Talent Discovery Map</text>
+                            <text x="400" y="65" text-anchor="middle" class="title-ja">子供の才能発見マップ</text>
+
+                            <circle cx="400" cy="240" r="60" fill="#FF9800" stroke="#F57C00" stroke-width="3"/>
+                            <text x="400" y="235" text-anchor="middle" font-weight="bold" fill="white" font-size="16" style="font-family:sans-serif;">Potential</text>
+                            <text x="400" y="255" text-anchor="middle" fill="white" font-size="12" style="font-family:sans-serif;">子供の可能性</text>
+
+                            <line x1="400" y1="180" x2="400" y2="100" stroke="#ddd" stroke-width="2"/>
+                            <rect x="320" y="60" width="160" height="80" rx="10" fill="#E91E63"/>
+                            <text x="400" y="90" text-anchor="middle" class="label-en">Musical / 音楽</text>
+                            <text x="400" y="115" text-anchor="middle" class="node-text" fill="white">Pitch, Rhythm</text>
+                            <text x="400" y="130" text-anchor="middle" class="node-text" fill="white">音感・リズム感</text>
+
+                            <line x1="460" y1="240" x2="600" y2="240" stroke="#ddd" stroke-width="2"/>
+                            <rect x="600" y="200" width="160" height="80" rx="10" fill="#2196F3"/>
+                            <text x="680" y="230" text-anchor="middle" class="label-en">Logic / 論理</text>
+                            <text x="680" y="255" text-anchor="middle" class="node-text" fill="white">Pattern, Math</text>
+                            <text x="680" y="270" text-anchor="middle" class="node-text" fill="white">パターン認識・数学</text>
+
+                            <line x1="400" y1="300" x2="400" y2="380" stroke="#ddd" stroke-width="2"/>
+                            <rect x="320" y="340" width="160" height="80" rx="10" fill="#9C27B0"/>
+                            <text x="400" y="370" text-anchor="middle" class="label-en">Art / 芸術</text>
+                            <text x="400" y="395" text-anchor="middle" class="node-text" fill="white">Color, Space</text>
+                            <text x="400" y="410" text-anchor="middle" class="node-text" fill="white">色彩・空間把握</text>
+
+                            <line x1="340" y1="240" x2="200" y2="240" stroke="#ddd" stroke-width="2"/>
+                            <rect x="40" y="200" width="160" height="80" rx="10" fill="#4CAF50"/>
+                            <text x="120" y="230" text-anchor="middle" class="label-en">Body / 運動</text>
+                            <text x="120" y="255" text-anchor="middle" class="node-text" fill="white">Reflexes, Form</text>
+                            <text x="120" y="270" text-anchor="middle" class="node-text" fill="white">反射神経・体幹</text>
+
+                        </svg>
+                        <p style="font-size:0.8rem; color:#666; margin-top:10px;">図：興味のあるゲームから、隠れた才能の方向性を推測できます。</p>
+                    </div>
+
+                    <h2>才能を見抜く「キラーアプリ」3選</h2>
+                    <p>
+                        では具体的に、どのツールを使えばいいのでしょうか？<br>
+                        インストール不要ですぐに試せる「才能チェッカー」として使えるアプリを紹介します。
+                    </p>
+                    
+                    <h3>1. 「絶対音感」があるかも？</h3>
+                    <p>
+                        音楽の才能は遺伝や早期発見が重要と言われます。<br>
+                        ピアノ教室に通う前に、音が聞こえたら同じ鍵盤を押すゲームをやらせてみましょう。もし教えなくても正解できるなら、驚異的な耳を持っているかもしれません。
+                    </p>
+
+                    <div style="margin: 40px 0;">
+                        <h3>💡 たった3分で「耳の良さ」をチェック</h3>
+                        <p>
+                            このWebアプリは、流れてくる音と同じ音を当てるシンプルなゲームです。<br>
+                            「ドレミ」が分からない子供でも、感覚だけで正解できるか試してみてください。
+                        </p>
+                        <a href="../kids/pitch-match.html" class="internal-promo-link">
+                            🎵 音感テストに最適！「Pitch Match」を試す<br>
+                            <small style="color:#666; font-weight:normal;">(インストール不要・0秒起動)</small>
+                        </a>
+                        <p>
+                            もしこれで高得点を出すようなら、音楽教室への投資は「正解」である可能性が高いでしょう。
+                        </p>
+                    </div>
+
+                    <h3>2. 「理数系」の素質を見抜く</h3>
+                    <p>
+                        プログラミングや数学に必要なのは「計算力」よりも<strong>「法則性を見つける力（パターン認識）」</strong>です。<br>
+                        数字や計算ドリルを嫌がる子でも、パズルゲームなら没頭することがあります。それは「勉強嫌い」なのではなく、「論理的思考」を楽しめる才能がある証拠です。
+                    </p>
+
+                    <h3>3. 「色彩感覚」とクリエイティビティ</h3>
+                    <p>
+                        真っ白なキャンバスに絵を描くのが苦手でも、既存の線画に色を塗る「塗り絵」や、黒い背景に光る線を描く「ネオンアート」なら才能を発揮する子がいます。<br>
+                        「描き方」よりも「色の選び方」に注目してください。大人が思いつかない配色をするなら、それは立派なアーティストの芽です。
+                    </p>
+
+                    <h2>「インストール不要」だからこそできる多動力</h2>
+                    <p>
+                        これらのテストをするのに、いちいちアプリストアからダウンロードしていては時間がかかります（タイパが悪いです）。<br>
+                        当サイトのツールは全て<strong>「ブラウザで開くだけ」</strong>。<br>
+                        「音楽」「パズル」「お絵かき」…と、次々に切り替えて子供の反応を見ることができます。
+                    </p>
+
+                    <h2>まとめ：親の役割は「選択肢」を見せること</h2>
+                    <p>
+                        子供は、自分が何が得意かを知りません。<br>
+                        親ができる最高の投資は、高額な月謝を払うことではなく、無料のツールを使って<strong>「君はこれが得意かもね」と気づかせてあげること</strong>です。
+                    </p>
+                    <p>
+                        今日からスマホ一つで、宝探しのような「才能発掘」を始めてみませんか？
+                    </p>
+
+                    <div class="recommend-box">
+                        <h3>🎮 息抜きにWebアプリはいかがですか？</h3>
+                        <p>インストール不要・0秒ですぐに遊べるツールを公開しています。</p>
+                        <ul style="list-style:none; padding:0;">
+                            <li style="margin-bottom:15px;">
+                                <a href="../kids/neon.html" style="font-weight:bold; color:#0A84FF; text-decoration:none; font-size:1.1rem;">
+                                    🎨 Neon Draw / ネオンお絵かき
+                                </a><br>
+                                <small style="color:#555;">
+                                    指一本で幻想的な光のアートが描けます。子供の色彩感覚をチェックするのに最適なクリエイティブツールです。
+                                </small>
+                            </li>
+                            <li style="margin-bottom:15px;">
+                                <a href="../kids/pattern_quiz.html" style="font-weight:bold; color:#FF9800; text-decoration:none; font-size:1.1rem;">
+                                    🧩 Pattern Quiz / パターン認識
+                                </a><br>
+                                <small style="color:#555;">
+                                    並んだ図形の法則を当てるIQテスト風ゲーム。プログラミング的思考や論理力を養うのに役立ちます。
+                                </small>
+                            </li>
+                        </ul>
+                        <div style="text-align:center; margin-top:20px;">
+                            <a href="../kids/menu.html" style="display:inline-block; padding:12px 30px; background:#333; color:#fff; text-decoration:none; border-radius:30px; font-weight:bold;">
+                                🏠 全アプリ一覧を見る
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div lang="en">
+                    <h1>[Complete Guide] Is My Child a Genius? How to Choose Free Games to Find Hidden Talents</h1>
+                    
+                    <div class="post-meta">
+                        <time>2026.01.27</time> | <span class="tag">Lifehack & Tech</span>
+                    </div>
+
+                    <p>
+                        "I signed them up for piano lessons, but they quit after a week..."<br>
+                        "I'm considering a coding class, but the initial cost is too high..."
+                    </p>
+                    <p>
+                        Every parent wants to <strong>"find and nurture their child's talents early."</strong><br>
+                        However, trying every lesson available is a high risk in terms of both time and money.
+                    </p>
+                    <p>
+                        Did you know there is a smart way to <strong>test your child's aptitude using free web games</strong> before paying for expensive classes?<br>
+                        In this article, we explain a strategic parenting hack for adults: using IT tools to efficiently discover your child's strengths.
+                    </p>
+
+                    <h2>Not Just "Play". Games as "A/B Testing"</h2>
+                    <p>
+                        In business, A/B testing is standard to see what works best.<br>
+                        Parenting is the same. Instead of buying an expensive piano right away, first observe their <strong>"reaction to sound"</strong> using free tools.
+                    </p>
+                    <p>
+                        The diagram below summarizes the "genres of talent" that can be inferred from a child's interests.
+                    </p>
+
+                    <div class="img-container">
+                        <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+                            <style>
+                                .title-en { font-size: 22px; font-weight: bold; fill: #333; font-family: sans-serif; }
+                                .title-ja { font-size: 14px; fill: #555; font-family: sans-serif; }
+                                .label-en { font-size: 14px; font-weight: bold; font-family: sans-serif; fill: white; }
+                                .label-ja { font-size: 12px; font-family: sans-serif; fill: white; }
+                                .node-text { font-size: 13px; font-family: sans-serif; fill: #333; }
+                            </style>
+                            <rect width="800" height="450" fill="#ffffff" rx="10" ry="10"/>
+                            <text x="400" y="40" text-anchor="middle" class="title-en">Talent Discovery Map</text>
+                            <text x="400" y="65" text-anchor="middle" class="title-ja">子供の才能発見マップ</text>
+                            <circle cx="400" cy="240" r="60" fill="#FF9800" stroke="#F57C00" stroke-width="3"/>
+                            <text x="400" y="235" text-anchor="middle" font-weight="bold" fill="white" font-size="16" style="font-family:sans-serif;">Potential</text>
+                            <text x="400" y="255" text-anchor="middle" fill="white" font-size="12" style="font-family:sans-serif;">子供の可能性</text>
+                            <line x1="400" y1="180" x2="400" y2="100" stroke="#ddd" stroke-width="2"/>
+                            <rect x="320" y="60" width="160" height="80" rx="10" fill="#E91E63"/>
+                            <text x="400" y="90" text-anchor="middle" class="label-en">Musical / 音楽</text>
+                            <text x="400" y="115" text-anchor="middle" class="node-text" fill="white">Pitch, Rhythm</text>
+                            <text x="400" y="130" text-anchor="middle" class="node-text" fill="white">音感・リズム感</text>
+                            <line x1="460" y1="240" x2="600" y2="240" stroke="#ddd" stroke-width="2"/>
+                            <rect x="600" y="200" width="160" height="80" rx="10" fill="#2196F3"/>
+                            <text x="680" y="230" text-anchor="middle" class="label-en">Logic / 論理</text>
+                            <text x="680" y="255" text-anchor="middle" class="node-text" fill="white">Pattern, Math</text>
+                            <text x="680" y="270" text-anchor="middle" class="node-text" fill="white">パターン認識・数学</text>
+                            <line x1="400" y1="300" x2="400" y2="380" stroke="#ddd" stroke-width="2"/>
+                            <rect x="320" y="340" width="160" height="80" rx="10" fill="#9C27B0"/>
+                            <text x="400" y="370" text-anchor="middle" class="label-en">Art / 芸術</text>
+                            <text x="400" y="395" text-anchor="middle" class="node-text" fill="white">Color, Space</text>
+                            <text x="400" y="410" text-anchor="middle" class="node-text" fill="white">色彩・空間把握</text>
+                            <line x1="340" y1="240" x2="200" y2="240" stroke="#ddd" stroke-width="2"/>
+                            <rect x="40" y="200" width="160" height="80" rx="10" fill="#4CAF50"/>
+                            <text x="120" y="230" text-anchor="middle" class="label-en">Body / 運動</text>
+                            <text x="120" y="255" text-anchor="middle" class="node-text" fill="white">Reflexes, Form</text>
+                            <text x="120" y="270" text-anchor="middle" class="node-text" fill="white">反射神経・体幹</text>
+                        </svg>
+                        <p style="font-size:0.8rem; color:#666; margin-top:10px;">Diagram: Inferring hidden talents from games of interest.</p>
+                    </div>
+
+                    <h2>3 "Killer Apps" to Spot Talent</h2>
+                    <p>
+                        So, which tools should you use?<br>
+                        Here are some "Talent Checker" apps that you can try immediately without installation.
+                    </p>
+                    
+                    <h3>1. Perfect Pitch?</h3>
+                    <p>
+                        Musical talent is said to be genetic or require early discovery.<br>
+                        Before going to piano lessons, let them play a game where they match the sound they hear. If they can get it right without being taught, they might have incredible ears.
+                    </p>
+
+                    <div style="margin: 40px 0;">
+                        <h3>💡 Check "Ear Quality" in Just 3 Minutes</h3>
+                        <p>
+                            This web app is a simple game of matching the pitch you hear.<br>
+                            See if your child can get it right by intuition alone.
+                        </p>
+                        <a href="../kids/pitch-match.html" class="internal-promo-link">
+                            🎵 Test Musical Pitch! Try "Pitch Match"<br>
+                            <small style="color:#666; font-weight:normal;">(No Install Needed, Instant Play)</small>
+                        </a>
+                        <p>
+                            If they score high here, investing in music lessons is likely a "smart move."
+                        </p>
+                    </div>
+
+                    <h3>2. Spotting "STEM" Potential</h3>
+                    <p>
+                        What's needed for programming and math is not just "calculation skills" but the ability to <strong>"recognize patterns."</strong><br>
+                        Even kids who hate math drills might get absorbed in puzzle games. That's proof of "Logical Thinking" talent, not a dislike for study.
+                    </p>
+
+                    <h3>3. Color Sense and Creativity</h3>
+                    <p>
+                        Some kids struggle with drawing on a blank canvas but shine when coloring existing lines or creating "Neon Art" on a black background.<br>
+                        Focus on "how they choose colors." If they use color combinations adults wouldn't think of, that's a budding artist.
+                    </p>
+
+                    <h2>The Power of "No Install"</h2>
+                    <p>
+                        Downloading apps from the store for each test takes too much time (bad Time Performance).<br>
+                        All tools on this site open <strong>"just by clicking."</strong><br>
+                        You can rapidly switch between Music, Puzzles, Art, etc., to observe your child's reactions.
+                    </p>
+
+                    <h2>Summary: Parent's Role is to Provide Options</h2>
+                    <p>
+                        Children don't know what they are good at.<br>
+                        The best investment a parent can make is not paying high tuition fees, but using free tools to <strong>help them realize "You might be good at this."</strong>
+                    </p>
+                    <p>
+                        Why not start a "Talent Treasure Hunt" with just your smartphone today?
+                    </p>
+
+                    <div class="recommend-box">
+                        <h3>🎮 Try Our Web Apps for a Break!</h3>
+                        <p>We offer tools that require no installation and start in 0 seconds.</p>
+                        <ul style="list-style:none; padding:0;">
+                            <li style="margin-bottom:15px;">
+                                <a href="../kids/neon.html" style="font-weight:bold; color:#0A84FF; text-decoration:none; font-size:1.1rem;">
+                                    🎨 Neon Draw
+                                </a><br>
+                                <small style="color:#555;">
+                                    Draw fantastic light art with one finger. A perfect creative tool to check your child's color sense.
+                                </small>
+                            </li>
+                            <li style="margin-bottom:15px;">
+                                <a href="../kids/pattern_quiz.html" style="font-weight:bold; color:#FF9800; text-decoration:none; font-size:1.1rem;">
+                                    🧩 Pattern Quiz
+                                </a><br>
+                                <small style="color:#555;">
+                                    An IQ test-style game to find the rule in shapes. Helps cultivate computational thinking and logic.
+                                </small>
+                            </li>
+                        </ul>
+                        <div style="text-align:center; margin-top:20px;">
+                            <a href="../kids/menu.html" style="display:inline-block; padding:12px 30px; background:#333; color:#fff; text-decoration:none; border-radius:30px; font-weight:bold;">
+                                🏠 View All Apps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <aside>
+            <div class="widget">
+                <span class="widget-title" lang="ja">運営者</span>
+                <span class="widget-title" lang="en">Developer</span>
+                <img src="../Logo1.jpg" alt="KuniFami" class="profile-img">
+                <div class="profile-text">
+                    <strong>KuniFami Soft Studio</strong><br>
+                    <span lang="ja">愛犬と子供が大好きなエンジニア。「欲しいものを自分で作る」がモットー。</span>
+                    <span lang="en">Indie Developer. An engineer who loves dogs and kids. My motto is 'I build what I want to use.'"</span>
+                </div>
+                <div style="text-align:center; margin-top:10px;">
+                    <a href="https://x.com/kunifami2025" target="_blank" style="color:#1DA1F2; font-weight:bold;">𝕏 Follow Me</a>
+                </div>
+            </div>
+
+            <div class="widget">
+                <span class="widget-title" lang="ja">おすすめ記事</span>
+                <span class="widget-title" lang="en">Recommended</span>
+                <ul id="random-posts" style="padding-left:20px; font-size:0.9rem; line-height: 1.6;"></ul>
+            </div>
+        </aside>
+
+    </div>
+
+    <footer>
+        <p><a href="../index.html">Home</a> | <a href="../contact.html">Contact</a> | <a href="../privacy.html">Privacy</a></p>
+        <p>&copy; 2026 KuniFami Soft Studio</p>
+    </footer>
+
+    <script src="blog-data.js"></script>
+    <script>
+        // 言語切り替え
+        function switchLang(lang) {
+            if (lang === 'en') {
+                document.body.classList.add('en-mode');
+                document.querySelectorAll('.lang-btn')[1].classList.add('active');
+                document.querySelectorAll('.lang-btn')[0].classList.remove('active');
+            } else {
+                document.body.classList.remove('en-mode');
+                document.querySelectorAll('.lang-btn')[1].classList.remove('active');
+                document.querySelectorAll('.lang-btn')[0].classList.add('active');
+            }
+        }
+
+        // 初期設定
+        const userLang = navigator.language || navigator.userLanguage;
+        if (!userLang.startsWith('ja')) {
+            switchLang('en');
+        }
+
+        // ヘッダー高さ調整
+        function setHeaderOffset() {
+            const header = document.querySelector("header");
+            if (header) {
+                const height = header.offsetHeight;
+                document.documentElement.style.setProperty("--header-height", height + "px");
+            }
+        }
+        window.addEventListener("load", () => {
+            setHeaderOffset();
+            setTimeout(setHeaderOffset, 100);
+        });
+        window.addEventListener("resize", setHeaderOffset);
+    </script>
+
+</body>
+</html>

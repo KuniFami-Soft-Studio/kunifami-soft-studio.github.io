@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+    <meta name="ad-mode" content="adult">
+    <script src="/js/ads.js" defer></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <meta name="keywords" content="PC, ダンス練習, 鏡アプリ, フォームチェック, グリッド表示, プレゼン練習, Webカメラ, 無料ツール, Dance Practice, PC Mirror, Grid View, Form Check, No Install">
+    <meta name="description" content="【PC活用術】自宅のパソコンが「スタジオの鏡」に早変わり？無料・インストール不要のWebアプリ「Form Mirror」を使って、ダンスのフォーム確認やプレゼン練習を劇的に効率化する方法を解説。グリッド機能で「軸」のブレも一目瞭然。 / [PC Guide] Turn your computer screen into a dance studio mirror! Visualize your form with grid lines using this free web tool.">
+    
+    <title>【PC活用】ダンス練習に革命！大画面が「魔法の鏡」になる無料ブラウザアプリの使い方（グリッド機能付） | KuniFami Blog</title>
+    
+    <link rel="icon" href="../Logo1.jpg" type="image/jpg">
+    <link rel="stylesheet" href="css/blog-style.css"> 
+    <style>
+        :root {
+            --primary: #FF9800;
+            --accent: #00BCD4;
+            --text-main: #333;
+            --bg-light: #f9f9f9;
+            --white: #fff;
+            --gray: #ddd;
+            --header-height: 100px;
+        }
+
+        body {
+            font-family: "Hiragino Sans", "Meiryo", sans-serif;
+            line-height: 1.8;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        
+        header { 
+            background: var(--white);
+            border-bottom: 1px solid var(--gray); 
+            padding: 15px 20px; 
+            position: fixed; 
+            top: env(safe-area-inset-top); 
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            box-sizing: border-box; 
+        }
+        .site-logo { 
+            font-weight: bold;
+            font-size: 1.2rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            color: #000; 
+            text-decoration: none;
+        }
+        .site-logo img { width: 30px; height: 30px; border-radius: 6px; }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .home-link { font-weight: bold; font-size: 0.9rem; color: #555; display: flex; align-items: center; gap: 5px; text-decoration: none; }
+        
+        .lang-switch { display: flex; gap: 5px; }
+        .lang-btn { 
+            padding: 5px 15px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: calc(40px + var(--header-height) + env(safe-area-inset-top));
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .post-body {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        aside .widget { 
+            background: var(--white);
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            border: 1px solid #eee; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .widget-title { 
+            font-weight: bold;
+            margin-bottom: 15px; 
+            display: block; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 5px; 
+            font-size: 1rem;
+        }
+        .profile-img { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 10px; display: block; border: 2px solid #eee; }
+        .profile-text { font-size: 0.9rem; text-align: center; line-height: 1.5; }
+
+        footer { 
+            text-align: center;
+            padding: 30px; 
+            font-size: 0.8rem; 
+            color: #888; 
+            border-top: 1px solid #ddd; 
+            margin-top: 40px; 
+            background: #f4f4f4;
+        }
+        footer a { color: #555; text-decoration: none; margin: 0 5px; }
+        
+        h1 { 
+            font-size: 1.8rem;
+            line-height: 1.6;
+            border-bottom: 3px solid var(--primary); 
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            overflow-wrap: break-word;
+        }
+        .post-meta { color: #888; font-size: 0.9rem; margin-bottom: 30px; display: block; clear: both; }
+        h2 { font-size: 1.5rem; background: var(--bg-light); padding: 10px 15px; border-left: 5px solid var(--accent); margin-top: 40px; }
+        h3 { font-size: 1.2rem; border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-top: 30px; }
+        p { margin-bottom: 20px; }
+        
+        .internal-promo-link {
+            display: block;
+            background: #E3F2FD;
+            border: 2px solid #2196F3;
+            color: #0D47A1;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 30px 0;
+            transition: transform 0.2s;
+        }
+        .internal-promo-link:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        .recommend-box {
+            margin-top: 50px;
+            padding: 25px;
+            background: #fffbf0;
+            border: 2px solid #ffe082;
+            border-radius: 15px;
+        }
+        .recommend-box h3 { margin-top: 0; color: #ff6f00; border-bottom: none; }
+        
+        .img-container { width: 100%; margin: 30px 0; text-align: center; }
+        .img-container svg { max-width: 100%; height: auto; border-radius: 10px; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+        body:not(.en-mode) [lang="en"] { display: none !important; }
+        body.en-mode [lang="ja"] { display: none !important; }
+
+        @media (max-width: 800px) {
+            .container { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 15px; align-items: flex-start; }
+            .header-right { width: 100%; justify-content: space-between; }
+            .post-body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="site-logo">
+            <img src="../Logo1.jpg" alt="Logo">
+            KuniFami Blog
+        </a>
+        <div class="header-right">
+            <a href="../index.html" class="home-link">🏠 Home</a>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="switchLang('ja')">🇯🇵 日本語</button>
+                <button class="lang-btn" onclick="switchLang('en')">🇺🇸 English</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <article class="post-body">
+                <div lang="ja">
+                    <h1>【PC活用】ダンス練習に革命！大画面が「魔法の鏡」になる無料ブラウザアプリの使い方（グリッド機能付）</h1>
+                    
+                    <div class="post-meta">
+                        <time>2026.02.03</time> | <span class="tag">Lifehack & Tech</span>
+                    </div>
+
+                    <p>
+                        「自宅でダンスの練習をしたいけど、全身が映る大きな鏡がない…」<br>
+                        「スマホの画面だと小さすぎて、細かい動きのチェックができない…」
+                    </p>
+                    <p>
+                        そんな悩みをお持ちの方、ご自宅に<strong>パソコン（PC）</strong>はありませんか？<br>
+                        実は、ブラウザで開くだけの無料ツールを使えば、PCのモニターを<strong>「高機能なスタジオミラー」</strong>に変身させることができるのです。
+                    </p>
+                    <p>
+                        今回は、趣味のダンスだけでなく、ビジネスマンのプレゼン練習や、シニアの健康体操にも役立つ、PC版鏡アプリ<strong>「Form Mirror」</strong>の賢い活用法をご紹介します。
+                    </p>
+
+                    <h2>なぜ「PC × Webカメラ」が最強の練習環境なのか</h2>
+                    <p>
+                        スマホの手軽さも魅力ですが、腰を据えて練習するならPCの大画面には敵いません。<br>
+                        さらに、デジタルツールならではの機能として<strong>「グリッド（補助線）」</strong>と<strong>「反転（ミラーモード）」</strong>があります。
+                    </p>
+
+                    <div class="img-container">
+                        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="800" height="400" fill="#212121" rx="10"/>
+                            
+                            <rect x="50" y="30" width="700" height="340" fill="#000" stroke="#444" stroke-width="5"/>
+                            <circle cx="400" cy="45" r="5" fill="#555"/> <g transform="translate(50, 30)">
+                                <rect width="700" height="340" fill="#333"/>
+                                
+                                <path d="M350 280 L350 150 M350 150 L280 200 M350 150 L420 200 M350 280 L300 340 M350 280 L400 340" stroke="white" stroke-width="10" stroke-linecap="round"/>
+                                <circle cx="350" cy="120" r="30" fill="white"/>
+
+                                <line x1="350" y1="0" x2="350" y2="340" stroke="#00BCD4" stroke-width="2" stroke-dasharray="10,5"/> <line x1="0" y1="170" x2="700" y2="170" stroke="#00BCD4" stroke-width="2" stroke-dasharray="10,5"/> <rect x="250" y="70" width="200" height="200" fill="none" stroke="#00BCD4" stroke-width="1" stroke-dasharray="5,5"/>
+                            </g>
+
+                            <text x="650" y="80" fill="#00BCD4" font-family="sans-serif" font-weight="bold" font-size="20">Grid Mode</text>
+                            <text x="650" y="110" fill="white" font-family="sans-serif" font-size="12">Check Axis (軸を確認)</text>
+
+                            <text x="150" y="80" fill="#FF9800" font-family="sans-serif" font-weight="bold" font-size="20">Mirror Mode</text>
+                            <text x="150" y="110" fill="white" font-family="sans-serif" font-size="12">Flip Horizontal (左右反転)</text>
+                        </svg>
+                    </div>
+
+                    <h2>活用術1：一瞬で「鏡」にする（反転機能）</h2>
+                    <p>
+                        通常のWebカメラ映像は、相手から見た向き（正像）で表示されますが、これでは練習しにくいですよね。<br>
+                        Form Mirrorは、起動した瞬間に<strong>自動で左右反転（ミラーモード）</strong>になります。面倒な設定は一切不要。ブラウザを開いた瞬間から、そこはあなたのダンススタジオです。
+                    </p>
+
+                    <h2>活用術2：「グリッド機能」でプロ級のフォームチェック</h2>
+                    <p>
+                        ここがPC版の最大のメリットです。画面上に<strong>「グリッド線（補助線）」</strong>を表示することで、感覚に頼らない正確なフォーム修正が可能になります。
+                    </p>
+                    <ul>
+                        <li><strong>ダンス：</strong> ターンの軸がブレていないか、中心線でチェック。</li>
+                        <li><strong>ヨガ・筋トレ：</strong> 肩のラインが水平か、スクワットで膝が内側に入っていないかを確認。</li>
+                        <li><strong>プレゼン練習：</strong> 話している時に体が斜めになっていないか、身振り手振りのバランスを客観視。</li>
+                    </ul>
+
+                    <div style="margin: 40px 0;">
+                        <h3>💡 PCの大画面で今すぐ試す</h3>
+                        <p>
+                            使い方は簡単。下記のリンクをクリックして、カメラの使用を許可するだけ。<br>
+                            インストール不要なので、会社のPCや学校のタブレットでもすぐに使えます。
+                        </p>
+                        <a href="../kids/formmirrorproPc-kids.html" class="internal-promo-link">
+                            🖥️ PCを鏡にする！「Form Mirror (PC版)」を開く<br>
+                            <small style="color:#666; font-weight:normal;">(インストール不要・グリッド機能付き)</small>
+                        </a>
+                    </div>
+
+                    <h2>活用術3：本業（ビジネス・発信活動）への応用</h2>
+                    <p>
+                        鏡アプリはダンスだけのものではありません。
+                    </p>
+                    <ul>
+                        <li><strong>YouTuber・配信者：</strong> カメラ映りの最終チェックに。ライティングや背景のバランスをグリッドで確認できます。</li>
+                        <li><strong>オンライン面接：</strong> 目線の位置や姿勢を、本番前に大画面でシミュレーション。</li>
+                    </ul>
+
+                    <h2>まとめ：PCという「資産」を有効活用しよう</h2>
+                    <p>
+                        ただネットを見るだけではもったいない。PCの「大画面」と「Webカメラ」は、あなたのスキルアップを助ける強力なツールになります。<br>
+                        特別な機材を買う前に、まずは無料のWebアプリで練習環境をアップデートしてみてください。
+                    </p>
+
+                    <div class="recommend-box">
+                        <h3>🎮 他にもある！便利なWebツール (Useful Web Tools)</h3>
+                        <p>インストール不要・0秒ですぐに使えるツールです。</p>
+                        <ul style="list-style:none; padding:0;">
+                            <li style="margin-bottom:10px;">
+                                <a href="../kids/formmirrorproPc-kids.html" style="font-weight:bold; color:#0A84FF; text-decoration:none;">Form Mirror (PC)</a><br>
+                                <small>今回紹介したPC版ミラー。大画面でのフォーム確認、グリッド表示に最適です。</small>
+                            </li>
+                            <li style="margin-bottom:10px;">
+                                <a href="../kids/formmirrorproSync-kids.html" style="font-weight:bold; color:#FF9800; text-decoration:none;">Form Mirror Sync</a><br>
+                                <small>お手本動画と自分の動画を並べて再生・比較したい時に。0.05秒単位の同期が可能です。</small>
+                            </li>
+                        </ul>
+                        <a href="../kids/menu.html" style="display:inline-block; margin-top:10px; padding:10px 20px; background:#333; color:#fff; text-decoration:none; border-radius:20px; font-size:0.9rem;">🏠 全アプリ一覧を見る (All Apps)</a>
+                    </div>
+                </div>
+
+                <div lang="en">
+                    <h1>[PC Guide] Revolutionize Dance Practice! Turn Your Big Screen into a "Magic Mirror" with Free Web App</h1>
+                    
+                    <div class="post-meta">
+                        <time>2026.02.03</time> | <span class="tag">Lifehack & Tech</span>
+                    </div>
+
+                    <p>
+                        "I want to practice dancing, but I don't have a full-length mirror..."<br>
+                        "My phone screen is too small to check detailed movements..."
+                    </p>
+                    <p>
+                        If you have a <strong>computer (PC)</strong> at home, you can solve this problem instantly.<br>
+                        By using a free web tool that runs in your browser, you can transform your monitor into a <strong>"High-Function Studio Mirror."</strong>
+                    </p>
+                    <p>
+                        In this article, we'll introduce smart ways to use <strong>"Form Mirror (PC Version)"</strong>, which is useful not only for dance but also for business presentation practice and fitness.
+                    </p>
+
+                    <h2>Why "PC + Webcam" is the Ultimate Practice Environment</h2>
+                    <p>
+                        While smartphones are convenient, nothing beats a PC's large screen for serious practice.<br>
+                        Digital tools offer unique features like <strong>"Grid Lines"</strong> and <strong>"Mirror Mode."</strong>
+                    </p>
+
+                    <div class="img-container">
+                        <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="800" height="400" fill="#212121" rx="10"/>
+                            <rect x="50" y="30" width="700" height="340" fill="#000" stroke="#444" stroke-width="5"/>
+                            <circle cx="400" cy="45" r="5" fill="#555"/>
+                            <g transform="translate(50, 30)">
+                                <rect width="700" height="340" fill="#333"/>
+                                <path d="M350 280 L350 150 M350 150 L280 200 M350 150 L420 200 M350 280 L300 340 M350 280 L400 340" stroke="white" stroke-width="10" stroke-linecap="round"/>
+                                <circle cx="350" cy="120" r="30" fill="white"/>
+                                <line x1="350" y1="0" x2="350" y2="340" stroke="#00BCD4" stroke-width="2" stroke-dasharray="10,5"/>
+                                <line x1="0" y1="170" x2="700" y2="170" stroke="#00BCD4" stroke-width="2" stroke-dasharray="10,5"/>
+                                <rect x="250" y="70" width="200" height="200" fill="none" stroke="#00BCD4" stroke-width="1" stroke-dasharray="5,5"/>
+                            </g>
+                            <text x="650" y="80" fill="#00BCD4" font-family="sans-serif" font-weight="bold" font-size="20">Grid Mode</text>
+                            <text x="650" y="110" fill="white" font-family="sans-serif" font-size="12">Check Axis</text>
+                            <text x="150" y="80" fill="#FF9800" font-family="sans-serif" font-weight="bold" font-size="20">Mirror Mode</text>
+                            <text x="150" y="110" fill="white" font-family="sans-serif" font-size="12">Flip Horizontal</text>
+                        </svg>
+                    </div>
+
+                    <h2>Tip 1: Instant "Mirror" (Flip Function)</h2>
+                    <p>
+                        Standard webcam footage shows a non-mirrored image, which is hard to practice with.<br>
+                        Form Mirror automatically sets to <strong>Mirror Mode (Horizontal Flip)</strong> upon startup. No setup required. Your room becomes a studio instantly.
+                    </p>
+
+                    <h2>Tip 2: Pro-Level Form Check with "Grid Function"</h2>
+                    <p>
+                        This is the biggest advantage of the PC version. By displaying <strong>"Grid Lines"</strong> on the screen, you can correct your form precisely without relying on guesswork.
+                    </p>
+                    <ul>
+                        <li><strong>Dance:</strong> Check if your turn axis is centered.</li>
+                        <li><strong>Yoga/Fitness:</strong> Ensure your shoulders are level and knees are aligned.</li>
+                        <li><strong>Presentation:</strong> Objective view of your posture and gestures.</li>
+                    </ul>
+
+                    <div style="margin: 40px 0;">
+                        <h3>💡 Try on Your Big Screen Now</h3>
+                        <p>
+                            Just click the link below and allow camera access.<br>
+                            No installation needed, works on company PCs or school tablets.
+                        </p>
+                        <a href="../kids/formmirrorproPc-kids.html" class="internal-promo-link">
+                            🖥️ Open "Form Mirror (PC)"<br>
+                            <small style="color:#666; font-weight:normal;">(No Install, With Grid Feature)</small>
+                        </a>
+                    </div>
+
+                    <h2>Tip 3: For Business & Content Creation</h2>
+                    <p>
+                        Mirror apps aren't just for dancing.
+                    </p>
+                    <ul>
+                        <li><strong>YouTubers/Streamers:</strong> Final check of camera appearance, lighting balance using grids.</li>
+                        <li><strong>Online Interviews:</strong> Simulate eye contact and posture before the real thing.</li>
+                    </ul>
+
+                    <h2>Summary: Leverage Your PC Asset</h2>
+                    <p>
+                        Don't just use the net; use your PC's <strong>Large Screen</strong> and <strong>Webcam</strong> as powerful tools for skill improvement.<br>
+                        Update your practice environment with free web apps before buying expensive equipment.
+                    </p>
+
+                    <div class="recommend-box">
+                        <h3>🎮 Useful Web Tools (Try our Web Apps!)</h3>
+                        <p>No installation required, ready to use in 0 seconds.</p>
+                        <ul style="list-style:none; padding:0;">
+                            <li style="margin-bottom:10px;">
+                                <a href="../kids/formmirrorproPc-kids.html" style="font-weight:bold; color:#0A84FF; text-decoration:none;">Form Mirror (PC)</a><br>
+                                <small>The PC mirror tool introduced here. Perfect for form check on a big screen with grids.</small>
+                            </li>
+                            <li style="margin-bottom:10px;">
+                                <a href="../kids/formmirrorproSync-kids.html" style="font-weight:bold; color:#FF9800; text-decoration:none;">Form Mirror Sync</a><br>
+                                <small>Compare your video side-by-side with a model video. Supports 0.05s sync adjustment.</small>
+                            </li>
+                        </ul>
+                        <a href="../kids/menu.html" style="display:inline-block; margin-top:10px; padding:10px 20px; background:#333; color:#fff; text-decoration:none; border-radius:20px; font-size:0.9rem;">🏠 View All Apps</a>
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <aside>
+            <div class="widget">
+                <span class="widget-title" lang="ja">運営者</span>
+                <span class="widget-title" lang="en">Developer</span>
+                <img src="../Logo1.jpg" alt="KuniFami" class="profile-img">
+                <div class="profile-text">
+                    <strong>KuniFami Soft Studio</strong><br>
+                    <span lang="ja">愛犬と子供が大好きなエンジニア。「欲しいものを自分で作る」がモットー。</span>
+                    <span lang="en">Indie Developer. Loves dogs and kids. "Building what I want" is the motto.</span>
+                </div>
+            </div>
+            <div class="widget">
+                <span class="widget-title" lang="ja">おすすめ記事</span>
+                <span class="widget-title" lang="en">Recommended</span>
+                <ul id="random-posts" style="padding-left:20px; font-size:0.9rem; line-height: 1.6;"></ul>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <p><a href="../index.html">Home</a> | <a href="../contact.html">Contact</a> | <a href="../privacy.html">Privacy</a></p>
+        <p>&copy; 2026 KuniFami Soft Studio</p>
+    </footer>
+
+    <script src="blog-data.js"></script>
+    <script>
+        function switchLang(lang) {
+            if (lang === 'en') {
+                document.body.classList.add('en-mode');
+                document.querySelectorAll('.lang-btn')[1].classList.add('active');
+                document.querySelectorAll('.lang-btn')[0].classList.remove('active');
+            } else {
+                document.body.classList.remove('en-mode');
+                document.querySelectorAll('.lang-btn')[1].classList.remove('active');
+                document.querySelectorAll('.lang-btn')[0].classList.add('active');
+            }
+        }
+        const userLang = navigator.language || navigator.userLanguage;
+        if (!userLang.startsWith('ja')) { switchLang('en'); }
+        function setHeaderOffset() {
+            const header = document.querySelector("header");
+            if (header) {
+                const height = header.offsetHeight;
+                document.documentElement.style.setProperty("--header-height", height + "px");
+            }
+        }
+        window.addEventListener("load", () => { setHeaderOffset(); setTimeout(setHeaderOffset, 100); });
+        window.addEventListener("resize", setHeaderOffset);
+    </script>
+</body>
+</html>
