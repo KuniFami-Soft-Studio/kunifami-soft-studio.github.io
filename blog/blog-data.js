@@ -6,6 +6,79 @@
 
 const blogPosts = [
     // ▼ 最新の記事をここに追加してください
+   {
+    url: "article0055.html",
+    ja: "【完全ガイド】練習前後の「軸ブレ」比較で弱点克服！Form Mirror活用術",
+    en: "[Complete Guide] Overcome Weaknesses by Comparing Form Before & After Practice"
+},
+
+{
+    url: "article0054.html",
+    ja: "保育園・幼稚園の先生へ。クラスで使える無料Webツール紹介",
+    en: "Useful Free Web Tools for Nursery and Kindergarten Classrooms"
+},
+
+{
+    url: "article0053.html",
+    ja: "【完全ガイド】開発者が教える！ダンス上達を加速させる「一番おすすめ」の練習セッティング術",
+    en: "[Complete Guide] Best Dance Practice Setup by the Developer of Form Mirror"
+},
+
+{
+    url: "article0052.html",
+    ja: "【PC活用】ダンス練習に革命！大画面が「魔法の鏡」になる無料ブラウザアプリの使い方",
+    en: "[PC Guide] Revolutionize Dance Practice! Turn Your Big Screen into a Magic Mirror"
+},
+
+{
+    url: "article0051.html",
+    ja: "【完全ガイド】脳が疲れたら「3分」だけこれを試して！状況別リフレッシュ術",
+    en: "[Complete Guide] Brain Tired? Refresh in 3 Minutes with Free Web Tools"
+},
+
+{
+    url: "article0050.html",
+    ja: "【2026年版】リモートワークの集中力が劇的アップ？「ポモドーロ×脳トレ」活用術",
+    en: "[2026 Edition] Boost Focus 10x! Pomodoro & Brain Training Guide"
+},
+
+
+{
+    url: "article0049.html",
+    ja: "【完全ガイド】K-POPダンスを自宅で完コピする練習法3選！無料Webツール活用術",
+    en: "[Complete Guide] 3 Ways to Master K-POP Dance at Home with Free Tools"
+},
+
+
+{
+    url: "article0048.html",
+    ja: "【完全ガイド】頭はいつでも若々しく！シニア世代が今すぐできる「脳の活性化」活用術",
+    en: "[Complete Guide] Keep Your Mind Sharp! Free Web Apps for Senior Brain Stimulation"
+},
+
+{
+    url: "article0047.html",
+    ja: "【技術解説】iPhoneで「2つの動画」を同時に操るのが難しい理由と解決策",
+    en: "[Tech Guide] Why Syncing 2 Videos on iPhone is Hard & The Solution"
+},
+
+{
+    url: "article0046.html",
+    ja: "【完全ガイド】体育の授業が変わる！タブレットで使える「無料・動作分析ツール」活用術",
+    en: "[Complete Guide] Transform PE Classes with Free Motion Analysis Tools"
+},
+
+{
+    url: "article0045.html",
+    ja: "【完全ガイド】K-POP完コピの裏技！「反転＆遅延再生」で練習効率を爆上げする方法",
+    en: "[Complete Guide] Master K-POP Faster! Smart Practice with Mirror & Delay Apps"
+},
+
+{
+    url: "article0044.html",
+    ja: "【完全ガイド】うちの子、天才かも？「子供の才能」を見抜く無料ゲームの選び方",
+    en: "[Complete Guide] Is My Child a Genius? How to Choose Games to Find Talents"
+},
 {
     url: "article0043.html",
     ja: "【完全ガイド】お金をかけずに脳を鍛える！「無料・インストール不要」の知育アプリ活用術",
