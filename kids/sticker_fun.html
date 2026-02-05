@@ -17,7 +17,7 @@
     <title>シール貼り遊び / Sticker Fun - 子供向け無料知育アプリ</title>
     <meta name="description" content="[JP] タップするだけで簡単に遊べるシール貼り知育ゲーム。指先の感覚を養い、自由に表現する楽しさを体験できます。[EN] A simple sticker educational game for kids. Develop finger coordination and enjoy free expression through creative play.">
     <meta name="keywords" content="知育アプリ,無料,子供向け,シール貼り,モンテッソーリ,Educational Games,Kids App,Sticker Fun">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="シール貼り遊び / Sticker Fun">
@@ -59,6 +59,29 @@
             border-radius: 50px; font-size: 1.4rem; font-weight: bold;
             width: 100%; box-shadow: 0 5px 0 #D84315; cursor: pointer;
         }
+
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; background: white; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
 
         /* Drawing Area */
         .canvas-area {
@@ -119,6 +142,40 @@
         </div>
         <button class="btn-start" onclick="showApp()">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>指先の動きと画面の反応を一致させ、微細な手指の運動制御（巧緻性）を養います。<span class="lang-en">(Develops fine motor skills by coordinating finger movements with visual feedback.)</span></li>
+                <li><strong>シニアの方に：</strong>色彩豊かな表現活動と指先の刺激が、脳のリフレッシュと前頭前野の活性化を助けます。<span class="lang-en">(Stimulates the prefrontal cortex and refreshes the brain through creative expression.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>ICTを活用した「原因と結果」の学習や、モンテッソーリ流の指先教育として活用いただけます。<span class="lang-en">(Ideal for teaching cause-and-effect and Montessori-based motor skills training.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>本アプリは、幼児期の認知発達において重要な「目と手の協調（Visuomotor Integration）」と「創造的自己表現」の育成を目的に設計されています。モンテッソーリ教育でも重視される「シール貼り」のプロセスをデジタル化し、狙った位置を正確にタップする動作を通じて手指の巧緻性を高めます。
+                    
+                    タップの瞬間に発生するポップなアニメーションは「原因と結果」の直感的な理解を助け、自分の行動が環境に変化を与えるという「自己効力感（Self-efficacy）」を醸成します。正解のない自由な配置遊びは、空間把握能力と芸術的感性を同時に刺激し、お子様の自発的な探求心をサポートします。</p>
+                    <hr class="hr-dashed">
+                    <p>This app is designed to nurture "Visuomotor Integration" and "Creative Self-expression," essential in early childhood development. By digitalizing the sticker-pasting process favored in Montessori methods, it refines manual dexterity through precise tapping actions. The immediate "pop" animation fosters an understanding of cause-and-effect and builds self-efficacy. This open-ended creative play stimulates spatial recognition and artistic sensitivity, supporting a child's natural curiosity.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>シニア世代において、本アプリは「非定型な創作活動」を通じた脳の活性化（認知機能の維持）をサポートします。
+                    
+                    好きなシールを配置し、画面をデザインするプロセスは、脳の最高中枢である「前頭前野」を刺激し、ワーキングメモリを活性化させます。また、指先を細かく動かしてデバイスを操作することは末梢神経を刺激し、脳への血流を促進する「巧緻性トレーニング」としての側面も持っています。シンプルな操作性でありながら、無限の組み合わせを楽しめるため、デジタルデバイスへの抵抗感を軽減しつつ、日々の生活に「彩り」と「驚き」を提供するリラクゼーション・脳トレツールとして最適です。</p>
+                    <hr class="hr-dashed">
+                    <p>For seniors, this app facilitates brain activation through "non-structured creative activities." Designing the screen layout stimulates the prefrontal cortex and engages working memory. The fine motor movements required for device interaction act as manual dexterity training, promoting cerebral blood flow. Its intuitive design reduces the digital divide while offering a relaxing yet stimulating tool to add creativity and mental exercise to daily routines.</p>
+                </div>
+            </details>
+        </div>
         
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>

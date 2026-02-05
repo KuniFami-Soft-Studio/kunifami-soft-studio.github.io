@@ -7,7 +7,7 @@
     <title>Dot to Dot / 点つなぎ - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] 3〜5歳向け！数字を順番にタップして絵を完成させる無料知育点つなぎゲーム。数字の練習と集中力を養います。[EN] Free Dot-to-Dot game for kids aged 3-5. Connect numbers in order to reveal hidden pictures. Perfect for learning numbers.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,点つなぎ,数字の練習,3歳,4歳,5歳,暇つぶし,Dot to Dot,Connect the dots,Educational Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Dot to Dot / 点つなぎ - 集中マスター Kids">
@@ -34,7 +34,7 @@
             margin: 0; padding: 0; background-color: var(--bg-blue); 
             font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
             color: #0277BD; display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; overflow-y: auto; /* フッター確認のためスクロールを許可 */
+            min-height: 100vh; overflow-y: auto;
         }
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -54,7 +54,29 @@
         }
         .btn-sub:active { transform: translateY(2px); box-shadow: 0 2px 0 #0288D1; }
 
-        /* Footer for Reliability & AdSense Compliance */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; background: #fff; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-links { margin-top: 10px; }
         .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
@@ -78,6 +100,39 @@
         <button onclick="showApp()" style="background:#4FC3F7; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #0288D1;">あそぶ / PLAY</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
         
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>数唱の順序（1, 2, 3...）を視覚的に理解し、集中力と微細運動能力を高めます。<span class="lang-en">(Visually understand numerical order while enhancing focus and fine motor skills.)</span></li>
+                <li><strong>シニアの方に：</strong>数字を追う系列処理と、手指を動かす巧緻性トレーニングにより脳を活性化させます。<span class="lang-en">(Activates the brain through sequential processing of numbers and manual dexterity training.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>「数と形の関係」を直感的に学ぶためのICT教材として、自由にご活用ください。<span class="lang-en">(A browser-based ICT resource for intuitively learning the relationship between numbers and shapes.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>この「点つなぎ」アプリは、幼児期の認知発達において非常に重要な「視覚運動統合（Visual-Motor Integration）」と「数理的思考」の基礎を養うために設計されています。
+                    画面上に散らばった点の中から次の数字を素早く見つけ出し、正確に指を運ぶプロセスは、脳内での視覚情報処理と運動出力を統合する力を強力に鍛えます。
+                    また、線が一本ずつ結ばれることで徐々に輪郭が浮かび上がる体験は、空間把握能力の向上だけでなく、「予測を立てる」「完成までやり遂げる」という実行機能の強化にも繋がります。正解時のハプティクスフィードバック（振動）は、お子様の自己肯定感を高め、自発的な学習意欲を育むための効果的な報酬として機能します。</p>
+                    <hr class="hr-dashed">
+                    <p>This "Dot to Dot" app is engineered to nurture "Visual-Motor Integration" and the foundations of "Mathematical Thinking," both pivotal for early childhood development. The process of scanning for the next number and accurately guiding the finger to that point strengthens the brain's ability to integrate visual processing with motor output. As each line connects to reveal a hidden contour, children improve their spatial awareness while developing executive functions like predicting outcomes and task persistence. The haptic feedback upon each correct tap serves as a psychological reward, boosting self-esteem and fostering an autonomous desire to learn.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の皆様の「脳の活性化」と「健康維持」を目的としたデジタル・アクティビティです。浮遊する数字を順番に追い、正確にタップする動作は、前頭前野を刺激し、ワーキングメモリ（作業記憶）や選択的注意力を鍛える効果が期待できます。
+                    指先を細かく使う「巧緻性（こうちせい）」のトレーニングは、末梢神経を刺激して脳への血流を促進し、認知機能の低下予防に役立ちます。また、完成後に現れる鮮やかな絵文字（絵の完成）というポジティブな視覚刺激は、達成感を与え、精神的なフレッシュさを保つ一助となります。シンプルながらも連続した集中を必要とするため、日々の脳トレ習慣として最適です。</p>
+                    <hr class="hr-dashed">
+                    <p>This application provides digital activities aimed at brain activation and wellness for seniors. Tracking numbers in sequence and tapping them accurately stimulates the prefrontal cortex, enhancing working memory and selective attention. Fine motor skills training through fingertip use stimulates peripheral nerves and promotes cerebral blood flow, aiding in the prevention of cognitive decline. The positive visual stimulus of a vibrant emoji appearing upon completion provides a sense of achievement and mental refreshment. As it requires sustained concentration within a simple framework, it is ideal for a daily brain-training routine.</p>
+                </div>
+            </details>
+        </div>
+
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>
             <a href="contact.html">Contact / お問い合わせ</a>

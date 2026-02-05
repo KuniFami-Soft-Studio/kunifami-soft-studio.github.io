@@ -11,14 +11,14 @@
 
     <meta name="ad-mode" content="kids">
     <script src="/js/ads.js" defer></script>
-
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>Kids Piano / ドレミかいだん - 3〜5歳向け無料知育アプリ</title>
     <meta name="description" content="[JP] 3〜5歳向け！タップで楽しく音を鳴らせる無料のキッズピアノ。色彩と音で創造力を育む知育ゲームです。[EN] Free Kids Piano game for ages 3-5. Play with colorful scales and sounds. Developed to enhance musical creativity and visual learning.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,ピアノ,ドレミ,Kids Piano,Educational Games,Musical Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Kids Piano / ドレミかいだん - 集中マスター Kids">
@@ -37,12 +37,12 @@
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             background: var(--bg);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh; margin: 0; overflow: hidden; touch-action: none;
+            min-height: 100vh; margin: 0; overflow-x: hidden; touch-action: none;
         }
         .container {
             background: var(--card); padding: 25px; border-radius: 40px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px;
-            border: 6px solid #fff; position: relative; z-index: 10;
+            border: 6px solid #fff; position: relative; z-index: 10; margin-top: 20px;
         }
 
         #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; overflow: hidden; }
@@ -87,16 +87,37 @@
         h1 { font-size: 1.5rem; color: #2196f3; margin: 0; }
         .sub-title { font-size: 0.9rem; color: #999; margin-bottom: 15px; }
         .manual-section { background: #e3f2fd; padding: 15px; border-radius: 20px; text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #90caf9; }
-        .ad-container { width: 100%; min-height: 100px; margin: 10px 0; display: flex; align-items: center; justify-content: center; }
         .btn-main { width: 100%; padding: 18px; background: #2196f3; color: white; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #1976d2; }
 
-        /* 信頼性向上用リンク */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+        margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+        background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-links { margin-top: 20px; }
         .footer-links a { color: #adb5bd; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
         .footer-copyright {
             margin-top: 10px; font-size: 0.7rem; color: #ccc;
-            text-align: center; font-family: sans-serif;
+            text-align: center; font-family: sans-serif; padding-bottom: 20px;
         }
     </style>
 </head>
@@ -119,6 +140,43 @@
 
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+
+    <div class="usage-guide">
+    <p>【ご利用ガイド / Usage Guide】</p>
+    <ul>
+    <li><strong>お子様に：</strong>色彩と音階をリンクさせることで、相対音感の基礎と視覚運動能力を養います。<span class="lang-en">(Develops foundational relative pitch and visual-motor skills by linking colors to scales.)</span></li>
+    <li><strong>シニアの方に：</strong>指先を使う巧緻性トレーニングと、心地よい音色によるリフレッシュ効果を提供します。<span class="lang-en">(Provides manual dexterity training and mental refreshment through pleasant musical tones.)</span></li>
+    <li><strong>教育関係者の皆様へ：</strong>Web Audio APIを活用した、機材不要の音楽導入教材としてご活用ください。<span class="lang-en">(A browser-based introductory music tool utilizing the Web Audio API.)</span></li>
+    </ul>
+    </div>
+
+    <div class="guide-container">
+    <details>
+    <summary>【保護者向け：知育の目的】 / For Parents</summary>
+    <div class="guide-content">
+    <p><strong>Educational Goal （知育の目的）</strong></p>
+    <p>この「Kids Piano」は、幼児期の「認知発達」において重要な「感覚統合（Sensory Integration）」を促すために設計されています。特定の「色（視覚）」と「音階（聴覚）」、そして「タップ（触覚・運動）」を同時に体験することは、脳内での情報処理ネットワークを強化します。
+    
+
+[Image of the human brain's auditory and visual cortex areas]
+
+    特に、音程が上がるにつれて色が変化し、パーティクルが跳ね上がる視覚効果は、抽象的な「音の高さ」という概念を空間的に理解する助けとなります。成功体験としての音の鳴動は自己肯定感を育み、自発的な表現意欲を引き出します。また、正確に鍵盤を叩く動作は「手と目の協調性」の向上に寄与し、音楽的感性と論理的思考の土台を同時に築きます。</p>
+    <hr class="hr-dashed">
+    <p>This "Kids Piano" app promotes "Sensory Integration" in early childhood by linking color (vision), scale (hearing), and tapping (touch/movement). This multimodal experience strengthens the brain's information processing networks. The visual effect where particles jump in response to pitch helps children understand the abstract concept of "pitch" spatially. Auditory feedback fosters self-esteem and creativity, while precise key interaction improves hand-eye coordination, laying the foundation for both musical sensibility and logical thinking.</p>
+    </div>
+    </details>
+    <details>
+    <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+    <div class="guide-content">
+    <p><strong>App Goal （アプリの目的）</strong></p>
+    <p>本アプリは、シニア世代の皆様の「脳の活性化」と「指先の健康維持」を目的としたデジタル・セラピーの視点を取り入れています。
+    
+    鍵盤を正確に押す動作は、手指の「巧緻性（こうちせい）」を鍛える優れた運動となり、脳の前頭前野を刺激します。音楽を奏でるプロセスはワーキングメモリ（作業記憶）を活用し、認知機能の低下予防に役立ちます。また、明るい色彩と澄んだ音色はメンタルヘルスにもポジティブな影響を与え、日々のリフレッシュやストレス解消に寄与します。直感的なインターフェースにより、複雑な操作を覚える必要がなく、楽しみながら手軽に「音楽による脳トレ」を習慣化できる設計となっています。</p>
+    <hr class="hr-dashed">
+    <p>From a digital therapy perspective, this app focuses on brain activation and maintaining finger health for seniors. Tapping keys enhances manual dexterity and stimulates the prefrontal cortex. The process of making music engages working memory, which is beneficial for preventing cognitive decline. Vibrant colors and clear tones improve mental well-being and relieve stress. The intuitive interface allows for effortless brain training through music as a daily habit without the need for complex instructions.</p>
+    </div>
+    </details>
+    </div>
 
     <div class="footer-links">
         <a href="privacy.html">Privacy Policy / 規約</a>

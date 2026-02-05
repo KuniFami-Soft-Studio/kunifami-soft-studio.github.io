@@ -7,7 +7,7 @@
     <title>Lunch Box Creator / おべんとう箱 - 3〜5歳向け無料知育アプリ</title>
     <meta name="description" content="[JP] 3〜5歳向け！おかずを自由に並べて、分類する力を養う無料知育ゲーム。しきりを使ってお弁当をきれいに完成させよう。[EN] Free educational game for kids aged 3-5. Create your own lunch box and develop organizational skills. Organize foods using colorful partitions.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,おべんとう,3歳,4歳,5歳,暇つぶし,Lunch Box,Educational Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Lunch Box Creator / おべんとう箱 - 集中マスター Kids">
@@ -60,6 +60,29 @@
         .controls { display: flex; gap: 10px; width: 100%; margin-top: 15px; }
         .btn-sub { flex: 1; background: #8D6E63; color: white; border: none; padding: 12px; border-radius: 15px; font-weight: bold; font-size: 0.85rem; }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+        margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+        background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         /* Reliability & AdSense Compliance */
         .footer-area { width: 100%; padding-bottom: 20px; }
         .footer-links { margin: 10px 0; }
@@ -82,8 +105,41 @@
             </p>
         </div>
         <button onclick="showApp()" style="background:var(--accent); color:white; border:none; padding:18px; border-radius:50px; font-size:1.3rem; font-weight:bold; width:100%; box-shadow:0 5px 0 #C62828;">つくる / START</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
         
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>「しきり」を使ってカテゴリーごとにおかずを分類する力を養い、空間認識能力を高めます。<span class="lang-en">(Develops organizational skills and spatial awareness by categorizing food items using partitions.)</span></li>
+                <li><strong>シニアの方に：</strong>色彩豊かな盛り付けを計画する創造的プロセスが、前頭前野を刺激し脳の活性化を助けます。<span class="lang-en">(Stimulates the prefrontal cortex through the creative process of planning and arranging colorful items.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>「集合と分類」を直感的に学べる視覚的教材として、自由にご活用ください。<span class="lang-en">(Free to use as a visual educational resource for learning sets and categorization.)</span></li>
+            </ul>
+        </div>
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>このアプリは、幼児期の「認知発達」と「空間把握」を促すために設計されています。お弁当箱という限られた空間の中に、メイン・野菜・フルーツという異なる属性のアイテムを配置するプロセスは、認知科学における「スキーマ（枠組み）」の構築を助けます。
+                    
+                    特に「しきり（Wall）」機能は、数学的思考の基礎となる「境界線」と「集合」の概念を体験的に学ぶための重要な要素です。単に並べるだけでなく、自分なりの秩序（ルール）を持って構成を完成させることで、実行機能や自己肯定感を育みます。また、彩り豊かな絵文字を選択することは視覚的識別のトレーニングにも繋がります。</p>
+                    <hr class="hr-dashed">
+                    <p>This application is engineered to foster cognitive development and spatial reasoning. Arranging diverse food categories within the confined space of a lunch box facilitates the construction of cognitive schemas. The "Wall" (partition) feature introduces the mathematical concepts of boundaries and sets through hands-on play. By creating order based on personal rules, children develop executive functions and self-esteem. The vibrant variety of emojis also provides excellent visual discrimination training.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知機能維持を目的とした「デジタル・セラピー」の視点を取り入れています。色彩のバランスや配置の構成を考える「創造的プランニング」は、脳の最高中枢である前頭前野を強力に刺激します。
+                    
+                    指先を動かして狙った位置に配置する動作（巧緻性）に加え、複数のカテゴリー（タブ）を切り替えながら目的のアイテムを探すプロセスは、ワーキングメモリ（作業記憶）のトレーニングに最適です。複雑なルールを排除し、直感的な操作で「美しいものを作り上げる」達成感を得られる設計は、精神的なリフレッシュ（QOL向上）にも寄与します。毎日の小さな創作活動として、脳の若々しさを保つ一助となります。</p>
+                    <hr class="hr-dashed">
+                    <p>This app incorporates digital therapy perspectives aimed at maintaining cognitive health for seniors. "Creative Planning," such as strategizing color balance and layout, stimulates the prefrontal cortex. The combination of manual dexterity—tapping specific locations—and the use of working memory to switch between food categories serves as an excellent brain exercise. The intuitive design focuses on the sense of accomplishment from creating something beautiful, contributing to mental well-being and improved Quality of Life.</p>
+                </div>
+            </details>
+        </div>
+
         <div class="footer-area" style="margin-top: 20px;">
             <div class="footer-links">
                 <a href="privacy.html">Privacy Policy / 規約</a>

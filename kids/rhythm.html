@@ -17,7 +17,7 @@
     <title>リズムたたき / Rhythm Tap Challenge - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] リズムに合わせてタイミングよくタップ！3〜5歳のお子様がリズム感を養える無料知育ゲームです。[EN] Tap along with the rhythm! A free educational rhythm game for kids aged 3-5 to develop a sense of beat.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,リズムゲーム,音楽遊び,Educational Games,Kids Music,Rhythm Game">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="リズムたたき / Rhythm Tap Challenge - 集中マスター Kids">
@@ -53,7 +53,29 @@
         .note.bomb { background: #546E7A; }
         #tapButton { width: 90px; height: 90px; background: radial-gradient(circle, #FFD54F, #FF8F00); border-radius: 50%; border: 6px solid white; box-shadow: 0 6px 15px rgba(0,0,0,0.2); font-weight: 900; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 10px; }
         
-        /* 信頼性向上用リンク */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-links { margin-top: 15px; border-top: 1px dotted #eee; padding-top: 10px; width: 100%; }
         .footer-links a { color: #AD1457; text-decoration: none; font-size: 0.7rem; margin: 0 10px; font-weight: bold; }
         .footer-links a:hover { text-decoration: underline; }
@@ -79,6 +101,40 @@
         <button class="btn btn-yellow" onclick="startGame(1000, true)">ふつう / Normal</button>
         <button class="btn btn-orange" onclick="startGame(700, true)">はやい / Fast</button>
 
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>音楽に合わせたタイミング動作により、リズム感と運動制御の基礎を楽しく養います。<span class="lang-en">(Develops rhythm and foundational motor control through timed interactions.)</span></li>
+                <li><strong>シニアの方に：</strong>動く標的を捉える視覚的注意力と、瞬時の抑制（爆弾を避ける）により脳を活性化させます。<span class="lang-en">(Stimulates the brain through visual attention and inhibitory control.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>「待機と実行」を繰り返すことで、集中力の維持と反射神経を鍛える教材としてご活用ください。<span class="lang-en">(An educational tool for training sustained attention and reflexes.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>このアプリは、幼児期の認知発達において重要な「視覚運動統合（Visuomotor Integration）」と「実行機能」の向上を目的としています。
+                    
+                    画面上部から一定の速度で流下するターゲットを目で追い、適切な判定ゾーン（ターゲットライン）でタップする動作は、視覚情報と運動出力を脳内で高度に同期させる必要があります。また、ノーマル以上のモードでは「爆弾を叩かない」というルールが加わることで、衝動を抑える「抑制制御（インヒビション）」を刺激します。成功体験の積み重ねは、集中力の持続と自己肯定感の醸成をサポートします。</p>
+                    <hr class="hr-dashed">
+                    <p>This application is designed to enhance "Visuomotor Integration" and "Executive Function" during early childhood development. Tracking objects flowing at a constant speed and tapping within the target zone requires the brain to synchronize visual input with motor output. Advanced modes introduce obstacles, stimulating "Inhibitory Control"—the ability to suppress impulsive actions. Consistent success fosters sustained concentration and self-esteem.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知機能維持と「脳の若返り」を目的としたデジタル・アクティビティです。
+                    
+                    リズムに合わせて指先を動かす動作（巧緻性トレーニング）は、脳の前頭前野を刺激し、情報の処理速度を維持するのに非常に有効です。動く標的に対する「選択的注意」と、瞬時の「GO/NO-GO判断（叩くか避けるか）」は、日常生活における咄嗟の動作や事故防止に繋がる身体能力の維持を助けます。短時間で高い達成感を得られる設計となっており、日々の脳トレ習慣を楽しく継続できる健康寿命延伸ツールとして最適です。</p>
+                    <hr class="hr-dashed">
+                    <p>This app serves as a digital activity aimed at preserving cognitive function and brain rejuvenation for seniors. Rhythmic finger movements (dexterity training) stimulate the prefrontal cortex, helping maintain information processing speed. The "Selective Attention" and "GO/NO-GO judgment" (deciding whether to tap or avoid) assist in maintaining physical capabilities essential for daily safety. Designed for quick sessions with a high sense of achievement, it is an ideal tool for sustaining brain health habits.</p>
+                </div>
+            </details>
+        </div>
+
         <a href="./menu.html" style="display:block; margin-top:10px; color:#aaa; text-decoration:none; font-size:0.75rem;">← もどる / Back</a>
         
         <div class="footer-links">
@@ -90,7 +146,7 @@
 </div>
 
 <div id="gameScreen" class="screen hidden">
-    <div class="container" style="position: relative;">
+    <div class="container" style="position: relative; overflow-y: auto;">
         <div id="clearMessage">✨ CLEAR! ✨</div>
         <div style="font-size: 1.2rem; font-weight: 900; color: var(--primary);">Score: <span id="score">0</span> / 100</div>
         <div class="game-area" id="lane"><div class="target-line"></div></div>

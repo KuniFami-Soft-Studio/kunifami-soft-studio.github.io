@@ -18,7 +18,7 @@
     <title>脳トレ計算ドリル / Math Brain Training - シニア向け無料アプリ / Free for Seniors</title>
     <meta name="description" content="[JP] シニア・大人向け！難易度が選べる無料の脳トレ計算ドリル。足し算、引き算、掛け算で脳を活性化。[EN] Free math brain training for seniors. Select difficulty levels and keep your brain active.">
     <meta name="keywords" content="脳トレ,計算ドリル,シニア,ボケ防止,無料,足し算,引き算,掛け算,Brain Training,Math for Seniors">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="脳トレ計算ドリル / Math Brain Training">
@@ -77,6 +77,29 @@
         }
         .ans-btn:active { transform: translateY(4px); box-shadow: none; background: #f0f0f0; }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .back-link { display: block; margin-top: 20px; color: #888; text-decoration: none; font-size: 1rem; padding: 10px; }
         
         .footer-links { margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px; width: 100%; }
@@ -113,6 +136,42 @@
         </button>
 
         <a href="./menu.html" class="back-link">← メニューに戻る / Back to Menu</a>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>視覚的なヒント（ドット）を活用しながら、数概念の基礎と「四則演算」の論理を楽しく学べます。<span class="lang-en">(Develops fundamental number concepts and arithmetic logic through visual hints.)</span></li>
+                <li><strong>シニアの方に：</strong>計算による前頭前野の刺激と、瞬時の判断動作が認知機能の維持・活性化に大きく寄与します。<span class="lang-en">(Stimulates the prefrontal cortex and helps maintain cognitive health through rapid mental calculation.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>アダプティブな難易度設定を備えた、反復学習に最適なデジタル教材としてご活用ください。<span class="lang-en">(An adaptive digital tool ideal for repetitive learning and arithmetic drill sessions.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>本アプリは、幼児から小学生低学年における「数理的思考（Mathematical Thinking）」の土台作りを目的としています。
+                    
+                    特に「かんたんモード」では、数字と対応する「ヒント・ドット」を表示することで、抽象的な数字を具体的な量として捉える「数概念の具体化」を支援します。
+                    足し算・引き算・掛け算という演算過程は、脳内の「作業記憶（ワーキングメモリ）」をフルに活用させ、論理的な思考回路を構築します。また、正解時の即時的な音と視覚フィードバックはドーパミン放出を促し、学習に対する自己肯定感と「学びの楽しさ」を醸成します。</p>
+                    <hr class="hr-dashed">
+                    <p>This application aims to build a foundation for "Mathematical Thinking" in early childhood. The "Easy mode" provides visual dots to help bridge the gap between abstract numbers and concrete quantities. The arithmetic process engages "Working Memory," fostering logical neural pathways. Immediate auditory and visual feedback upon correct answers promotes dopamine release, nurturing self-esteem and a positive attitude toward learning.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知症予防と「脳の健康寿命」延伸を目指したデジタル・アクティビティです。
+                    
+                    簡単な計算（暗算）を素早く解くことは、脳の司令塔である「前頭前野（Prefrontal Cortex）」を最も効率よく刺激する活動の一つであることが脳科学的に証明されています。
+                    難易度を選択し、4つの選択肢から正解を瞬時に見分ける「選択的注意」と、指先を動かす「巧緻性（こうちせい）」の組み合わせは、脳の血流を促進します。毎日3分の計算習慣は、物忘れの防止や、情報の処理速度を維持するための強力なトレーニングとなります。</p>
+                    <hr class="hr-dashed">
+                    <p>This app serves as a digital activity aimed at dementia prevention and extending "brain health span" for seniors. Neuroscience shows that rapid mental arithmetic is one of the most effective ways to stimulate the Prefrontal Cortex. The combination of "Selective Attention"—identifying the correct answer among distractions—and manual dexterity through tapping promotes cerebral blood flow. A daily 3-minute math routine serves as powerful training to prevent forgetfulness and maintain cognitive processing speed.</p>
+                </div>
+            </details>
+        </div>
         
         <div class="footer-links">
             <a href="privacy.html">利用規約 / Privacy</a>

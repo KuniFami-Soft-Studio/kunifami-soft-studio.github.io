@@ -17,7 +17,7 @@
     <title>忍び足チェッカー / Ninja Stealth Walk - 忍者なりきり知育アプリ</title>
     <meta name="description" content="[JP] スマホのセンサーで「静かに歩く」を判定！子供の体幹と集中力を養う忍者なりきり知育ゲーム。アラームが鳴らないように静かに歩こう。[EN] Test your stealth with phone sensors! A ninja training game for kids to develop focus and body control. Walk quietly to avoid the alarm.">
     <meta name="keywords" content="知育アプリ,忍者,修行,集中力,体幹トレーニング,無料ゲーム,Ninja Game,Stealth Challenge,Kids Education">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="忍び足チェッカー / Ninja Stealth Walk">
@@ -83,6 +83,29 @@
         .diff-btn span { display: block; font-size: 0.6rem; font-weight: normal; }
         .diff-btn.active { border-color: var(--ninja-blue); background: var(--ninja-blue); color: white; }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #333; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #666; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0(10)px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         /* Game Screen */
         #gameScreen { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; flex-direction: column; align-items: center; justify-content: center; color: white; }
         #timerDisplay { font-size: 4rem; font-weight: 800; font-family: monospace; color: #00ffcc; text-shadow: 0 0 15px #00ffcc; margin: 10px 0; }
@@ -114,8 +137,6 @@
 
     <h1>忍び足チェッカー</h1>
     <div class="sub-title">Ninja Stealth Walk Checker</div>
-
-    
 
     <div class="record-board">
         <div class="diff-box">
@@ -158,6 +179,43 @@
     </div>
 
     <button class="btn-main" onclick="requestPermission()">修 行 開 始 ! (Start Training)</button>
+
+    <div class="usage-guide">
+    <p>【ご利用ガイド / Usage Guide】</p>
+    <ul>
+    <li><strong>お子様に：</strong>「静かに歩く」という遊びを通じて、体幹の安定と衝動を抑えるセルフコントロール力を養います。<span class="lang-en">(Develops core stability and self-control through the playful challenge of walking silently.)</span></li>
+    <li><strong>シニアの方に：</strong>振動を抑える繊細な歩行動作が、深部感覚を刺激し、転倒予防に必要な平衡感覚を鍛えます。<span class="lang-en">(Trains balance and proprioception through delicate walking motions, aiding in fall prevention.)</span></li>
+    <li><strong>教育関係者の皆様へ：</strong>加速度センサーを活用した、身体知覚を高めるフィジカル・インテリジェンス教材として。<span class="lang-en">(A physical intelligence tool using accelerometers to enhance bodily awareness.)</span></li>
+    </ul>
+    </div>
+
+    <div class="guide-container">
+    <details>
+    <summary>【保護者向け：知育の目的】 / For Parents</summary>
+    <div class="guide-content">
+    <p><strong>Educational Goal （知育の目的）</strong></p>
+    <p>この「忍び足チェッカー」は、幼児期の認知発達において重要な「実行機能（抑制制御）」と「固有受容感覚（深部感覚）」の向上を目的としています。
+    
+    アラームを鳴らさないように歩くという課題は、脳の最高中枢である前頭前野を刺激し、自身の動きを客観的にモニターして修正する「メタ認知」の基礎を作ります。
+    また、スマホを平らに持ちながらゆっくりと体重移動を行う動作は、体幹（インナーマッスル）を安定させ、手先の器用さだけではなく全身の「運動企画能力」を高度に要求します。修行という「なりきり遊び」の設定が、持続的注意力を引き出し、自律的なセルフコントロール能力を楽しく育みます。</p>
+    <hr class="hr-dashed">
+    <p>This "Ninja Stealth Walk" app focuses on enhancing "Executive Function (Inhibitory Control)" and "Proprioception" in early childhood. The challenge of walking without triggering the alarm stimulates the prefrontal cortex, laying the foundation for "metacognition"—the ability to monitor and adjust one's own actions. Maintaining a flat device while shifting weight slowly stabilizes the core and demands high-level "motor planning." The immersive "ninja training" context fosters sustained attention and autonomous self-regulation skills in an engaging manner.</p>
+    </div>
+    </details>
+    <details>
+    <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+    <div class="guide-content">
+    <p><strong>App Goal （アプリの目的）</strong></p>
+    <p>本アプリは、シニア世代の皆様の「平衡感覚の維持」と「転倒予防」を目的としたデジタル・バイオフィードバック・トレーニングです。
+    
+    デバイスの加速度センサーを通じて自身の歩行衝撃を可視化・可聴化（アラーム）することで、普段意識しにくい足運びの「質」をリアルタイムで把握できます。
+    ゆっくりと静かに歩く動作は、大脳皮質の運動野だけでなく、姿勢制御を司る小脳を活性化させます。この「マインドフルな歩行」は、筋力だけに頼らない洗練された身のこなし（巧緻性）を促し、ワーキングメモリを活用しながら自身の重心移動を制御するプロセスが、脳のアンチエイジングに大きく寄与します。</p>
+    <hr class="hr-dashed">
+    <p>This application serves as a digital biofeedback training tool aimed at "maintaining balance" and "preventing falls" for seniors. By visualizing and sonifying (via alarms) walking impact through the accelerometer, users gain real-time awareness of their movement quality. The act of walking slowly and quietly activates the cerebellum, responsible for postural control. This "mindful walking" encourages refined movement patterns and stimulates brain rejuvenation by requiring the constant use of working memory to control center-of-gravity shifts.</p>
+    </div>
+    </details>
+    </div>
+
     <a href="./menu.html" style="display:block; margin-top:12px; color:#aaa; text-decoration:none; font-size:0.75rem;">← もどる (Back)</a>
     
     <div class="footer-links">

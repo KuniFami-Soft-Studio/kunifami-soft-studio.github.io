@@ -14,7 +14,7 @@
     <title>Differences / まちがいさがし - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] 3〜5歳向け！たくさん並んだ絵の中から1つだけ違うものを探す無料知育ゲーム。集中力と観察力を養います。[EN] Free educational game for kids aged 3-5. Find the one different item among others. Perfect for developing focus and observation skills.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,まちがいさがし,間違い探し,3歳,4歳,5歳,暇つぶし,Spot the Difference,Educational Games for Kids">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Differences / まちがいさがし - 集中マスター Kids">
@@ -30,8 +30,8 @@
         :root { --bg: #E3F2FD; --card: #ffffff; --accent: #2196F3; }
         body {
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
-            background: var(--bg); margin: 0; overflow-y: auto; /* フッター確認のためスクロールを許可 */
-            display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+            background: var(--bg); margin: 0; overflow-y: auto;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh;
         }
         .container {
             background: var(--card); padding: 25px; border-radius: 40px;
@@ -65,7 +65,29 @@
         .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 18px; background: #fff; border: 2px solid #eee; border-radius: 15px; font-weight: bold; z-index: 150; }
         .btn-main { width: 100%; padding: 18px; background: var(--accent); color: white; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #1565C0; }
 
-        /* Footer for Reliability & AdSense Compliance */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-nav { margin-top: 25px; text-align: center; width: 100%; }
         .footer-links { margin-bottom: 8px; }
         .footer-links a { color: #888; text-decoration: none; font-size: 12px; margin: 0 10px; }
@@ -88,6 +110,38 @@
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
     
+    <div class="usage-guide">
+        <p>【ご利用ガイド / Usage Guide】</p>
+        <ul>
+            <li><strong>お子様に：</strong>複数の視覚情報から「差異」を抽出する訓練により、観察力と持続的注意力を育みます。<span class="lang-en">(Develops observation and sustained attention by extracting visual differences.)</span></li>
+            <li><strong>シニアの方に：</strong>視覚野を刺激し、標的を素早くスキャニングする動作が認知機能の維持と脳の活性化を助けます。<span class="lang-en">(Stimulates the visual cortex and aids in maintaining cognitive functions through scanning.)</span></li>
+            <li><strong>教育関係者の皆様へ：</strong>日英の音声フィードバックを活用した、多感覚刺激による言語獲得教材としてご利用ください。<span class="lang-en">(A multi-sensory language acquisition tool using JPN/ENG audio feedback.)</span></li>
+        </ul>
+    </div>
+
+    <div class="guide-container">
+        <details>
+            <summary>【保護者向け：知育の目的】 / For Parents</summary>
+            <div class="guide-content">
+                <p><strong>Educational Goal （知育の目的）</strong></p>
+                <p>この「まちがいさがし」アプリは、幼児期の認知発達において極めて重要な「視覚的識別力」と「選択的注意」を養うために設計されています。3x3のグリッド内に並んだ9つの絵文字から、1つだけ異なる対象を特定する作業は、脳内での「パターンマッチング」と「異質性の検出」という高度な情報処理能力を要求します。
+                また、正解時には日本語と英語の音声が順に流れることで、視覚（画像）と聴覚（音声）、そして言語（日英の名前）を脳内で強固に結びつけるマルチモーダル学習を実現しています。失敗を恐れずに何度も挑戦できる設計は、「できた！」という成功体験を積み重ね、自尊心や自己肯定感を育むとともに、次の課題へ取り組む意欲（持続的集中力）の土台となります。</p>
+                <hr class="hr-dashed">
+                <p>This "Differences" app is engineered to nurture "visual discrimination" and "selective attention," both pivotal in early childhood cognitive development. Identifying a single deviant target among nine emojis in a 3x3 grid demands sophisticated information processing, specifically "pattern matching" and "heterogeneity detection." Furthermore, providing consecutive Japanese and English audio feedback upon correct answers facilitates multimodal learning, strengthening the neural connection between vision (images), audition (voices), and linguistics (bilingual names). The design encourages repeated attempts without fear of failure, fostering self-esteem and building a foundation for sustained focus and motivation.</p>
+            </div>
+        </details>
+        <details>
+            <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+            <div class="guide-content">
+                <p><strong>App Goal （アプリの目的）</strong></p>
+                <p>本アプリは、シニア世代の皆様の脳活性化と認知機能維持を目的としたデジタル・脳トレとしての側面を持っています。不規則に並ぶアイコンの中から異質なものを瞬時に探し出すプロセスは、ワーキングメモリ（作業記憶）を活用し、情報のスキャニング能力（視覚的探索能力）を刺激します。これは前頭前野の活性化に寄与し、注意の切り替え能力を維持する効果が期待できます。
+                また、指先を使ってターゲットを正確にタップする動作は「巧緻性（こうちせい）」の維持に繋がり、音声フィードバックによる聴覚刺激は脳全体の覚醒レベルを高めます。シンプルながらも飽きのこない100種類以上の絵文字データによるランダムな出題は、日々のルーチンとして楽しみながら脳の健康を守るのに最適です。</p>
+                <hr class="hr-dashed">
+                <p>This application serves as a digital brain training tool aimed at cognitive activation and wellness for seniors. The process of instantaneously identifying a deviant icon among randomized sets engages working memory and stimulates visual scanning abilities. This contributes to prefrontal cortex activation and helps maintain cognitive flexibility (the ability to switch attention). Additionally, precisely tapping the target with fingertips supports manual dexterity, while audio feedback enhances overall cerebral alertness. Featuring over 100 emoji types for randomized quizzes, this simple yet engaging design is ideal for a daily routine to protect brain health through enjoyment.</p>
+            </div>
+        </details>
+    </div>
+
     <footer class="footer-nav">
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>
@@ -123,7 +177,7 @@
         {i:'🚂',j:'きかんしゃ',e:'Steam Train'},{i:'🚆',j:'でんしゃ',e:'Train'},{i:'🚀',j:'ろけっと',e:'Rocket'},{i:'へ',j:'へりこぷたー',e:'Helicopter'},{i:'✈️',j:'ひこうき',e:'Airplane'},
         {i:'🐙',j:'たこ',e:'Octopus'},{i:'🦑',j:'いか',e:'Squid'},{i:'🦐',j:'えび',e:'Shrimp'},{i:'🦀',j:'かに',e:'Crab'},
         {i:'🐠',j:'さかな',e:'Fish'},{i:'🐬',j:'いるか',e:'Dolphin'},{i:'🐳',j:'くじら',e:'Whale'},{i:'🦈',j:'さめ',e:'Shark'},{i:'🐚',j:'かい',e:'Shell'},
-        {i:'🦋',j:'ちょうちょ',e:'Butterfly'},{i:'🐝',j:'はち',e:'Bee'},{i:'🐞',j:'てんとうむし',e:'Ladybug'},{i:'🐜',j:'あり',e:'Ant'},{i:'🐌',j:'かたつむり',e:'Snail'},
+        {i:'🦋',j:'ちょうちょ',e:'Butterfly'},{i:'🐝',j:'はち',e:'Bee'},{i:'🐞',j:'てんとうむし',e:'Ladybug'},{i:'🐜',j:'あり',e:'Ant'},{i:' snail',j:'かたつむり',e:'Snail'},
         {i:'🕷️',j:'くも',e:'Spider'},{i:'🐢',j:'かめ',e:'Turtle'},{i:'🐍',j:'へび',e:'Snake'},{i:'🦖',j:'恐竜',e:'Dinosaur'},{i:'👾',j:'かいじゅう',e:'Monster'},
         {i:'☀️',j:'たいよう',e:'Sun'},{i:'🌙',j:'つき',e:'Moon'},{i:'⭐',j:'ほし',e:'Star'},{i:'☁️',j:'くも',e:'Cloud'},{i:'☔',j:'あめ',e:'Rain'},
         {i:'⚽',j:'さっかーぼーる',e:'Soccer Ball'},{i:'🏀',j:'ばすけぼーる',e:'Basketball'},{i:'⚾',j:'やきゅう',e:'Baseball'},{i:'🎾',j:'てにす',e:'Tennis'},{i:'🎁',j:'ぷれぜんと',e:'Present'}

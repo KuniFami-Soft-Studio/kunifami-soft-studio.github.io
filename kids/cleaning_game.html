@@ -7,7 +7,7 @@
     <title>おそうじゲーム / Cleaning Game - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] 3〜5歳向け！指でなぞってピカピカにする無料のおそうじゲーム。インストール不要で今すぐ遊べます。[EN] Free cleaning game for kids aged 3-5. Simple rub-to-clean interface. No installation required.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,おそうじゲーム,3歳,4歳,5歳,暇つぶし,Cleaning Game,Free Kids Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="おそうじゲーム / Cleaning Game - 集中マスター Kids">
@@ -34,7 +34,7 @@
             margin: 0; padding: 0; background-color: var(--bg-yellow); 
             font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
             color: #5D4037; display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; overflow-y: auto; /* フッター確認のためスクロールを許可 */
+            min-height: 100vh; overflow-y: auto;
         }
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -58,7 +58,29 @@
             box-shadow: 0 5px 0 #EF6C00; cursor: pointer; margin-top: 15px;
         }
 
-        /* Footer for Reliability & AdSense Compliance */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 25px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; border: 1px solid #ffcc80;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; background: #fff; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-nav {
             margin-top: 30px; padding-bottom: 30px; text-align: center; width: 100%;
         }
@@ -91,6 +113,38 @@
         </div>
         <button onclick="showApp()" style="background:#FFA726; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #E65100;">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>指を動かして汚れを消す動作が、空間把握能力と手と目の協調性を育みます。<span class="lang-en">(Enhances spatial awareness and hand-eye coordination through tactile interaction.)</span></li>
+                <li><strong>シニアの方に：</strong>指先を細かく使う「巧緻性」の維持と、達成感による前頭前野の刺激に役立ちます。<span class="lang-en">(Maintains dexterity and stimulates the prefrontal cortex through a sense of accomplishment.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>「原因と結果」を直感的に学べる視覚的フィードバック教材としてご活用ください。<span class="lang-en">(An intuitive visual feedback tool for learning cause and effect.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>この「おそうじゲーム」は、認知心理学における「対象の永続性」の理解と、視覚運動の統合をサポートするために設計されています。茶色の汚れ（マスクレイヤー）の下に隠れたアイテムを指でなぞって見つけ出すプロセスは、お子様の好奇心を刺激し、「隠れていても存在し続ける」という概念を強化します。
+                    また、画面全体を効率よく動かして汚れを消す動作は、空間把握能力の基礎となります。クリア時の「✨ ピカピカ！」という文字と振動によるフィードバックは、脳内の報酬系を刺激し、自己肯定感を育むとともに、最後までやり遂げる「集中力」の維持を促します。シンプルながらも、成功体験を積み重ねるための強力な知育ツールです。</p>
+                    <hr class="hr-dashed">
+                    <p>This "Cleaning Game" is designed based on cognitive psychology principles, specifically supporting "Object Permanence" and visuomotor integration. The process of rubbing away the brown grime to reveal hidden items stimulates curiosity and reinforces the concept that objects continue to exist even when unseen. Effectively navigating the screen to clear the canvas builds a foundation for spatial awareness. Visual and haptic feedback ("Sparkle!" message and vibration) trigger the brain's reward system, fostering self-esteem and encouraging the "sustained attention" necessary to complete a task. It is a powerful educational tool for building successful experiences.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の皆様の「脳の活性化」と「手指の巧緻性（こうちせい）維持」を目的としたデジタル・セラピーの視点を取り入れています。タブレットやスマートフォンの画面をなぞる動作は、前頭前野を刺激し、手と目の協調性を高める効果が期待できます。
+                    特に、汚れの隙間から何が出てくるかを予測するプロセスはワーキングメモリを働かせ、クリアした瞬間の視覚的変化は精神的なリフレッシュ（QOLの向上）に寄与します。複雑なルールを排除した直感的な操作性は、デジタルデバイスへの抵抗感を軽減し、楽しみながら認知機能の低下予防に取り組めるよう配慮されています。日々の小さな「おそうじ」が、脳の健康を守る良い習慣となります。</p>
+                    <hr class="hr-dashed">
+                    <p>From a digital therapy perspective, this app aims to promote "brain activation" and maintain "finger dexterity" for seniors. Rubbing the screen of a tablet or smartphone stimulates the prefrontal cortex and improves hand-eye coordination. Predicting what lies beneath the grime engages working memory, while the visual satisfaction of clearing the screen contributes to mental refreshment and improved Quality of Life (QOL). The intuitive interface, free of complex rules, reduces resistance to digital devices and allows users to enjoy dementia prevention. Daily "cleaning" sessions serve as a beneficial habit for protecting brain health.</p>
+                </div>
+            </details>
+        </div>
         
         <footer class="footer-nav">
             <div class="footer-links">

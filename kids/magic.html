@@ -18,7 +18,7 @@
     <title>Magic Color / マジックぬりえ - 子供向け無料知育アプリ</title>
     <meta name="description" content="[JP] 指でなぞるとキラキラ光る！3〜5歳向けの無料知育ぬりえゲーム。自由にお絵描きして創造力を育もう。[EN] Magic Coloring game for kids. Sparkle effects and colorful drawing for toddlers. Free educational game.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,ぬりえ,Magic Color,Educational Games,Toddler Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Magic Color / マジックぬりえ - 集中マスター Kids">
@@ -37,12 +37,12 @@
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             background: var(--bg);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh; margin: 0; overflow: hidden; touch-action: none;
+            min-height: 100vh; margin: 0; overflow-x: hidden; touch-action: none;
         }
         .container {
             background: var(--card); padding: 25px; border-radius: 40px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px;
-            border: 6px solid #fff; position: relative; z-index: 10;
+            border: 6px solid #fff; position: relative; z-index: 10; margin: 20px 0;
         }
 
         #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; }
@@ -74,11 +74,33 @@
         h1 { font-size: 1.5rem; color: #ff9500; margin: 0; }
         .sub-title { font-size: 0.9rem; color: #999; margin-bottom: 15px; }
         .manual-section { background: #fff9db; padding: 15px; border-radius: 20px; text-align: left; font-size: 0.85rem; margin-bottom: 15px; border: 2px dashed #ffe066; line-height: 1.5; }
-        .ad-container { width: 100%; min-height: 100px; margin: 10px 0; display: flex; align-items: center; justify-content: center; border-radius: 20px; overflow: hidden; }
+        
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .btn-main { width: 100%; padding: 18px; background: var(--accent); color: #856404; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #fcc419; }
 
-        /* コピーライト & フッターリンク */
-        .footer-area { margin-top: 20px; }
+        .footer-area { margin-top: 20px; padding-bottom: 20px; }
         .footer-links { margin-bottom: 8px; }
         .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
@@ -104,6 +126,40 @@
 
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+
+    <div class="usage-guide">
+        <p>【ご利用ガイド / Usage Guide】</p>
+        <ul>
+        <li><strong>お子様に：</strong>色彩感覚を養い、指先の動きと画面の変化を結びつける因果関係の理解を助けます。<span class="lang-en">(Develops color sense and helps understand cause-and-effect by linking finger movements to visual changes.)</span></li>
+        <li><strong>シニアの方に：</strong>自由な描画とキラキラのエフェクトが脳の創造的領域を刺激し、リラックス効果をもたらします。<span class="lang-en">(Stimulates creative brain regions and provides relaxation through free drawing and sparkle effects.)</span></li>
+        <li><strong>教育関係者の皆様へ：</strong>微細運動能力（巧緻性）のトレーニング教材として、インストール不要で活用いただけます。<span class="lang-en">(A browser-based resource for fine motor skills training.)</span></li>
+        </ul>
+    </div>
+
+    <div class="guide-container">
+        <details>
+        <summary>【保護者向け：知育の目的】 / For Parents</summary>
+        <div class="guide-content">
+        <p><strong>Educational Goal （知育の目的）</strong></p>
+        <p>この「マジックぬりえ」は、幼児期の認知発達において極めて重要な「視覚運動統合（Visuomotor Integration）」の向上を目的として設計されています。
+        
+        キャンバスを指でなぞる動作は、単なる遊びではなく、脳内の空間把握能力と手指の微細運動（巧緻性）を高度に同期させるトレーニングです。特に、描画に合わせて生成されるキラキラのエフェクト（Particleシステム）は、行動に対する即時フィードバックとして機能し、お子様の「自己肯定感」と「探求心」を強力にバックアップします。正解のない自由な表現活動を通じて、創造的思考の基礎と情緒的な安定を育みます。</p>
+        <hr class="hr-dashed">
+        <p>This "Magic Coloring" app is engineered to enhance "Visuomotor Integration," a critical component of early childhood cognitive development. The act of tracing on the canvas synchronizes spatial reasoning with fine motor skills. The sparkle effects (particle system) serve as immediate feedback, reinforcing the child's "self-efficacy" and curiosity. By engaging in open-ended creative activities without fixed answers, children build the foundation for creative thinking and emotional stability.</p>
+        </div>
+        </details>
+        <details>
+        <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+        <div class="guide-content">
+        <p><strong>App Goal （アプリの目的）</strong></p>
+        <p>本アプリは、シニア世代の皆様の「脳の活性化」と「精神的なQOL（生活の質）の向上」を目的としたデジタル・セラピーの視点を取り入れています。
+        
+        色彩豊かな描画活動は、脳の前頭前野を刺激し、ワーキングメモリや創造的意欲の維持に寄与します。指先を細かく滑らせる動作は、末梢神経を刺激して脳への血流を促進する「巧緻性トレーニング」としても非常に有効です。また、キラキラと輝く視覚的な刺激は、脳内のドーパミン放出を促し、日々のストレス軽減や認知機能の低下予防に役立ちます。直感的なインターフェースにより、デジタルデバイスへの抵抗感を軽減しながら、楽しみつつ脳の健康維持を目指せます。</p>
+        <hr class="hr-dashed">
+        <p>From a digital therapy perspective, this app aims to promote brain activation and improve Quality of Life (QOL) for seniors. Engaging in colorful drawing stimulates the prefrontal cortex, contributing to the maintenance of working memory and creative drive. The fine motor movements required for drawing serve as manual dexterity training, promoting cerebral blood flow. The sparkling visual stimuli encourage dopamine release, aiding in stress reduction and the prevention of cognitive decline. Its intuitive interface reduces digital hesitation, allowing users to enjoy maintaining brain health.</p>
+        </div>
+        </details>
+    </div>
 
     <div class="footer-area">
         <div class="footer-links">

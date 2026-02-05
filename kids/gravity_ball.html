@@ -18,7 +18,7 @@
     <title>Gravity Ball / 重力ワンちゃん - 3〜5歳向け無料知育アクション</title>
     <meta name="description" content="[JP] 3〜5歳向け！スマホを傾けてワンちゃんを操作する無料知育ゲーム。バランス感覚と集中力を養います。[EN] Free Gravity Action game for kids aged 3-5. Tilt your phone to guide the doggy. Develops balance and concentration.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,重力ボール,3歳,4歳,5歳,暇つぶし,Gravity Ball,Kids Action,Educational Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Gravity Ball / 重力ワンちゃん - 集中マスター Kids">
@@ -53,7 +53,29 @@
         #gameCanvas { background: #ffffff; border-radius: 15px; width: 100%; aspect-ratio: 4 / 5; display: block; touch-action: none; }
         .hud { display: flex; justify-content: space-between; padding: 5px 10px 10px; font-weight: bold; color: #555; }
         
-        /* Footer for Reliability & AdSense Compliance */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+        margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+        background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-links { margin-top: 10px; margin-bottom: 10px; }
         .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
@@ -107,7 +129,39 @@
         
         <button class="btn-start" onclick="startGame()">はじめる / START</button>
         <a href="./menu.html" style="color:#999; text-decoration:none; font-size:0.8rem; display:block; margin-bottom:10px;">← もどる / Back</a>
-        
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>スマホを傾ける感覚フィードバックを通じて、視覚運動統合と空間認知能力を自然に養います。<span class="lang-en">(Develops visuomotor integration and spatial awareness through intuitive tilt controls.)</span></li>
+                <li><strong>シニアの方に：</strong>微細な姿勢制御と動く標的への追従動作により、前頭前野の活性化と平衡感覚の維持を助けます。<span class="lang-en">(Stimulates the prefrontal cortex and maintains balance through fine motor control.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>重力加速度の概念を直感的に体験できる物理知育ツールとしてご活用ください。<span class="lang-en">(An educational tool for experiencing gravity and acceleration concepts.)</span></li>
+            </ul>
+        </div>
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>本アプリは、幼児期の認知発達において極めて重要な「視覚運動統合（Visuomotor Integration）」の強化を目的としています。画面上のキャラクター（🐶）を思い通りに動かすためには、デバイスの傾き（感覚入力）と画面上の動き（視覚フィードバック）を脳内で瞬時に照合し、筋出力を微調整し続ける必要があります。この高度なプロセスは、後の筆記能力やスポーツ、空間把握能力の基礎となります。
+                    
+                    また、黒い穴を回避しながら目標（⭐）を目指すルールは、衝動を抑えて目的を達成するための「抑制制御」という実行機能を刺激します。難易度設定（Easy/Normal/Hard）機能により、お子様の現在の発達段階に合わせた最適な認知的負荷（Challenge Level）を提供し、成功体験を積み重ねることで自己肯定感を育みます。</p>
+                    <hr class="hr-dashed">
+                    <p>This application is designed to strengthen "Visuomotor Integration," a critical component of early childhood cognitive development. To guide the character (🐶), the brain must instantaneously process tilt data (sensory input) and visual feedback to refine motor output. This process builds the neurological foundation for handwriting, athletics, and spatial reasoning. The gameplay loop of avoiding obstacles while pursuing goals stimulates "Inhibitory Control," a key executive function. Adjustable difficulty ensures the optimal cognitive load for the child's developmental stage, fostering self-esteem through consistent success.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>シニア世代において、本アプリは「動的なバランス感覚の維持」と「前頭前野の活性化」に寄与するデジタル脳トレとして機能します。デバイスを傾けて速度を制御する動作は、脳の運動野だけでなく、複雑な判断を司る前頭前野を強力に刺激します。これは、日常生活における歩行時の咄嗟の判断や、転倒予防に必要な平衡感覚のトレーニングに直結します。
+                    
+                    物理演算（慣性・摩擦）を考慮したキャラクターの動きを予測するプロセスは、ワーキングメモリをフルに活用させ、認知機能の若々しさを保つ助けとなります。単純なタップ操作ではなく、三次元的な傾きを利用したインタラクションは、脳への血流を促進し、巧緻性の維持に優れた効果を発揮します。1分からの短時間プレイが可能で、無理なく毎日の習慣に取り入れられる健康維持ツールです。</p>
+                    <hr class="hr-dashed">
+                    <p>For seniors, this app serves as digital brain training contributing to "dynamic balance maintenance" and "prefrontal cortex activation." Controlling velocity via device tilt stimulates not only the motor cortex but also the prefrontal area responsible for complex judgment. This mimics the split-second decisions needed for daily navigation and fall prevention. Anticipating movements based on inertia and friction fully engages working memory, helping preserve cognitive youthfulness. This 3D interaction promotes cerebral blood flow more effectively than simple tapping, making it an excellent tool for maintaining dexterity and mental health in short, daily sessions.</p>
+                </div>
+            </details>
+        </div>
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>
             <a href="contact.html">Contact / お問い合わせ</a>

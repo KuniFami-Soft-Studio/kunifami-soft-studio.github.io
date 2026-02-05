@@ -17,7 +17,7 @@
     <title>スクラッチアート / Scratch Art - 3〜5歳向け無料知育アプリ</title>
     <meta name="description" content="[JP] まっくろな画面を削ると写真が出てくる！子供の好奇心を刺激する無料スクラッチアートアプリ。指先の感覚と集中力を養います。[EN] Scratch the black screen to reveal hidden photos! A free magical scratch painting app for kids. Develops sensory play and focus.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,スクラッチアート,お絵かき,指先遊び,Educational Games,Scratch Art,Sensory Play">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="スクラッチアート - 集中マスター Kids">
@@ -59,8 +59,30 @@
         .btn { flex: 1; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #7b1fa2; }
         .btn-secondary { background: var(--secondary); box-shadow: 0 4px 0 #018786; color: #1a1a1a; }
 
-        /* 信頼性向上用リンク */
-        .footer-links { margin-top: 15px; border-top: 1px solid #333; padding-top: 15px; }
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #444; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #2a2a2a; border-radius: 10px; overflow: hidden; border: 1px solid #444; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #fff;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #ccc; line-height: 1.6; border-top: 1px solid #444; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #555; margin: 10px 0; }
+
+        .footer-links { margin-top: 15px; border-top: 1px solid #333; padding-top: 15px; width: 100%; }
         .footer-links a { color: var(--secondary); text-decoration: none; font-size: 0.7rem; margin: 0 10px; font-weight: bold; }
         .footer-links a:hover { text-decoration: underline; }
         .copyright { font-size: 0.7rem; color: #666; margin: 15px 0; font-weight: bold; }
@@ -80,6 +102,40 @@
             <div style="font-weight: bold;">しゃしんを えらぼう！</div>
             <div style="font-size: 0.8rem; color: #999;">Upload a photo!</div>
             <input type="file" id="fileInput" accept="image/*">
+        </div>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>指を動かして「隠れた絵」を見つけ出す体験が、好奇心と空間認知能力を育みます。<span class="lang-en">(Develops curiosity and spatial recognition through the act of revealing hidden images.)</span></li>
+                <li><strong>シニアの方に：</strong>指先を細かく使う「巧緻性」の維持と、画像が完成する達成感による脳の活性化に最適です。<span class="lang-en">(Maintains dexterity and stimulates the brain through the visual reward of task completion.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>「原因と結果」を学ぶ感覚遊び（センサリープレイ）のICT教材としてご活用ください。<span class="lang-en">(An ideal ICT tool for sensory play and learning cause-and-effect.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>この「スクラッチアート」アプリは、認知発達心理学における「対象の永続性」の理解と、視覚運動統合（Visuomotor Integration）の向上を目的としています。
+                    
+                    真っ黒な画面を削ることで下にある画像が浮かび上がるプロセスは、お子様の「何があるだろう？」という内発的動機づけを刺激します。指でなぞった軌跡がそのまま情報の開示に繋がるため、目と手の協調性を高度に鍛え、将来的な筆記能力に必要な「手指の巧緻性」の基礎を築きます。また、98%以上のクリアで発生するパーティクル演出は、最後までやり遂げる「持続的注意力」と成功体験による自己肯定感を育みます。</p>
+                    <hr class="hr-dashed">
+                    <p>This app supports "Visuomotor Integration" and helps children understand the concept that hidden objects continue to exist. Revealing a photo by scratching stimulates intrinsic motivation and curiosity. The direct link between touch and visual revelation refines hand-eye coordination, laying the groundwork for fine motor skills required in writing. The celebratory effects upon completion reinforce task persistence and build a sense of self-efficacy.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知機能維持と精神的なリフレッシュを目的とした「デジタル・アートセラピー」の視点を取り入れています。
+                    
+                    指先を細かく動かしてキャンバスを削り取る動作は、脳の最高中枢である「前頭前野」を刺激し、ワーキングメモリの維持に貢献します。思い出の写真などをアップロードして使用することで、当時の情景を思い出す「回想法」に近い心理的効果も期待できます。シンプルな操作性でありながら、情報のスキャンと精密な手指の運動を同時に行うため、認知症予防に重要な「二重課題（マルチタスク）」に近い刺激を脳に与え、生活の質（QOL）の向上をサポートします。</p>
+                    <hr class="hr-dashed">
+                    <p>This app serves as a "Digital Art Therapy" tool for maintaining cognitive health and providing mental refreshment for seniors. The precise movements required to scratch the surface stimulate the prefrontal cortex, aiding in the preservation of working memory. Using personal photos can trigger "Reminiscence Therapy" effects. This dual-task of visual scanning and motor coordination provides a healthy cognitive load, supporting the prevention of cognitive decline and improving Quality of Life (QOL).</p>
+                </div>
+            </details>
         </div>
 
         <a href="./menu.html" style="display:block; margin-top:20px; color:#666; text-decoration:none; font-size:0.8rem; font-weight: bold;">← もどる / Back</a>
@@ -233,6 +289,5 @@
         }
     }
 </script>
-
 </body>
 </html>

@@ -18,11 +18,11 @@
     <title>Tic-Tac-Toe Kids / 三目並べ - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] 3〜5歳向け！CPUと対戦できる無料の三目並べ（まるばつ）ゲーム。思考力と集中力を育む知育アプリです。[EN] Free Tic-Tac-Toe game for kids aged 3-5. Play against a smart CPU. Developed to enhance thinking and concentration skills.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,三目並べ,まるばつ,Tic Tac Toe,Educational Games,Kids Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Tic-Tac-Toe Kids / 三目並べ - 集中マスター Kids">
-    <meta property="og:description" content="たて・よこ・ななめに3つならべよう！最強CPUに勝てるかな？">
+    <meta property="og:description" content="たて・よこ・ななめに3つならべよう！最強CPUに勝けるかな？">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kunifami-soft-studio.com/kids/tic_tac_toe.html">
     <meta name="twitter:card" content="summary">
@@ -62,12 +62,29 @@
         .manual-section h2 { font-size: 1.1rem; margin-top: 0; color: #f59f00; display: flex; align-items: center; gap: 5px; }
         .manual-item { margin-bottom: 12px; line-height: 1.4; }
 
-        .ad-placeholder {
-            width: 100%; min-height: 100px; background: #fff;
-            margin: 15px 0; display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; color: #ccc; border: 2px solid #eee; border-radius: 20px;
-            overflow: hidden;
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
         }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .home-link { display: inline-block; margin-top: 20px; color: #adb5bd; text-decoration: none; font-size: 0.9rem; }
         .home-link:hover { color: var(--x-color); }
 
@@ -112,7 +129,6 @@
         }
         .btn-secondary:hover { background: #dee2e6; }
 
-        /* 信頼性向上用リンクスタイル */
         .footer-links { margin-top: 20px; }
         .footer-links a { color: #adb5bd; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
@@ -141,6 +157,43 @@
         </div>
 
         <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+        
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>「相手の動きを予測する」ことで、論理的思考力と問題解決の基礎を養います。<span class="lang-en">(Develops logical thinking and problem-solving basics by predicting opponent moves.)</span></li>
+                <li><strong>シニアの方に：</strong>先を読む「ワーキングメモリ」と「戦略的判断」が前頭前野を強力に刺激します。<span class="lang-en">(Stimulates the prefrontal cortex through strategic planning and working memory.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>アルゴリズムに基づく最強CPUとの対戦を通じ、数理的思考の導入にご活用ください。<span class="lang-en">(Ideal for introducing mathematical thinking through AI-driven gameplay.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>この「三目並べ」は、幼児期の認知発達における「戦略的思考」と「視覚的識別の統合」を目的として設計されています。
+                    
+                    プレイヤーは、自身の勝利条件（3つ並べる）を目指しながら、同時に相手（CPU）の勝利を阻止するという二重の論理プロセスを要求されます。これは認知科学における「抑制制御」と「作業記憶」を同時に鍛える高度な知的活動です。
+                    特に、本アプリに搭載されたMinimaxアルゴリズムによる「最強レベル」に挑戦することは、パターン認識を深め、結果を予測する数理的思考の土台を築きます。遊びを通じて、「仮説を立て、実行し、結果を分析する」という科学的探究心の基礎を育みます。</p>
+                    <hr class="hr-dashed">
+                    <p>This "Tic-Tac-Toe" is engineered to foster "Strategic Thinking" and "Visual-Motor Integration" in early childhood. Players must navigate a dual logical process: pursuing their own victory while simultaneously blocking the opponent. This activity exercises "Inhibitory Control" and "Working Memory." Challenging the AI's "Hard" mode refines pattern recognition and builds a foundation for mathematical prediction—essential steps in developing a scientific mindset of hypothesis testing and analysis.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知機能維持を目的とした「デジタル脳活性化ツール」です。
+                    
+                    三目並べという馴染み深いルールでありながら、先の先を読む「先読み」のプロセスは、加齢に伴い低下しやすい前頭前野の「実行機能」を刺激するのに非常に有効です。
+                    最強のCPU相手に「負けない戦略」を練ることは、情報の保持と操作を司るワーキングメモリのトレーニングに繋がります。指先を正確に動かしてタップする「巧緻性」の維持と合わせ、短時間で高い達成感を得られる設計となっており、日々の脳トレ習慣を楽しく継続し、認知機能の若々しさを保つのに役立ちます。</p>
+                    <hr class="hr-dashed">
+                    <p>This application serves as a "Digital Brain Activation Tool" for maintaining cognitive function in seniors. While based on the familiar rules of Tic-Tac-Toe, the "look-ahead" process required to beat or draw with a smart CPU stimulates executive functions in the prefrontal cortex. Strategizing against an optimized algorithm improves working memory capacity. Combined with fine motor skill exercise via tapping, the game provides high levels of accomplishment in short sessions, making it a perfect habit for preserving mental agility.</p>
+                </div>
+            </details>
+        </div>
+
         <a href="./menu.html" class="home-link">← Back / もどる</a>
 
         <div class="footer-links">

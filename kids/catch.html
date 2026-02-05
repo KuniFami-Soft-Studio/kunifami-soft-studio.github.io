@@ -15,7 +15,7 @@
     <title>おちものキャッチ / Fruit Catch - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] 3〜5歳向け！フルーツをキャッチする無料知育ゲーム。集中力と反射神経を養います。 [EN] Free fruit catching game for kids aged 3-5. No installation required. Play for free in your browser.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,おちもの,フルーツ,3歳,4歳,5歳,暇つぶし,Fruit Catch Game,Free Kids Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="おちものキャッチ / Fruit Catch - 集中マスター Kids">
@@ -34,14 +34,15 @@
             margin: 0; padding: 0; background: var(--bg);
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         /* --- Screens --- */
         #startScreen, #clearScreen {
             position: fixed; inset: 0; z-index: 5000;
             background: linear-gradient(135deg, #A5D6A7 0%, #4CAF50 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            padding-top: 40px; overflow-y: auto;
         }
         #clearScreen { display: none; background: rgba(255, 255, 255, 0.95); }
 
@@ -62,8 +63,30 @@
         }
         .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #BF360C; }
 
-        /* Footer for Reliability */
-        .footer-links { margin-top: 15px; }
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
+        .footer-links { margin-top: 15px; padding-bottom: 20px; }
         .footer-links a { color: #666; text-decoration: none; font-size: 0.75rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
 
@@ -102,11 +125,44 @@
 
         <button class="btn-start" onclick="startGame()">Start! / はじめる</button>
         <a href="./menu.html" style="display:block; margin-top:10px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back to Menu</a>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>動く対象を目で追う追従性眼球運動と、爆弾を避ける「我慢する力（抑制機能）」を養います。<span class="lang-en">(Develops pursuit eye movements and impulse control by avoiding bombs.)</span></li>
+                <li><strong>シニアの方に：</strong>落下速度の変化に対応する「選択的注意」と、素早い手指の運動による脳の活性化をサポートします。<span class="lang-en">(Supports selective attention and brain activation through rapid motor responses.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>視覚情報処理と運動出力を統合する、インストール不要のデジタル教材として活用いただけます。<span class="lang-en">(A browser-based tool for integrating visual processing and motor output.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>このアプリは、幼児期の認知発達において極めて重要な「実行機能」の育成を主眼に置いています。画面上部からランダムに落ちてくる多種多様なフルーツを認識する「視覚的識別力」に加え、爆弾という特定の刺激に対して行動を即座に停止、あるいは回避する「抑制制御（インヒビション）」を同時に要求します。
+                    また、スコアが上がるにつれてオブジェクトの出現率や落下速度が動的に変化するロジック（`spawnChance` / `speed` の計算式）が組み込まれており、お子様の「順応性」と「持続的注意力」を段階的に高めます。「100点」という明確な数値目標に向かって試行錯誤する過程は、数理的思考の基礎となる達成感と自己肯定感の醸成に寄与します。</p>
+                    <hr class="hr-dashed">
+                    <p>This app focuses on developing "Executive Function," which is crucial for early cognitive development. Beyond "visual discrimination" of diverse fruits, it requires "Inhibitory Control"—the ability to instantly stop or avoid actions when faced with a specific stimulus (the bomb). The logic dynamically increases spawn rates and fall speeds based on the score, gradually enhancing "adaptability" and "sustained attention." Working toward the clear goal of "100 points" fosters a sense of achievement and self-esteem, forming the basis for mathematical thinking through trial and error.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知機能維持に重要な「前頭前野の刺激」と「手と目の協調性」を鍛えるデジタル脳トレとして機能します。落下するフルーツをカゴで捉える動作は、視覚情報を脳内で空間座標へと変換し、手指の筋肉へ出力する高度な神経プロセス（視覚運動統合）を活性化させます。
+                    特に、フルーツ（加点）と爆弾（減点）を瞬時に見分ける「選択的注意」のトレーニングは、日常生活における危険回避能力の維持にも繋がります。指先を細かく滑らせる「巧緻性（こうちせい）」の運動は、脳の血流を促進し、ワーキングメモリの維持に貢献します。シンプルながらも、スコアに応じた難易度上昇が脳に適度な負荷を与え、楽しみながら認知症予防に取り組める設計となっています。</p>
+                    <hr class="hr-dashed">
+                    <p>This app serves as a digital brain-training tool to stimulate the prefrontal cortex and improve hand-eye coordination for seniors. Tapping and sliding the basket activates "Visuomotor Integration," a sophisticated neural process that converts visual data into spatial coordinates for motor output. The training of "Selective Attention"—distinguishing rewards from penalties—helps maintain hazard avoidance skills in daily life. Fine motor finger movements promote cerebral blood flow and help preserve working memory. The adaptive difficulty based on the score provides optimal cognitive load, offering an engaging way to support dementia prevention.</p>
+                </div>
+            </details>
+        </div>
         
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>
             <a href="contact.html">Contact / お問い合わせ</a>
         </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
 </div>
 

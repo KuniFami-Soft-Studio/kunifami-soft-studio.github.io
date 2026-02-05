@@ -25,8 +25,8 @@
             margin: 0; padding: 0; background: var(--bg);
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             display: flex; flex-direction: column; align-items: center; 
-            height: 100vh; /* 画面いっぱいに固定 */
-            overflow: hidden; /* スクロール禁止 */
+            height: 100vh;
+            overflow: hidden;
         }
 
         /* --- Start Screen --- */
@@ -54,6 +54,29 @@
         .btn-9 { background: #42A5F5; }
         .btn-16 { background: #9575CD; }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         /* --- Game Screen --- */
         #gameScreen { 
             display: none; 
@@ -61,17 +84,16 @@
             height: 100%;
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; /* 縦方向も中央揃え */
+            justify-content: center;
             padding: 10px; 
         }
         
         .puzzle-container {
             position: relative; 
-            /* width, heightはJSで設定 */
             background: #fff; border: 4px solid #fff; border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             background-size: cover;
-            margin: auto; /* 上下左右中央 */
+            margin: auto;
             flex-shrink: 0; 
         }
 
@@ -96,7 +118,6 @@
             align-items: center; justify-content: center; text-align: center;
         }
 
-        /* Controls Area (Bottom) */
         .controls-area {
             width: 100%;
             text-align: center;
@@ -105,7 +126,6 @@
             flex-shrink: 0;
         }
 
-        /* Footer */
         .footer-links { margin: 5px 0; }
         .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .copyright { font-size: 0.6rem; color: #999; padding-bottom: 5px; font-weight: bold; }
@@ -131,6 +151,40 @@
         </div>
         
         <a href="./menu.html" style="display:block; margin-top:20px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+
+        <div class="usage-guide">
+        <p>【ご利用ガイド / Usage Guide】</p>
+        <ul>
+        <li><strong>お子様に：</strong>身近な写真を使うことで、図形の「部分と全体」の関係を理解する空間把握能力を養います。<span class="lang-en">(Develops spatial awareness by understanding part-to-whole relationships using familiar photos.)</span></li>
+        <li><strong>シニアの方に：</strong>画像の細部を想起し、指先を細かく動かす動作がワーキングメモリと巧緻性を刺激します。<span class="lang-en">(Stimulates working memory and dexterity through detailed visual recall and fine motor movements.)</span></li>
+        <li><strong>教育関係者の皆様へ：</strong>自由な画像でパズル化できるため、カスタマイズ可能な知育教材として活用いただけます。<span class="lang-en">(A customizable educational tool that can turn any image into a learning puzzle.)</span></li>
+        </ul>
+        </div>
+
+        <div class="guide-container">
+        <details>
+        <summary>【保護者向け：知育の目的】 / For Parents</summary>
+        <div class="guide-content">
+        <p><strong>Educational Goal （知育の目的）</strong></p>
+        <p>このパズルアプリは、幼児期の認知発達において極めて重要な「空間認知能力」と「構成的想像力」の育成を支援します。特に、身近な家族やペットの写真をパズル化することで、お子様の情緒的関心を引き出し、高い「持続的注意力」を維持させることが可能です。
+        
+        技術的な設計として、ピースが正しい位置に近づいた際に自動的に吸着する「スナップ機能（snap logic）」を導入しています。これにより、発達段階にあるお子様の手指の未発達な操作性を補い、フラストレーションを最小限に抑えながら「自力で完成させた」という強力な自己肯定感を醸成します。部分（ピース）を組み合わせて全体（完成図）を構築するプロセスは、論理的思考の基礎となります。</p>
+        <hr class="hr-dashed">
+        <p>This puzzle app facilitates the development of "spatial cognitive skills" and "constructive imagination," essential components of early childhood development. By utilizing familiar photos, the app leverages emotional engagement to maintain "sustained attention." The implemented "snap logic" assists developing motor skills by minimizing frustration, fostering a strong sense of self-efficacy through completion. The process of synthesizing parts into a whole establishes the foundation for logical reasoning.</p>
+        </div>
+        </details>
+        <details>
+        <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+        <div class="guide-content">
+            <p><strong>App Goal （アプリの目的）</strong></p>
+            <p>本アプリは、シニア世代の認知機能維持と「脳の若返り」を目的としたデジタル・セラピーの視点を取り入れています。パズルを解く過程で行われる「視覚情報の走査」と「短期記憶の照合」は、前頭前野を強力に刺激し、ワーキングメモリの活性化を促します。
+            
+            特に、お孫さんや旅行先での思い出の写真を使用することで、当時の情景を思い出す「回想法」に近い心理的効果も期待でき、楽しみながら脳トレを継続できる設計となっています。タッチスクリーンを滑らせてピースを正確に運ぶ動作は、手指の「巧緻性（こうちせい）」トレーニングとしても最適であり、身体と脳の連動性を高め、加齢による認知機能の低下を緩やかにする一助となります。</p>
+            <hr class="hr-dashed">
+            <p>From a digital therapy perspective, this app aims to maintain cognitive health and "brain rejuvenation" for seniors. The cycle of scanning visual info and matching it with short-term memory stimulates the prefrontal cortex and activates working memory. Using personal photos may also trigger beneficial "Reminiscence Therapy" effects. The precise movements required to drag pieces across the screen serve as fine motor skills training, improving the link between physical movement and cognitive processing.</p>
+        </div>
+        </details>
+        </div>
         
         <div class="footer-links" style="margin-top: 20px;">
             <a href="privacy.html">Privacy</a> | <a href="contact.html">Contact</a>
@@ -166,10 +220,9 @@
     let baseImage = "";
     let gridSize = 2;
     
-    // 縦と横のサイズを個別に管理
     let puzzleWidth = 300;
     let puzzleHeight = 300;
-    let imgObj = null; // 画像サイズ取得用
+    let imgObj = null;
 
     fileInput.onchange = (e) => {
         const file = e.target.files[0];
@@ -178,7 +231,6 @@
         reader.onload = (event) => {
             baseImage = event.target.result;
             
-            // 画像の本来のサイズ（アスペクト比）を取得する
             imgObj = new Image();
             imgObj.onload = () => {
                 levelSelection.style.display = 'block';
@@ -196,35 +248,28 @@
         const gameScreen = document.getElementById('gameScreen');
         gameScreen.style.display = 'flex';
         
-        // --- 画面サイズに合わせてパズルサイズを最大化 ---
-        const maxW = window.innerWidth - 20; // 左右マージン
-        const maxH = window.innerHeight - 150; // 下部エリア分確保
+        const maxW = window.innerWidth - 20;
+        const maxH = window.innerHeight - 150;
         
-        // 画像のアスペクト比と、画面枠のアスペクト比を比較
         const imgRatio = imgObj.width / imgObj.height;
         const screenRatio = maxW / maxH;
 
         if (imgRatio > screenRatio) {
-            // 画像の方が横長（または画面幅が足りない）→ 幅を基準にする
             puzzleWidth = maxW;
             puzzleHeight = maxW / imgRatio;
         } else {
-            // 画像の方が縦長（または画面高さが足りない）→ 高さを基準にする
             puzzleHeight = maxH;
             puzzleWidth = maxH * imgRatio;
         }
 
-        // サイズ適用
         container.style.width = puzzleWidth + 'px';
         container.style.height = puzzleHeight + 'px';
-        // ---------------------------------------------
         
         container.style.backgroundImage = `linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url(${baseImage})`;
-        container.style.backgroundSize = '100% 100%'; // コンテナに合わせて伸縮
+        container.style.backgroundSize = '100% 100%';
 
         container.innerHTML = '';
         
-        // ピースの1つあたりのサイズ（長方形になる可能性あり）
         const pieceW = puzzleWidth / gridSize;
         const pieceH = puzzleHeight / gridSize;
 
@@ -235,14 +280,12 @@
                 piece.style.width = pieceW + 'px';
                 piece.style.height = pieceH + 'px';
                 piece.style.backgroundImage = `url(${baseImage})`;
-                // 背景サイズもパズル全体サイズに合わせる
                 piece.style.backgroundSize = `${puzzleWidth}px ${puzzleHeight}px`;
                 piece.style.backgroundPosition = `-${c * pieceW}px -${r * pieceH}px`;
 
                 const tx = c * pieceW;
                 const ty = r * pieceH;
 
-                // ピースを散らばらせる範囲
                 const randX = Math.random() * (puzzleWidth - pieceW);
                 const randY = Math.random() * (puzzleHeight - pieceH);
                 piece.style.left = randX + 'px';
@@ -277,7 +320,6 @@
             let x = p.clientX - containerRect.left - offsetX;
             let y = p.clientY - containerRect.top - offsetY;
 
-            // 枠からはみ出ないように制御（個別の幅・高さを使用）
             x = Math.max(-10, Math.min(x, puzzleWidth - el.offsetWidth + 10));
             y = Math.max(-10, Math.min(y, puzzleHeight - el.offsetHeight + 10));
 
@@ -293,7 +335,6 @@
             const cx = parseInt(el.style.left);
             const cy = parseInt(el.style.top);
 
-            // 吸着判定（ピースサイズの1/3程度で吸着）
             const snapX = Math.max(30, pW / 4);
             const snapY = Math.max(30, pH / 4);
 

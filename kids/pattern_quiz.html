@@ -19,7 +19,7 @@
     <title>パターン完成 / Pattern Quiz - 3〜5歳向け無料知育アプリ</title>
     <meta name="description" content="[JP] 絵の並びから規則性を見つける「パターン完成」クイズ。3〜5歳向けの無料知育ゲームで、論理的思考力を育みます。[EN] A logical pattern quiz for kids aged 3-5. Free educational game to develop thinking skills by finding rules in sequences.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,パターン完成,論理的思考,Pattern Quiz,Educational Games,Toddler Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="パターン完成 / Pattern Quiz - 集中マスター Kids">
@@ -35,7 +35,7 @@
             margin: 0; padding: 0; background-color: var(--bg-purple); 
             font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
             color: #4A148C; display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; overflow: hidden;
+            min-height: 100vh; overflow-y: auto;
         }
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -73,6 +73,29 @@
             box-shadow: 0 4px 0 #7B1FA2; cursor: pointer; margin-top: 10px;
         }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+        margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+        background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         /* 信頼性向上用リンク */
         .footer-links { margin-top: 20px; }
         .footer-links a { color: #8E24AA; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
@@ -96,6 +119,41 @@
         </div>
         <button onclick="showApp()" style="background:#BA68C8; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #8E24AA; cursor:pointer;">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>絵の並びから「規則性」を見つけることで、数理的思考の基礎であるパターン認識力を養います。<span class="lang-en">(Develops pattern recognition, the foundation of mathematical thinking, by finding rules in sequences.)</span></li>
+                <li><strong>シニアの方に：</strong>情報の順序を論理的に分析するプロセスが、前頭前野の活性化と情報処理能力の維持を助けます。<span class="lang-en">(Stimulates the prefrontal cortex and maintains processing skills through logical sequence analysis.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>「系列化」や「論理的推論」を直感的に学べるアダプティブな教材としてご活用ください。<span class="lang-en">(A browser-based tool for teaching seriation and logical reasoning intuitively.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>このアプリは、幼児期の認知発達において極めて重要な「論理的推論能力」と「系列化（Seriation）」の概念を育むために設計されています。
+                    
+                    提示された「A-B-A-B」や「A-B-C-A-B-C」といったシーケンスから背後の規則性を抽出するプロセスは、単なるクイズではなく、抽象的な情報を整理し予測を立てるという高度な知的活動です。
+                    レベルアップに伴い規則性が複雑化（スキャフォールディング設計）していくため、お子様は段階的に認知的負荷を高めながら、成功体験を通じて自己肯定感を育むことができます。プログラミング的思考の基礎となる「繰り返し（ループ）」の概念を遊びの中で自然に習得させるのに最適です。</p>
+                    <hr class="hr-dashed">
+                    <p>This application is designed to foster "Logical Reasoning" and "Seriation," critical components of early childhood cognitive development. Extracting the underlying rules from sequences like "A-B-A-B" or "A-B-C-A-B-C" encourages the brain to organize abstract information and form predictions. The adaptive difficulty levels (scaffolding) allow children to gradually increase their cognitive load while building self-esteem through repeated success. It is an ideal way to intuitively learn the concept of "loops," a cornerstone of computational thinking.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知機能維持を目的としたデジタル脳トレとして機能します。情報を一時的に保持し、次の展開を論理的に導き出す作業は、加齢に伴い低下しやすい「ワーキングメモリ（作業記憶）」と「前頭前野」を強力に刺激します。
+                    
+                    視覚的なパターンマッチングと選択的注意力を組み合わせたトレーニングは、情報の処理速度を維持し、日常生活における判断力の低下を予防する効果が期待できます。直感的なインターフェースと、段階的に難易度が上がる設計により、無理なく楽しみながら継続できる脳の活性化習慣を提供します。多彩な絵文字による視覚刺激は、気分をリフレッシュさせ、精神的なQOL（生活の質）の向上にも寄与します。</p>
+                    <hr class="hr-dashed">
+                    <p>This app serves as a digital brain training tool aimed at maintaining cognitive functions for seniors. Deriving logical conclusions from temporary information strongly stimulates "Working Memory" and the "Prefrontal Cortex." Combining visual pattern matching with selective attention helps maintain processing speed and preserve decision-making skills required in daily life. The intuitive interface and gradual progression provide a stress-free habit for brain activation. Furthermore, visual stimulation from diverse emojis provides a mental uplift, contributing to improved Quality of Life (QOL).</p>
+                </div>
+            </details>
+        </div>
         
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>

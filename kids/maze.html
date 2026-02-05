@@ -18,7 +18,7 @@
     <title>なめらかめいろ / Smooth Maze - 3〜5歳向け無料知育アプリ</title>
     <meta name="description" content="[JP] 指でテントウムシをスライド！3〜5歳向けのなめらか移動迷路。集中力と手先の器用さを育む無料知育ゲーム。[EN] Smooth maze game for kids. Slide the ladybug to the goal. Free educational game for developing concentration.">
     <meta name="keywords" content="知育ゲーム,迷路,無料,子供向け,なめらかめいろ,3歳,4歳,5歳,Maze,Educational Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="なめらかめいろ / Smooth Maze - 集中マスター Kids">
@@ -34,7 +34,7 @@
         body { 
             margin: 0; padding: 0; background-color: var(--bg-color); 
             font-family: sans-serif; display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; overflow: hidden;
+            min-height: 100vh; overflow-y: auto;
         }
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -59,7 +59,29 @@
             100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0); opacity: 0; } 
         }
 
-        /* 信頼性向上用リンクスタイル */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-links { margin: 10px 0; }
         .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
@@ -82,8 +104,42 @@
         </div>
         <button onclick="showApp()" style="background:#FFA726; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #FB8C00;">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>壁にぶつからないよう指を動かす動作が、集中力と手と目の協調性を育みます。<span class="lang-en">(Develops focus and hand-eye coordination through delicate sliding movements.)</span></li>
+                <li><strong>シニアの方に：</strong>迷路の経路探索と精密な指先操作が、前頭前野の活性化と巧緻性維持を助けます。<span class="lang-en">(Stimulates the prefrontal cortex and maintains manual dexterity through pathfinding.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>アルゴリズムによる自動生成迷路を用いた、反復可能な認知トレーニング教材です。<span class="lang-en">(An algorithmic maze tool for repeatable cognitive training exercises.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>このアプリは、幼児期の認知発達において極めて重要な「空間把握能力」と「視覚運動統合（Visuomotor Integration）」の強化を目的としています。
+                    
+                    一般的な「マス目移動」の迷路とは異なり、1ピクセル単位での自由な移動を実現しているため、お子様は「壁に触れないように、道の真ん中を通る」という高度な運動制御（微細運動）を要求されます。このプロセスは、後の筆記能力の基礎となる「手先の巧緻性」を高めます。また、行き止まりを回避しゴールを探索する行動は、実行機能（プランニング能力）を刺激し、論理的思考の第一歩を支えます。</p>
+                    <hr class="hr-dashed">
+                    <p>This app focuses on strengthening "Spatial Awareness" and "Visuomotor Integration," crucial components of early childhood development. Unlike typical grid-based mazes, the pixel-level smooth movement requires advanced fine motor control to navigate paths without touching walls. This process enhances manual dexterity, a prerequisite for handwriting. Furthermore, the act of pathfinding and avoiding dead ends stimulates executive functions and planning skills, fostering the foundations of logical thinking.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の皆様の「脳の活性化」と「認知機能の維持」を目的としたデジタル・アクティビティです。
+                    
+                    迷路を解くという行為は、視覚情報を整理し、最短ルートを導き出す「ワーキングメモリ（作業記憶）」と「前頭前野」を強力に刺激します。指先をゆっくりと、かつ正確に動かしてキャラクターを導く動作は、加齢に伴い低下しがちな指先の巧緻性をトレーニングし、脳への血流を促進します。シンプルながらも毎回異なる迷路が生成されるため、飽きることなく、日々のルーティンとして楽しみながら認知症予防に取り組める設計となっています。</p>
+                    <hr class="hr-dashed">
+                    <p>This application serves as a digital activity for brain activation and cognitive maintenance in seniors. Solving mazes powerfully stimulates "Working Memory" and the "Prefrontal Cortex" as the brain organizes visual information to find the optimal route. The requirement for slow and precise fingertip movements trains manual dexterity and promotes cerebral blood flow. With its algorithmic maze generation providing a new challenge every time, it is designed to be an engaging daily routine for preventing cognitive decline.</p>
+                </div>
+            </details>
+        </div>
         
-        <div class="footer-links" style="margin-top: 25px;">
+        <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>
             <a href="contact.html">Contact / お問い合わせ</a>
         </div>

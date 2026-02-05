@@ -18,7 +18,7 @@
     <title>音階神経衰弱：伝説 / Pitch Match Legend - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] 音を聴いてペアを当てる無料の知育ゲーム。絶対音感や記憶力を育む、3〜5歳のお子様に最適なアプリです。[EN] A free educational game where you match pairs by listening to pitches. Perfect for kids aged 3-5 to develop perfect pitch and memory skills.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,音階,神経衰弱,絶対音感,記憶力,Educational Games,Kids Games,Memory Game,Pitch Match">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="音階神経衰弱：伝説 - 集中マスター Kids">
@@ -73,6 +73,29 @@
         }
         .selector input:checked + label { background: var(--primary); color: white; border-color: var(--primary); }
         .selector input { display: none; }
+
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; background: #fff; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
 
         /* ゲーム画面 / Game Screen */
         #gameScreen { 
@@ -149,6 +172,42 @@
     <button class="btn-main" onclick="initGame()">Start! / スタート！</button>
 
     <a href="./menu.html" style="display:inline-block; margin-top:8px; color:#aaa; text-decoration:none; font-size:0.75rem;">← もどる (Back)</a>
+
+    <div class="usage-guide">
+    <p>【ご利用ガイド / Usage Guide】</p>
+    <ul>
+    <li><strong>お子様に：</strong>正確なピッチ（音の高さ）を聞き分ける訓練を通じて、絶対音感の基礎と集中力を養います。<span class="lang-en">(Nurtures the foundation of perfect pitch and focus by identifying accurate musical frequencies.)</span></li>
+    <li><strong>シニアの方に：</strong>音の記憶と場所の記憶を同時に処理するマルチタスク動作が、前頭前野を強力に活性化します。<span class="lang-en">(Stimulates the prefrontal cortex via multi-tasking that integrates auditory and spatial memory.)</span></li>
+    <li><strong>教育関係者の皆様へ：</strong>「音の不可視性」をカードという視覚的要素で補完した、感覚統合を促す音楽教材です。<span class="lang-en">(An educational tool that promotes sensory integration by visualizing invisible musical pitches.)</span></li>
+    </ul>
+    </div>
+
+    <div class="guide-container">
+    <details>
+    <summary>【保護者向け：知育の目的】 / For Parents</summary>
+    <div class="guide-content">
+    <p><strong>Educational Goal （知育の目的）</strong></p>
+    <p>このアプリは、幼児期の認知発達において極めて重要な「聴覚的識別力（Auditory Discrimination）」と「作業記憶（ワーキングメモリ）」の強化を目的としています。
+    
+    従来の絵合わせとは異なり、カードをめくった瞬間に流れる特定の周波数を脳内で一時的に保持（保持：リハーサル）し、次の音と比較するプロセスは、音韻意識の向上に直結します。
+    「おとのみ（Sound Only）」モードでは、視覚情報に頼らず聴覚情報のみで論理的推論を行うため、選択的注意力を高度に要求します。この訓練は、将来的な言語獲得や音楽的感性（絶対音感・相対音感）の土台を築き、成功体験を通じて自己肯定感を育みます。</p>
+    <hr class="hr-dashed">
+    <p>This application is engineered to bolster "Auditory Discrimination" and "Working Memory," vital components of early childhood cognitive development. By temporarily maintaining specific frequencies (rehearsal) to compare with subsequent notes, children enhance their phonological awareness. The "Sound Only" mode demands high selective attention, as players must rely solely on auditory data for logical reasoning. This training establishes a foundation for language acquisition and musical sensibility while fostering self-esteem through successful match experiences.</p>
+    </div>
+    </details>
+    <details>
+    <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+    <div class="guide-content">
+    <p><strong>App Goal （アプリの目的）</strong></p>
+    <p>本アプリは、シニア世代の皆様の「脳の若返り」と「聴覚認知機能の維持」を目的としたデジタル脳トレです。
+    
+    神経衰弱というルールに「音」の要素を加えることで、場所を覚える「視空間記憶」と、音の高さを覚える「聴覚記憶」を同時に働かせるマルチタスク（二重課題）トレーニングを実現しています。
+    このプロセスは脳の最高中枢である前頭前野を刺激し、加齢に伴い低下しやすい短期記憶の維持に貢献します。特に「ライフ制」による適度な緊張感は集中力を高め、正確な音を聴く動作は聴覚神経の活性化を促します。シンプルながらも科学的なアプローチで、楽しみながら認知症予防の習慣化をサポートします。</p>
+    <hr class="hr-dashed">
+    <p>This app serves as a digital brain training tool aimed at "brain rejuvenation" and preserving "auditory cognitive function" for seniors. By adding sound to the classic memory game, it creates a dual-tasking challenge that integrates visuospatial and auditory memory. This process stimulates the prefrontal cortex, helping maintain short-term memory skills that often decline with age. The "Life Mode" provides optimal cognitive load to enhance focus, while identifying accurate pitches activates auditory nerve pathways. It is a scientifically grounded approach to dementia prevention that remains enjoyable as a daily habit.</p>
+    </div>
+    </details>
+    </div>
     
     <div class="footer-links">
         <a href="privacy.html">Privacy Policy / 規約</a>

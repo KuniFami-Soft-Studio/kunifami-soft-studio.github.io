@@ -15,7 +15,6 @@
     <title>大きさ比べ / Big or Small - 知育クイズアプリ</title>
     <meta name="description" content="[JP] 子供向けの知育クイズアプリ「大きさ比べ」。絵文字を使って楽しく大小の比較を学べます。[EN] Educational quiz app for kids 'Big or Small'. Learn to compare sizes with fun emojis.">
     <meta name="keywords" content="知育アプリ, 大きさ比べ, 子供向けゲーム, クイズ, Educational App, Kids Game, Big or Small, Quiz">
-    <meta name="author" content="KuniFami Soft Studio">
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="大きさ比べ / Big or Small">
@@ -39,13 +38,15 @@
 
         /* --- スタート画面 --- */
         #startScreen {
-            position: fixed; inset: 0; z-index: 5000;
+            position: relative; min-height: 100vh; width: 100%;
             background: linear-gradient(135deg, #FFE0B2 0%, #FF9800 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            padding-top: 50px; overflow-y: auto;
         }
         .start-card {
             background: white; padding: 40px; border-radius: 40px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 85%; max-width: 400px; text-align: center;
+            margin-bottom: 30px;
         }
         .btn-start {
             background: #4CAF50; color: white; border: none; padding: 15px 40px;
@@ -81,6 +82,29 @@
         }
         @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0); } 80% { transform: translate(-50%, -50%) scale(1.2); } 100% { transform: translate(-50%, -50%) scale(1); } }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         /* --- 広告・フッター --- */
         .ad-bottom { margin-top: auto; width: 100%; text-align: center; background: #fff; border-top: 1px solid #eee; }
         .footer-links { padding: 10px 0 0 0; }
@@ -104,7 +128,39 @@
         <button class="btn-start" onclick="startGame()">Start! / はじめる</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
         
-        <div class="footer-links">
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>「どっちが大きいかな？」という比較を通じて、数理的思考の基礎である量感と対比の概念を育てます。<span class="lang-en">(Develops foundational mathematical thinking through size comparison.)</span></li>
+                <li><strong>シニアの方に：</strong>問い（大きい/小さい）に合わせて判断を変える「選択的注意」を刺激し、前頭前野の活性化をサポートします。<span class="lang-en">(Stimulates selective attention and supports prefrontal cortex activation.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>知育教材として自由にご活用ください。<span class="lang-en">(Free to use as an educational resource.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>このアプリは、幼児期の認知発達において極めて重要な「視覚的識別能力」と「空間把握能力の基礎」を養うことを目的としています。単に絵を見るだけでなく、「大きい」「小さい」という抽象的な概念と言葉、そして実際の視覚情報を結びつけるプロセスは、脳内での論理的思考を促します。
+                    プログラムでは、🐘や🍎といった親しみやすい絵文字を使用し、ランダムにターゲット（大きい方か小さい方か）を入れ替えることで、お子様の「選択的注意」を常に引きつけます。正解時の「⭐️」の演出は、ドーパミン放出を促し、学習に対する自己肯定感と「できた！」という達成感を育みます。早期からの数理的思考（対比と順序性）のトレーニングとして非常に有効です。</p>
+                    <hr class="hr-dashed">
+                    <p>This application is designed to nurture visual discrimination skills and the foundations of spatial awareness, which are crucial in early childhood cognitive development. The process of connecting abstract concepts like "Big" and "Small" with verbal cues and visual data stimulates logical thinking. By using familiar emojis and randomly alternating the target, the app maintains the child's selective attention. The visual "Star" reward upon a correct answer promotes a sense of achievement and self-esteem, fostering a positive attitude toward learning and foundational mathematical logic (comparison and seriation).</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の皆様の「脳の健康維持」と「認知機能の活性化」をサポートするために設計されています。画面上の情報から必要な要素（大きさの差）を瞬時に判断し、指先を動かしてタップする一連の動作は、脳の指令を筋肉に伝える「手と目の協調性」を鍛えます。
+                    特に、設問が「大きいのは？」から「小さいのは？」へと切り替わる際、瞬時に判断基準をリセットして対応する動作は、ワーキングメモリ（作業記憶）や前頭前野への適度な刺激となり、認知機能の柔軟性を保つのに役立ちます。巧緻性を高める指先のトレーニングとしても最適です。シンプルながらも、毎日の積み重ねが「脳の若々しさ」を保つための効果的なエクササイズとなります。</p>
+                    <hr class="hr-dashed">
+                    <p>This app supports brain health and cognitive activation for seniors. The cycle of instantaneously judging visual differences and tapping requires "hand-eye coordination," strengthening the neural pathways between the brain and muscles. Switching between identifying the "bigger" or "smaller" item provides moderate stimulation to the working memory and the prefrontal cortex, helping to maintain cognitive flexibility. It also serves as a fine motor skills exercise for the fingertips. This simple yet effective training helps preserve mental agility through daily practice.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="footer-links" style="margin-top: 20px;">
             <a href="privacy.html">Privacy Policy</a>
             <a href="contact.html">Contact</a>
         </div>

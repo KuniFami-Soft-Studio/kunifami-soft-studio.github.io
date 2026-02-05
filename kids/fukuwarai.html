@@ -15,7 +15,7 @@
     <title>Funny Face Maker / 究極！ふくわらい - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] 3〜5歳向け！パーツを自由に動かして面白い顔を作る無料知育ふくわらいゲーム。想像力と感性を養います。[EN] Free Funny Face Maker (Fukuwarai) for kids aged 3-5. Move parts to create hilarious faces. Encourages creativity and imagination.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,ふくわらい,おもちゃ,3歳,4歳,5歳,暇つぶし,Funny Face Maker,Fukuwarai,Educational Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Funny Face Maker / 究極！ふくわらい - 集中マスター Kids">
@@ -42,15 +42,18 @@
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             background: var(--bg);
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; margin: 0; overflow-y: auto; /* フッターリンク確認のため変更 */
+            min-height: 100vh; margin: 0; overflow-y: auto;
             touch-action: none;
         }
 
         /* Start Screen / スタート画面 */
+        #startScreen {
+            background: var(--bg); width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 0;
+        }
         .container {
             background: var(--card); padding: 30px; border-radius: 40px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; width: 85%; max-width: 450px;
-            border: 6px solid #fff; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5000;
+            border: 6px solid #fff; margin-top: 20px;
         }
 
         #gameScreen { display: none; width: 100%; height: 100vh; flex-direction: column; align-items: center; position: relative; }
@@ -123,6 +126,29 @@
         .btn-main { width: 80%; padding: 15px; background: #ff7043; color: #fff; border: none; border-radius: 35px; font-weight: 800; font-size: 1.1rem; cursor: pointer; box-shadow: 0 6px 0 #d84315; margin: 10px 0; }
         .btn-exit { position: absolute; top: 15px; right: 15px; padding: 8px 12px; background: #fff; border: 2px solid #ff7043; border-radius: 12px; color: #ff7043; font-weight: bold; z-index: 3000; font-size: 0.8rem;}
         
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 25px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         /* Footer Links for Compliance */
         .footer-links { margin: 10px 0; }
         .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
@@ -133,24 +159,66 @@
 </head>
 <body>
 
-<div class="container" id="startScreen">
-    <h1 style="margin-bottom: 5px;">Funny Face Maker / 究極！ふくわらい</h1>
-    <p style="margin-top: 0; color: #ff7043; font-weight: bold;">Ultimate Funny Face Maker</p>
-    
-    <div style="color:#666; margin: 20px 0; font-size: 0.9rem; line-height: 1.6;">
-        パーツを選んで、顔を作ろう！<br>
-        Pick parts and make a face!
-    </div>
+<div id="startScreen">
+    <div class="container">
+        <h1 style="margin-bottom: 5px;">Funny Face Maker / 究極！ふくわらい</h1>
+        <p style="margin-top: 0; color: #ff7043; font-weight: bold;">Ultimate Funny Face Maker</p>
+        
+        <div style="color:#666; margin: 20px 0; font-size: 0.9rem; line-height: 1.6;">
+            パーツを選んで、顔を作ろう！<br>
+            Pick parts and make a face!
+        </div>
 
-    <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
-    
-    <a href="./menu.html" class="link-back">← Back to Menu / メニューにもどる</a>
+        <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
+        
+        <a href="./menu.html" class="link-back">← Back to Menu / メメニューにもどる</a>
 
-    <div class="footer-links" style="margin-top: 20px;">
-        <a href="privacy.html">Privacy Policy / 規約</a>
-        <a href="contact.html">Contact / お問い合わせ</a>
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>目や口の配置を通じて、顔の構造理解と自由な創造性を育みます。<span class="lang-en">(Develops understanding of facial structures and fosters free creativity through placement of eyes and mouths.)</span></li>
+                <li><strong>シニアの方に：</strong>指先での細かな操作と、表情をデザインする創造的活動が脳の広範囲を刺激します。<span class="lang-en">(Simulates broad brain areas through fine motor control and creative expression design.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>感情表現の理解や、ICT端末を用いた巧緻性トレーニング教材としてご活用ください。<span class="lang-en">(Ideal as a tool for understanding emotional expression and fine motor skills training using ICT.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>この「究極！ふくわらい」は、幼児期の認知発達における「全体把握能力」と「構成的想像力」の向上を目的としています。バラバラの絵文字パーツをキャンバス上の適切な、あるいは意外な位置に配置するプロセスは、空間把握能力を養うと同時に、視覚的ユーモアを通じた情緒の発達を促します。
+                    また、パーツのサイズ変更（＋/ー）や反転（↔）機能の操作は、ICT機器特有の操作概念を学ぶ基礎となります。正解のない遊びの中で試行錯誤を繰り返すことは、自己肯定感を高め、「自分自身のアイデアを形にする」という非認知能力の育成にも寄与します。多種多様な絵文字に触れることで、視覚的識別能力も同時に高まります。</p>
+                    <hr class="hr-dashed">
+                    
+
+[Image of cognitive development milestones in early childhood]
+
+                    <p>This "Ultimate Fukuwarai" app is designed to enhance "holistic perception" and "constructive imagination" during early cognitive development. The process of arranging scattered emoji parts into appropriate—or intentionally humorous—positions on the canvas nurtures spatial awareness and emotional intelligence through visual humor. Operations like resizing and flipping components introduce foundational ICT concepts. Engaging in open-ended play fosters self-esteem and non-cognitive skills such as turning personal ideas into reality. Exposure to a diverse range of emojis also refines visual discrimination skills.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知機能維持に重要な「前頭前野の活性化」と「手指の巧緻性」の維持を目的としたデジタル・セラピーの側面を持っています。パーツを選択し、狙った位置までドラッグする一連の動作は、脳の指令を正確に指先に伝える手と目の協調性を鍛えます。
+                    さらに、「面白い表情を作る」という創造的な意図を持つ作業は、ワーキングメモリ（作業記憶）を刺激し、精神的なリフレッシュ（リラクゼーション）効果をもたらします。伝統的な「ふくわらい」という馴染みのある題材を最新のデバイスで体験することで、デジタルへの抵抗感を減らし、知的好奇心を刺激するポジティブな脳トレ習慣を提供します。</p>
+                    <hr class="hr-dashed">
+                    
+
+[Image of human brain anatomy prefrontal cortex]
+
+                    <p>This application serves as a digital therapy tool aimed at "prefrontal cortex activation" and maintaining "fine motor skills" essential for senior cognitive health. The sequence of selecting and dragging parts to specific locations exercises hand-eye coordination, ensuring neural commands are accurately translated to fingertip movements. Furthermore, the creative act of designing a "funny face" stimulates working memory and provides a refreshing, relaxing mental break. Experiencing the familiar traditional "Fukuwarai" game on modern devices reduces digital hesitation and provides a brain-training habit that sparks intellectual curiosity.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="footer-links" style="margin-top: 20px;">
+            <a href="privacy.html">Privacy Policy / 規約</a>
+            <a href="contact.html">Contact / お問い合わせ</a>
+        </div>
+        <div class="copyright">© 2026 KuniFami Soft Studio</div>
     </div>
-    <div class="copyright">© 2026 KuniFami Soft Studio</div>
 </div>
 
 <div id="gameScreen">

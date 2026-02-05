@@ -7,7 +7,7 @@
     <title>Finger Stamp / ゆびスタンプ - 3〜5歳向け無料知育アート</title>
     <meta name="description" content="[JP] 3〜5歳向け！指でタップして色とりどりのスタンプを楽しむ無料知育アート。色彩感覚と感性を養います。[EN] Free Finger Stamp art for kids aged 3-5. Tap with fingers to create colorful art. Perfect for developing color sense and creativity.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,ゆびスタンプ,お絵かき,3歳,4歳,5歳,暇つぶし,Finger Stamp,Kids Art,Educational Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Finger Stamp / ゆびスタンプ - 集中マスター Kids">
@@ -41,14 +41,13 @@
             font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
             color: #1565C0;
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-y: auto; /* フッター確認のためスクロールを許可 */
+            min-height: 100vh; overflow-y: auto;
         }
 
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
         .hidden { display: none !important; }
 
-        /* スタンプエリア */
         .stamp-canvas {
             position: relative;
             width: 100%;
@@ -62,7 +61,6 @@
             cursor: pointer;
         }
         
-        /* スタンプ自体のスタイル */
         .stamp {
             position: absolute;
             border-radius: 50%;
@@ -77,7 +75,6 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* カラーメニュー */
         .color-palette {
             display: flex; gap: 10px;
             margin: 15px 0; justify-content: center;
@@ -99,7 +96,29 @@
         }
         .btn-sub:active { transform: translateY(2px); box-shadow: 0 2px 0 #1E88E5; }
 
-        /* Footer for Reliability & AdSense Compliance */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; background: #fff; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-links { margin-top: 10px; }
         .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
@@ -122,6 +141,38 @@
         </div>
         <button onclick="showApp()" style="background:#FF8A65; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #E64A19; cursor:pointer;">あそぶ / PLAY</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>色彩感覚を養い、タップという動作を通じた自己表現の楽しさを学びます。<span class="lang-en">(Develops color sense and introduces the joy of self-expression through tapping.)</span></li>
+                <li><strong>シニアの方に：</strong>指先を動かす巧緻性トレーニングと、自由な創作による脳のリフレッシュに最適です。<span class="lang-en">(Ideal for manual dexterity training and refreshing the brain through creative art.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>ICTを活用した感性教育の導入教材として自由にご活用ください。<span class="lang-en">(Free to use as an introductory ICT tool for emotional and aesthetic education.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>この「ゆびスタンプ」は、幼児期の認知発達において重要な「目と手の協調（Eye-Hand Coordination）」と「色彩感覚」の育成を支援します。画面をタップした瞬間に色が広がる動的なフィードバックは、お子様の「原因と結果」の理解を助け、自発的な探求心を促します。
+                    また、キャンバスを自由に彩るプロセスは、正解のない「オープンエンドな遊び」であり、想像力や感性を育むとともに、自分の行動によって画面が変化する成功体験（自己効力感）の醸成に繋がります。指先を細かく使う動作は、後の筆記用具の保持などに必要な微細運動能力（Fine Motor Skills）の基礎を築きます。</p>
+                    <hr class="hr-dashed">
+                    <p>This "Finger Stamp" app supports the development of "Eye-Hand Coordination" and "color sense," both vital for early cognitive growth. The dynamic feedback—colors spreading the moment a finger touches the screen—helps children understand "cause and effect" and encourages spontaneous exploration. Furthermore, the process of freely coloring the canvas represents "open-ended play," fostering imagination and emotional intelligence. Experiencing the screen change through one's own actions builds self-efficacy. These fine motor movements also lay the foundation for the manual dexterity required for tasks such as holding writing utensils later in life.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の皆様の脳活性化とメンタルヘルス維持を目的としたデジタル・アート・セラピーの一助となります。特定の場所を狙って指先を動かす「巧緻性（こうちせい）」の維持は、脳の前頭前野を刺激し、認知機能の低下予防に寄与することが知られています。
+                    また、自由な色選びや配置を考える創造的活動は、日々のストレス解消やリフレッシュ（癒やし）の効果をもたらし、QOL（生活の質）の向上に繋がります。操作が極めてシンプルであるため、デジタル機器に不慣れな方でも達成感を得やすく、楽しみながら手指のトレーニングを継続できる設計となっています。</p>
+                    <hr class="hr-dashed">
+                    <p>This application serves as a digital art therapy tool aimed at brain activation and mental health maintenance for seniors. Engaging in manual dexterity exercises—targeting specific spots on the screen—stimulates the prefrontal cortex and helps prevent cognitive decline. Creative activities, such as choosing colors and planning layouts, provide stress relief and mental refreshment, contributing to an improved Quality of Life (QOL). The interface is extremely simple, allowing even those unfamiliar with digital devices to easily achieve a sense of accomplishment while consistently enjoying hand and finger exercises.</p>
+                </div>
+            </details>
+        </div>
         
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>

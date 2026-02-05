@@ -15,7 +15,7 @@ gtag('config', 'G-1V1ELMWFTY');
 <title>Memory Grid / ばしょをおぼえて！ - 子供向け瞬間記憶ゲーム</title>
 <meta name="description" content="[JP] 絵文字の場所を覚えて当てる知育ゲーム！2x2から7x7まで難易度を選べます。集中力と記憶力を鍛えよう。[EN] Memory Grid Game for Kids! Remember where the emojis are and find the target. Develops memory and focus skills.">
 <meta name="keywords" content="知育ゲーム,子供向け,無料,記憶ゲーム,神経衰弱,3歳,4歳,5歳,Memory Game,Educational Games">
-<meta name="author" content="KuniFami Soft Studio">
+<meta name="author" content="kunifami" >
 <meta name="robots" content="index, follow">
 
 <meta property="og:title" content="Memory Grid - ばしょをおぼえて！">
@@ -32,7 +32,7 @@ gtag('config', 'G-1V1ELMWFTY');
     body {
         font-family: "Hiragino Sans", "Meiryo", sans-serif;
         background: var(--bg); margin: 0; overflow-y: auto;
-        display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh;
         color: var(--text); touch-action: manipulation;
     }
     
@@ -71,6 +71,29 @@ gtag('config', 'G-1V1ELMWFTY');
         background: var(--accent); color: white; border-color: var(--accent);
     }
 
+    /* --- アコーディオン・ガイド設定 --- */
+    .usage-guide {
+        margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+        background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+    }
+    .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+    .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+    .usage-guide li { margin-bottom: 5px; }
+    .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+    .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+    details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+    summary {
+        padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+        list-style: none; display: flex; justify-content: space-between; align-items: center;
+        font-size: 0.85rem;
+    }
+    summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+    details[open] summary::after { content: '▲'; }
+    .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+    .guide-content p { margin: 0 0 10px 0; }
+    .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
     /* --- Game Screen --- */
     #gameScreen { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: env(safe-area-inset-top); }
 
@@ -98,7 +121,6 @@ gtag('config', 'G-1V1ELMWFTY');
     .card {
         aspect-ratio: 1; position: relative; perspective: 1000px; cursor: pointer;
         -webkit-tap-highlight-color: transparent;
-        /* フォントサイズはJSで制御 */
     }
     .card-inner {
         position: relative; width: 100%; height: 100%; text-align: center;
@@ -128,6 +150,7 @@ gtag('config', 'G-1V1ELMWFTY');
 
     /* --- Footer --- */
     .footer-nav { margin-top: 25px; text-align: center; width: 100%; }
+    .footer-links { margin-bottom: 10px; }
     .footer-links a { color: #999; text-decoration: none; font-size: 12px; margin: 0 10px; }
     .footer-copyright { font-size: 0.7rem; color: #ccc; margin-top: 5px; }
 
@@ -159,8 +182,7 @@ gtag('config', 'G-1V1ELMWFTY');
 
     <div class="settings-group">
         <span class="settings-label" id="labelSize">1. おおきさ (Size)</span>
-        <div class="btn-row" id="sizeButtons">
-            </div>
+        <div class="btn-row" id="sizeButtons"></div>
     </div>
 
     <div class="settings-group">
@@ -175,6 +197,40 @@ gtag('config', 'G-1V1ELMWFTY');
 
     <button class="btn-main" onclick="startGame()" id="btnStart">スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:20px; color:#aaa; text-decoration:none; font-size:0.9rem;" id="btnBack">← もどる</a>
+
+    <div class="usage-guide">
+    <p>【ご利用ガイド / Usage Guide】</p>
+    <ul>
+    <li><strong>お子様に：</strong>絵文字の配置を短時間で記憶することで、視覚的短期記憶と集中力を楽しく養います。<span class="lang-en">(Nurtures visual short-term memory and concentration by memorizing emoji layouts.)</span></li>
+    <li><strong>シニアの方に：</strong>ランダムな配置を想起するプロセスが、前頭前野の活性化と脳の若返りをサポートします。<span class="lang-en">(Supports prefrontal cortex activation and cognitive rejuvenation through visual recall.)</span></li>
+    <li><strong>教育関係者の皆様へ：</strong>アダプティブな難易度設定（2x2〜7x7）により、発達段階に合わせた記憶訓練が可能です。<span class="lang-en">(Enables developmental memory training with adaptive grid sizes from 2x2 to 7x7.)</span></li>
+    </ul>
+    </div>
+    
+    <div class="guide-container">
+    <details>
+    <summary>【保護者向け：知育の目的】 / For Parents</summary>
+    <div class="guide-content">
+    <p><strong>Educational Goal （知育の目的）</strong></p>
+    <p>この「Memory Grid」は、幼児期の認知発達において極めて重要な「作業記憶（ワーキングメモリ）」と「視空間認知能力」の向上を主眼に置いています。制限時間内にグリッド全体の配置をスキャニングし、それを脳内で一時的に保持したまま、特定のターゲットを検索するプロセスは、脳の最高中枢である「前頭前野」を強力に刺激します。
+    
+    また、正解時の即時的な音声フィードバックと視覚的な報酬は、学習に対する自己肯定感を育みます。7x7までの多段階の難易度設定（スキャフォールディング）により、お子様の「もう少しでできそう」という意欲を引き出し、粘り強く取り組む力を養います。日英併記のインターフェースは、語彙獲得の副次的効果も提供します。</p>
+    <hr class="hr-dashed">
+    <p>This "Memory Grid" focuses on enhancing "Working Memory" and "Visuospatial Cognition," critical components of early childhood development. The process of scanning grid layouts within a time limit and mentally maintaining that information while searching for a target stimulates the prefrontal cortex. Adaptive scaffolding through various grid sizes (up to 7x7) encourages persistence and builds self-esteem through immediate feedback. The bilingual interface also supports secondary language acquisition.</p>
+    </div>
+    </details>
+    <details>
+    <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+    <div class="guide-content">
+    <p><strong>App Goal （アプリの目的）</strong></p>
+    <p>本アプリは、シニア世代の認知機能の維持と健康寿命の延伸を目的とした「デジタル脳トレ」です。加齢とともに低下しやすいとされる「流動性知能」の中でも、特に情報の保持と操作を司るワーキングメモリを鍛えることに特化しています。
+    
+    不規則に並ぶ多彩な絵文字の中からターゲットを見つけ出す作業は「選択的注意」を刺激し、脳全体の覚醒レベルを高めます。また、グリッドサイズや表示時間を細かく調整できるため、過度なストレスを感じることなく、個々のペースに合わせた「巧緻性」と「情報処理能力」の維持が可能です。シンプルながらも飽きのこない100種類以上の絵文字データにより、楽しみながら毎日の脳の健康習慣を継続いただけます。</p>
+    <hr class="hr-dashed">
+    <p>This application serves as a digital brain training tool aimed at maintaining cognitive function and extending healthy lifespan for seniors. It specifically targets "Fluid Intelligence," focusing on the maintenance and manipulation of information in working memory. Searching for targets among randomized emojis stimulates selective attention and overall mental alertness. Adjustable grid sizes and durations allow for stress-free use tailored to individual needs, promoting brain health through daily, enjoyable mental exercises.</p>
+    </div>
+    </details>
+    </div>
 
     <footer class="footer-nav">
         <div class="footer-links">

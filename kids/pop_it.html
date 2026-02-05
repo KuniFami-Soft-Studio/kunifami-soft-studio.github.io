@@ -18,7 +18,7 @@
     <title>ポップイット / Pop It Toy - 3〜5歳向け無料知育アプリ</title>
     <meta name="description" content="[JP] ポコポコおしてあそぼう！ストレス解消にも最適な子供向け無料ポップイットアプリ。指先の感覚を養います。[EN] Free Pop It toy app for kids aged 3-5. Tap and pop colorful bubbles! Perfect for sensory play and stress relief.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,ポップイット,指先遊び,Pop It,Educational Games,Sensory Play">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="ポップイット / Pop It Toy - 集中マスター Kids">
@@ -34,7 +34,7 @@
             margin: 0; padding: 0; background-color: var(--bg-color); 
             font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
             color: #880E4F; display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; overflow: hidden;
+            min-height: 100vh; overflow-y: auto;
         }
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -61,13 +61,35 @@
             border-radius: 50%; background: rgba(0,0,0,0.1);
         }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .btn-sub { 
             width: 100%; background: var(--toy-pink); color: white; border: none; 
             padding: 16px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; 
             box-shadow: 0 5px 0 #AD1457; cursor: pointer; margin-top: 20px;
         }
         
-        /* 信頼性向上用リンク */
         .footer-links { margin-top: 20px; }
         .footer-links a { color: #AD1457; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
@@ -90,8 +112,42 @@
         </div>
         <button onclick="showApp()" style="background:#F06292; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #C2185B; cursor:pointer;">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>指先の微細な動き（巧緻性）を養い、心地よい刺激で感覚統合をサポートします。<span class="lang-en">(Nurtures fine motor skills and supports sensory integration through tactile feedback.)</span></li>
+                <li><strong>シニアの方に：</strong>指を動かす反復動作が前頭前野を刺激し、ストレス緩和と脳の活性化を促します。<span class="lang-en">(Stimulates the prefrontal cortex through repetitive motion, aiding stress relief and brain activation.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>「原因と結果」を直感的に学べる多感覚フィードバック教材としてご活用ください。<span class="lang-en">(A multisensory tool for learning cause-and-effect through intuitive interaction.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>このアプリは、幼児期の認知発達において重要な「感覚運動遊び」をデジタルで再現しています。
+                    
+                    画面上のバブルを一つずつ正確に押し込む動作は、目と手の協調性（視覚運動統合）を養い、筆記などの将来的な学習に必要な手指の「巧緻性」の基礎を築きます。また、タップした瞬間に鳴る「音（聴覚）」と「沈む視覚効果」は、脳の報酬系を刺激し、自分の行動が環境に影響を与えるという「自己効力感」を育みます。全バブルがリセットされる仕組みにより、最後までやり遂げる「持続的注意力」と達成感の獲得を促します。</p>
+                    <hr class="hr-dashed">
+                    <p>This application digitally recreates "sensorimotor play," crucial for early childhood cognitive development. Precisely popping each bubble fosters hand-eye coordination (visuomotor integration) and builds the manual dexterity necessary for later skills like writing. The simultaneous auditory and visual feedback stimulates the brain's reward system, fostering "self-efficacy"—the understanding that one's actions produce results. The reset mechanism encourages task persistence and provides a sense of accomplishment upon completion.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知機能維持とメンタルヘルスをサポートする「デジタル・フィジェット・セラピー」としての側面を持っています。
+                    
+                    指先を細かく動かす動作は、脳の最高中枢である「前頭前野」への血流を促進し、ワーキングメモリの維持に貢献します。物理的なポップイットと同様に、リズムよくバブルを消していく動作には「タクタイル・ストレス解消」の効果があり、日々の不安やストレスを軽減させ、精神的なリフレッシュ（QOLの向上）に寄与します。直感的なインターフェースにより、デジタルデバイスへの抵抗感を軽減しながら、楽しみつつ脳の活性化を習慣化できる設計となっています。</p>
+                    <hr class="hr-dashed">
+                    <p>This app serves as "digital fidget therapy" to support cognitive function and mental well-being for seniors. Fine motor fingertip movements promote blood flow to the prefrontal cortex, aiding in the preservation of working memory. Similar to physical fidget toys, the rhythmic popping action provides tactile stress relief, reducing daily anxiety and improving Quality of Life (QOL). Its intuitive interface reduces digital hesitation, allowing users to easily adopt a fun and engaging brain activation habit.</p>
+                </div>
+            </details>
+        </div>
         
-        <div class="footer-links">
+        <div class="footer-links" style="margin-top: 25px;">
             <a href="privacy.html">Privacy Policy / 規約</a>
             <a href="contact.html">Contact / お問い合わせ</a>
         </div>

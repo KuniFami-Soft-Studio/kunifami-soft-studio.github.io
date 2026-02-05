@@ -17,7 +17,7 @@
     <title>しんけいすいじゃく / Memory Game - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] かわいい動物のカードで神経衰弱！3〜5歳のお子様が遊びながら記憶力を養える無料知育ゲームです。[EN] A classic memory match game with cute animals! A free educational game for kids aged 3-5 to develop memory skills.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,神経衰弱,記憶力,Educational Games,Memory Game,Card Game">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="しんけいすいじゃく - 集中マスター Kids">
@@ -33,19 +33,20 @@
             margin: 0; padding: 0; background: var(--bg);
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             display: flex; flex-direction: column; align-items: center; height: 100vh;
-            overflow: hidden;
+            overflow-y: auto; /* ガイド閲覧のためにスクロールを許可 */
         }
 
         /* --- スタート画面 --- */
         #startScreen {
-            position: fixed; inset: 0; z-index: 5000;
+            position: relative; width: 100%; min-height: 100vh;
             background: linear-gradient(135deg, #E1BEE7 0%, #9C27B0 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
             padding: 20px;
         }
         .start-card {
             background: white; padding: 30px; border-radius: 40px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15); width: 100%; max-width: 400px; text-align: center;
+            margin-top: 20px;
         }
         
         .level-grid {
@@ -58,11 +59,34 @@
         }
         .btn-level:active { transform: translateY(4px); box-shadow: none; }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         /* --- メイン画面 --- */
         #gameScreen { 
-            display: none; width: 100%; height: 100%; 
+            display: none; position: fixed; inset: 0; width: 100%; height: 100%; 
             flex-direction: column; align-items: center; justify-content: space-between;
-            padding: 10px; 
+            padding: 10px; z-index: 6000; background: var(--bg);
         }
         
         #cardGrid {
@@ -97,11 +121,9 @@
             position: absolute; top: 40%; z-index: 100;
         }
 
-        /* 信頼性向上用リンク */
         .footer-links { margin-top: 15px; border-top: 1px dotted #ccc; padding-top: 10px; width: 100%; }
         .footer-links a { color: var(--main); text-decoration: none; font-size: 0.75rem; margin: 0 10px; font-weight: bold; }
         
-        /* --- 広告・フッター --- */
         .ad-bottom { width: 100%; text-align: center; background: #fff; padding-top: 5px; }
         .copyright { font-size: 0.6rem; color: #999; padding: 5px; }
     </style>
@@ -122,6 +144,42 @@
         </div>
 
         <a href="./menu.html" style="display:block; margin-top:10px; color:#aaa; text-decoration:none; font-size:0.9rem;">← もどる / Back</a>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>カードの位置と絵を一致させる遊びを通じて、短期記憶と集中力を楽しく養います。<span class="lang-en">(Develops short-term memory and concentration by matching card locations and images.)</span></li>
+                <li><strong>シニアの方に：</strong>情報の保持と照合を繰り返す作業が、前頭前野の活性化とワーキングメモリの維持を助けます。<span class="lang-en">(Stimulates the prefrontal cortex and maintains working memory through repeated information matching.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>アダプティブな難易度設定により、発達段階に合わせた記憶訓練教材として活用いただけます。<span class="lang-en">(Adaptive difficulty levels make it suitable for memory training across various developmental stages.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>この「しんけいすいじゃく」は、幼児期の認知発達において極めて重要な「作業記憶（ワーキングメモリ）」と「視空間認知」の向上を目的としています。
+                    
+                    裏返されたカードの中から特定の絵柄を想起し、その位置を正確に特定するプロセスは、脳の最高中枢である「前頭前野」を強力に刺激します。
+                    2×2の基本レベルから4×6の応用レベルまで段階的に認知的負荷（認知的負荷理論）を高めることで、お子様の成功体験を積み重ね、粘り強く取り組む力（非認知能力）や自己肯定感を育みます。また、多彩な動物の絵文字に触れることは、語彙獲得の基盤となる視覚的識別のトレーニングにも繋がります。</p>
+                    <hr class="hr-dashed">
+                    <p>This "Memory Game" aims to enhance "Working Memory" and "Visuospatial Cognition," critical components of early childhood development. The process of recalling specific images and their locations from inverted cards stimulates the prefrontal cortex. By gradually increasing the cognitive load from 2×2 to 4×6, children build persistence, self-esteem, and non-cognitive skills. Exposure to diverse animal emojis also refines visual discrimination skills necessary for vocabulary acquisition.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の皆様の「脳の健康維持」と「認知機能の活性化」を目的としたデジタル脳トレとして機能します。
+                    
+                    神経衰弱という馴染み深いルールでありながら、動的に変化するカード配置を記憶し続ける作業は、情報の保持と操作を司るワーキングメモリを鍛え、加齢に伴い低下しやすい「流動性知能」の維持に貢献します。
+                    指先を使って画面上のカードを選択する動作（巧緻性）に加え、正解した際の視覚的な報酬演出は、脳内のドーパミン放出を促し、精神的なリフレッシュ（QOLの向上）にも寄与します。直感的な操作性により、デジタルデバイスへの抵抗感を軽減しながら、楽しみつつ認知症予防を習慣化できる設計となっています。</p>
+                    <hr class="hr-dashed">
+                    <p>This app serves as a digital brain training tool for maintaining cognitive health in seniors. Memorizing dynamic card arrangements exercises working memory and helps preserve "fluid intelligence," which typically declines with age. The combination of manual dexterity (tapping cards) and visual rewards promotes dopamine release and mental well-being. Its intuitive interface reduces digital hesitation, making it an ideal habit for dementia prevention and overall Quality of Life improvement.</p>
+                </div>
+            </details>
+        </div>
         
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>
@@ -146,7 +204,7 @@
 </div>
 
 <script>
-    const allEmojis = ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🐔','🐧','🐦','🐤','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🕷','🦂','🐢','🐍','🦎','🦖','🦕','🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊','🐅','🐆','🦓','🦍','🦧','🐘','🦛','🦏','🐪','🐫','🦒','🦘','🐃','🐂','🐄','🐎','🐖','🐏','🐑','🐐','🦌','🐕','🐩','🐈','🐓','🦃','🦚','🦜','🦢','🦩','🕊','🐇','🦝','🦨','🦡','🦦','🦥','🐁','🐀','🐿','🦔'];
+    const allEmojis = ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🐔','🐧','🐦','🐤','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🕷','蠍','🐢','🐍','🦎','🦖','🦕','🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊','🐅','🐆','🦓','🦍','🦧','🐘','🦛','🦏','🐪','🐫','🦒','🦘','🐃','🐂','🐄','🐎','🐖','🐏','🐑','🐐','🦌','🐕','🐩','🐈','🐓','🦃','🦚','🦜','🦢','🦩','🕊','🐇','🦝','🦨','🦡','🦦','🦥','🐁','🐀','🐿','🦔'];
     let flippedCards = [];
     let isProcessing = false;
     let totalPairs = 0;

@@ -18,7 +18,7 @@
     <title>Fruit Tap Battle / キラキラフルーツ争奪戦 - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] 3〜5歳向け！流れてくるフルーツをタップして集める無料知育アクションゲーム。最大3人で対戦プレイが可能です。[EN] Free Fruit Tap Battle for kids aged 3-5. Tap the falling fruits to score. Support for up to 3 players. Develops concentration and reflexes.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,フルーツ争奪戦,対戦ゲーム,3歳,4歳,5歳,暇つぶし,Fruit Tap Battle,Educational Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Fruit Tap Battle / キラキラフルーツ争奪戦 - 集中マスター Kids">
@@ -54,7 +54,7 @@
         h1 { font-size: 1.5rem; color: #ff5252; margin: 0; }
         .sub-title { font-size: 0.9rem; color: #999; margin-bottom: 15px; }
 
-        .mode-select { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
+        .mode-select { margin-bottom: 20px; display: flex; justify(content): center; gap: 10px; }
         .mode-btn {
             padding: 10px 15px; border-radius: 15px; border: 2px solid #eee;
             background: #f8f9fa; cursor: pointer; font-weight: bold; font-size: 0.9rem;
@@ -81,6 +81,29 @@
         .btn-main { width: 100%; padding: 18px; background: var(--accent); color: #856404; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #fcc419; }
         .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #fcc419; }
         .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: rgba(255,255,255,0.2); color: white; border: 2px solid white; border-radius: 12px; cursor: pointer; z-index: 150; }
+
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
 
         /* Reliability & AdSense Compliance */
         .footer-links { margin: 15px 0; }
@@ -113,6 +136,41 @@
 
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+
+    <div class="usage-guide">
+        <p>【ご利用ガイド / Usage Guide】</p>
+        <ul>
+        <li><strong>お子様に：</strong>流れる標的を捉えることで、動体視力と瞬発的な判断力を楽しく養います。<span class="lang-en">(Enhances dynamic visual acuity and rapid decision-making by tracking moving targets.)</span></li>
+        <li><strong>シニアの方に：</strong>指定された色を瞬時に選別する動作が、選択的注意と脳の活性化を強力にサポートします。<span class="lang-en">(Supports selective attention and brain activation through instantaneous color discrimination.)</span></li>
+        <li><strong>教育関係者の皆様へ：</strong>多人数同時プレイを活用した、社会性と共同作業の導入教材としてご活用ください。<span class="lang-en">(Ideal as a social learning resource utilizing simultaneous multi-player interaction.)</span></li>
+        </ul>
+    </div>
+    <div class="guide-container">
+        <details>
+        <summary>【保護者向け：知育の目的】 / For Parents</summary>
+        <div class="guide-content">
+        <p><strong>Educational Goal （知育の目的）</strong></p>
+        <p>本アプリは、幼児期の認知発達において重要な「選択的注意（Selective Attention）」と「視覚運動統合（Visuomotor Integration）」の向上を目的として設計されています。
+        画面上を不規則な速度で流下する多様なフルーツの中から、自分に割り当てられた特定のターゲット（例：赤の🍎）のみを瞬時に判別し、正確に指を動かすプロセスは、脳内での情報フィルタリング能力を強力に鍛えます。
+        
+        また、最大3人までの同時プレイ機能は、単なる反射神経の訓練に留まらず、他者の動きを意識しながら自分の目的を果たすという、社会的な相互作用や抑制機能（インヒビション）の育成にも寄与します。「30点先取」という明確な数値目標は、数理的思考の基礎となる達成感と自己肯定感の醸成をサポートします。</p>
+        <hr class="hr-dashed">
+        <p>This application is designed to enhance "Selective Attention" and "Visuomotor Integration," which are vital for early cognitive development. The process of identifying a specific target (e.g., a red apple) from a stream of falling fruits and executing a precise motor response trains the brain's information filtering capabilities. Furthermore, the support for up to three players fosters social interaction and inhibitory control as children learn to navigate personal goals within a communal space. The "30-point goal" provides a clear numerical milestone, fostering self-esteem and foundational mathematical achievement.</p>
+        </div>
+        </details>
+        <details>
+        <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+        <div class="guide-content">
+        <p><strong>App Goal （アプリの目的）</strong></p>
+        <p>本アプリは、シニア世代の皆様の「認知機能の若返り」と「手と目の協調性維持」を目的としたデジタル・脳トレとして機能します。
+        浮遊するオブジェクトを追い、特定の標的のみをタップする動作は、脳の前頭前野を刺激し、ワーキングメモリ（作業記憶）と注意力（Attention）を同時に鍛える効果が期待できます。
+        
+        指先を素早く動かす「巧緻性（こうちせい）」のトレーニングは、脳への血流を促進し、加齢に伴う反応速度の低下を予防する手助けとなります。マルチプレイヤー機能をご家族やお孫さんと共に楽しむことで、世代間交流を通じた精神的なリフレッシュ（QOLの向上）にも繋がり、孤立の防止と情緒的な充足感を提供します。シンプルながらも動的な難易度変化が脳に適度な負荷を与え、楽しみながら継続できる健康習慣を提供します。</p>
+        <hr class="hr-dashed">
+        <p>This app serves as a digital brain training tool for seniors aimed at "cognitive rejuvenation" and maintaining "hand-eye coordination." Tracking and tapping specific targets stimulates the prefrontal cortex, exercising working memory and attention. Fine motor fingertip exercises promote cerebral blood flow and help mitigate the decline of reaction speeds associated with aging. Engaging in multiplayer modes with family members encourages intergenerational communication, providing emotional fulfillment and improving Quality of Life (QOL). The dynamic nature of the game provides an optimal cognitive load, making it a sustainable and enjoyable health habit.</p>
+        </div>
+        </details>
+    </div>
     
     <div class="footer-links">
         <a href="privacy.html">Privacy Policy / 規約</a>

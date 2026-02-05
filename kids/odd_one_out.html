@@ -18,7 +18,7 @@
     <title>なかまはずれ探し / Find the Odd One Out - 3〜5歳向け無料知育アプリ</title>
     <meta name="description" content="[JP] 4つの絵から1つだけ違うものを探そう！3〜5歳向けの無料知育ゲーム。集中力と観察力を育みます。[EN] Find the odd one out from four pictures. Free educational game for kids aged 3-5. Perfect for developing observation skills.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,なかまはずれ,観察力,Find the Odd One Out,Educational Games,Toddler Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="なかまはずれ探し / Find the Odd One Out - 集中マスター Kids">
@@ -50,7 +50,7 @@
         .choice-btn {
             aspect-ratio: 1/1; background: #FFFDE7; border: 4px solid #FFECB3;
             border-radius: 25px; font-size: 3.5rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify(content): center;
             transition: transform 0.1s, background 0.2s;
         }
         .choice-btn:active { transform: scale(0.95); background: #FFF9C4; }
@@ -61,13 +61,34 @@
             box-shadow: 0 5px 0 #EF6C00; cursor: pointer; margin-top: 10px;
         }
         
-        /* 信頼性向上用リンク */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+        margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+        background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-links { margin-top: 15px; }
         .footer-links a { color: #A57D00; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
         .copyright { font-size: 0.7rem; color: #999; margin: 10px 0; font-weight: bold; }
 
-        /* 正解時のアニメーション */
         @keyframes success { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         .correct-anim { animation: success 0.5s ease; border-color: #4CAF50 !important; }
     </style>
@@ -88,7 +109,41 @@
         </div>
         <button onclick="showApp()" style="background:#FF9800; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #E65100;">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back</a>
-        
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>「カテゴリー（共通の属性）」を認識し、論理的に「仲間外れ」を特定する思考力を養います。<span class="lang-en">(Nurtures logical thinking by identifying the "Odd One Out" based on category recognition.)</span></li>
+                <li><strong>シニアの方に：</strong>物事の共通点と相違点を瞬時に判別する動作が、認知機能の柔軟性と注意力の維持に役立ちます。<span class="lang-en">(Helps maintain cognitive flexibility and attention by distinguishing similarities and differences.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>「集合」の概念を学ぶための視覚的補助教材として、自由にご活用いただけます。<span class="lang-en">(Ideal as a visual aid for teaching the concept of "Sets" and classification.)</span></li>
+            </ul>
+        </div>
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>このアプリは、幼児期の認知発達において極めて重要な「抽象概念の獲得」と「視覚的識別力」の向上を目的として設計されています。
+                    
+                    単に絵を比べるだけでなく、「これは食べ物」「これは乗り物」といった上位概念（カテゴリー）を脳内で整理し、そこから逸脱した要素（なかまはずれ）を特定するプロセスは、論理的思考（数理的思考）の土台となります。
+                    内部プログラムでは「くだもの」「どうぶつ」「あかいもの」といった多様な切り口で問題が自動生成され、お子様の多角的な視点を養います。正解時のハプティクス（振動）とアニメーションによる即時フィードバックは自己肯定感を高め、学習に対する自発的な意欲を引き出します。</p>
+                    <hr class="hr-dashed">
+                    <p>This application is engineered to enhance the "acquisition of abstract concepts" and "visual discrimination skills," which are vital for early cognitive growth. The process of organizing superordinate categories (e.g., "Food" or "Vehicles") to identify deviant elements forms the neurological basis for logical and mathematical thinking. The algorithmic generation of quizzes across various attributes—such as species, color, or usage—fosters multifaceted perspectives. Immediate feedback via haptics and animations reinforces self-esteem and encourages autonomous learning.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の皆様の「脳の活性化」と「情報のスキャニング能力」の維持を目的としたデジタル脳トレです。
+                    
+                    複数の情報の中から異質なものを瞬時に見つけ出す作業は、脳の司令塔である「前頭前野」を刺激し、ワーキングメモリ（作業記憶）を働かせます。加齢とともに低下しがちな「選択的注意（必要な情報だけを選び取る力）」を鍛えることで、日常生活における判断力の維持をサポートします。
+                    指先を正確に動かしてタップする「巧緻性（こうちせい）」のトレーニングに加え、クイズ形式の適度な緊張感と達成感は、精神的なリフレッシュ（QOLの向上）にも寄与します。シンプルながらも飽きのこない設計で、毎日の健康習慣として最適です。</p>
+                    <hr class="hr-dashed">
+                    <p>This app serves as a digital brain training tool aimed at "brain activation" and maintaining "visual scanning abilities" for seniors. Identifying deviants within a data set stimulates the prefrontal cortex and engages working memory. By strengthening "Selective Attention"—the ability to filter necessary information—it supports the preservation of judgment skills required in daily life. Combined with fine motor dexterity exercises (tapping), the psychological boost from problem-solving contributes to overall Quality of Life. It is designed as an accessible, sustainable health habit.</p>
+                </div>
+            </details>
+        </div>
         <div class="footer-links" style="margin-top: 25px;">
             <a href="privacy.html">Privacy Policy / 規約</a>
             <a href="contact.html">Contact / お問い合わせ</a>

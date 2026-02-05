@@ -7,11 +7,10 @@
     <title>むし捕り / Bug Catching - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] 3〜5歳向け！タップで楽しむ無料のむし捕りゲーム。インストール不要で今すぐ遊べます。[EN] Free bug catching game for kids aged 3-5. No installation required. Play for free in your browser.">
     <meta name="keywords" content="知育ゲーム,子供向け,無料,むし捕り,3歳,4歳,5歳,暇つぶし,Bug Catching Game,Free Kids Games">
-    <meta name="author" content="KuniFami Soft Studio">
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="むし捕り / Bug Catching - 集中マスター Kids">
-    <meta property="og:description" content="10ぴき つかまえられるかな？ 楽しく遊べる知育ゲーム。">
+    <meta property="og:description" content="10ぴき つかまえられるかな？ 楽しく遊べる知育ゲーム.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kunifami-soft-studio.com/kids/bug_catch.html">
     <meta name="twitter:card" content="summary">
@@ -34,7 +33,7 @@
             margin: 0; padding: 0; background-color: var(--sky-blue); 
             font-family: 'Hiragino Kaku Gothic ProN', sans-serif; 
             color: #33691E; display: flex; flex-direction: column; align-items: center; 
-            min-height: 100vh; overflow-y: auto; /* フッターが見えるようスクロールを許可 */
+            min-height: 100vh; overflow-y: auto;
         }
         .container { width: 92%; max-width: 420px; margin: 15px auto; text-align: center; }
         .screen { width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -71,7 +70,6 @@
             font-size: 1.2rem; display: flex; justify-content: center; gap: 10px;
         }
 
-        /* ゴール画面 */
         #goalScreen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.9); z-index: 100;
@@ -86,7 +84,29 @@
             box-shadow: 0 5px 0 #33691E; cursor: pointer; margin-top: 10px;
         }
 
-        /* Footer for AdSense Compliance */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 25px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 15px; border-radius: 15px; border: 1px solid #ffcc80;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 8px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; }
+        details { margin-bottom: 12px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; background: #fff; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-nav {
             margin-top: 30px; padding-bottom: 30px; text-align: center; width: 100%;
         }
@@ -111,7 +131,39 @@
             </p>
         </div>
         <button onclick="showApp()" style="background:#689F38; color:white; border:none; padding:20px; border-radius:50px; font-size:1.5rem; font-weight:bold; width:100%; box-shadow:0 6px 0 #33691E;">はじめる / START</button>
-        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back  </a>
+        <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる / Back </a>
+        
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>不規則に動く虫を追うことで、集中力と手と目の協調性を楽しく養います。<span class="lang-en">(Enhances concentration and hand-eye coordination by tracking moving targets.)</span></li>
+                <li><strong>シニアの方に：</strong>素早い視覚判断とタップ動作により、反応速度の維持と前頭前野の活性化を促します。<span class="lang-en">(Maintains reaction speed and stimulates the prefrontal cortex through rapid visual judgment.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>インストール不要で、情報端末を用いた「巧緻性トレーニング」としてご活用ください。<span class="lang-en">(Ideal as a browser-based fine motor skills training resource.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>本アプリは、幼児期の認知発達において重要な「選択的注意」と「視覚的識別」の向上を目的として設計されています。画面上の多様な位置に出現するターゲット（虫）を素早く認識し、それが消える前に正確に指先を動かすプロセスは、脳内での視覚情報処理と運動出力を統合する「手と目の協調性」を強力に育みます。
+                    また、ターゲットによって出現時間が異なる（例：🦋は1.8秒、🪲は1.0秒）設定は、お子様のワーキングメモリと予測能力を刺激します。「10匹捕まえる」という明確なゴール設定は、成功体験を積み重ねることで自己肯定感を高め、持続的な集中力を養う数理的思考の基礎となります。</p>
+                    <hr class="hr-dashed">
+                    <p>This application is designed to enhance "selective attention" and "visual discrimination" during early childhood. The process of recognizing bug targets appearing at random and coordinating finger movements before they disappear fosters critical "hand-eye coordination." The varying display times for each target (e.g., 1.8s for butterflies, 1.0s for beetles) stimulate working memory and anticipatory skills. Achieving the "catch 10 bugs" goal provides a sense of accomplishment, building self-esteem while nurturing sustained focus—a cornerstone of logical and mathematical thinking.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>シニア世代の皆様にとって、本アプリは「脳の若返り」を目指すデジタル・リハビリテーションの一環として機能します。加齢とともに低下しがちな「動体視力」と「反応速度」を、ゲーム感覚で維持・向上させることが可能です。
+                    虫の種類（🪲など）に応じて素早く反応を変える必要性は、脳の前頭前野を刺激し、判断力や実行機能を鍛えます。また、指先を用いた巧緻性トレーニングは、脳への血流を促進し、認知機能の低下予防に寄与することが知られています。シンプルながらも、動く標的を追い続ける視覚的スキャニング動作は、日常生活における視野の確保や転倒防止に繋がる身体能力の維持にも役立ちます。</p>
+                    <hr class="hr-dashed">
+                    <p>For seniors, this app serves as a digital rehabilitation tool for "brain rejuvenation." It helps maintain and improve "dynamic visual acuity" and "reaction speed," which often decline with age. Adjusting responses based on the bug type (e.g., rapid beetles) stimulates the prefrontal cortex, enhancing judgment and executive functions. Fine motor exercises via finger tapping are known to promote cerebral blood flow and aid in preventing cognitive decline. Furthermore, the visual scanning required to track moving targets supports peripheral vision and spatial awareness, essential for daily safety and fall prevention.</p>
+                </div>
+            </details>
+        </div>
         
         <footer class="footer-nav">
             <div class="footer-links">
@@ -230,10 +282,12 @@
 
     function showEffect(x, y, char) {
         const effect = document.createElement('div');
+        const xOffset = x; 
+        const yOffset = y;
         effect.className = 'catch-effect';
         effect.innerText = char;
-        effect.style.left = x + 'px';
-        effect.style.top = y + 'px';
+        effect.style.left = xOffset + 'px';
+        effect.style.top = yOffset + 'px';
         gameArea.appendChild(effect);
         setTimeout(() => effect.remove(), 600);
     }

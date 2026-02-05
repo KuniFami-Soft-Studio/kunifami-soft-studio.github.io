@@ -17,7 +17,7 @@
     <title>シンメトリーお絵描き / Symmetry Drawing - 無料知育アプリ</title>
     <meta name="description" content="[JP] 左右対称や4分割の魔法のようなお絵描き体験！お子様の創造力と図形感覚を養う無料知育ゲームです。[EN] Experience the magic of symmetry and 4-way mirrored drawing! A free educational game to develop creativity and spatial awareness for kids.">
     <meta name="keywords" content="知育ゲーム,お絵描き,シンメトリー,左右対称,無料,子供向け,Educational Games,Drawing App,Symmetry">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="シンメトリーお絵描き / Symmetry Drawing">
@@ -40,7 +40,7 @@
             font-family: sans-serif;
             color: #4527A0;
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-x: hidden;
+            min-height: 100vh; overflow-y: auto;
         }
 
         .container { width: 92%; max-width: 420px; margin: 10px auto; text-align: center; }
@@ -105,6 +105,29 @@
             padding: 12px; border-radius: 15px; font-weight: bold; font-size: 0.8rem;
         }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; background: white; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         /* 信頼性向上用リンク */
         .footer-links { margin-top: 15px; border-top: 1px dotted #ccc; padding-top: 10px; width: 100%; }
         .footer-links a { color: var(--main-purple); text-decoration: none; font-size: 0.75rem; margin: 0 10px; font-weight: bold; }
@@ -129,6 +152,40 @@
         <button onclick="showApp()" style="background:var(--main-purple); color:white; border:none; padding:20px; border-radius:50px; font-size:1.4rem; font-weight:bold; width:100%; box-shadow:0 5px 0 #512DA8; cursor:pointer;">はじめる / START</button>
         <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる</a>
         
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>描画が反転・複製される視覚的フィードバックを通じ、図形の対称性と幾何学的センスを養います。<span class="lang-en">(Develops geometric sense and understanding of symmetry through real-time mirrored visual feedback.)</span></li>
+                <li><strong>シニアの方に：</strong>左右のバランスを意識した描画が、空間把握能力の維持と前頭前野の活性化を助けます。<span class="lang-en">(Stimulates the prefrontal cortex and maintains spatial awareness through balanced drawing exercises.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>ICTを活用した「線対称」「点対称」の導入教材として、直感的な学習環境を提供します。<span class="lang-en">(Provides an intuitive ICT resource for introducing axial and point symmetry concepts.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>本アプリは、幼児期の認知発達において重要な「視覚運動統合（Visuomotor Integration）」と「空間的規則性」の理解を深めるために設計されています。
+                    
+                    画面の一方に線を引くと瞬時にもう一方へ像が生成される「ミラーリング体験」は、お子様の脳内で視覚情報と自己の運動出力を照合し、因果関係の理解を促進します。特に2分割・4分割モードの切り替えは、図形の構成概念（数理的思考）を刺激します。正解のない自由な表現活動を通じて、創造性を育むと同時に、複雑な模様が完成するプロセスが「自己肯定感（Self-efficacy）」を強力にバックアップします。</p>
+                    <hr class="hr-dashed">
+                    <p>This application is designed to deepen the understanding of "Visuomotor Integration" and spatial regularity. The mirroring experience, where a line drawn on one side instantly generates an image on the other, encourages the brain to reconcile visual input with motor output, fostering an understanding of cause and effect. Switching between 2-way and 4-way modes stimulates mathematical thinking. This open-ended creative activity builds self-efficacy as children witness complex patterns emerge from their own simple actions.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の皆様の「脳の健康維持」と「精神的なリフレッシュ」を目的としたデジタル・アートセラピーです。
+                    
+                    左右（あるいは上下左右）のバランスを意識しながら指先を動かす動作（巧緻性）は、脳の最高中枢である「前頭前野」を刺激し、ワーキングメモリを活性化させます。対称的な図形が広がる視覚的な美しさは、リラクゼーション効果をもたらし、QOL（生活の質）の向上に寄与します。直感的なインターフェースにより、デジタルデバイスへの抵抗感を軽減しながら、楽しみつつ手指の運動と脳のトレーニングを並行できる、現代的な健康習慣を提供します。</p>
+                    <hr class="hr-dashed">
+                    <p>For seniors, this app serves as a "Digital Art Therapy" tool aimed at brain health and mental relaxation. Coordinating finger movements (dexterity) while considering symmetrical balance stimulates the prefrontal cortex and activates working memory. The visual beauty of emerging symmetrical patterns provides a therapeutic effect, contributing to improved Quality of Life. Its intuitive design reduces digital hesitation, offering a modern way to maintain cognitive function through creative play.</p>
+                </div>
+            </details>
+        </div>
+
         <div class="footer-links">
             <a href="privacy.html">Privacy Policy / 規約</a>
             <a href="contact.html">Contact / お問い合わせ</a>

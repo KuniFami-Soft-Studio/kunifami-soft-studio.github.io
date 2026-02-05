@@ -18,7 +18,7 @@
     <title>ネオンおえかき / Neon Magic Draw - 3〜5歳向け無料知育アプリ</title>
     <meta name="description" content="[JP] 暗闇にひかるネオンペンで自由にお絵描き！3〜5歳向けの無料知育ゲーム。色彩感覚と創造力を育みます。[EN] Free glowing neon drawing game for kids. Express creativity with magic neon pens. Developed for early childhood education.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,お絵描き,ネオン,Neon Draw,Educational Games,Toddler Games">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="ネオンおえかき / Neon Magic Draw - 集中マスター Kids">
@@ -38,14 +38,14 @@
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             background: #111;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh; margin: 0; overflow: hidden; touch-action: none;
+            min-height: 100vh; margin: 0; overflow-y: auto; touch-action: none;
         }
 
         /* 第一画面（スタート画面） */
         .container {
             background: var(--card); padding: 25px; border-radius: 40px;
             box-shadow: var(--shadow); text-align: center; width: 90%; max-width: 450px;
-            border: 6px solid #fff; position: relative; z-index: 10;
+            border: 6px solid #fff; position: relative; z-index: 10; margin-top: 20px;
         }
         h1 { font-size: 1.5rem; color: #ff00ff; margin: 0; }
         .sub-title { font-size: 0.9rem; color: #666; margin-bottom: 15px; }
@@ -57,7 +57,28 @@
         }
         .manual-item { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
 
-        .ad-container { width: 100%; min-height: 100px; margin: 10px 0; display: flex; align-items: center; justify-content: center; border-radius: 20px; overflow: hidden; background: #eee; }
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
 
         /* お絵描き画面 */
         #gameScreen { display: none; position: fixed; inset: 0; background: #000; z-index: 100; flex-direction: column; }
@@ -75,14 +96,13 @@
         .btn-main:active { transform: translateY(3px); box-shadow: 0 2px 0 #c000c0; }
         
         .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: rgba(255,255,255,0.2); color: white; border: 2px solid white; border-radius: 12px; cursor: pointer; z-index: 150; }
-        
         .btn-clear { background: #ff4757; color: white; padding: 12px 20px; border-radius: 15px; border: none; font-weight: bold; font-size: 1rem; }
 
         /* 信頼性向上用リンク */
         .footer-links { margin-top: 15px; }
         .footer-links a { color: #888; text-decoration: none; font-size: 0.7rem; margin: 0 10px; }
         .footer-links a:hover { text-decoration: underline; }
-        .footer-copyright { margin-top: 10px; font-size: 0.7rem; color: #999; }
+        .footer-copyright { margin-top: 10px; font-size: 0.7rem; color: #999; padding-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -98,6 +118,40 @@
     
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← もどる (Back)</a>
+
+    <div class="usage-guide">
+        <p>【ご利用ガイド / Usage Guide】</p>
+        <ul>
+            <li><strong>お子様に：</strong>鮮やかな発光色による視覚刺激が、色彩感覚と自由な自己表現の楽しさを育みます。<span class="lang-en">(Visual stimulation from vibrant neon colors nurtures color sense and self-expression.)</span></li>
+            <li><strong>シニアの方に：</strong>高コントラストな画面での描画動作が、視覚的注意力の維持と手指の巧緻性を刺激します。<span class="lang-en">(Drawing on high-contrast screens stimulates visual attention and maintains manual dexterity.)</span></li>
+            <li><strong>教育関係者の皆様へ：</strong>「原因と結果」を直感的に学べる視覚的フィードバック教材としてご活用ください。<span class="lang-en">(An intuitive visual feedback tool for learning cause and effect.)</span></li>
+        </ul>
+    </div>
+
+    <div class="guide-container">
+        <details>
+            <summary>【保護者向け：知育の目的】 / For Parents</summary>
+            <div class="guide-content">
+                <p><strong>Educational Goal （知育の目的）</strong></p>
+                <p>本アプリは、幼児期の認知発達において重要な「視覚運動統合（Visuomotor Integration）」の向上を主眼に置いています。黒い背景に映えるネオンカラーの線は、お子様の視線を強力に引きつけ、集中力（持続的注意力）を維持しやすくします。指を動かした通りに光の線が描かれるプロセスは、「自分の行動が環境に変化を与える」という自己肯定感（自己効力感）の醸成に繋がります。
+                
+                また、Canvas APIによる滑らかな描画ロジックは、微細な手指の動きを正確に画面に反映させるため、筆記の基礎となる「手と目の協調性」を養うのに最適です。正解のない自由な表現活動は、創造的思考の柔軟性を育みます。</p>
+                <hr class="hr-dashed">
+                <p>This app focuses on enhancing "Visuomotor Integration," a critical component of early childhood cognitive development. Glowing neon lines against a dark background maintain sustained attention. The intuitive process where finger movements result in instant visual feedback builds self-efficacy. By accurately reflecting fine motor movements, the app nurtures the hand-eye coordination necessary for foundational writing skills. This open-ended creative activity fosters flexible thinking and imagination.</p>
+            </div>
+        </details>
+        <details>
+            <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+            <div class="guide-content">
+                <p><strong>App Goal （アプリの目的）</strong></p>
+                <p>本アプリは、シニア世代の認知機能維持と精神的なリフレッシュを目的とした「デジタル・アートセラピー」の側面を持っています。発光する色彩刺激は、脳の視覚野を広範に活性化させ、気分の高揚やリラックス効果をもたらすことが知られています。
+                
+                特に、画面をなぞって図形や文字を描く動作は、前頭前野を刺激し、ワーキングメモリ（作業記憶）の維持に寄与します。高コントラストなネオンカラーは、視覚機能の低下を補い、達成感を得やすく設計されています。複雑なメニューを排除した直感的な操作性は、デジタルデバイスへの抵抗感を軽減し、楽しみながら手指の「巧緻性（こうちせい）」を鍛え、認知症予防の習慣化をサポートします。</p>
+                <hr class="hr-dashed">
+                <p>This application serves as a "Digital Art Therapy" tool aimed at maintaining cognitive function and mental well-being for seniors. Luminous color stimuli activate the visual cortex, promoting emotional uplift and relaxation. The act of drawing shapes or letters stimulates the prefrontal cortex and supports working memory. High-contrast neon colors ensure high visibility, providing a sense of accomplishment regardless of visual acuity. The intuitive interface reduces resistance to technology, encouraging daily habits for preventing cognitive decline through manual dexterity exercises.</p>
+            </div>
+        </details>
+    </div>
     
     <div class="footer-links">
         <a href="privacy.html">Privacy Policy / 規約</a>

@@ -17,7 +17,7 @@
     <title>Zoo Sounds 100 / どうぶつずかん - Bilingual Animal Sounds</title>
     <meta name="description" content="[JP] 100種類の動物からランダムに10匹が登場！日本語と英語の音声で学べる無料知育アプリです。[EN] 10 animals appear randomly from 100 species! A free educational app to learn animal names in Japanese and English with native voices.">
     <meta name="keywords" content="知育アプリ,動物,音声,英語学習,無料ゲーム,Kids App,Animal Sounds,Educational,Bilingual">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Zoo Sounds 100 / どうぶつずかん">
@@ -28,8 +28,8 @@
 
     <style>
         :root { --bg: #F1F8E9; --card: #ffffff; --accent: #4CAF50; }
-        body { font-family: "Hiragino Sans", "Meiryo", sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow: hidden; touch-action: none; }
-        .container { background: var(--card); padding: 25px; border-radius: 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px; border: 6px solid #fff; position: relative; z-index: 10; }
+        body { font-family: "Hiragino Sans", "Meiryo", sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow-y: auto; touch-action: manipulation; }
+        .container { background: var(--card); padding: 25px; border-radius: 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); text-align: center; width: 90%; max-width: 450px; border: 6px solid #fff; position: relative; z-index: 10; margin-top: 20px; }
         #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; }
         
         .zoo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 80px 20px 100px 20px; height: 100vh; overflow-y: auto; box-sizing: border-box; }
@@ -47,7 +47,29 @@
         .btn-exit { position: absolute; top: 20px; right: 20px; padding: 10px 18px; background: #fff; border: 2px solid #eee; border-radius: 15px; font-weight: bold; z-index: 150; }
         .btn-main { width: 100%; padding: 18px; background: #4CAF50; color: white; border: none; border-radius: 25px; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 6px 0 #388E3C; }
 
-        /* Footer Links */
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #333; text-align: left;
+            background: #e8f5e9; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #a5d6a7; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #666; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; background: white; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         .footer-links { margin-top: 15px; border-top: 1px dotted #ccc; padding-top: 10px; width: 100%; }
         .footer-links a { color: #4CAF50; text-decoration: none; font-size: 0.75rem; margin: 0 10px; font-weight: bold; }
         .copyright { font-size: 0.7rem; color: #999; margin: 10px 0; font-weight: bold; }
@@ -64,6 +86,41 @@
     </div>
     <button class="btn-main" onclick="startGame()">Start! / スタート！</button>
     <a href="./menu.html" style="display:block; margin-top:15px; color:#aaa; text-decoration:none; font-size:0.8rem;">← Back / もどる</a>
+
+    <div class="usage-guide">
+    <p>【ご利用ガイド / Usage Guide】</p>
+    <ul>
+    <li><strong>お子様に：</strong>絵文字、文字、音声を結びつけることで、多角的な語彙獲得と認知発達をサポートします。<span class="lang-en">(Supports vocabulary acquisition and cognitive development by linking icons, text, and audio.)</span></li>
+    <li><strong>シニアの方に：</strong>ランダムに登場する動物の名称を日・英で想起することで、言語野の活性化と記憶維持に役立ちます。<span class="lang-en">(Stimulates language centers and memory retention through bilingual recall of diverse animals.)</span></li>
+    <li><strong>教育関係者の皆様へ：</strong>100種類のデータを用いた、ブラウザで完結するインタラクティブな視聴覚教材です。<span class="lang-en">(An interactive browser-based audiovisual tool featuring 100 unique data points.)</span></li>
+    </ul>
+    </div>
+
+    <div class="guide-container">
+    <details>
+    <summary>【保護者向け：知育の目的】 / For Parents</summary>
+    <div class="guide-content">
+    <p><strong>Educational Goal （知育の目的）</strong></p>
+    <p>本アプリは、幼児期の認知発達において重要な「音韻認識」と「多言語による象徴機能」の形成を目的としています。
+    
+    動物のアイコン（図像）をタップした瞬間に、日本語と英語の音声が連続して再生されることで、お子様の脳内で「概念（動物）」「母国語（日本語）」「外国語（英語）」が三位一体となって統合されます。このマルチモーダル（多感覚）な刺激は、単なる暗記ではなく、言語の壁を超えた「意味の理解」を促進します。また、100種類からランダムに10匹が選ばれる仕組みは、常に新しい刺激を提供し、持続的注意力を引き出しつつ、図鑑を読み進める「自己肯定感」を育みます。</p>
+    <hr class="hr-dashed">
+    <p>This application aims to foster "Phonological Awareness" and "Multilingual Symbolic Function" in early childhood. By providing immediate sequential voice feedback in both Japanese and English upon tapping an icon, it integrates concepts, the native language, and a foreign language within the brain. This multimodal stimulation promotes deep understanding over rote memorization. The randomized selection of 10 animals from a 100-species database ensures sustained attention and a sense of accomplishment in exploring a digital encyclopedia.</p>
+    </div>
+    </details>
+    <details>
+    <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+    <div class="guide-content">
+    <p><strong>App Goal （アプリの目的）</strong></p>
+    <p>本アプリは、シニア世代の皆様の「情報のスキャニング能力」と「言語野の活性化」を目的としたデジタル脳トレです。
+    
+    100種類という膨大なリストからランダムに表示される動物を認識し、その名称を日本語と英語で聴き取るプロセスは、前頭前野と側頭葉を強力に刺激します。
+    タップによる「巧緻性（手指の運動）」と、音声による「言語情報の処理」を同時に行うことは、認知症予防に重要とされるマルチタスク（二重課題）に近い効果が期待できます。文字サイズやアイコンを視認しやすいデザインにしており、デジタルデバイスへの抵抗感を軽減しながら、楽しみつつ語学と脳活性化を並行できる、現代的な健康習慣を提供します。</p>
+    <hr class="hr-dashed">
+    <p>This app serves as a digital brain training tool for seniors to maintain "visual scanning abilities" and "activate language processing centers." Recalling and hearing animal names in two languages from a large database stimulates the prefrontal cortex and temporal lobes. Combining manual dexterity (tapping) with auditory processing creates a healthy cognitive load. Its high-visibility design reduces digital barriers, offering an enjoyable way to engage in language learning and cognitive maintenance as part of a daily health routine.</p>
+    </div>
+    </details>
+    </div>
     
     <div class="footer-links">
         <a href="privacy.html">Privacy Policy / 規約</a>
@@ -79,7 +136,6 @@
 </div>
 
 <script>
-    // アイコン（絵文字）が確実に存在する項目のみに整理
     const masterList = [
         {i:'🦁',j:'ライオン',e:'Lion'},{i:'🐘',j:'ぞう',e:'Elephant'},{i:'🦒',j:'きりん',e:'Giraffe'},{i:'🦓',j:'しまうま',e:'Zebra'},{i:'🐼',j:'ぱんだ',e:'Panda'},
         {i:'🐻',j:'くま',e:'Bear'},{i:'🐯',j:'とら',e:'Tiger'},{i:'🐵',j:'さる',e:'Monkey'},{i:'🐶',j:'いぬ',e:'Dog'},{i:'🐱',j:'ねこ',e:'Cat'},
@@ -89,17 +145,16 @@
         {i:'🦆',j:'あひる',e:'Duck'},{i:'🦉',j:'ふくろう',e:'Owl'},{i:'🦇',j:'こうもり',e:'Bat'},{i:'🐺',j:'おおかみ',e:'Wolf'},{i:'🦊',j:'きつね',e:'Fox'},
         {i:'🦝',j:'あらいぐま',e:'Raccoon'},{i:'🐨',j:'こあら',e:'Koala'},{i:'🦘',j:'かんがるー',e:'Kangaroo'},{i:'🦥',j:'なまけもの',e:'Sloth'},{i:'🦦',j:'かわうそ',e:'Otter'},
         {i:'🦫',j:'びーばー',e:'Beaver'},{i:'🦔',j:'はりねずみ',e:'Hedgehog'},{i:'🐿️',j:'りす',e:'Squirrel'},{i:'🐫',j:'らくだ',e:'Camel'},{i:'🦏',j:'さい',e:'Rhino'},
-        {i:'🦛',j:'かば',e:'Hippo'},{i:'🐆',j:'ひょう',e:'Leopard'},{i:'🐊',j:'わに',e:'Crocodile'},{i:'🐍',j:'へび',e:'Snake'},{i:'🦎',j:'とかげ',e:'Lizard'},
+        {i:'🦛',j:'かば',e:'Hippo'},{i:'🐊',j:'わに',e:'Crocodile'},{i:'🐍',j:'へび',e:'Snake'},{i:'🦎',j:'とかげ',e:'Lizard'},
         {i:'🦕',j:'きょうりゅう',e:'Dinosaur'},{i:'🦈',j:'さめ',e:'Shark'},{i:'🦐',j:'えび',e:'Shrimp'},{i:'🦀',j:'かに',e:'Crab'},
-        {i:'🐠',j:'さかな',e:'Fish'},{i:'🐡',j:'ふぐ',e:'Blowfish'},{i:'🐚',j:'かい',e:'Shell'},{i:'🐌',j:'かたつむり',e:'Snail'},{i:'🐞',j:'てんとうむし',e:'Ladybug'},
-        {i:'🐜',j:'あり',e:'Ant'},{i:'🦗',j:'こおろぎ',e:'Cricket'},{i:'🕷️',j:'くも',e:'Spider'},{i:'🦂',j:'さそり',e:'Scorpion'},{i:'🦟',j:'かい',e:'Mosquito'},
-        {i:'🦢',j:'はくちょう',e:'Swan'},{i:'🦅',j:'わし',e:'Eagle'},{i:'🕊️',j:'はと',e:'Dove'},
+        {i:'🐠',j:'さかな',e:'Fish'},{i:'🐚',j:'かい',e:'Shell'},{i:'🐌',j:'かたつむり',e:'Snail'},{i:'🐞',j:'てんとうむし',e:'Ladybug'},
+        {i:'🐜',j:'あり',e:'Ant'},{i:'🦗',j:'こおろぎ',e:'Cricket'},{i:'🕷️',j:'くも',e:'Spider'},{i:'🦟',j:'かい',e:'Mosquito'},
+        {i:'🦅',j:'わし',e:'Eagle'},{i:'🕊️',j:'はと',e:'Dove'},
         {i:'🦃',j:'しちめんちょう',e:'Turkey'},{i:'🐿️',j:'しまりす',e:'Chipmunk'},{i:'🐀',j:'ねずみ',e:'Rat'},{i:'🐄',j:'めうし',e:'Cow'},
-        {i:'🐐',j:'やぎ',e:'Goat'},{i:'🦃',j:'しちめんちょう',e:'Turkey'},{i:'🦩',j:'ふらみんご',e:'Flamingo'},{i:'🦫',j:'びーばー',e:'Beaver'},
-        {i:'🦑',j:'いか',e:'Squid'},{i:'🦄',j:'ゆにこーん',e:'Unicorn'},{i:'🐉',j:'りゅう',e:'Dragon'},
-        {i:'🐡',j:'ふぐ',e:'Pufferfish'},{i:'🐆',j:'ちーたー',e:'Cheetah'},{i:'🐪',j:'らくだ',e:'Camel'},{i:'🦓',j:'しまうま',e:'Zebra'},
-        {i:'🐈',j:'こねこ',e:'Kitten'},{i:'🐕',j:'こいぬ',e:'Puppy'},{i:'🐤',j:'ひよこ',e:'Chick'},{i:'🐹',j:'はむすたー',e:'Hamster'},{i:'🦍',j:'ごりら',e:'Gorilla'},{i:'🦧',j:'おらんうーたん',e:'Orangutan'},{i:'🐫',j:'らくだ',e:'Camel'},
-        {i:'🐗',j:'いのしし',e:'Boar'},{i:'🐪',j:'ひとこぶらくだ',e:'Camel'},{i:'🐐',j:'やぎ',e:'Goat'},{i:'🐾',j:'あしあと',e:'Paws'}
+        {i:'🐐',j:'やぎ',e:'Goat'},{i:'🦩',j:'ふらみんご',e:'Flamingo'},{i:'🦑',j:'いか',e:'Squid'},{i:'🦄',j:'ゆにこーん',e:'Unicorn'},{i:'🐉',j:'りゅう',e:'Dragon'},
+        {i:'🐡',j:'ふぐ',e:'Pufferfish'},{i:'🐫',j:'らくだ',e:'Camel'},{i:'🦓',j:'しまうま',e:'Zebra'},
+        {i:'🐈',j:'こねこ',e:'Kitten'},{i:'🐕',j:'こいぬ',e:'Puppy'},{i:'🐤',j:'ひよこ',e:'Chick'},{i:'🐹',j:'はむすたー',e:'Hamster'},{i:'🦍',j:'ごりら',e:'Gorilla'},{i:'🦧',j:'おらんうーたん',e:'Orangutan'},
+        {i:'🐗',j:'いのしし',e:'Boar'},{i:'🐾',j:'あしあと',e:'Paws'}
     ];
 
     let overlayTimer = null;

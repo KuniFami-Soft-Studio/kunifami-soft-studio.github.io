@@ -17,7 +17,7 @@
     <title>しゃしんスライドパズル / Photo Slide Puzzle - 3〜5歳向け無料知育ゲーム</title>
     <meta name="description" content="[JP] お気に入りの写真がパズルに！3〜5歳向け無料知育スライドパズル。論理的思考や集中力を育みます。[EN] Turn your favorite photos into puzzles! A free educational slide puzzle for kids aged 3-5. Develops logical thinking and focus.">
     <meta name="keywords" content="知育ゲーム,無料,子供向け,スライドパズル,写真パズル,Educational Games,Kids Puzzle,Photo Puzzle">
-    <meta name="author" content="KuniFami Soft Studio">
+    <meta name="author" content="kunifami" >
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="しゃしんスライドパズル - 集中マスター Kids">
@@ -69,6 +69,29 @@
         .normal { background: #2196F3; }
         .hard { background: #FF5722; }
 
+        /* --- アコーディオン・ガイド設定 --- */
+        .usage-guide {
+            margin-top: 15px; font-size: 0.8rem; color: #666; text-align: left;
+            background: #fff3e0; padding: 12px; border-radius: 15px; width: 100%;
+        }
+        .usage-guide p { margin: 0 0 8px 0; font-weight: bold; border-bottom: 1px solid #ffcc80; padding-bottom: 3px; }
+        .usage-guide ul { margin: 0; padding-left: 1.2rem; line-height: 1.5; }
+        .usage-guide li { margin-bottom: 5px; }
+        .lang-en { display: block; font-size: 0.75rem; color: #888; margin-top: 2px; }
+
+        .guide-container { margin-top: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 15px; width: 100%; }
+        details { margin-bottom: 10px; background: #f9f9f9; border-radius: 10px; overflow: hidden; }
+        summary {
+            padding: 12px; font-weight: bold; cursor: pointer; color: #555;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem;
+        }
+        summary::after { content: '▼'; font-size: 0.7rem; color: #aaa; }
+        details[open] summary::after { content: '▲'; }
+        .guide-content { padding: 15px; font-size: 0.85rem; color: #444; line-height: 1.6; border-top: 1px solid #eee; }
+        .guide-content p { margin: 0 0 10px 0; }
+        .hr-dashed { border: 0; border-top: 1px dashed #ddd; margin: 10px 0; }
+
         #gameScreen { display: none; width: 100%; max-width: 500px; padding: 10px; flex-direction: column; align-items: center; min-height: 100vh; }
         .puzzle-board { display: grid; gap: 2px; background: #8D6E63; padding: 6px; border-radius: 12px; width: 340px; height: 340px; box-shadow: 0 12px 24px rgba(0,0,0,0.2); margin: 10px 0; }
         .tile { width: 100%; height: 100%; background-color: #fff; border-radius: 4px; cursor: pointer; position: relative; background-repeat: no-repeat; border: 1px solid rgba(255,255,255,0.3); }
@@ -78,11 +101,10 @@
 
         .ui-btn { background: #fff; border: 3px solid #FF9800; padding: 10px 20px; border-radius: 20px; color: #E65100; font-weight: 800; margin: 5px; font-size: 0.9rem; }
         
-        /* 信頼性向上用リンクスタイル */
         .footer-links { margin-top: 15px; }
         .footer-links a { color: #AD1457; text-decoration: none; font-size: 0.7rem; margin: 0 10px; font-weight: bold; }
         .footer-links a:hover { text-decoration: underline; }
-        .copyright { font-size: 0.6rem; color: #999; padding: 10px; text-align: center; }
+        .copyright { font-size: 0.7rem; color: #999; padding: 10px; text-align: center; }
     </style>
 </head>
 <body>
@@ -92,8 +114,6 @@
         <h1 style="margin: 0; color: #E65100; font-size: 1.4rem;">しゃしんスライドパズル</h1>
         <h2 style="margin: 0; color: #FBC02D; font-size: 0.9rem; font-weight: normal; margin-bottom: 10px;">Photo Slide Puzzle</h2>
         
-        
-
         <div class="tips-area">
             <div class="tips-title">💡 Tips / クリアのコツ</div>
             <div class="tips-text">
@@ -120,6 +140,43 @@
             <button class="difficulty-btn normal" onclick="startGame(3)">ふつう / Normal (3×3)</button>
             <button class="difficulty-btn hard" onclick="startGame(4)">むずかしい / Hard (4×4)</button>
         </div>
+
+        <div class="usage-guide">
+            <p>【ご利用ガイド / Usage Guide】</p>
+            <ul>
+                <li><strong>お子様に：</strong>身近な写真がバラバラになる驚きと、それを元に戻す達成感を通じて、論理的思考の基礎を育みます。<span class="lang-en">(Nurtures the foundation of logical thinking through the process of restoring familiar photos.)</span></li>
+                <li><strong>シニアの方に：</strong>先を読む戦略性と、手指を動かす巧緻性トレーニングにより、脳の活性化と維持をサポートします。<span class="lang-en">(Supports brain activation through strategic planning and manual dexterity exercises.)</span></li>
+                <li><strong>教育関係者の皆様へ：</strong>「手順を組み立てる力」を養う、インストール不要のICT教材としてご活用いただけます。<span class="lang-en">(A browser-based ICT tool ideal for developing procedural planning skills.)</span></li>
+            </ul>
+        </div>
+
+        <div class="guide-container">
+            <details>
+                <summary>【保護者向け：知育の目的】 / For Parents</summary>
+                <div class="guide-content">
+                    <p><strong>Educational Goal （知育の目的）</strong></p>
+                    <p>このスライドパズルは、幼児期の認知発達において極めて重要な「空間把握能力」と「論理的推論力」を養うために設計されています。
+                    
+                    単なるジグソーパズルとは異なり、一つのピースを動かすために周囲の配置を整理し直す必要があるため、「目的のために手順を組み立てる（プランニング）」という実行機能（エグゼクティブ・ファンクション）を強力に刺激します。
+                    お気に入りの写真（家族やペットなど）を使用することで、情緒的関心を高め、最後までやり遂げる「持続的注意力」と完成時の「自己肯定感」を醸成します。数字表示機能により、数詞の順序性の習得も同時にサポートします。</p>
+                    <hr class="hr-dashed">
+                    <p>This slide puzzle is designed to nurture "Spatial Recognition" and "Logical Reasoning," both crucial for early childhood cognitive development. Unlike standard jigsaw puzzles, moving a single piece requires reorganizing the surrounding tiles, which strongly stimulates "Executive Function" (planning skills). Using familiar photos increases emotional engagement, fostering "Sustained Attention" and "Self-Esteem" upon completion. The number display feature also assists in learning numerical sequences.</p>
+                </div>
+            </details>
+            <details>
+                <summary>【シニア向け：アプリの目的】 / For Seniors</summary>
+                <div class="guide-content">
+                    <p><strong>App Goal （アプリの目的）</strong></p>
+                    <p>本アプリは、シニア世代の認知機能維持を目的としたデジタル脳トレとして機能します。
+                    
+                    スライドパズルを解く過程では、盤面全体の状況を把握する「視覚的スキャニング能力」と、空きマスを利用して目的のピースを運ぶための「短期記憶（ワーキングメモリ）」をフルに活用します。これは脳の司令塔である「前頭前野」を刺激し、情報の処理能力を維持する助けとなります。
+                    また、指先を使って画面上のタイルを正確に滑らせる動作は「巧緻性（こうちせい）」の維持に繋がり、脳への血流を促進します。ご自身の思い出の写真を使用することで、当時の記憶を呼び起こす「回想法」の要素も加わり、楽しみながらリフレッシュできる設計となっています。</p>
+                    <hr class="hr-dashed">
+                    <p>This app serves as a digital brain training tool aimed at maintaining cognitive function for seniors. Solving the puzzle requires visual scanning to grasp the entire board and working memory to move pieces via the empty slot. This stimulates the prefrontal cortex and helps preserve information processing skills. Fine motor finger movements maintain manual dexterity and promote cerebral blood flow. Incorporating personal photos adds an element of "Reminiscence Therapy," making the exercise both enjoyable and refreshing.</p>
+                </div>
+            </details>
+        </div>
+
         <a href="./menu.html" style="display:inline-block; margin-top:15px; color:#999; text-decoration:none; font-size:0.75rem; font-weight: bold;">← メニューへもどる / Back to Menu</a>
         
         <div class="footer-links">
