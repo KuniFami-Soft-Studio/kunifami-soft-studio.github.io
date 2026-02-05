@@ -37,7 +37,8 @@
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             background: var(--bg);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh; margin: 0; overflow-x: hidden; touch-action: none;
+            min-height: 100vh; margin: 0; overflow-x: hidden;
+            /* touch-action: none; を削除しました */
         }
         .container {
             background: var(--card); padding: 25px; border-radius: 40px;
@@ -46,7 +47,10 @@
         }
 
         #gameScreen { display: none; position: fixed; inset: 0; background: #fff; z-index: 100; }
-        canvas { display: block; position: absolute; top: 0; left: 0; }
+        canvas { 
+            display: block; position: absolute; top: 0; left: 0; 
+            touch-action: none; /* キャンバスのみスクロール無効化 */
+        }
 
         .option-select { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
         .opt-btn {
