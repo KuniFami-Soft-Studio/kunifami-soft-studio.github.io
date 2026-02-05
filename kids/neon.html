@@ -38,14 +38,15 @@
             font-family: "Hiragino Sans", "Meiryo", sans-serif;
             background: #111;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh; margin: 0; overflow-y: auto; touch-action: none;
+            min-height: 100vh; margin: 0; overflow-y: auto;
+            /* touch-action: none; を削除しました（スクロール可能にするため） */
         }
 
         /* 第一画面（スタート画面） */
         .container {
             background: var(--card); padding: 25px; border-radius: 40px;
             box-shadow: var(--shadow); text-align: center; width: 90%; max-width: 450px;
-            border: 6px solid #fff; position: relative; z-index: 10; margin-top: 20px;
+            border: 6px solid #fff; position: relative; z-index: 10; margin-top: 20px; margin-bottom: 20px;
         }
         h1 { font-size: 1.5rem; color: #ff00ff; margin: 0; }
         .sub-title { font-size: 0.9rem; color: #666; margin-bottom: 15px; }
@@ -82,7 +83,10 @@
 
         /* お絵描き画面 */
         #gameScreen { display: none; position: fixed; inset: 0; background: #000; z-index: 100; flex-direction: column; }
-        canvas { flex-grow: 1; cursor: crosshair; background: #000; touch-action: none; }
+        canvas { 
+            flex-grow: 1; cursor: crosshair; background: #000; 
+            touch-action: none; /* キャンバスのみスクロールを無効化 */
+        }
 
         .controls {
             background: #1a1a1a; padding: 15px; display: flex; flex-wrap: wrap;
