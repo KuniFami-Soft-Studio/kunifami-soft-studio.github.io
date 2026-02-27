@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://kunifami-soft-studio.com/index.html</loc>
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/tools/formmirror_iPhone.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/tools/form_mirror_sync.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/tools/form-mirror-pro-pc.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/guide/faq.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/guide/getting-started.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/guide/FormMirrorProforiphoneUserManual.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/guide/FormMirrorProforPCUserManual.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/guide/smart-sync-recording.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/guide/video-delay-guide.html</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/guide/ghost-mode-guide.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url><loc>https://kunifami-soft-studio.com/ja/guide/golf-swing-check-tips.html</loc><priority>0.6</priority></url>
+  <url><loc>https://kunifami-soft-studio.com/ja/guide/dance-form-improvement.html</loc><priority>0.6</priority></url>
+  <url><loc>https://kunifami-soft-studio.com/ja/guide/gym-training-tips.html</loc><priority>0.6</priority></url>
+  <url><loc>https://kunifami-soft-studio.com/ja/guide/baseball-softball-tips.html</loc><priority>0.6</priority></url>
+  <url><loc>https://kunifami-soft-studio.com/ja/guide/tennis-badminton-tips.html</loc><priority>0.6</priority></url>
+  <url><loc>https://kunifami-soft-studio.com/ja/guide/volleyball-basketball-tips.html</loc><priority>0.6</priority></url>
+  <url><loc>https://kunifami-soft-studio.com/ja/guide/bowling-form-tips.html</loc><priority>0.6</priority></url>
+  <url><loc>https://kunifami-soft-studio.com/ja/guide/archery-form-tips.html</loc><priority>0.6</priority></url>
+  <url><loc>https://kunifami-soft-studio.com/ja/guide/instruments-others-tips.html</loc><priority>0.6</priority></url>
+
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/about.html</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/legal.html</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://kunifami-soft-studio.com/ja/contact.html</loc>
+    <priority>0.4</priority>
+  </url>
+
+</urlset>
