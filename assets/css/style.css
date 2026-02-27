@@ -1,436 +1,104 @@
-/**
- * ad-manager.js v3.9 - Secure Edition
- * 【Security Update】
- * XSS脆弱性対策のため、innerHTMLの使用を廃止し、DOM操作による安全な描画に変更しました。
- */
-(function() {
-    // ============================================================
-    // ⚙️ 設定
-    // ============================================================
-    const SPREADSHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTc5Lkgk71EaZfis4_tY-f1jVr5YdlyWqCIvbBAEmhIpejzx0IGiDCV8QU9n72jVe7lHmM4irhgrPrZ/pub?gid=0&single=true&output=csv";
-    
-    const CONFIG = {
-        ENABLED: true,
-        DEBUG: true,             // ★本番・審査用は false
-        MOBILE_BREAKPOINT: 768,
-        DEFAULT_COUNT_PC: 5,
-        DEFAULT_COUNT_MOBILE: 3
-    };
-    
-    const isMobile = window.innerWidth <= CONFIG.MOBILE_BREAKPOINT;
-    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase();
-    const userLang = (navigator.language || navigator.userLanguage).toLowerCase();
-    
-    // ============================================================
-    // 🌍 リージョン判定ロジック
-    // ============================================================
-    const urlParams = new URLSearchParams(window.location.search);
-    let region = urlParams.get('reg'); 
+/* assets/css/style.css の中身 */
 
-    if (!region) {
-        region = 'us'; // デフォルト
+:root {
+    --accent-color: #007AFF;
+    --success-color: #28a745;
+    --bg-color: #f8f9fa;
+    --support-color: #FF5F5F;
+}
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+    line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 0; 
+    background-color: var(--bg-color); 
+}
+.hero { text-align: center; padding: 60px 20px; background: white; margin-bottom: 20px; }
+.header-logo { width: 100px; height: auto; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+h1 { color: var(--accent-color); font-size: 2.2rem; margin-bottom: 10px; border-bottom: none; }
 
-        if (userLang.includes('ja') || userTimeZone.includes('tokyo')) {
-            region = 'jp';
-        } 
-        // --- アラビア語圏 ---
-        else if (userLang.includes('ar') || userTimeZone.includes('cairo') || userTimeZone.includes('riyadh') || userTimeZone.includes('dubai')) {
-            region = 'ar';
-        }
-        // --- ポルトガル語圏 ---
-        else if (userLang.includes('pt') || userTimeZone.includes('sao_paulo') || userTimeZone.includes('lisbon')) {
-            region = 'br'; 
-        } 
-        // --- スペイン語圏 ---
-        else if (userLang.includes('es') || userTimeZone.includes('madrid') || userTimeZone.includes('mexico')) {
-            region = 'es';
-        } 
-        // --- 英語圏 ---
-        else if (userLang.includes('en-gb') || userTimeZone.includes('london')) {
-            region = 'gb';
-        } else if (userLang.includes('en-ca') || userTimeZone.includes('toronto')) {
-            region = 'ca';
-        } else if (userLang.includes('en-au') || userTimeZone.includes('sydney')) {
-            region = 'au';
-        } else if (userLang.includes('hi') || userLang.includes('in') || userTimeZone.includes('calcutta')) {
-            region = 'in';
-        } 
-        // --- ヨーロッパ主要国 ---
-        else if (userLang.includes('de') || userTimeZone.includes('berlin')) {
-            region = 'de';
-        } else if (userLang.includes('fr') || userTimeZone.includes('paris')) {
-            region = 'fr';
-        }
-    }
-    
-    // ============================================================
-    // 🚀 初期化・データ取得
-    // ============================================================
-    async function init() {
-        if (!CONFIG.ENABLED) return;
-        try {
-            const res = await fetch(SPREADSHEET_CSV_URL);
-            const text = await res.text();
-            const data = parseCSV(text);
-            render(data);
-        } catch (e) {
-            console.error("AdManager Init Failed:", e);
-        }
-    }
-    
-    function parseCSV(csv) {
-        const rows = csv.split(/\r?\n/).map(row => row.split(',').map(v => v.replace(/^"|"$/g, '').trim()));
-        const res = { message: "", suggestions: [], resources: [] };
-        const enGroup = ['us', 'gb', 'ca', 'au'];
-    
-        for (let i = 1; i < rows.length; i++) {
-            // 列定義: region, type, tags, (unused), (unused), text, sub, url, prob, status
-            const [reg, type, tags, , , txt, sub, url, prob, status] = rows[i];
-    
-            if (status !== 'Active') continue;
-            if (Math.random() > parseFloat(prob || 1.0)) continue;
-    
-            const isLocalMatch = (reg === region);
-            const isEnCommon = (reg === 'en' && enGroup.includes(region));
+.kids-link-box { margin: 10px 0 20px; }
+.kids-btn {
+    display: inline-block; background: #FF9500; color: white; text-decoration: none;
+    padding: 10px 25px; border-radius: 50px; font-weight: bold; font-size: 1.1rem;
+    animation: blink 1.5s infinite; box-shadow: 0 4px 15px rgba(255,149,0,0.3);
+}
+@keyframes blink {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
 
-            if (!isLocalMatch && !isEnCommon) continue;
-    
-            const item = { text: txt, sub: sub, url: url, tags: tags ? tags.split('/') : [] };
-    
-            if (type === 'message' && reg === region) res.message = txt;
-            if (type === 'suggestion') res.suggestions.push(item);
-            if (type === 'resource') res.resources.push(item);
-        }
-        return res;
-    }
-    
-    function filterItems(items, targetTags) {
-        return items.map(item => {
-            let score = 1;
-            if (item.tags.length > 0 && targetTags.length > 0) {
-                const match = item.tags.filter(t => targetTags.includes(t)).length;
-                if (match > 0) score = 10 + match;
-            }
-            return { item, score };
-        }).sort((a, b) => b.score - a.score || 0.5 - Math.random()).map(x => x.item);
-    }
+.trust-badges { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
+.badge { background: var(--success-color); color: white; padding: 5px 12px; border-radius: 15px; font-weight: bold; font-size: 0.8rem; }
 
-    // ============================================================
-    // 🛠️ DOM生成ヘルパー（安全対策の中核）
-    // ============================================================
-    function createDebugLabel(name, tag) {
-        if (!CONFIG.DEBUG) return null;
-        const div = document.createElement('div');
-        div.style.cssText = "position:absolute; top:-18px; left:0; background:#ff4d4d; color:white; font-size:10px; padding:1px 4px; z-index:100; font-family:sans-serif;";
-        div.textContent = `DEBUG: ${name} [${tag}]`;
-        return div;
-    }
+.security-note { 
+    background: #e9f7ef; border: 1px dashed var(--success-color); color: #155724; 
+    padding: 20px; border-radius: 12px; font-size: 0.85rem; margin: 25px auto; 
+    text-align: left; max-width: 700px;
+}
 
-    function applyDebugStyle(el) {
-        if (CONFIG.DEBUG) {
-            el.style.border = "2px dashed #ff4d4d";
-            el.style.position = "relative";
-            el.style.minHeight = "40px";
-            el.style.background = "#fff5f5";
-            el.style.margin = "5px 0";
-        }
-    }
+.support-box { margin: 20px 0; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+.support-link {
+    display: flex; align-items: center; gap: 8px; text-decoration: none;
+    padding: 10px 18px; border-radius: 10px; font-weight: bold; font-size: 0.9rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.support-link:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.bmc-btn { background: #FFDD00; color: #000000; }
+.ofuse-btn { background: #1f2c33; color: #ffffff; }
 
-    // ============================================================
-    // 🎨 描画処理 (DOM操作版)
-    // ============================================================
-    function render(data) {
-        const isRTL = (region === 'ar');
-        
-        // 共通のスタイル適用関数
-        const applyRTL = (el) => {
-            if (isRTL) {
-                el.setAttribute('dir', 'rtl');
-                el.style.textAlign = 'right';
-            } else {
-                el.setAttribute('dir', 'ltr');
-                el.style.textAlign = 'left';
-            }
-        };
+.video-flex { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 30px 0; }
+.video-container { position: relative; width: 100%; max-width: 220px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        // 1. ポジティブメッセージ
-        document.querySelectorAll('.positiveMessage').forEach(el => {
-            // クリア
-            el.textContent = '';
-            
-            applyDebugStyle(el);
-            applyRTL(el);
+.section-padding { padding: 0 20px; }
+.card { background: white; border-radius: 16px; padding: 30px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; }
 
-            const debugLabel = createDebugLabel("Message", region);
-            if (debugLabel) el.appendChild(debugLabel);
+.app-logo { width: 140px; height: auto; display: block; margin: 0 auto 15px; border-radius: 8px; }
+@media (min-width: 600px) { .app-logo { width: 600px; } }
 
-            // メッセージテキストの追加（安全なテキストとして追加）
-            const msgText = data.message || (CONFIG.DEBUG ? "No Message Data" : "");
-            el.appendChild(document.createTextNode(msgText));
-        });
-    
-        // 2. バナー
-        document.querySelectorAll('.randomSuggestion').forEach(el => {
-            el.textContent = ''; // クリア
-            
-            applyDebugStyle(el);
-            applyRTL(el);
+.card h2 { color: var(--accent-color); font-size: 1.5rem; margin-top: 10px; }
+.btn { 
+    display: inline-block; background: var(--accent-color); color: white; text-decoration: none; 
+    padding: 12px 30px; border-radius: 8px; font-weight: bold; margin-top: 15px;
+    transition: background 0.2s;
+}
+.btn:hover { background: #0056b3; }
 
-            const tagsAttr = (el.getAttribute('data-tags') || '');
-            const tags = tagsAttr.split(',').map(t => t.trim());
-            const filtered = filterItems(data.suggestions, tags);
-            
-            const debugLabel = createDebugLabel("Banner", tagsAttr);
-            if (debugLabel) el.appendChild(debugLabel);
-    
-            if (filtered[0]) {
-                const a = document.createElement('a');
-                a.href = filtered[0].url;
-                a.target = "_blank";
-                a.style.cssText = "color:inherit; text-decoration:none; display:block;";
-                a.textContent = filtered[0].text;
-                el.appendChild(a);
-            } else if (CONFIG.DEBUG) {
-                el.appendChild(document.createTextNode("表示対象のデータがありません"));
-            }
-        });
-    
-        // 3. リソースリスト
-        document.querySelectorAll('.resourceList').forEach(el => {
-            el.textContent = ''; // クリア
-            
-            applyDebugStyle(el);
-            applyRTL(el);
-            
-            const tagsAttr = (el.getAttribute('data-tags') || '');
-            const tags = tagsAttr.split(',').map(t => t.trim());
-            const count = parseInt(el.getAttribute(isMobile ? 'data-mobile-count' : 'data-pc-count') || (isMobile ? CONFIG.DEFAULT_COUNT_MOBILE : CONFIG.DEFAULT_COUNT_PC), 10);
-            const filtered = filterItems(data.resources, tags).slice(0, count);
-    
-            const debugLabel = createDebugLabel("List", tagsAttr);
-            if (debugLabel) el.appendChild(debugLabel);
+.qr-card { 
+    background: linear-gradient(135deg, #007AFF, #00C6FF); color: white; 
+    border-radius: 16px; padding: 30px; margin-bottom: 25px;
+    display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap;
+}
+.qr-img { width: 150px; height: 150px; border-radius: 12px; border: 4px solid white; background: white; }
 
-            // Sponsored ラベル
-            const sponsoredLabel = document.createElement('p');
-            sponsoredLabel.style.cssText = "font-size:10px; color:#999; margin-bottom:8px; text-transform:uppercase;";
-            sponsoredLabel.textContent = "Sponsored";
-            el.appendChild(sponsoredLabel);
-            
-            if (filtered.length > 0) {
-                filtered.forEach(item => {
-                    const li = document.createElement('li');
-                    li.style.cssText = "margin-bottom:12px; list-style:none;";
+.wiki-section { background: white; border-radius: 16px; padding: 30px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.wiki-section h2 { color: var(--accent-color); border-bottom: 1px solid #eee; padding-bottom: 10px; font-size: 1.4rem; }
+.wiki-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 20px; text-align: left; }
+.wiki-category h3 { font-size: 1.05rem; color: #444; margin-bottom: 12px; border-left: 4px solid var(--accent-color); padding-left: 10px; }
+.wiki-list { list-style: none; padding: 0; }
+.wiki-list li { margin-bottom: 10px; font-size: 0.95rem; }
+.wiki-list a { color: var(--accent-color); text-decoration: none; }
+.wiki-list a:hover { text-decoration: underline; }
 
-                    const a = document.createElement('a');
-                    a.href = item.url;
-                    a.target = "_blank";
-                    a.style.cssText = "color:#007AFF; text-decoration:none; font-weight:500;";
+.faq-highlight { 
+    grid-column: 1 / -1; background: #fff9e6; padding: 15px; border-radius: 10px; 
+    border: 1px dashed #ff9500; margin-bottom: 10px;
+}
 
-                    // メインテキスト
-                    a.appendChild(document.createTextNode(item.text));
-                    a.appendChild(document.createElement('br'));
+.info-section { padding: 20px; margin-top: 20px; }
+.info-section h2 { font-size: 1.1rem; border-left: 4px solid var(--accent-color); padding-left: 10px; margin-top: 35px; color: #333; }
+.info-section p { font-size: 0.9rem; color: #555; margin-bottom: 15px; }
 
-                    // サブテキスト
-                    const small = document.createElement('small');
-                    small.style.cssText = "color:#888; font-size:10px;";
-                    small.textContent = item.sub;
-                    
-                    a.appendChild(small);
-                    li.appendChild(a);
-                    el.appendChild(li);
-                });
-            } else if (CONFIG.DEBUG) {
-                const li = document.createElement('li');
-                li.textContent = "表示対象のデータがありません";
-                el.appendChild(li);
-            }
-        });
-    }
-    
-})();/**
-    init();
- * ad-manager.js v3.8 - Global Region & RTL Support
- * 【Update Detail】
- * 1. アラビア語 (ar) のリージョン判定を追加
- * 2. RTL (Right-to-Left) 表示の動的サポートを追加
- * 3. 未知の国はデフォルトで 'us' として扱い英語広告で収益化
- * 4. 審査用設定完備 (Sponsored表記)
- */
-(function() {
-    // ============================================================
-    // ⚙️ 設定（SPREADSHEET_CSV_URL を自分のものに書き換えてください）
-    // ============================================================
-    const SPREADSHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTc5Lkgk71EaZfis4_tY-f1jVr5YdlyWqCIvbBAEmhIpejzx0IGiDCV8QU9n72jVe7lHmM4irhgrPrZ/pub?gid=0&single=true&output=csv";
-    
-    const CONFIG = {
-        ENABLED: true,
-        DEBUG: true,             // ★本番・審査用は false
-        MOBILE_BREAKPOINT: 768,
-        DEFAULT_COUNT_PC: 5,
-        DEFAULT_COUNT_MOBILE: 3
-    };
-    
-    const isMobile = window.innerWidth <= CONFIG.MOBILE_BREAKPOINT;
-    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase();
-    const userLang = (navigator.language || navigator.userLanguage).toLowerCase();
-    
-    // ============================================================
-    // 🌍 リージョン判定ロジック
-    // ============================================================
-    const urlParams = new URLSearchParams(window.location.search);
-    let region = urlParams.get('reg'); 
+.sns-link { display: inline-block; margin: 10px 15px 10px 0; color: #1DA1F2; text-decoration: none; font-weight: bold; font-size: 0.95rem; }
 
-    if (!region) {
-        region = 'us'; // デフォルト
+footer { margin-top: 60px; padding: 40px 20px; font-size: 0.85rem; color: #888; text-align: center; border-top: 1px solid #eee; }
+footer a { color: var(--accent-color); text-decoration: none; }
 
-        if (userLang.includes('ja') || userTimeZone.includes('tokyo')) {
-            region = 'jp';
-        } 
-        // --- アラビア語圏 ---
-        else if (userLang.includes('ar') || userTimeZone.includes('cairo') || userTimeZone.includes('riyadh') || userTimeZone.includes('dubai')) {
-            region = 'ar';
-        }
-        // --- ポルトガル語圏 ---
-        else if (userLang.includes('pt') || userTimeZone.includes('sao_paulo') || userTimeZone.includes('lisbon')) {
-            region = 'br'; 
-        } 
-        // --- スペイン語圏 ---
-        else if (userLang.includes('es') || userTimeZone.includes('madrid') || userTimeZone.includes('mexico')) {
-            region = 'es';
-        } 
-        // --- 英語圏 ---
-        else if (userLang.includes('en-gb') || userTimeZone.includes('london')) {
-            region = 'gb';
-        } else if (userLang.includes('en-ca') || userTimeZone.includes('toronto')) {
-            region = 'ca';
-        } else if (userLang.includes('en-au') || userTimeZone.includes('sydney')) {
-            region = 'au';
-        } else if (userLang.includes('hi') || userLang.includes('in') || userTimeZone.includes('calcutta')) {
-            region = 'in';
-        } 
-        // --- ヨーロッパ主要国 ---
-        else if (userLang.includes('de') || userTimeZone.includes('berlin')) {
-            region = 'de';
-        } else if (userLang.includes('fr') || userTimeZone.includes('paris')) {
-            region = 'fr';
-        }
-    }
-    
-    // ============================================================
-    // 🚀 初期化・データ取得
-    // ============================================================
-    async function init() {
-        if (!CONFIG.ENABLED) return;
-        try {
-            const res = await fetch(SPREADSHEET_CSV_URL);
-            const text = await res.text();
-            const data = parseCSV(text);
-            render(data);
-        } catch (e) {
-            console.error("AdManager Init Failed:", e);
-        }
-    }
-    
-    function parseCSV(csv) {
-        const rows = csv.split(/\r?\n/).map(row => row.split(',').map(v => v.replace(/^"|"$/g, '').trim()));
-        const res = { message: "", suggestions: [], resources: [] };
-        const enGroup = ['us', 'gb', 'ca', 'au'];
-    
-        for (let i = 1; i < rows.length; i++) {
-            const [reg, type, tags, , , txt, sub, url, prob, status] = rows[i];
-    
-            if (status !== 'Active') continue;
-            if (Math.random() > parseFloat(prob || 1.0)) continue;
-    
-            const isLocalMatch = (reg === region);
-            const isEnCommon = (reg === 'en' && enGroup.includes(region));
+.lang-switch { text-align: right; font-size: 0.9rem; padding: 10px 20px 0; }
+.lang-switch a { color: #555; text-decoration: none; }
+.lang-switch a:hover { text-decoration: underline; color: var(--accent-color); }
 
-            if (!isLocalMatch && !isEnCommon) continue;
-    
-            const item = { text: txt, sub: sub, url: url, tags: tags ? tags.split('/') : [] };
-    
-            if (type === 'message' && reg === region) res.message = txt;
-            if (type === 'suggestion') res.suggestions.push(item);
-            if (type === 'resource') res.resources.push(item);
-        }
-        return res;
-    }
-    
-    function filterItems(items, targetTags) {
-        return items.map(item => {
-            let score = 1;
-            if (item.tags.length > 0 && targetTags.length > 0) {
-                const match = item.tags.filter(t => targetTags.includes(t)).length;
-                if (match > 0) score = 10 + match;
-            }
-            return { item, score };
-        }).sort((a, b) => b.score - a.score || 0.5 - Math.random()).map(x => x.item);
-    }
-    
-    // ============================================================
-    // 🎨 描画処理 (RTL サポート版)
-    // ============================================================
-    function render(data) {
-        const isRTL = (region === 'ar');
-        const debugStyle = "border: 2px dashed #ff4d4d; position: relative; min-height: 40px; background: #fff5f5; margin: 5px 0;";
-        const debugLabel = (name, tag) => CONFIG.DEBUG ? `<div style="position:absolute; top:-18px; left:0; background:#ff4d4d; color:white; font-size:10px; padding:1px 4px; z-index:100; font-family:sans-serif;">DEBUG: ${name} [${tag}]</div>` : "";
-    
-        // 共通のスタイル適用関数
-        const applyRTL = (el) => {
-            if (isRTL) {
-                el.setAttribute('dir', 'rtl');
-                el.style.textAlign = 'right';
-            } else {
-                el.setAttribute('dir', 'ltr');
-                el.style.textAlign = 'left';
-            }
-        };
-
-        // 1. ポジティブメッセージ
-        document.querySelectorAll('.positiveMessage').forEach(el => {
-            if (CONFIG.DEBUG) el.style.cssText += debugStyle;
-            applyRTL(el);
-            el.innerHTML = debugLabel("Message", region) + (data.message || (CONFIG.DEBUG ? "No Message Data" : ""));
-        });
-    
-        // 2. バナー
-        document.querySelectorAll('.randomSuggestion').forEach(el => {
-            if (CONFIG.DEBUG) el.style.cssText += debugStyle;
-            applyRTL(el);
-            const tags = (el.getAttribute('data-tags') || '').split(',').map(t => t.trim());
-            const filtered = filterItems(data.suggestions, tags);
-    
-            if (filtered[0]) {
-                el.innerHTML = debugLabel("Banner", tags) + `<a href="${filtered[0].url}" target="_blank" style="color:inherit;text-decoration:none;display:block;">${filtered[0].text}</a>`;
-            } else if (CONFIG.DEBUG) {
-                el.innerHTML = debugLabel("Banner", tags) + "表示対象のデータがありません";
-            }
-        });
-    
-        // 3. リソースリスト
-        document.querySelectorAll('.resourceList').forEach(el => {
-            if (CONFIG.DEBUG) el.style.cssText += debugStyle;
-            applyRTL(el);
-            const tags = (el.getAttribute('data-tags') || '').split(',').map(t => t.trim());
-            const count = parseInt(el.getAttribute(isMobile ? 'data-mobile-count' : 'data-pc-count') || (isMobile ? CONFIG.DEFAULT_COUNT_MOBILE : CONFIG.DEFAULT_COUNT_PC), 10);
-            const filtered = filterItems(data.resources, tags).slice(0, count);
-    
-            let html = debugLabel("List", tags) + `<p style="font-size:10px;color:#999;margin-bottom:8px;text-transform:uppercase;">Sponsored</p>`;
-            
-            if (filtered.length > 0) {
-                filtered.forEach(item => {
-                    html += `<li style="margin-bottom:12px; list-style:none;">
-                        <a href="${item.url}" target="_blank" style="color:#007AFF;text-decoration:none;font-weight:500;">
-                            ${item.text}<br><small style="color:#888;font-size:10px;">${item.sub}</small>
-                        </a>
-                    </li>`;
-                });
-            } else if (CONFIG.DEBUG) {
-                html += "<li>表示対象のデータがありません</li>";
-            }
-            el.innerHTML = html;
-        });
-    }
-    
-    init();
-})();
+#news-list { font-size: 0.9rem; color: #555; max-height: 250px; overflow-y: auto; padding: 15px; background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; }
+.news-item { margin-bottom: 10px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; line-height: 1.4; }
+.news-date { font-weight: bold; color: var(--accent-color); margin-right: 10px; }
+.repo-badge { font-size: 0.75rem; background: #eee; color: #666; padding: 2px 6px; border-radius: 4px; margin-right: 8px; font-weight: bold; }
