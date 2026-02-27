@@ -7,6 +7,11 @@
 const blogPosts = [
     // ▼ 最新の記事をここに追加してください
 
+{
+    url: "article0057.html",
+    ja: "【完全ガイド】ダンスの振付を「スロー再生×ループ」で攻略する練習法",
+    en: "[Complete Guide] Master Dance Choreography with Slow Motion & Loop"
+},   
    {
     url: "article0056.html",
     ja: "【開発秘話】なぜ高機能ツールをあえて無料で公開するのか？その3つの理由",
