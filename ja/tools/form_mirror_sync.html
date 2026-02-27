@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ja" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+    <meta name="ad-mode" content="general">
+    <script src="/assets/js/ads.js" defer></script>
+    <script src="/assets/js/ad-manager.js" defer></script>
+    <script src="/assets/js/google-ads.js" defer></script>
+        
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+
+	<title>Form Mirror Sync Pro | 2動画ハード同期 フォーム分析ツール</title>
+	<meta name="description" content="2つの動画を同期表示し、フレーム単位で比較できるブラウザ型フォーム分析ツール。ループ再生、速度変更、骨格表示、描画メモ、録画保存に対応。スポーツやダンスの動作確認に利用できます。">
+	<meta name="keywords" content="フォーム分析, 動画同期, 動画比較, モーション分析, ダンス練習, スポーツフォーム確認, MoveNet, ブラウザツール">
+	<meta property="og:title" content="Form Mirror Sync Pro | 動画同期フォーム分析ツール">
+	<meta property="og:description" content="2本の動画を同期再生し、フォームを比較確認できるWebツール。ループ、スロー再生、骨格表示、録画機能に対応。PC・iPhoneのブラウザで利用可能。">
+	
+    <style>
+        :root {
+            --primary: #FFCC00;
+            --accent: #0A84FF;
+            --record: #FF3B30;
+            --bg-glass: rgba(15, 15, 15, 0.95);
+            --text-main: #FFFFFF;
+        }
+
+        body { 
+            margin: 0; background: #000; color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; 
+            overflow: hidden; position: fixed; width: 100%; height: 100%;
+            touch-action: none; -webkit-user-select: none;
+        }
+        
+        #mainCanvas { width: 100vw; height: 100vh; display: block; background: #000; }
+        
+        .fade-ui { transition: opacity 0.3s ease, transform 0.3s ease; opacity: 0; pointer-events: none; }
+        .ui-visible { opacity: 1; pointer-events: auto; transform: translateY(0) !important; }
+
+        /* Top Bar */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            padding: calc(env(safe-area-inset-top) + 10px) 15px 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            z-index: 100;
+            transform: translateY(-100%);
+        }
+
+        .icon-btn {
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
+            color: white; width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer;
+            position: relative;
+        }
+        .icon-btn.active { background: var(--accent); border-color: var(--accent); }
+        .icon-btn.rec-btn { border-color: var(--record); color: var(--record); font-weight: bold; width: auto; padding: 0 15px; gap: 5px; }
+        .icon-btn.rec-btn.recording { background: var(--record); color: white; animation: pulse-rec 1s infinite; }
+
+        @keyframes pulse-rec { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* Bottom Panel */
+        .bottom-panel {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            padding: 10px 10px calc(env(safe-area-inset-bottom) + 5px);
+            background: var(--bg-glass); border-top: 1px solid #333;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; gap: 8px; z-index: 100;
+            transform: translateY(100%);
+        }
+        
+        .close-panel-btn {
+            position: absolute; right: 10px; top: -40px;
+            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(0,0,0,0.6); border: 1px solid #555; color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; cursor: pointer; backdrop-filter: blur(5px);
+        }
+
+        .wave-container { height: 34px; background: rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; position: relative; }
+        #waveCanvas { width: 100%; height: 100%; }
+
+        .sliders-row { display: flex; align-items: center; gap: 10px; }
+        .slider-group { flex: 1; display: flex; align-items: center; gap: 5px; font-size: 11px; color: #ccc; }
+        
+        input[type="range"] { flex: 1; -webkit-appearance: none; background: transparent; height: 30px; }
+        input[type="range"]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: #444; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fff; margin-top: -8px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        
+        .seek-container { display: flex; flex-direction: column; gap: 12px; width: 100%; position: relative; padding: 5px 0; }
+        .loop-marker { position: absolute; top: 0; width: 2px; height: 100%; background: #FF3B30; pointer-events: none; z-index: 5; }
+
+        .seek-a::-webkit-slider-runnable-track { background: var(--accent) !important; }
+        .seek-a::-webkit-slider-thumb { border: 2px solid var(--accent); }
+        .seek-b::-webkit-slider-runnable-track { background: var(--primary) !important; }
+        .seek-b::-webkit-slider-thumb { border: 2px solid var(--primary); }
+
+        .transport-row { display: flex; justify-content: space-around; align-items: center; margin: 5px 0; }
+        .play-btn { width: 70px; height: 70px; background: var(--primary); color: black; border-radius: 50%; font-size: 32px; border:none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+
+        .tools-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 5px; -webkit-overflow-scrolling: touch; }
+        .tool-pill { flex: 0 0 auto; padding: 8px 14px; border-radius: 20px; background: #333; color: white; border: none; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .tool-pill.active { background: var(--accent); }
+        .tool-pill.loop-on { background: var(--record); border: 1px solid white; }
+        
+        .color-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; border: 1px solid white; }
+
+        /* --- スタート画面 --- */
+        #loginOverlay {
+            position: fixed; inset: 0; 
+            background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+            z-index: 9000;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+            padding: 20px; overflow-y: auto; color: #1c1c1e;
+        }
+
+        .intro-box { 
+            max-width: 500px; text-align: center; line-height: 1.6; margin-bottom: 20px; 
+            background: #fff; padding: 20px; border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #eee;
+        }
+
+        .positive-msg {
+            margin: 10px 0 20px; font-weight: bold; color: var(--accent); font-size: 16px; text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .donation-links { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; justify-content: center; }
+        .donation-links a { padding: 10px 18px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 14px; color: #444; background: #f0f0f2; border: 1px solid #ddd; }
+        .btn-start { background: var(--accent); font-size: 18px; padding: 15px 40px; border-radius: 30px; color: white; border: none; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 12px rgba(10,132,255,0.3); }
+        .btn-home { color: #888; text-decoration: none; font-size: 14px; margin-top: 15px; }
+
+        #saveContainer { display: none; position: fixed; inset: 0; z-index: 9500; background: #000; flex-direction: column; align-items: center; justify-content: center; }
+        #previewVid { width: 100%; max-height: 60vh; margin-bottom: 20px; background: #222; border-radius: 8px; }
+        .hidden-vid { position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+        .toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 20px; pointer-events: none; opacity: 0; transition: opacity 0.5s; z-index: 200; }
+    </style>
+</head>
+<body>
+
+    <div id="countdownOverlay" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 120px; font-weight: bold; color: #ffcc00; z-index: 5000; text-shadow: 0 0 20px rgba(0,0,0,1); pointer-events: none; display: none;"></div>
+
+    <div id="loginOverlay">
+
+        <h1 style="margin: 40px 0 10px; color: var(--accent); font-weight: 800;">Form Mirror Sync Pro ver 1.2<br> for iPhone</h1>
+        
+
+			<div class="intro-box">
+						
+			    <p style="font-size:16px; margin:0 0 12px 0; color:#1c1c1e; font-weight:600;">
+			        🎬 Form Mirror Sync Pro for iPhone
+			    </p>
+			
+			    <p style="font-size:14px; margin:0 0 14px 0; color:#333; line-height:1.6;">
+			        2つの動画ファイルを高度に同期（シンクロ）させ、フレーム単位で細かく比較できるプロ仕様のフォーム分析ツールです。お手本動画と自分の動画を重ねたり、並べたりして動作の細かな違いを可視化します。
+			    </p>
+			
+			    <ul style="list-style:none; padding:0; margin:0 auto 16px auto; font-size:14px; line-height:1.8; color:#333; text-align:left; display:inline-block;">
+			        <li>🔗 <strong>ハード同期再生</strong> — A・B 2つの動画を1ms単位の精度でズレなく同時再生</li>
+			        <li>✨ <strong>透過表示</strong> — 動画を重ね合わせて、軌道やポーズの細かな差を抽出</li>
+			        <li>💀 <strong>AI骨格検知 (MoveNet)</strong> — AIが関節を自動描画。姿勢のバランスを数値的に把握</li>
+			        <li>✏️ <strong>描画メモ＆シェイプ</strong> — 画面上に直接ラインや円を書き込み、注目ポイントを記録</li>
+			        <li>🖼 <strong>自由なレイアウト</strong> — 左右・上下・重ね合わせ・単体表示をワンタッチ切り替え</li>
+			        <li>⏺ <strong>合成録画機能</strong> — 比較・分析した状態のまま、音声付きで新しい動画として保存</li>
+			    </ul>
+			
+			    <div style="background:#f7f7f9; padding:14px; border-radius:14px; border:1px solid #eee; text-align:left;">
+			        <p style="font-size:14px; margin:0 0 10px 0; font-weight:600; color:#1c1c1e;">
+			            🧠 活用シーン
+			        </p>
+			
+			        <ol style="margin:0; padding-left:18px; font-size:14px; line-height:1.8; color:#333;">
+			            <li><strong>プロとの比較</strong> — プロの動画と自分の動画を読み込み、同期させてスロー再生</li>
+			            <li><strong>過去の自分と比較</strong> — 練習前後の動画を重ねて、上達の度合いを視覚化</li>
+			            <li><strong>詳細な動作解析</strong> — グリッド表示や骨格検知を使って、重心や角度を厳密にチェック</li>
+			        </ol>
+			    </div>
+			
+			    <p style="font-size:13px; margin:14px 0 0 0; color:#666;">
+			        iPhone/iPadのブラウザで軽快に動作します。アプリのインストールや動画のアップロードは不要で、プライバシーも安全です。
+			    </p>
+			
+			</div>
+			
+        <div class="donation-links">
+            <a href="/ja/guide/FormMirrorSyncforiphoneUserManual.html" target="_blank">📖 マニュアル</a>
+            <a href="/ja/tools/formmirror_iPhone.html" target="_blank">📱 Form Mirror Pro for iPhone</a>
+            <a href="/ja/tools/form-mirror-pro-pc.html" target="_blank">💻 For Mirror Pro for PC</a>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 30px;">
+            <button class="btn-start" onclick="initApp()">開始する</button>
+            <a href="/index.html" class="btn-home">🏠 ホームへ戻る</a>
+        </div>
+
+		<div class="footer-nav" style="text-align: center; margin-top: 40px; padding-bottom: 20px;">
+		<a href="/index.html" style="display: block; margin-bottom: 15px;">← トップへ戻る</a>
+		    <div style="display: flex; justify-content: center; gap: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+		        <a href="/ja/about.html" style="color: #888; text-decoration: none; font-size: 12px;">About Us (運営者情報)</a>
+		        <a href="/ja/legal.html" style="color: #888; text-decoration: none; font-size: 12px;">プライバシーと利用規約</a>
+		        <a href="/ja/contact.html" style="color: #888; text-decoration: none; font-size: 12px;">お問い合わせ</a>
+		    </div>
+		
+		    <p style="color: #bbb; font-size: 10px; margin-top: 15px;">&copy; 2026 KuniFami Soft Studio</p>
+		</div>
+
+    </div>
+
+    <div id="saveContainer">
+        <h3 style="color:white; margin-bottom:10px;">録画完了 / Recorded</h3>
+        <video id="previewVid" playsinline controls></video>
+        <div style="display:flex; gap:15px; width:90%; max-width:400px;">
+            <button onclick="closeSaveUI()" style="flex:1; padding:15px; border-radius:12px; background:#333; color:white; border:none; font-weight:bold;">閉じる / Close</button>
+            <button id="shareBtn" onclick="shareVideo()" style="flex:2; padding:15px; border-radius:12px; background:var(--primary); color:black; border:none; font-weight:bold;">保存・共有 / Save</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Action</div>
+
+    <div id="topPanel" class="top-bar fade-ui">
+        <div style="display:flex; gap:10px;">
+            <label class="icon-btn">📂A<input type="file" hidden accept="video/*" onclick="this.value=null" onchange="loadVideo(event, 'A')"></label>
+            <label class="icon-btn">📂B<input type="file" hidden accept="video/*" onclick="this.value=null" onchange="loadVideo(event, 'B')"></label>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <button class="icon-btn" id="syncMoveBtn" onclick="toggleSyncMove()" style="font-size:12px; width:auto; padding:0 10px;">🔗 SyncPos</button>
+            <button class="icon-btn rec-btn" id="recBtn" onclick="handleRecClick()">● REC</button>
+        </div>
+        <button class="icon-btn" id="layoutBtn" onclick="cycleLayout()">📺</button>
+    </div>
+
+    <canvas id="mainCanvas" onclick="toggleUI()"></canvas>
+
+    <div id="bottomPanel" class="bottom-panel fade-ui">
+        <div class="close-panel-btn" onclick="event.stopPropagation(); toggleUI();">▼</div>
+
+        <div class="wave-container">
+            <canvas id="waveCanvas"></canvas>
+            <div id="loopLayer" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"></div>
+        </div>
+        
+        <div class="sliders-row">
+            <div class="slider-group"><span>👻</span><input type="range" id="ghostRange" min="0" max="100" value="0"></div>
+            <div class="slider-group"><span>💡</span><input type="range" id="brightnessRange" min="50" max="250" value="100"></div>
+        </div>
+        
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:#aaa; font-family: monospace;">
+            <span id="timeA" style="color:var(--accent)">A: 0:00.00</span>
+            <span id="timeB" style="color:var(--primary)">B: 0:00.00</span>
+        </div>
+        
+        <div class="seek-container">
+            <input type="range" id="seekBarA" class="seek-a" min="0" step="0.001" value="0" onpointerdown="startSeek()" oninput="seeking('A', this.value)" onchange="endSeek('A', this.value)">
+            <input type="range" id="seekBarB" class="seek-b" min="0" step="0.001" value="0" onpointerdown="startSeek()" oninput="seeking('B', this.value)" onchange="endSeek('B', this.value)">
+        </div>
+
+        <div class="transport-row">
+            <button class="icon-btn" onclick="seekRelative(-5)">⏪</button>
+            <button class="icon-btn" onclick="changeFrame(-1)">-1</button>
+            <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+            <button class="icon-btn" onclick="changeFrame(1)">+1</button>
+            <button class="icon-btn" onclick="seekRelative(5)">⏩</button>
+        </div>
+
+        <div class="tools-scroll">
+            <button class="tool-pill" id="loopStartBtn" onclick="setLoopPoint('start')">📍 Loop In</button>
+            <button class="tool-pill" id="loopEndBtn" onclick="setLoopPoint('end')">📍 Loop Out</button>
+            <button class="tool-pill" id="loopToggleBtn" onclick="toggleLoopEnabled()">🔄 Loop OFF</button>
+            <button class="tool-pill" onclick="nudgeA(-0.05)">A&lt;</button>
+            <button class="tool-pill" onclick="nudgeA(0.05)">A&gt;</button>
+            <button class="tool-pill" onclick="nudgeB(-0.05)">B&lt;</button>
+            <button class="tool-pill" onclick="nudgeB(0.05)">B&gt;</button>
+            <button class="tool-pill" id="drawBtn" onclick="toggleDrawMode()">✏️ Draw</button>
+            <button class="tool-pill" id="colorBtn" onclick="cycleColor()"><span class="color-dot" id="colorDot" style="background:#0A84FF"></span> Color</button>
+            <button class="tool-pill" id="shapeBtn" onclick="cycleShape()">〰️ Free</button>
+            <button class="tool-pill" onclick="undoStroke()">↩ Undo</button>
+            <button class="tool-pill" onclick="clearStrokes()">🗑️ All</button>
+            <button class="tool-pill" id="metaBtn" onclick="setMetadata()">📅 Memo</button>
+            
+            <button class="tool-pill" id="skelBtn" onclick="toggleSkeleton()">💀 Skel</button>
+            <button class="tool-pill" id="skelWidthBtn" onclick="cycleSkelWidth()">💀 Width:6</button>
+            <button class="tool-pill" id="skelColorBtn" onclick="cycleSkelColor()"><span class="color-dot" id="skelColorDot" style="background:#00FF00"></span> 💀 Color</button>
+            
+            <button class="tool-pill" id="gridBtn" onclick="cycleGrid()"># Grid</button>
+            <button class="tool-pill" id="gridWidthBtn" onclick="cycleGridWidth()">📏 1px</button>
+            <button class="tool-pill" id="gridColorBtn" onclick="cycleGridColor()">🎨 白</button>
+
+            <button class="tool-pill active" id="mirrorABtn" onclick="toggleMirror('A')">🪞A</button>
+            <button class="tool-pill active" id="mirrorBBtn" onclick="toggleMirror('B')">🪞B</button>
+            <button class="tool-pill" id="speedBtn" onclick="cycleSpeed()">⚡ x1.0</button>
+            <button class="tool-pill" onclick="resetTransforms()">🔄 Reset</button>
+        </div>
+    </div>
+
+    <video id="videoA" class="hidden-vid" playsinline webkit-playsinline muted preload="auto" loop crossorigin="anonymous"></video>
+    <video id="videoB" class="hidden-vid" playsinline webkit-playsinline muted preload="auto" loop crossorigin="anonymous"></video>
+
+    <script>
+        // --- 1. Sync Mode Configuration ---
+        const HARD_SYNC = true; // true = A is Master, B is strictly Slaved
+
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const vidA = document.getElementById('videoA');
+        const vidB = document.getElementById('videoB');
+        const waveCanvas = document.getElementById('waveCanvas');
+        const waveCtx = waveCanvas.getContext('2d');
+        const seekA = document.getElementById('seekBarA');
+        const seekB = document.getElementById('seekBarB');
+        const previewVid = document.getElementById('previewVid');
+        const saveContainer = document.getElementById('saveContainer');
+
+        let layout = 0, syncMove = false, metadataText = ""; 
+        let loopStart = null, loopEnd = null, loopEnabled = false;
+        let drawMode = false, strokes = [], currentStroke = null, drawColorIdx = 0;
+        const drawColors = ["#0A84FF", "#FF3B30", "#30D158", "#FFD60A"]; 
+        let drawShape = 'free', speedIdx = 3, speeds = [0.1, 0.25, 0.5, 1.0, 1.5, 2.0]; 
+        
+        let gridIdx = 0, gridSizes = [0, 3, 6, 9, 12, 16]; 
+        let gridColorIdx = 0;
+        const gridColors = ["rgba(255,255,255,0.5)", "#FF3B30", "#30D158", "#0A84FF", "#FFFF00"]; 
+        const gridColorNames = ["白", "赤", "緑", "青", "黄"];
+        let gridWidthIdx = 0;
+        const gridWidths = [1, 3, 5, 8];
+
+        let mirrorA = true, mirrorB = true;
+        let transformA = { scale: 1, x: 0, y: 0 }, transformB = { scale: 1, x: 0, y: 0 }, activeTarget = null; 
+        
+        // --- MultiPose Integration ---
+        let detector = null;
+        let showSkeleton = false;
+        let poseResults = { A: [], B: [] }; 
+        let poseBusy = false, poseTarget = 'A'; 
+        const skelColors = ["#00FF00", "#0A84FF", "#FF3B30", "#FFCC00", "#FFFFFF", "#FF00FF"];
+        let skelColorIdxA = 0; 
+        let skelColorIdxB = 3; 
+        let skelWidthIdx = 1; 
+        const skelWidths = [2, 6, 12, 20, 30]; 
+
+        let audioCtx, gainNodeA, destNode, analyserA, dataA;
+        let mediaRecorder = null, recordedChunks = [], isRecording = false, lastBlob = null;
+        let lastTouchDist = 0, lastX = 0, lastY = 0;
+
+        // Sync Variables
+        let syncOffset = 0;
+        let isSeeking = false;
+
+        async function initApp() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            await setupAudio();
+            vidA.load();
+            vidB.load();
+            
+            // B is silent (controlled via HARD_SYNC)
+            vidB.muted = true;
+            vidB.volume = 0;
+            
+            resize();
+            requestAnimationFrame(render);
+            showUI();
+        }
+
+        async function initPose() {
+            if (detector) return;
+            try {
+                await tf.setBackend('webgl');
+                detector = await poseDetection.createDetector(
+                    poseDetection.SupportedModels.MoveNet,
+                    { modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING }
+                );
+            } catch(e) { console.log("Pose Init Error", e); }
+        }
+        
+        function toggleSkeleton() { 
+            showSkeleton = !showSkeleton; 
+            document.getElementById('skelBtn').classList.toggle('active', showSkeleton); 
+            if(showSkeleton) initPose(); 
+        }
+
+        function setMetadata() { 
+            const txt = prompt("Memo:", metadataText || new Date().toLocaleDateString()); 
+            if(txt !== null) metadataText = txt; 
+        }
+
+        async function setupAudio() {
+            if (audioCtx) return;
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+                
+                const srcA = audioCtx.createMediaElementSource(vidA);
+                gainNodeA = audioCtx.createGain();
+                analyserA = audioCtx.createAnalyser();
+                destNode = audioCtx.createMediaStreamDestination();
+                
+                srcA.connect(gainNodeA); 
+                srcA.connect(analyserA);
+                gainNodeA.connect(audioCtx.destination);
+                gainNodeA.connect(destNode);
+                
+                vidA.muted = false; 
+                vidA.volume = 1.0;
+                
+                dataA = new Uint8Array(analyserA.frequencyBinCount);
+            } catch(e) { console.warn("Audio Error", e); }
+        }
+
+        function resumeAudioContext() {
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function loadVideo(e, target) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const url = URL.createObjectURL(file);
+            const v = (target === 'A') ? vidA : vidB;
+            v.src = url; 
+            v.onloadedmetadata = () => { if(target==='A') seekA.max = v.duration; else seekB.max = v.duration; };
+            v.load();
+            if(target === 'B') { 
+                v.muted = true; v.volume = 0; 
+                syncOffset = 0;
+            } 
+            else if(target === 'A') { v.muted = false; v.volume = 1.0; } 
+        }
+
+        function handleRecClick() {
+            if(isRecording) stopRecording();
+            else executeRecording();
+        }
+
+        async function executeRecording() {
+            if (!audioCtx) await setupAudio();
+            resumeAudioContext();
+            
+            if(vidA.paused) { 
+                const t = vidA.currentTime;
+                vidB.currentTime = t + syncOffset;
+                await Promise.all([vidA.play(), vidB.play()]);
+            }
+
+            const canvasStream = canvas.captureStream(30);
+            const combinedStream = new MediaStream([...canvasStream.getVideoTracks(), ...destNode.stream.getAudioTracks()]);
+            recordedChunks = [];
+            
+            let opt = { mimeType: 'video/mp4' };
+            if (!MediaRecorder.isTypeSupported(opt.mimeType)) opt.mimeType = 'video/webm;codecs=vp9';
+            try { mediaRecorder = new MediaRecorder(combinedStream, opt); } 
+            catch (e) { mediaRecorder = new MediaRecorder(combinedStream); }
+
+            mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
+            mediaRecorder.onstop = () => {
+                lastBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'video/webm' });
+                previewVid.src = URL.createObjectURL(lastBlob);
+                saveContainer.style.display = 'flex';
+                document.getElementById('recBtn').classList.remove('recording'); 
+                document.getElementById('recBtn').innerText = "● REC"; 
+            };
+            mediaRecorder.start(1000); 
+            isRecording = true;
+            document.getElementById('recBtn').classList.add('recording');
+            document.getElementById('recBtn').innerText = "■ STOP";
+        }
+
+        function stopRecording() { if(mediaRecorder && isRecording) { mediaRecorder.stop(); isRecording = false; vidA.pause(); vidB.pause(); } }
+
+        async function shareVideo() {
+            if (!lastBlob) return;
+            const file = new File([lastBlob], `FormMirror_${Date.now()}.mp4`, { type: lastBlob.type });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file] });
+            else { const a = document.createElement('a'); a.href = URL.createObjectURL(lastBlob); a.download = file.name; a.click(); }
+        }
+
+        // --- 4. Toggle Play (Hard Sync Logic) ---
+        async function togglePlay() {
+            if (vidA.paused) {
+                await Promise.all([vidA.play(), vidB.play()]);
+            } else {
+                vidA.pause();
+                vidB.pause();
+            }
+        }
+
+        function toggleUI() { 
+            const isVisible = document.getElementById('bottomPanel').classList.contains('ui-visible');
+            if(isVisible) {
+                document.getElementById('bottomPanel').classList.remove('ui-visible');
+                document.getElementById('topPanel').classList.remove('ui-visible');
+            } else { showUI(); }
+        }
+        function showUI() { 
+            document.getElementById('bottomPanel').classList.add('ui-visible'); 
+            document.getElementById('topPanel').classList.add('ui-visible'); 
+        }
+
+        function formatTime(v) { const m=Math.floor(v/60), s=Math.floor(v%60), ms=Math.floor((v%1)*100); return `${m}:${s.toString().padStart(2,'0')}.${ms.toString().padStart(2,'0')}`; }
+        function nudgeA(sec) { vidA.currentTime = Math.max(0, vidA.currentTime + sec); updateSyncOffset(); }
+        function nudgeB(sec) { vidB.currentTime = Math.max(0, vidB.currentTime + sec); updateSyncOffset(); }
+        
+        // --- 6. Seek Relative (A-Master) ---
+        function seekRelative(sec) {
+            vidA.currentTime += sec;
+            vidB.currentTime = vidA.currentTime + syncOffset;
+        }
+        
+        // --- 5. Frame Change (A-Master) ---
+        function changeFrame(dir) {
+            const fps = 30;
+            const step = 1 / fps;
+            vidA.currentTime += dir * step;
+            vidB.currentTime = vidA.currentTime + syncOffset;
+        }
+        
+        function startSeek() { isSeeking = true; }
+        function seeking(target, val) {
+            if(target === 'A') vidA.currentTime = parseFloat(val);
+            else vidB.currentTime = parseFloat(val);
+        }
+        
+        // --- 7. End Seek (Update Offset) ---
+        function endSeek(target, val) {
+            isSeeking = false;
+        
+            if (target === "A") {
+                vidA.currentTime = parseFloat(val);
+                // Bは動かさない
+                syncOffset = vidB.currentTime - vidA.currentTime;
+            } else {
+                vidB.currentTime = parseFloat(val);
+                // Aは動かさない
+                syncOffset = vidB.currentTime - vidA.currentTime;
+            }
+        }
+        
+        function updateSyncOffset() { syncOffset = vidB.currentTime - vidA.currentTime; }
+
+        // --- 3. Render Loop Sync ---
+        function syncVideos() {
+            if (isSeeking) return;
+            if (vidA.paused || vidB.paused) return;
+        
+            const target = vidA.currentTime + syncOffset;
+            const diff   = vidB.currentTime - target;
+        
+            // 高精度同期（今とほぼ同じ精度）
+            if (Math.abs(diff) > 0.002) {   // 2ms
+                vidB.currentTime = target;
+            }
+        }
+
+        function render() {
+            ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            const w = canvas.width, h = canvas.height;
+            const ghost = document.getElementById('ghostRange').value / 100, bri = document.getElementById('brightnessRange').value;
+
+            // Apply Hard Sync
+            syncVideos();
+
+            if (loopEnabled && loopEnd !== null && vidA.currentTime >= loopEnd) {
+                vidA.currentTime = loopStart || 0;
+                vidB.currentTime = vidA.currentTime + syncOffset; 
+            }
+
+            if(showSkeleton && detector && !poseBusy) {
+                let imgToProcess = null;
+                if(poseTarget === 'A') {
+                    if(vidA.readyState >= 2 && !vidA.paused) imgToProcess = vidA;
+                    else poseTarget = 'B';
+                } else {
+                    if(vidB.readyState >= 2 && !vidB.paused) imgToProcess = vidB;
+                    else poseTarget = 'A';
+                }
+
+                if(imgToProcess) {
+                    poseBusy = true; 
+                    detector.estimatePoses(imgToProcess).then((poses) => { 
+                        if(poseTarget === 'A') poseResults.A = poses; 
+                        else poseResults.B = poses;
+                        
+                        poseBusy = false;
+                        poseTarget = (poseTarget === 'A') ? 'B' : 'A';
+                    }).catch(e => { console.log(e); poseBusy = false; });
+                }
+            }
+
+            const drawV = (v, x, y, w, h, mir, alp, br, tr) => {
+                if (v.readyState < 2 || alp <= 0) return;
+                ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip(); ctx.globalAlpha = alp;
+                if (br != 100) ctx.filter = `brightness(${br}%)`;
+                ctx.translate(x + w/2, y + h/2); ctx.scale(tr.scale, tr.scale); ctx.translate(tr.x, tr.y);
+                if (mir) ctx.scale(-1, 1);
+                const vr = v.videoWidth / v.videoHeight, cr = w / h;
+                let dw = (vr > cr) ? h * vr : w, dh = (vr > cr) ? h : w / vr;
+                ctx.drawImage(v, -dw/2, -dh/2, dw, dh); ctx.restore();
+            };
+
+            if (layout === 0) {
+                drawV(vidA, 0, 0, w/2, h, mirrorA, 1, 100, transformA);
+                if(showSkeleton) drawMultiSkeleton(poseResults.A, 0, 0, w/2, h, mirrorA, transformA, vidA);
+
+                drawV(vidB, w/2, 0, w/2, h, mirrorB, 1, bri, transformB);
+                if(showSkeleton) drawMultiSkeleton(poseResults.B, w/2, 0, w/2, h, mirrorB, transformB, vidB);
+
+                if(ghost > 0) drawV(vidA, w/2, 0, w/2, h, mirrorA, ghost, 100, transformA);
+            } else if (layout === 1) {
+                drawV(vidA, 0, 0, w, h/2, mirrorA, 1, 100, transformA);
+                if(showSkeleton) drawMultiSkeleton(poseResults.A, 0, 0, w, h/2, mirrorA, transformA, vidA);
+
+                drawV(vidB, 0, h/2, w, h/2, mirrorB, 1, bri, transformB);
+                if(showSkeleton) drawMultiSkeleton(poseResults.B, 0, h/2, w, h/2, mirrorB, transformB, vidB);
+            } else {
+                drawV(vidB, 0, 0, w, h, mirrorB, 1, bri, transformB);
+                if(showSkeleton) drawMultiSkeleton(poseResults.B, 0, 0, w, h, mirrorB, transformB, vidB);
+
+                drawV(vidA, 0, 0, w, h, mirrorA, Math.max(0.3, ghost), 100, transformA);
+                if(showSkeleton) drawMultiSkeleton(poseResults.A, 0, 0, w, h, mirrorA, transformA, vidA);
+            }
+            
+            if(gridSizes[gridIdx] > 0) drawGrid();
+            drawAnnotations();
+            if(metadataText) { ctx.save(); ctx.font = "bold 24px sans-serif"; ctx.fillStyle = "white"; ctx.shadowColor="black"; ctx.shadowBlur=4; ctx.fillText(metadataText, 20, 80); ctx.restore(); }
+            drawWaveforms();
+            updateTimeDisplay();
+            if(isRecording) { ctx.fillStyle = "red"; ctx.beginPath(); ctx.arc(w - 30, 40, 10, 0, Math.PI*2); ctx.fill(); }
+            requestAnimationFrame(render);
+        }
+
+        // MoveNet MultiPose Drawing Logic
+        function drawMultiSkeleton(poses, x, y, w, h, mirror, trans, videoRef) {
+            if(!poses || poses.length === 0 || videoRef.readyState < 2) return;
+            
+            ctx.save();
+            ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+            
+            ctx.translate(x + w/2, y + h/2);
+            ctx.scale(trans.scale, trans.scale);
+            ctx.translate(trans.x, trans.y);
+            if (mirror) ctx.scale(-1, 1);
+
+            const videoRatio = videoRef.videoWidth / videoRef.videoHeight;
+            const canvasRatio = w / h;
+            let dw, dh;
+            if (videoRatio > canvasRatio) { dh = h; dw = h * videoRatio; } 
+            else { dw = w; dh = w / videoRatio; }
+
+            const isA = (videoRef === vidA);
+            const currentColor = isA ? skelColors[skelColorIdxA] : skelColors[skelColorIdxB];
+            ctx.lineWidth = skelWidths[skelWidthIdx];
+            ctx.strokeStyle = currentColor;
+
+            // MoveNet Connections (COCO Keypoints)
+            const connections = [
+                [5,7],[7,9],[6,8],[8,10], // Arms
+                [5,6],[5,11],[6,12],[11,12], // Torso
+                [11,13],[13,15],[12,14],[14,16] // Legs
+            ];
+
+            poses.forEach(pose => {
+                if(pose.score < 0.2) return;
+                
+                // Keypoints normalization
+                const drawPoints = pose.keypoints.map(kp => ({
+                    x: (kp.x / videoRef.videoWidth - 0.5) * dw,
+                    y: (kp.y / videoRef.videoHeight - 0.5) * dh,
+                    score: kp.score
+                }));
+
+                for (const [start, end] of connections) {
+                    if (drawPoints[start] && drawPoints[end] && 
+                        drawPoints[start].score > 0.3 && drawPoints[end].score > 0.3) {
+                        ctx.beginPath();
+                        ctx.moveTo(drawPoints[start].x, drawPoints[start].y);
+                        ctx.lineTo(drawPoints[end].x, drawPoints[end].y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            
+            ctx.restore();
+        }
+
+        async function togglePlay() {
+            resumeAudioContext(); 
+            if (vidA.paused) {
+                const t = vidA.currentTime;
+                vidB.currentTime = t + syncOffset; // Pre-align
+                await Promise.all([vidA.play(), vidB.play()]);
+            } else {
+                vidA.pause();
+                vidB.pause();
+            }
+        }
+
+        function toggleUI() { 
+            const isVisible = document.getElementById('bottomPanel').classList.contains('ui-visible');
+            if(isVisible) {
+                document.getElementById('bottomPanel').classList.remove('ui-visible');
+                document.getElementById('topPanel').classList.remove('ui-visible');
+            } else { showUI(); }
+        }
+        function showUI() { 
+            document.getElementById('bottomPanel').classList.add('ui-visible'); 
+            document.getElementById('topPanel').classList.add('ui-visible'); 
+        }
+
+        function formatTime(v) { const m=Math.floor(v/60), s=Math.floor(v%60), ms=Math.floor((v%1)*100); return `${m}:${s.toString().padStart(2,'0')}.${ms.toString().padStart(2,'0')}`; }
+        function nudgeA(sec) { vidA.currentTime = Math.max(0, vidA.currentTime + sec); updateSyncOffset(); }
+        function nudgeB(sec) { vidB.currentTime = Math.max(0, vidB.currentTime + sec); updateSyncOffset(); }
+        
+        function seekRelative(sec) {
+            vidA.currentTime += sec;
+            vidB.currentTime = vidA.currentTime + syncOffset;
+        }
+        
+        function changeFrame(dir) {
+            const fps = 30;
+            const step = 1 / fps;
+            vidA.currentTime += dir * step;
+            vidB.currentTime = vidA.currentTime + syncOffset;
+        }
+        
+        function seekInput(target, val) { 
+            if(target === 'A') vidA.currentTime = parseFloat(val); 
+            else { vidB.currentTime = parseFloat(val); updateSyncOffset(); }
+        }
+        function updateTimeDisplay() {
+            if(!isSeeking) {
+                document.getElementById('timeA').innerText = `A: ${formatTime(vidA.currentTime)}`;
+                document.getElementById('timeB').innerText = `B: ${formatTime(vidB.currentTime)}`;
+                if(document.activeElement !== seekA) { seekA.max = vidA.duration || 100; seekA.value = vidA.currentTime; }
+                if(document.activeElement !== seekB) { seekB.max = vidB.duration || 100; seekB.value = vidB.currentTime; }
+            }
+            document.getElementById('playBtn').innerText = !vidA.paused ? "⏸" : "▶";
+        }
+        function drawWaveforms() {
+            if(!analyserA || !dataA) return; analyserA.getByteFrequencyData(dataA);
+            waveCtx.clearRect(0,0, waveCanvas.width, waveCanvas.height);
+            const step = waveCanvas.width / dataA.length;
+            waveCtx.fillStyle = '#0A84FF'; dataA.forEach((v, i) => waveCtx.fillRect(i*step, 34 - v/8, step-1, v/8));
+        }
+        
+        function cycleGrid() { 
+            gridIdx = (gridIdx + 1) % gridSizes.length; 
+            document.getElementById('gridBtn').innerText = gridSizes[gridIdx] === 0 ? "# Grid" : `# Grid:${gridSizes[gridIdx]}`;
+        }
+
+        function cycleGridWidth() {
+            gridWidthIdx = (gridWidthIdx + 1) % gridWidths.length;
+            document.getElementById('gridWidthBtn').innerText = `📏 ${gridWidths[gridWidthIdx]}px`;
+        }
+
+        function cycleGridColor() {
+            gridColorIdx = (gridColorIdx + 1) % gridColors.length;
+            document.getElementById('gridColorBtn').innerText = `🎨 ${gridColorNames[gridColorIdx]}`;
+        }
+        
+        function drawGrid() {
+            ctx.save(); 
+            ctx.strokeStyle = gridColors[gridColorIdx]; 
+            ctx.lineWidth = gridWidths[gridWidthIdx];   
+            const c = gridSizes[gridIdx]; 
+            ctx.beginPath();
+            for(let i=1; i<c; i++) { 
+                ctx.moveTo(i*(canvas.width/c), 0); ctx.lineTo(i*(canvas.width/c), canvas.height); 
+                ctx.moveTo(0, i*(canvas.height/c)); ctx.lineTo(canvas.width, i*(canvas.height/c)); 
+            }
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawAnnotations() {
+            ctx.lineCap = "round"; ctx.lineWidth = 5;
+            strokes.concat(currentStroke || []).forEach(s => {
+                ctx.strokeStyle = s.color; ctx.beginPath();
+                if (s.shape === 'line') { ctx.moveTo(s.points[0].x, s.points[0].y); ctx.lineTo(s.points[s.points.length-1].x, s.points[s.points.length-1].y); }
+                else if (s.shape === 'circle') { const r = Math.hypot(s.points[s.points.length-1].x - s.points[0].x, s.points[s.points.length-1].y - s.points[0].y); ctx.arc(s.points[0].x, s.points[0].y, r, 0, Math.PI*2); }
+                else { ctx.moveTo(s.points[0].x, s.points[0].y); s.points.forEach(pt => ctx.lineTo(pt.x, pt.y)); }
+                ctx.stroke();
+            });
+        }
+        function toggleSyncMove() { syncMove = !syncMove; document.getElementById('syncMoveBtn').classList.toggle('active', syncMove); }
+        function cycleLayout() { layout = (layout + 1) % 3; }
+        
+        function cycleSpeed() { 
+            speedIdx = (speedIdx + 1) % speeds.length; 
+            const s = speeds[speedIdx];
+            vidA.playbackRate = vidB.playbackRate = s; 
+            vidA.preservesPitch = (s === 1.0);
+            vidB.preservesPitch = (s === 1.0);
+            document.getElementById('speedBtn').innerText = `⚡ x${s}`; 
+        }
+
+        function cycleColor() { drawColorIdx = (drawColorIdx + 1) % drawColors.length; document.getElementById('colorDot').style.background = drawColors[drawColorIdx]; }
+        function cycleShape() { const ss = ['free', 'line', 'circle']; drawShape=ss[(ss.indexOf(drawShape)+1)%3]; document.getElementById('shapeBtn').innerText=drawShape; }
+        function toggleDrawMode() { drawMode = !drawMode; document.getElementById('drawBtn').classList.toggle('active', drawMode); }
+        
+        function toggleMirror(t) { 
+            if(t==='A') { 
+                mirrorA = !mirrorA; 
+                document.getElementById('mirrorABtn').classList.toggle('active', mirrorA);
+            } else { 
+                mirrorB = !mirrorB; 
+                document.getElementById('mirrorBBtn').classList.toggle('active', mirrorB);
+            } 
+        }
+
+        function undoStroke() { strokes.pop(); }
+        function clearStrokes() { strokes = []; }
+        function resetTransforms() { transformA = {scale:1,x:0,y:0}; transformB = {scale:1,x:0,y:0}; }
+
+        function cycleSkelWidth() {
+            skelWidthIdx = (skelWidthIdx + 1) % skelWidths.length;
+            document.getElementById('skelWidthBtn').innerText = `💀 Width:${skelWidths[skelWidthIdx]}`;
+        }
+
+        function cycleSkelColor() {
+            skelColorIdxA = (skelColorIdxA + 1) % skelColors.length;
+            skelColorIdxB = (skelColorIdxB + 1) % skelColors.length; 
+            document.getElementById('skelColorDot').style.background = skelColors[skelColorIdxA];
+        }
+
+        function setLoopPoint(t) { 
+            if(t==='start') { 
+                loopStart = vidA.currentTime; 
+                document.getElementById('loopStartBtn').innerText = `📍 In: ${formatTime(loopStart)}`;
+            } else { 
+                loopEnd = vidA.currentTime; 
+                document.getElementById('loopEndBtn').innerText = `📍 Out: ${formatTime(loopEnd)}`;
+            }
+            renderLoopMarkers();
+        }
+
+        function renderLoopMarkers() {
+            const layer = document.getElementById('loopLayer'); 
+            layer.innerHTML = '';
+            if(loopStart !== null) { 
+                let d = document.createElement('div'); 
+                d.className='loop-marker'; 
+                d.style.left=(loopStart/vidA.duration*100)+'%'; 
+                d.style.background="#30D158"; 
+                layer.appendChild(d); 
+            }
+            if(loopEnd !== null) { 
+                let d = document.createElement('div'); 
+                d.className='loop-marker'; 
+                d.style.left=(loopEnd/vidA.duration*100)+'%'; 
+                layer.appendChild(d); 
+            }
+        }
+        
+        function toggleLoopEnabled() { 
+            loopEnabled = !loopEnabled;
+            const btn = document.getElementById('loopToggleBtn');
+            btn.innerText = loopEnabled ? "🔄 Loop ON" : "🔄 Loop OFF";
+            btn.classList.toggle('loop-on', loopEnabled);
+        }
+
+        function closeSaveUI() { saveContainer.style.display = 'none'; previewVid.src = ""; }
+        function resize() { canvas.width = window.innerWidth * window.devicePixelRatio; canvas.height = window.innerHeight * window.devicePixelRatio; }
+
+        canvas.addEventListener('touchstart', e => {
+            resumeAudioContext(); 
+            
+            const rect = canvas.getBoundingClientRect();
+            if (e.touches.length === 1) {
+                const t = e.touches[0];
+                lastX = t.clientX; lastY = t.clientY;
+                if (layout === 0) activeTarget = (t.clientX < rect.width/2) ? transformA : transformB;
+                else if (layout === 1) activeTarget = (t.clientY < rect.height/2) ? transformA : transformB;
+                else activeTarget = transformA; 
+                
+                if (drawMode) currentStroke = { points: [{x: (t.clientX - rect.left) * (canvas.width/rect.width), y: (t.clientY - rect.top) * (canvas.height/rect.height)}], color: drawColors[drawColorIdx], shape: drawShape };
+            } else if (e.touches.length === 2) {
+                const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+                if (layout === 0) activeTarget = (midX < rect.width/2) ? transformA : transformB;
+                else if (layout === 1) activeTarget = (midY < rect.height/2) ? transformA : transformB;
+                else activeTarget = transformA;
+                lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+            }
+        });
+
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            if (e.touches.length === 1 && !drawMode && activeTarget) {
+                const t = e.touches[0];
+                const dx = (t.clientX - lastX) * 2;
+                const dy = (t.clientY - lastY) * 2;
+                if (syncMove) {
+                    transformA.x += dx; transformA.y += dy;
+                    transformB.x += dx; transformB.y += dy;
+                } else {
+                    activeTarget.x += dx; activeTarget.y += dy;
+                }
+                lastX = t.clientX; lastY = t.clientY;
+            } else if (e.touches.length === 1 && drawMode && currentStroke) {
+                const t = e.touches[0];
+                currentStroke.points.push({x: (t.clientX-rect.left)*(canvas.width/rect.width), y: (t.clientY-rect.top)*(canvas.height/rect.height)});
+            } else if (e.touches.length === 2 && activeTarget) {
+                const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                const delta = dist / lastTouchDist;
+                if (syncMove) {
+                    transformA.scale *= delta;
+                    transformB.scale *= delta;
+                } else {
+                    activeTarget.scale *= delta;
+                }
+                lastTouchDist = dist;
+            }
+        }, {passive:false});
+
+        canvas.addEventListener('touchend', () => { if(currentStroke) { strokes.push(currentStroke); currentStroke = null; } });
+        window.addEventListener('resize', resize);
+    </script>
+</body>
+</html>

@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1V1ELMWFTY');
+    </script>
+
+	<title>Form Mirror Pro for PC | フォーム比較・録画対応 練習サポートツール</title>
+	<meta name="description" content="PCカメラと見本動画を並べて表示し、フォームをリアルタイムで確認できるブラウザツール。録画・遅延再生・グリッド表示に対応。スポーツやダンス、楽器練習など幅広い用途に。">
+	<meta name="keywords" content="フォームチェック, 動画比較, 練習支援, ダンス練習, スポーツ練習, 録画機能, PCブラウザツール">
+    <meta name="robots" content="index, follow">
+
+	<meta property="og:title" content="Form Mirror Pro for PC | フォーム比較ツール">
+	<meta property="og:description" content="見本動画と自分の映像を同時表示。フォーム確認や練習の振り返りに使えるPC向けブラウザツール。録画・ミラー表示・速度変更に対応。">
+    <meta property="og:type" content="website">
+
+    <meta name="ad-mode" content="general">
+    <script src="/assets/js/ads.js" defer></script>
+    <script src="/assets/js/ad-manager.js" defer></script>
+    <script src="/assets/js/google-ads.js" defer></script>
+    
+    <style>
+        :root {
+            --primary: #0A84FF;
+            --danger: #FF453A;
+            --bg-glass: rgba(28, 28, 30, 0.85);
+            --text-main: #FFFFFF;
+            --text-sub: #8E8E93;
+        }
+
+        body { 
+            margin: 0; background: #000; color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+            overflow: hidden; width: 100%; height: 100%;
+            user-select: none; 
+        }
+        
+        canvas { width: 100vw; height: 100vh; object-fit: contain; background: #000; display: block; cursor: move; }
+        
+        .fade-ui { transition: opacity 0.3s ease, transform 0.3s ease; opacity: 0; pointer-events: none; }
+        .ui-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            padding: 15px 20px;
+            display: flex; justify-content: center; align-items: center; gap: 15px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            z-index: 100;
+        }
+
+        .bottom-panel {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(20px);
+            width: 90%; max-width: 900px;
+            padding: 15px 20px;
+            background: var(--bg-glass); border-top-left-radius: 24px; border-top-right-radius: 24px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; gap: 10px; z-index: 100;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px; border-radius: 24px;
+        }
+        .bottom-panel.ui-visible { transform: translateX(-50%) translateY(0); }
+
+        .sliders-row { display: flex; align-items: center; gap: 20px; justify-content: center; }
+        .slider-group { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        input[type="range"] { width: 100px; height: 4px; accent-color: var(--primary); cursor: pointer; }
+
+        .transport-row { display: flex; justify-content: center; align-items: center; gap: 20px; }
+        
+        button { 
+            background: rgba(255,255,255,0.1); border: none; color: white; 
+            padding: 8px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; 
+            transition: 0.2s;
+        }
+        button:hover { background: rgba(255,255,255,0.2); }
+        .active-btn { background: var(--primary) !important; }
+
+        .play-btn-circle { width: 50px; height: 50px; background: white; color: black; border-radius: 50%; font-size: 20px; }
+        
+        .rec-btn { background: var(--danger); color: white; min-width: 100px; }
+        .is-recording { animation: pulse 1s infinite; background: white !important; color: var(--danger) !important; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; }
+
+        /* --- 第一画面：白ベースの明るいデザイン --- */
+        #loginOverlay {
+            position: fixed; inset: 0; 
+            background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+            z-index: 9000;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+            padding: 20px; overflow-y: auto; color: #1c1c1e;
+        }
+
+        .intro-box { 
+            max-width: 600px; text-align: center; line-height: 1.6; margin-bottom: 20px; 
+            background: #fff; padding: 20px; border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #eee;
+        }
+
+        .positive-msg {
+            margin: 10px 0 20px; font-weight: bold; color: var(--primary); font-size: 16px; text-align: center;
+        }
+
+        .skill-up-area {
+            width: 100%; max-width: 500px; margin: 20px 0; padding: 20px;
+            background: #fff; border: 1px solid #eee; border-radius: 24px; text-align: left;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .skill-up-title { color: #1c1c1e; font-size: 14px; margin: 0 0 10px 0; text-align: center; display: block; font-weight: 800; }
+        .skill-up-msg { font-size: 11px; color: #555; margin-bottom: 15px; line-height: 1.6; text-align: center; }
+        .skill-up-msg small { display: block; color: #888; margin-top: 4px; }
+
+        .random-banner {
+            background: #f8faff; padding: 16px; border-radius: 14px; margin-bottom: 15px;
+            border-left: 5px solid var(--primary); font-size: 13px; font-weight: bold; line-height: 1.5; color: #1c1c1e;
+        }
+
+        .resource-list { list-style: none; padding: 0; margin: 10px 0 0 0; border-top: 1px solid #eee; padding-top: 15px; }
+
+        .donation-links { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; justify-content: center; }
+        .donation-links a { padding: 10px 18px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 14px; color: #444; background: #f0f0f2; border: 1px solid #ddd; transition: 0.3s; }
+        
+        .btn-proceed { background: var(--primary); font-size: 20px; width: 220px; padding: 18px; margin: 10px; border: none; border-radius: 15px; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,122,255,0.3); }
+        .btn-home { color: #888; text-decoration: none; font-size: 14px; margin-top: 15px; font-weight: bold; }
+        
+        .ad-container { width: 100%; max-width: 728px; min-height: 100px; margin: 10px auto; overflow: hidden; }
+
+        #countdownOverlay {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 150px; font-weight: bold; color: #ffcc00; z-index: 5000; pointer-events: none; display: none; text-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        #saveContainer { 
+            display: none; position: fixed; inset: 0; z-index: 9500; background: rgba(0,0,0,0.9);
+            flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+        }
+        #previewVid { max-width: 80%; max-height: 60vh; border-radius: 10px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="countdownOverlay"></div>
+
+    <div id="loginOverlay">
+
+        <h1 style="margin: 40px 0 10px; color: var(--primary); font-weight: 800;">Form Mirror Pro for PC ver 1.3</h1>
+
+		<div class="intro-box">
+			
+			    <p style="font-size:16px; margin:0 0 12px 0; color:#1c1c1e; font-weight:600;">
+			        💻 Form Mirror Pro for PC
+			    </p>
+			
+			    <p style="font-size:14px; margin:0 0 14px 0; color:#333; line-height:1.6;">
+			        Webブラウザ上で、PCカメラの映像と見本動画を横に並べて表示できるフォーム比較ツールです。スポーツやダンス、楽器などのスキルアップ練習に最適です。
+			    </p>
+			
+			    <ul style="list-style:none; padding:0; margin:0 auto 16px auto; font-size:14px; line-height:1.8; color:#333; text-align:left; display:inline-block;">
+			        <li>🎥 <strong>左右並べて比較</strong> — 自分の動きと見本をリアルタイムで確認</li>
+			        <li>⏱ <strong>遅延再生 (Delay)</strong> — 動き終わった直後に自分のフォームを振り返り</li>
+			        <li>⚡ <strong>再生速度調整</strong> — 見本動画をスロー再生して細部を観察</li>
+			        <li>🔁 <strong>区間リピート</strong> — 練習したい特定の部分（A-B間）を繰り返し再生</li>
+			        <li>#️⃣ <strong>グリッド表示</strong> — 姿勢の傾きや重心ラインの視覚的なガイドライン</li>
+			        <li>⏺ <strong>録画機能</strong> — 練習風景を比較画面のままPCに直接保存可能</li>
+			    </ul>
+			
+			    <div style="background:#f7f7f9; padding:14px; border-radius:14px; border:1px solid #eee; text-align:left;">
+			        <p style="font-size:14px; margin:0 0 10px 0; font-weight:600; color:#1c1c1e;">
+			            🧠 使い方（かんたん3ステップ）
+			        </p>
+			
+			        <ol style="margin:0; padding-left:18px; font-size:14px; line-height:1.8; color:#333;">
+			            <li><strong>読み込み</strong> — 比較したい見本動画を選択する</li>
+			            <li><strong>環境設定</strong> — 遅延時間や再生スピード、グリッドを好みに調整</li>
+			            <li><strong>練習＆録画</strong> — フォームを確認しながら練習し、必要に応じて録画</li>
+			        </ol>
+			    </div>
+			
+			    <p style="font-size:13px; margin:14px 0 0 0; color:#666;">
+			        PCのブラウザ（ChromeやEdge推奨）ですぐに動きます。インストールは不要です。
+			    </p>
+			
+			</div>
+        <div class="donation-links">
+            <a href="/ja/guide/FormMirrorProforPCUserManual.html" target="_blank">📖 マニュアル</a>
+            <a href="/ja/tools/formmirror_iPhone.html" target="_blank">📱 iPhone版</a>
+            <a href="/ja/tools/form_mirror_sync.html" target="_blank" style="background: #5856d6; border-color: #5856d6;">🔗 Sync & Pro Analysis</a>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                <button class="btn-proceed" onclick="initAppWithLang('ja')">開始</button>
+            </div>
+            <a href="/index.html" class="btn-home">🏠 ホームに戻る</a>
+        </div>
+
+		<div class="footer-nav" style="text-align: center; margin-top: 40px; padding-bottom: 20px;">
+		<a href="/index.html" style="display: block; margin-bottom: 15px;">← トップへ戻る</a>
+		    <div style="display: flex; justify-content: center; gap: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+		        <a href="/ja/about.html" style="color: #888; text-decoration: none; font-size: 12px;">About Us (運営者情報)</a>
+		        <a href="/ja/legal.html" style="color: #888; text-decoration: none; font-size: 12px;">プライバシーと利用規約</a>
+		        <a href="/ja/contact.html" style="color: #888; text-decoration: none; font-size: 12px;">お問い合わせ</a>
+		    </div>
+		
+		    <p style="color: #bbb; font-size: 10px; margin-top: 15px;">&copy; 2026 KuniFami Soft Studio</p>
+		</div>
+
+    </div>
+
+    <div id="topPanel" class="top-bar fade-ui">
+        <input type="file" id="fileInput" accept="video/*" onchange="loadVideo(event)" style="display:none;">
+        <button id="loadBtn" onclick="document.getElementById('fileInput').click()">📂 動画読み込み</button>
+        <button id="layoutBtn" onclick="switchLayout()">📺 表示切替</button>
+        <button id="cameraBtn" onclick="switchCamera()">🔄 カメラ切替</button>
+        <button id="recordBtn" class="rec-btn" onclick="handleRecordClick()">● 録画開始</button>
+    </div>
+
+    <canvas id="mainCanvas"></canvas>
+
+    <div id="bottomPanel" class="bottom-panel fade-ui">
+        <div class="sliders-row">
+            <div class="slider-group">
+                <span>✨</span>
+                <input type="range" id="ghostRange" min="0" max="100" value="0">
+            </div>
+            <div class="slider-group">
+                <span>💡</span>
+                <input type="range" id="brightnessRange" min="100" max="400" value="100">
+            </div>
+            <div class="slider-group">
+                <span>🔍</span>
+                <input type="range" id="zoomRange" min="1" max="5" step="0.1" value="1" oninput="handleZoomSlider(this.value)">
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+            <span id="timeDisplay" style="font-size: 12px; min-width: 80px;">00:00 / 00:00</span>
+            <input type="range" id="seekBar" value="0" step="0.1" style="flex: 1;">
+        </div>
+
+        <div class="transport-row">
+            <button id="btnLoop" onclick="toggleLoop()">🔁 Loop</button>
+            <button onclick="modelVid.currentTime -= 5">⏪ 5s</button>
+            <button class="play-btn-circle" id="playPauseBtn" onclick="togglePlay()">▶</button>
+            <button onclick="modelVid.currentTime += 5">5s ⏩</button>
+            <div style="background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 10px; display: flex; gap: 5px;">
+                <button id="cd3" onclick="setCD(3)" class="active-btn">3s</button>
+                <button id="cd5" onclick="setCD(5)">5s</button>
+                <button id="cd7" onclick="setCD(7)">7s</button>
+            </div>
+        </div>
+
+        <div class="tools-grid">
+            <button id="mirrorModelBtn" class="active-btn" onclick="toggleMirror('model')">🪞 見本反転</button>
+            <button id="mirrorMeBtn" class="active-btn" onclick="toggleMirror('me')">🤳 自分反転</button>
+            <button id="gridBtn" onclick="cycleGrid()"># Grid</button>
+            <button id="btnSpeed" onclick="changeSpeed()">⚡ x1.0</button>
+            <button id="delayBtn" onclick="cycleDelay()">⏱ 00:00 遅延</button>
+            <button id="qualityBtn" onclick="cycleQuality()">🎬 画質: Standard</button>
+            <button id="fitModeBtn" onclick="toggleFitMode()">↔ Fit Mode</button>
+            <button id="btnA" onclick="setPoint('A')">📍 A: --:--</button>
+            <button id="btnB" onclick="setPoint('B')">📍 B: --:--</button>
+            <button id="backABtn" style="background: var(--primary);" onclick="startCountdown('reset')">↩ Back A</button>
+        </div>
+    </div>
+
+    <div id="saveContainer">
+        <h2 id="saveLabel" style="color:white;">録画完了</h2>
+        <video id="previewVid" controls></video>
+        <div style="display:flex; gap:20px;">
+            <button id="closeSaveBtn" onclick="closeSaveUI()" style="padding: 10px 30px; background: #555;">閉じる</button>
+            <button id="downloadBtn" onclick="downloadVideo()" style="padding: 10px 30px; background: var(--primary);">PCに保存する</button>
+        </div>
+    </div>
+
+    <video id="modelVideo" loop playsinline style="display:none;"></video>
+    <video id="myCamera" autoplay muted playsinline style="display:none;"></video>
+
+    <script>
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const modelVid = document.getElementById('modelVideo');
+        const myCam = document.getElementById('myCamera');
+        const seekBar = document.getElementById('seekBar');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const recordBtn = document.getElementById('recordBtn');
+        const cdOverlay = document.getElementById('countdownOverlay');
+
+        // Audio Handling Variables
+        let audioCtx;
+        let audioDest;
+        let modelSource;
+
+        // 状態管理
+        let displayMode = 0;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let pointA = 0;
+        let pointB = 0;
+        let isLooping = false;
+        let lastBlob = null;
+        let speeds = [1.0, 0.75, 0.5, 0.25, 1.25, 1.5];
+        let speedIdx = 0;
+        let delayTimes = [0, 3, 5, 7];
+        let delayIdx = 0;
+        let gridMode = 0;
+        let countdownSec = 3;
+        let isCountingDown = false;
+        let mirrorModel = true;
+        let mirrorMe = true;
+        let fitMode = "contain";
+        let uiTimer = null;
+        let cameraBuffer = [];
+        let videoDevices = [];
+        let currentDeviceIdx = 0;
+        let currentLang = 'ja';
+
+        const qualityModes = [
+            { label: 'Low', bps: 1500000 },
+            { label: 'Standard', bps: 5000000 },
+            { label: 'High', bps: 15000000 }
+        ];
+        let qualityIdx = 1;
+
+        const i18n = {
+            ja: {
+                load: "📂 動画読み込み",
+                layout: "📺 表示切替",
+                camera: "🔄 カメラ切替",
+                recStart: "● 録画開始",
+                recStop: "■ 停止",
+                mirrorModel: "🪞 見本反転",
+                mirrorMe: "🤳 自分反転",
+                delay: "遅延",
+                backA: "↩ Back A", 
+                saveLabel: "録画完了",
+                close: "閉じる",
+                download: "PCに保存する",
+                quality: "画質"
+            },
+            en: {
+                load: "📂 Load Video",
+                layout: "📺 Layout",
+                camera: "🔄 Camera",
+                recStart: "● Record",
+                recStop: "■ Stop",
+                mirrorModel: "🪞 Mirror Model",
+                mirrorMe: "🤳 Mirror Me",
+                delay: "Delay",
+                backA: "↩ Back A", 
+                saveLabel: "Recording Finished",
+                close: "Close",
+                download: "Save to PC",
+                quality: "Quality"
+            }
+        };
+
+        const transformModel = { x: 0, y: 0, scale: 1.0 };
+        const transformMe = { x: 0, y: 0, scale: 1.0 };
+        let isDragging = false;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let activeTransform = null;
+
+        canvas.width = 1280;
+        canvas.height = 720;
+
+        function formatTime(s) {
+            if (isNaN(s) || s < 0) return "00:00";
+            const m = Math.floor(s / 60);
+            const sec = Math.floor(s % 60);
+            return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        }
+
+        function getTargetTransform(clientX) {
+            if (displayMode === 0) {
+                return clientX < window.innerWidth / 2 ? transformModel : transformMe;
+            } else if (displayMode === 1) {
+                return transformModel;
+            } else {
+                return transformMe;
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            activeTransform = getTargetTransform(e.clientX);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging || !activeTransform) return;
+            const dx = (e.clientX - lastMouseX);
+            const dy = (e.clientY - lastMouseY);
+            const scaleX = canvas.width / window.innerWidth;
+            const scaleY = canvas.height / window.innerHeight;
+            activeTransform.x += (dx * scaleX) / activeTransform.scale;
+            activeTransform.y += (dy * scaleY) / activeTransform.scale;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            activeTransform = null;
+        });
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            const target = getTargetTransform(e.clientX);
+            target.scale = Math.min(Math.max(0.1, target.scale * delta), 10);
+            if(target === transformMe) {
+                document.getElementById('zoomRange').value = target.scale;
+            }
+        }, { passive: false });
+
+        async function initAppWithLang(lang) {
+            currentLang = lang;
+            document.getElementById('loginOverlay').style.display = 'none';
+            
+            const t = i18n[lang];
+            document.getElementById('loadBtn').innerText = t.load;
+            document.getElementById('layoutBtn').innerText = t.layout;
+            document.getElementById('cameraBtn').innerText = t.camera;
+            document.getElementById('recordBtn').innerText = t.recStart;
+            document.getElementById('mirrorModelBtn').innerText = t.mirrorModel;
+            document.getElementById('mirrorMeBtn').innerText = t.mirrorMe;
+            document.getElementById('backABtn').innerText = t.backA;
+            document.getElementById('saveLabel').innerText = t.saveLabel;
+            document.getElementById('closeSaveBtn').innerText = t.close;
+            document.getElementById('downloadBtn').innerText = t.download;
+            updateDelayLabel();
+            updateQualityLabel();
+
+            try {
+                // Request audio permission here as well
+                await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                videoDevices = devices.filter(d => d.kind === 'videoinput');
+                
+                await startCamera();
+                showUI();
+                requestAnimationFrame(render);
+            } catch (e) {
+                alert("Camera/Audio Error: " + e.message);
+            }
+        }
+
+        async function startCamera() {
+            if (myCam.srcObject) {
+                myCam.srcObject.getTracks().forEach(t => t.stop());
+            }
+            const constraints = { 
+                video: { 
+                    deviceId: videoDevices[currentDeviceIdx]?.deviceId ? { exact: videoDevices[currentDeviceIdx].deviceId } : undefined,
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
+                audio: true // Add audio to constraints
+            };
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            myCam.srcObject = stream;
+            cameraBuffer = [];
+            myCam.onloadedmetadata = () => myCam.play();
+        }
+
+        async function switchCamera() {
+            if (videoDevices.length <= 1) return;
+            currentDeviceIdx = (currentDeviceIdx + 1) % videoDevices.length;
+            await startCamera();
+        }
+
+        function handleZoomSlider(val) {
+            transformMe.scale = parseFloat(val);
+        }
+
+        function render() {
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (myCam.readyState >= 2) {
+                const temp = document.createElement('canvas');
+                temp.width = myCam.videoWidth;
+                temp.height = myCam.videoHeight;
+                temp.getContext('2d').drawImage(myCam, 0, 0);
+                cameraBuffer.push(temp);
+                if (cameraBuffer.length > 60 * 8) {
+                    cameraBuffer.shift();
+                }
+            }
+
+            const delayFrames = Math.floor(delayTimes[delayIdx] * 60);
+            const camFrame = cameraBuffer.length > delayFrames 
+                             ? cameraBuffer[cameraBuffer.length - 1 - delayFrames] 
+                             : (cameraBuffer[0] || myCam);
+
+            const br = document.getElementById('brightnessRange').value;
+            const ghost = document.getElementById('ghostRange').value / 100;
+
+            if (displayMode === 0) {
+                draw(modelVid, 0, 0, 640, 720, mirrorModel, 100, 1, transformModel);
+                draw(camFrame, 640, 0, 640, 720, mirrorMe, br, 1, transformMe);
+                if (ghost > 0) {
+                    draw(modelVid, 640, 0, 640, 720, mirrorModel, 100, ghost, transformModel);
+                }
+            } else if (displayMode === 1) {
+                draw(modelVid, 0, 0, 1280, 720, mirrorModel, 100, 1, transformModel);
+            } else {
+                draw(camFrame, 0, 0, 1280, 720, mirrorMe, br, 1, transformMe);
+                if (ghost > 0) {
+                    draw(modelVid, 0, 0, 1280, 720, mirrorModel, 100, ghost, transformModel);
+                }
+            }
+
+            if (gridMode > 0) {
+                drawGrids();
+            }
+            requestAnimationFrame(render);
+        }
+
+        function draw(v, x, y, w, h, mirror, br, alpha, trans) {
+            const isVideo = v instanceof HTMLVideoElement;
+            if (isVideo && v.readyState < 2) return;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x, y, w, h);
+            ctx.clip();
+            ctx.globalAlpha = alpha;
+            ctx.filter = `brightness(${br}%)`;
+            ctx.translate(x + w / 2, y + h / 2);
+            ctx.scale(trans.scale, trans.scale);
+            ctx.translate(trans.x, trans.y);
+            if (mirror) ctx.scale(-1, 1);
+
+            const vw = isVideo ? v.videoWidth : v.width;
+            const vh = isVideo ? v.videoHeight : v.height;
+            if (!vw || !vh) {
+                ctx.restore();
+                return;
+            }
+
+            const ratio = fitMode === "cover" ? Math.max(w/vw, h/vh) : Math.min(w/vw, h/vh);
+            ctx.drawImage(v, -vw*ratio/2, -vh*ratio/2, vw*ratio, vh*ratio);
+            ctx.restore();
+        }
+
+        function drawGrids() {
+            ctx.save();
+            ctx.strokeStyle = "rgba(255,255,255,0.4)";
+            ctx.lineWidth = 1;
+            const counts = [0, 0, 3, 5, 8, 12, 16];
+            const n = counts[gridMode];
+            if (gridMode === 1) {
+                ctx.strokeStyle = "rgba(255,204,0,0.6)";
+                ctx.beginPath();
+                ctx.moveTo(canvas.width/2, 0);
+                ctx.lineTo(canvas.width/2, canvas.height);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height/2);
+                ctx.lineTo(canvas.width, canvas.height/2);
+                ctx.stroke();
+            } else {
+                for(let i=1; i<n; i++){
+                    ctx.beginPath();
+                    ctx.moveTo(canvas.width*(i/n), 0);
+                    ctx.lineTo(canvas.width*(i/n), canvas.height);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(0, canvas.height*(i/n));
+                    ctx.lineTo(canvas.width, canvas.height*(i/n));
+                    ctx.stroke();
+                }
+            }
+            ctx.restore();
+        }
+
+        function switchLayout() {
+            displayMode = (displayMode + 1) % 3;
+            resetUITimer();
+        }
+
+        function toggleMirror(target) {
+            if(target === 'model') {
+                mirrorModel = !mirrorModel;
+            } else {
+                mirrorMe = !mirrorMe;
+            }
+            document.getElementById('mirrorModelBtn').classList.toggle('active-btn', mirrorModel);
+            document.getElementById('mirrorMeBtn').classList.toggle('active-btn', mirrorMe);
+            resetUITimer();
+        }
+
+        function cycleGrid() {
+            gridMode = (gridMode + 1) % 7;
+            resetUITimer();
+        }
+
+        function cycleDelay() {
+            delayIdx = (delayIdx + 1) % delayTimes.length;
+            updateDelayLabel();
+        }
+
+        function updateDelayLabel() {
+            const timeStr = formatTime(delayTimes[delayIdx]);
+            document.getElementById('delayBtn').innerText = `⏱ ${timeStr} ${i18n[currentLang].delay}`;
+        }
+
+        function cycleQuality() {
+            qualityIdx = (qualityIdx + 1) % qualityModes.length;
+            updateQualityLabel();
+            resetUITimer();
+        }
+
+        function updateQualityLabel() {
+            const q = qualityModes[qualityIdx];
+            document.getElementById('qualityBtn').innerText = `🎬 ${i18n[currentLang].quality}: ${q.label}`;
+            document.getElementById('qualityBtn').classList.toggle('active-btn', q.label === 'High');
+        }
+
+        function toggleFitMode() {
+            fitMode = (fitMode === "contain" ? "cover" : "contain");
+            resetUITimer();
+        }
+
+        function changeSpeed() {
+            speedIdx = (speedIdx + 1) % speeds.length;
+            modelVid.playbackRate = speeds[speedIdx];
+            document.getElementById('btnSpeed').innerText = `⚡ x${speeds[speedIdx].toFixed(1)}`;
+        }
+
+        function setCD(s) {
+            countdownSec = s;
+            [3, 5, 7].forEach(v => {
+                document.getElementById(`cd${v}`).classList.toggle('active-btn', v === s);
+            });
+        }
+        
+        function handleRecordClick() {
+            if (mediaRecorder?.state === "recording") {
+                stopRecording();
+            } else {
+                startCountdown('record');
+            }
+        }
+
+        function startCountdown(type) {
+            isCountingDown = true;
+            hideUI();
+            let count = countdownSec;
+            cdOverlay.style.display = 'block';
+            cdOverlay.innerText = count;
+            modelVid.pause();
+            const timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    cdOverlay.innerText = count;
+                } else {
+                    clearInterval(timer);
+                    cdOverlay.style.display = 'none';
+                    isCountingDown = false;
+                    if (type === 'record') {
+                        executeRecording();
+                    } else {
+                        modelVid.currentTime = pointA;
+                        modelVid.play();
+                        playPauseBtn.innerText = "⏸";
+                    }
+                }
+            }, 1000);
+        }
+
+        async function executeRecording() {
+            // Audio setup
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                audioDest = audioCtx.createMediaStreamDestination();
+                
+                // Connect Model Video Audio
+                if (!modelSource) {
+                    modelSource = audioCtx.createMediaElementSource(modelVid);
+                    modelSource.connect(audioCtx.destination); // Speakers
+                    modelSource.connect(audioDest); // Recorder
+                }
+            }
+            if (audioCtx.state === 'suspended') {
+                await audioCtx.resume();
+            }
+
+            // Connect Mic Audio (create fresh source for current stream)
+            let micSource;
+            if (myCam.srcObject && myCam.srcObject.getAudioTracks().length > 0) {
+                micSource = audioCtx.createMediaStreamSource(myCam.srcObject);
+                micSource.connect(audioDest);
+            }
+
+            // Combine Streams
+            recordedChunks = [];
+            const stream = canvas.captureStream(60);
+            const combinedStream = new MediaStream([
+                ...stream.getVideoTracks(),
+                ...audioDest.stream.getAudioTracks()
+            ]);
+
+            const types = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"];
+            let selectedType = types.find(t => MediaRecorder.isTypeSupported(t)) || "";
+            
+            try {
+                mediaRecorder = new MediaRecorder(combinedStream, { 
+                    mimeType: selectedType, 
+                    videoBitsPerSecond: qualityModes[qualityIdx].bps 
+                });
+                
+                mediaRecorder.ondataavailable = e => {
+                    if (e.data.size > 0) recordedChunks.push(e.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    lastBlob = new Blob(recordedChunks, { type: selectedType });
+                    document.getElementById('previewVid').src = URL.createObjectURL(lastBlob);
+                    document.getElementById('saveContainer').style.display = 'flex';
+                };
+                
+                mediaRecorder.start();
+                recordBtn.innerText = i18n[currentLang].recStop; 
+                recordBtn.classList.add('is-recording');
+                modelVid.currentTime = pointA; 
+                modelVid.play(); 
+                playPauseBtn.innerText = "⏸";
+            } catch (err) {
+                alert("録画開始エラー: " + err.message);
+                showUI();
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== "inactive") {
+                mediaRecorder.stop();
+            }
+            modelVid.pause();
+            playPauseBtn.innerText = "▶";
+            recordBtn.innerText = i18n[currentLang].recStart;
+            recordBtn.classList.remove('is-recording');
+            showUI();
+        }
+
+        function togglePlay() {
+            if (modelVid.paused) {
+                modelVid.play();
+                playPauseBtn.innerText = "⏸";
+            } else {
+                modelVid.pause();
+                playPauseBtn.innerText = "▶";
+            }
+        }
+
+        function loadVideo(e) {
+            const f = e.target.files[0];
+            if(f) {
+                modelVid.src = URL.createObjectURL(f);
+                modelVid.onloadedmetadata = () => {
+                    seekBar.max = modelVid.duration;
+                    pointA = 0;
+                    pointB = modelVid.duration;
+                    document.getElementById('btnA').innerText = `📍 A: ${formatTime(pointA)}`;
+                    document.getElementById('btnB').innerText = `📍 B: ${formatTime(pointB)}`;
+                };
+            }
+        }
+
+        function setPoint(p) {
+            if (p === 'A') { 
+                pointA = modelVid.currentTime; 
+                document.getElementById('btnA').innerText = `📍 A: ${formatTime(pointA)}`; 
+            } else { 
+                pointB = modelVid.currentTime; 
+                document.getElementById('btnB').innerText = `📍 B: ${formatTime(pointB)}`; 
+            }
+        }
+
+        function toggleLoop() {
+            isLooping = !isLooping;
+            document.getElementById('btnLoop').classList.toggle('active-btn', isLooping);
+        }
+
+        function showUI() {
+            document.querySelectorAll('.fade-ui').forEach(u => u.classList.add('ui-visible'));
+            resetUITimer();
+        }
+
+        function hideUI() {
+            if(!modelVid.paused || isCountingDown) {
+                document.querySelectorAll('.fade-ui').forEach(u => u.classList.remove('ui-visible'));
+            }
+        }
+
+        function resetUITimer() {
+            if (uiTimer) clearTimeout(uiTimer);
+            uiTimer = setTimeout(hideUI, 4000);
+        }
+
+        canvas.addEventListener('click', () => showUI());
+
+        function closeSaveUI() {
+            document.getElementById('saveContainer').style.display = 'none';
+        }
+
+        function downloadVideo() {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(lastBlob);
+            a.download = `form_check_${Date.now()}.webm`;
+            a.click();
+        }
+
+        seekBar.oninput = () => {
+            modelVid.currentTime = seekBar.value;
+        };
+
+        modelVid.ontimeupdate = () => {
+            if (isLooping && modelVid.currentTime >= pointB) {
+                modelVid.currentTime = pointA;
+            }
+            seekBar.value = modelVid.currentTime;
+            timeDisplay.innerText = `${formatTime(modelVid.currentTime)} / ${formatTime(modelVid.duration || 0)}`;
+        };
+    </script>
+</body>
+</html>
