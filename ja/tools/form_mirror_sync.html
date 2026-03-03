@@ -563,7 +563,28 @@
         function updateSyncOffset() { syncOffset = vidB.currentTime - vidA.currentTime; }
 
         // --- 3. Render Loop Sync ---
-        function syncVideos() {
+let lastSyncCheck = 0;
+
+function syncVideos() {
+    if (isSeeking) return;
+    if (vidA.paused || vidB.paused) return;
+
+    const now = performance.now();
+
+    // 🔥 100msに1回だけチェック
+    if (now - lastSyncCheck < 100) return;
+    lastSyncCheck = now;
+
+    const target = vidA.currentTime + syncOffset;
+    const diff = vidB.currentTime - target;
+
+    // 🎯 30ms以上ズレたら補正
+    if (Math.abs(diff) > 0.03) {
+        vidB.currentTime = target;
+    }
+}
+		
+/*        function syncVideos() {
             if (isSeeking) return;
             if (vidA.paused || vidB.paused) return;
         
@@ -575,6 +596,7 @@
                 vidB.currentTime = target;
             }
         }
+		*/
 
         function render() {
             ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height);
