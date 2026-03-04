@@ -647,6 +647,13 @@
         let lastSyncCheckTime = 0;
         let loopLockout = 0; // ループ直後の同期スキップ用カウンタ
 
+        function checkAutoStop() {
+            if (vidA.ended || vidB.ended) {
+                vidA.pause();
+                vidB.pause();
+            }
+        }
+
         // --- 2. App Initialization ---
         async function initApp() {
             document.getElementById('loginOverlay').style.display = 'none';
@@ -814,8 +821,14 @@
         }
 
         function syncVideos() {
-            // シーク中、一時停止中、またはループ直後のロックアウト中は同期しない
-            if (isSeeking || vidA.paused || isNaN(vidB.duration) || vidB.duration === 0 || loopLockout > 0) {
+
+            // Aが終了したら同期しない
+            if (vidA.ended) return;
+
+            // 再生中のみ同期
+            if (vidA.paused) return;
+
+            if (isSeeking || isNaN(vidB.duration) || vidB.duration === 0 || loopLockout > 0) {
                 if(loopLockout > 0) loopLockout--;
                 return;
             }
@@ -926,6 +939,7 @@
 
             // 同期処理実行
             syncVideos();
+            checkAutoStop();
 
             // Pose Detection Task
             if(showSkeleton && detector && !poseBusy) {
