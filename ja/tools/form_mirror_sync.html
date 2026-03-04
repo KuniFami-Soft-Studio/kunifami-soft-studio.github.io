@@ -796,7 +796,6 @@
         async function togglePlay() {
             resumeAudioContext();
             if (vidA.paused) {
-                // Ensure Sync on start
                 vidB.currentTime = vidA.currentTime + syncOffset; 
                 try {
                     await Promise.all([vidA.play(), vidB.play()]);
@@ -809,15 +808,27 @@
 
         /**
          * 0.1秒のズレを解消するための高頻度同期チェック
-         * 閾値を0.015秒（約半フレーム）に設定し、1秒間に複数回補正。
          */
         function syncVideos() {
-            if (isSeeking || vidA.paused) return;
+            if (isSeeking || vidA.paused || isNaN(vidB.duration) || vidB.duration === 0) return;
 
             const now = performance.now();
-            const expectedB = vidA.currentTime + syncOffset;
+            
+            // syncOffsetを足した目標タイムを計算し、動画Bの長さでループさせる
+            let expectedB = vidA.currentTime + syncOffset;
+            if (vidB.duration > 0) {
+                expectedB = expectedB % vidB.duration;
+                if (expectedB < 0) expectedB += vidB.duration;
+            }
+
             const actualB = vidB.currentTime;
-            const diff = actualB - expectedB;
+            let diff = actualB - expectedB;
+
+            // ループ境界付近の誤差を吸収 (例: actualB=0.01, expectedB=4.99)
+            if (vidB.duration > 0 && Math.abs(diff) > vidB.duration / 2) {
+                if (diff > 0) diff -= vidB.duration;
+                else diff += vidB.duration;
+            }
 
             // ズレが15msを超えた場合に強制補正
             if (Math.abs(diff) > 0.015) {
