@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#000000">
 
     <title>Form Mirror Sync Pro | 2動画ハード同期 フォーム分析ツール</title>
-    <meta name="description" content="2つの動画を同期表示し、フレーム単位で比較できるブラウザ型フォーム分析ツール。ループ再生、速度変更、骨格表示、描画メモ、録画保存に対応。スポーツやダンスの動作確認に利用できます。">
+    <meta name="description" content="2つの動画を同期表示し、フレーム単位で比較できるブラウザ型フォーム分析ツール。ループ再生、速度変更、骨格表示、描画メモ、録画保存に対応. スポーツやダンスの動作確認に利用できます。">
     <meta name="keywords" content="フォーム分析, 動画同期, 動画比較, モーション分析, ダンス練習, スポーツフォーム確認, MoveNet, ブラウザツール">
     
     <meta property="og:title" content="Form Mirror Sync Pro | 動画同期フォーム分析ツール">
@@ -645,6 +645,7 @@
         let syncOffset = 0;
         let isSeeking = false;
         let lastSyncCheckTime = 0;
+        let loopLockout = 0; // ループ直後の同期スキップ用カウンタ
 
         // --- 2. App Initialization ---
         async function initApp() {
@@ -656,6 +657,12 @@
             vidB.load();
             vidB.muted = true;
             vidB.volume = 0;
+            
+            // バッファリング等のイベント
+            const handleWaiting = () => { if(!vidA.paused) { vidA.pause(); vidB.pause(); } };
+            vidA.addEventListener('waiting', handleWaiting);
+            vidB.addEventListener('waiting', handleWaiting);
+
             resize();
             requestAnimationFrame(render);
             showUI();
@@ -806,16 +813,17 @@
             }
         }
 
-        /**
-         * 0.1秒のズレを解消するための高頻度同期チェック
-         */
         function syncVideos() {
-            if (isSeeking || vidA.paused || isNaN(vidB.duration) || vidB.duration === 0) return;
+            // シーク中、一時停止中、またはループ直後のロックアウト中は同期しない
+            if (isSeeking || vidA.paused || isNaN(vidB.duration) || vidB.duration === 0 || loopLockout > 0) {
+                if(loopLockout > 0) loopLockout--;
+                return;
+            }
 
             const now = performance.now();
-            
-            // syncOffsetを足した目標タイムを計算し、動画Bの長さでループさせる
             let expectedB = vidA.currentTime + syncOffset;
+            
+            // B動画の範囲内に収める（ループ考慮）
             if (vidB.duration > 0) {
                 expectedB = expectedB % vidB.duration;
                 if (expectedB < 0) expectedB += vidB.duration;
@@ -824,22 +832,22 @@
             const actualB = vidB.currentTime;
             let diff = actualB - expectedB;
 
-            // ループ境界付近の誤差を吸収 (例: actualB=0.01, expectedB=4.99)
+            // ループ境界の跨ぎ補正
             if (vidB.duration > 0 && Math.abs(diff) > vidB.duration / 2) {
                 if (diff > 0) diff -= vidB.duration;
                 else diff += vidB.duration;
             }
 
-            // ズレが15msを超えた場合に強制補正
+            // ズレが一定以上（0.015s = 15ms）なら補正
+            // ただしiOSの負荷軽減のため、前回の補正から80ms以上経過していることを条件とする
             if (Math.abs(diff) > 0.015) {
-                // iOSでのカクつき防止のため100msに1回以上の頻度でシークさせない
                 if (now - lastSyncCheckTime > 80) {
                     vidB.currentTime = expectedB;
                     lastSyncCheckTime = now;
                 }
             }
 
-            // 万が一Bだけ止まった場合の保護
+            // 万が一Bだけ止まった場合の復帰処理
             if (vidB.paused && !vidA.paused && vidB.readyState >= 2) {
                 vidB.play().catch(() => {});
             }
@@ -901,7 +909,6 @@
 
         // --- 6. Rendering Loop ---
         function render() {
-            // Background Clear
             ctx.fillStyle = "#000"; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
@@ -910,14 +917,15 @@
             const ghost = document.getElementById('ghostRange').value / 100;
             const bri = document.getElementById('brightnessRange').value;
 
-            // 同期実行
-            syncVideos();
-
-            // Loop Logic
+            // Loop Logic (同期処理の前に判定)
             if (loopEnabled && loopEnd !== null && vidA.currentTime >= loopEnd) {
                 vidA.currentTime = loopStart || 0;
                 vidB.currentTime = vidA.currentTime + syncOffset; 
+                loopLockout = 10; // ループ後の不安定な10フレーム間は強制同期を停止
             }
+
+            // 同期処理実行
+            syncVideos();
 
             // Pose Detection Task
             if(showSkeleton && detector && !poseBusy) {
@@ -959,25 +967,20 @@
                 ctx.restore();
             };
 
-            // Layout 0:Side, 1:Stack, 2:Overlay
             if (layout === 0) {
                 drawVideoSafe(vidA, 0, 0, w/2, h, mirrorA, 1, 100, transformA);
                 if(showSkeleton) drawSkeletons(poseResults.A, 0, 0, w/2, h, mirrorA, transformA, vidA);
-                
                 drawVideoSafe(vidB, w/2, 0, w/2, h, mirrorB, 1, bri, transformB);
                 if(showSkeleton) drawSkeletons(poseResults.B, w/2, 0, w/2, h, mirrorB, transformB, vidB);
-                
                 if(ghost > 0) drawVideoSafe(vidA, w/2, 0, w/2, h, mirrorA, ghost, 100, transformA);
             } else if (layout === 1) {
                 drawVideoSafe(vidA, 0, 0, w, h/2, mirrorA, 1, 100, transformA);
                 if(showSkeleton) drawSkeletons(poseResults.A, 0, 0, w, h/2, mirrorA, transformA, vidA);
-                
                 drawVideoSafe(vidB, 0, h/2, w, h/2, mirrorB, 1, bri, transformB);
                 if(showSkeleton) drawSkeletons(poseResults.B, 0, h/2, w, h/2, mirrorB, transformB, vidB);
             } else {
                 drawVideoSafe(vidB, 0, 0, w, h, mirrorB, 1, bri, transformB);
                 if(showSkeleton) drawSkeletons(poseResults.B, 0, 0, w, h, mirrorB, transformB, vidB);
-                
                 drawVideoSafe(vidA, 0, 0, w, h, mirrorA, Math.max(0.3, ghost), 100, transformA);
                 if(showSkeleton) drawSkeletons(poseResults.A, 0, 0, w, h, mirrorA, transformA, vidA);
             }
@@ -1195,14 +1198,14 @@
             if(loopStart !== null){ 
                 const m = document.createElement('div'); 
                 m.className = 'loop-marker'; 
-                m.style.left = (loopStart / vidA.duration * 100) + '%'; 
+                m.style.left = (loopStart / (vidA.duration || 1) * 100) + '%'; 
                 m.style.background = "#30D158"; 
                 layer.appendChild(m); 
             } 
             if(loopEnd !== null){ 
                 const m = document.createElement('div'); 
                 m.className = 'loop-marker'; 
-                m.style.left = (loopEnd / vidA.duration * 100) + '%'; 
+                m.style.left = (loopEnd / (vidA.duration || 1) * 100) + '%'; 
                 layer.appendChild(m); 
             } 
         }
