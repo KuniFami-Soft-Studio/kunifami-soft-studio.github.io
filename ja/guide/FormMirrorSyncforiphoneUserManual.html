@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja" prefix="og: http://ogp.me/ns#">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
@@ -10,275 +11,571 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Form Mirror Sync Pro for iPhone 操作マニュアル | 公式ガイド</title>
-    <meta name="description" content="AI骨格検出、描画分析、2画面同期再生を搭載した『Form Mirror Sync Pro』の公式マニュアル。fade（フェード）重ね合わせ機能など、スポーツやダンスのフォーム分析を効率化する詳細な使い方を解説します。">
-    <meta name="keywords" content="Form Mirror Sync, フォーム分析, AI骨格検出, ゴルフ, ダンス, 比較動画, 遅延再生, スポーツテック, マニュアル, fadeモード">
-    <meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="Form Mirror Sync for iPhone - 操作マニュアル">
-    <meta property="og:description" content="AIによる骨格検知とドローイング機能を搭載。フォーム分析の効率化をサポートするツールの使い方を完全網羅。">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://kunifami-soft-studio.com/ja/guide/FormMirrorSyncforiphoneUserManual.html">
-    <meta property="og:image" content="https://kunifami-soft-studio.com/assets/ogp-max.jpg">
+```
+<title>Form Mirror Sync Pro for iPhone 操作マニュアル | 公式ガイド</title>
+<meta name="description" content="AI骨格検出、描画分析、2画面同期再生を搭載した『Form Mirror Sync Pro』の公式マニュアル。fade（フェード）重ね合わせ機能など、スポーツやダンスのフォーム分析を効率化する詳細な使い方を解説します。">
+<meta name="keywords" content="Form Mirror Sync, フォーム分析, AI骨格検出, ゴルフ, ダンス, 比較動画, 遅延再生, スポーツテック, マニュアル, fadeモード">
+<meta name="robots" content="index, follow">
 
-    <link rel="icon" href="/assets/img/common/Logo1.jpg" type="image/jpg">
+<meta property="og:title" content="Form Mirror Sync Pro for iPhone - 操作マニュアル">
+<meta property="og:description" content="AIによる骨格検知とドローイング機能を搭載。フォーム分析の効率化をサポートするツールの使い方を完全網羅。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kunifami-soft-studio.com/ja/guide/FormMirrorSyncforiphoneUserManual.html">
+<meta property="og:image" content="https://kunifami-soft-studio.com/assets/ogp-max.jpg">
 
-    <style>
-        :root {
-            --primary-color: #2c3e50;    /* Dark Blue */
-            --accent-color: #0A84FF;     /* iOS Blue */
-            --highlight-color: #FFCC00;  /* Yellow for emphasis */
-            --action-color: #FF3B30;     /* Red for Recording/Actions */
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-sub: #666666;
-            --code-bg: #f1f2f6;
-        }
+<link rel="canonical" href="https://kunifami-soft-studio.com/ja/guide/FormMirrorSyncforiphoneUserManual.html">
+<link rel="icon" href="/assets/img/common/Logo1.jpg" type="image/jpg">
 
-        body {
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            line-height: 1.7; color: var(--text-main); background: var(--bg-color); margin: 0; padding: 0;
-            -webkit-font-smoothing: antialiased;
-        }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Form Mirror Sync Pro for iPhone 操作マニュアル",
+  "description": "AI骨格検出・描画分析・2画面同期再生を搭載したForm Mirror Sync Proの公式マニュアル。",
+  "author": {
+    "@type": "Organization",
+    "name": "KuniFami Soft Studio",
+    "url": "https://kunifami-soft-studio.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "KuniFami Soft Studio"
+  },
+  "datePublished": "2025-01-01",
+  "dateModified": "2026-01-15",
+  "inLanguage": "ja"
+}
+</script>
 
-        .container { max-width: 960px; margin: 0 auto; padding: 0 20px 60px; }
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --accent-color: #0A84FF;
+        --highlight-color: #FFCC00;
+        --action-color: #FF3B30;
+        --green-color: #30D158;
+        --bg-color: #f8f9fa;
+        --card-bg: #ffffff;
+        --text-main: #333333;
+        --text-sub: #666666;
+    }
+    * { box-sizing: border-box; }
+    body {
+        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+        line-height: 1.8; color: var(--text-main); background: var(--bg-color); margin: 0; padding: 0;
+        -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 20px 60px; }
 
-        .lang-switch { text-align: right; margin-bottom: 10px; font-size: 0.9rem; margin-top: 20px; }
-        .lang-switch a { text-decoration: none; color: #555; margin-left: 10px; }
-        .lang-switch a:hover { text-decoration: underline; color: var(--accent-color); }
+    /* パンくずリスト */
+    .breadcrumb { font-size: 0.85rem; color: var(--text-sub); padding: 20px 0 0; }
+    .breadcrumb a { color: var(--accent-color); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 6px; }
 
-        .top-nav { padding: 20px 0; font-size: 0.9rem; }
-        .top-nav a { color: var(--accent-color); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; }
+    .top-nav { padding: 15px 0; font-size: 0.9rem; }
+    .top-nav a { color: var(--accent-color); text-decoration: none; font-weight: 600; }
 
-        header {
-            background: var(--card-bg); padding: 40px; border-radius: 20px;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.06); border-bottom: 4px solid var(--highlight-color);
-            margin-bottom: 40px; text-align: center;
-        }
-        h1 { font-size: 2.4rem; color: var(--primary-color); margin: 0 0 15px 0; letter-spacing: -0.02em; }
-        .intro-text { font-size: 1.1rem; color: var(--text-sub); max-width: 700px; margin: 0 auto; }
+    header {
+        background: var(--card-bg); padding: 40px; border-radius: 20px;
+        box-shadow: 0 12px 24px rgba(0,0,0,0.06); border-bottom: 4px solid var(--highlight-color);
+        margin-bottom: 15px; text-align: center;
+    }
+    h1 { font-size: 2.2rem; color: var(--primary-color); margin: 0 0 12px; letter-spacing: -0.02em; line-height: 1.4; }
+    .header-meta { font-size: 0.85rem; color: var(--text-sub); margin: 10px 0; }
+    .header-meta span { margin: 0 12px; }
+    .intro-text { font-size: 1.05rem; color: var(--text-sub); max-width: 700px; margin: 15px auto 0; border-top: 1px solid #eee; padding-top: 15px; line-height: 1.9; }
 
-        section { margin-bottom: 60px; }
-        
-        h2 {
-            font-size: 1.8rem; color: var(--primary-color); margin-bottom: 25px;
-            display: flex; align-items: center; gap: 10px; border-left: 6px solid var(--accent-color);
-            padding-left: 15px; background: linear-gradient(to right, #eef2f7, transparent);
-            padding-top: 10px; padding-bottom: 10px; border-radius: 0 8px 8px 0;
-        }
+    /* バッジ群 */
+    .use-case-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 18px; }
+    .uc-badge {
+        background: #eef2f7; color: var(--primary-color); border: 1px solid #c8d6e5;
+        border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; font-weight: bold;
+    }
 
-        h3 { font-size: 1.3rem; margin: 30px 0 15px; color: var(--primary-color); border-bottom: 1px solid #ddd; padding-bottom: 8px; }
+    /* 目次 */
+    .toc {
+        background: #f0f6ff; border: 1px solid #cce0ff; border-radius: 12px;
+        padding: 25px 30px; margin: 25px 0;
+    }
+    .toc-title { font-size: 1rem; font-weight: bold; color: var(--primary-color); margin: 0 0 15px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--accent-color); text-decoration: none; font-size: 0.95rem; }
+    .toc a:hover { text-decoration: underline; }
 
-        .grid-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    section { margin-bottom: 60px; }
 
-        .card {
-            background: var(--card-bg); padding: 25px; border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
-        }
+    h2 {
+        font-size: 1.65rem; color: var(--primary-color); margin-bottom: 25px;
+        display: flex; align-items: center; gap: 10px; border-left: 6px solid var(--accent-color);
+        padding: 10px 15px; background: linear-gradient(to right, #eef2f7, transparent);
+        border-radius: 0 8px 8px 0;
+    }
+    h3 { font-size: 1.25rem; margin: 35px 0 15px; color: var(--primary-color); border-bottom: 1px solid #ddd; padding-bottom: 8px; }
 
-        .feature-block { margin-bottom: 20px; border-bottom: 1px dashed #eee; padding-bottom: 15px; }
-        .feature-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .grid-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
 
-        .badge {
-            display: inline-block; padding: 4px 10px; border-radius: 6px;
-            background: var(--primary-color); color: white; font-weight: bold; font-size: 0.85rem; margin-bottom: 8px;
-        }
-        .badge.red { background: var(--action-color); }
-        .badge.blue { background: var(--accent-color); }
-        .badge.yellow { background: var(--highlight-color); color: #333; }
+    .card {
+        background: var(--card-bg); padding: 25px; border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.06);
+    }
 
-        .jp-text { display: block; font-weight: 700; margin-bottom: 4px; color: var(--text-main); }
-        
-        .faq-item { margin-bottom: 20px; border-bottom: 1px dashed #ddd; padding-bottom: 15px; }
-        .faq-item:last-child { border-bottom: none; }
-        .faq-q { font-weight: bold; color: var(--primary-color); display: block; margin-bottom: 5px; }
-        .faq-a { color: var(--text-sub); display: block; font-size: 0.95rem; }
+    .feature-block { margin-bottom: 22px; border-bottom: 1px dashed #eee; padding-bottom: 18px; }
+    .feature-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
-        .tech-box { background: #f0f7ff; border: 2px solid #cce4ff; border-radius: 12px; padding: 20px; margin-top: 20px; }
-        .warning-box { background: #fff5f5; border-left: 5px solid var(--action-color); padding: 15px 20px; border-radius: 8px; margin: 30px 0; font-size: 0.95rem; }
+    .badge {
+        display: inline-block; padding: 3px 10px; border-radius: 6px;
+        background: var(--primary-color); color: white; font-weight: bold; font-size: 0.85rem; margin-bottom: 8px;
+    }
+    .badge.red { background: var(--action-color); }
+    .badge.blue { background: var(--accent-color); }
+    .badge.yellow { background: var(--highlight-color); color: #333; }
+    .badge.green { background: var(--green-color); }
 
-        footer { border-top: 1px solid #ddd; margin-top: 80px; padding-top: 40px; text-align: center; }
-        .footer-links { margin-bottom: 20px; }
-        .footer-links a { color: var(--text-sub); margin: 0 15px; text-decoration: none; font-size: 0.9rem; }
-        .copyright { font-size: 0.8rem; color: #999; }
+    .jp-text { display: block; font-weight: 700; margin-bottom: 6px; color: var(--text-main); font-size: 1.05rem; }
+    .detail-text { font-size: 0.95rem; color: var(--text-sub); line-height: 1.8; margin: 0; }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .container { padding: 0 15px 40px; }
-            h2 { font-size: 1.4rem; }
-        }
-    </style>
+    /* Tipsボックス */
+    .tips-box {
+        background: #e8f4fd; border-left: 4px solid var(--accent-color);
+        padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 10px 0 0;
+        font-size: 0.93rem;
+    }
+    .tips-box strong { color: #2980b9; }
+
+    /* ステップリスト */
+    .step-list { list-style: none; padding: 0; margin: 15px 0 0; counter-reset: step; }
+    .step-list li {
+        counter-increment: step; padding: 11px 11px 11px 52px; position: relative;
+        margin-bottom: 10px; background: #fafafa; border-radius: 8px; font-size: 0.95rem; line-height: 1.7;
+    }
+    .step-list li::before {
+        content: counter(step); position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+        background: var(--accent-color); color: white; width: 27px; height: 27px;
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-weight: bold; font-size: 0.85rem;
+    }
+
+    /* 比較テーブル */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.95rem; }
+    .compare-table th { background: var(--primary-color); color: white; padding: 10px 14px; text-align: left; }
+    .compare-table td { padding: 10px 14px; border-bottom: 1px solid #eee; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:nth-child(even) td { background: #fafafa; }
+
+    .tech-box { background: #f0f7ff; border: 2px solid #cce4ff; border-radius: 12px; padding: 22px; margin-top: 20px; }
+    .tech-box ul { list-style: none; padding: 0; margin: 0; }
+    .tech-box li { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px dashed #d0e4f7; font-size: 0.95rem; line-height: 1.8; }
+    .tech-box li:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+    .warning-box {
+        background: #fff5f5; border-left: 5px solid var(--action-color);
+        padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 20px 0; font-size: 0.95rem;
+    }
+    .warning-box strong { color: #c0392b; display: block; margin-bottom: 6px; }
+
+    /* ユースケースカード */
+    .usecase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+    .usecase-card {
+        background: white; border: 1px solid #d0e4f7; border-radius: 12px;
+        padding: 20px; border-top: 4px solid var(--accent-color);
+    }
+    .usecase-card h4 { margin: 0 0 10px; color: var(--primary-color); font-size: 1rem; }
+    .usecase-card p { margin: 0; font-size: 0.9rem; color: var(--text-sub); line-height: 1.7; }
+
+    /* FAQ */
+    .faq-item { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px dashed #ddd; }
+    .faq-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .faq-q { font-weight: bold; color: var(--primary-color); display: block; margin-bottom: 8px; font-size: 1rem; }
+    .faq-q::before { content: "Q. "; color: var(--accent-color); }
+    .faq-a { color: var(--text-sub); display: block; font-size: 0.95rem; line-height: 1.8; }
+    .faq-a::before { content: "A. "; font-weight: bold; color: var(--action-color); }
+
+    /* バージョン履歴 */
+    .version-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .version-table th { background: #eef2f7; padding: 9px 14px; text-align: left; border-bottom: 2px solid #c8d6e5; }
+    .version-table td { padding: 9px 14px; border-bottom: 1px solid #eee; vertical-align: top; }
+    .version-badge { background: var(--accent-color); color: white; padding: 1px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+
+    /* 機能比較（Sync Pro vs Mirror Pro） */
+    .diff-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 15px 0; }
+    .diff-table th { background: var(--primary-color); color: white; padding: 10px 14px; text-align: center; }
+    .diff-table th:first-child { text-align: left; }
+    .diff-table td { padding: 10px 14px; border-bottom: 1px solid #eee; text-align: center; }
+    .diff-table td:first-child { text-align: left; font-weight: bold; }
+    .diff-table tr:nth-child(even) td { background: #fafafa; }
+    .check { color: var(--green-color); font-weight: bold; font-size: 1.1rem; }
+    .cross { color: #ccc; font-size: 1.1rem; }
+
+    footer { border-top: 1px solid #ddd; margin-top: 80px; padding-top: 40px; text-align: center; }
+    .footer-links { margin-bottom: 20px; }
+    .footer-links a { color: var(--text-sub); margin: 0 15px; text-decoration: none; font-size: 0.9rem; }
+    .footer-links a:hover { color: var(--accent-color); }
+    .copyright { font-size: 0.8rem; color: #999; }
+
+    @media (max-width: 600px) {
+        h1 { font-size: 1.6rem; }
+        .container { padding: 0 15px 40px; }
+        h2 { font-size: 1.3rem; }
+        .usecase-grid { grid-template-columns: 1fr; }
+    }
+</style>
+```
+
 </head>
 <body>
-    <noscript><p>このコンテンツの表示にはJavaScriptが必要です。</p></noscript>
 
 <div class="container">
 
-    <nav class="top-nav">
-        <a href="/index.html">← ホームへ戻る</a>
-    </nav>
+```
+<nav class="breadcrumb" aria-label="パンくずリスト">
+    <a href="/index.html">ホーム</a>
+    <span>›</span>
+    <a href="/ja/guide/">ガイド</a>
+    <span>›</span>
+    <span>Form Mirror Sync Pro for iPhone 操作マニュアル</span>
+</nav>
 
-    <header>
-        <h1>Form Mirror Sync Pro for iPhone<br><span style="font-size:0.6em; color:#666; font-weight:normal;">公式操作マニュアル</span></h1>
-        <div class="intro-text">
-            <strong>AI骨格検出・描画分析・2画面同期再生</strong>を搭載した、本格的なフォーム分析をサポートするための完全ガイドです。
+<nav class="top-nav">
+    <a href="/index.html">← ホームへ戻る</a>
+</nav>
+
+<header>
+    <h1>Form Mirror Sync Pro for iPhone<br><span style="font-size:0.55em; color:#888; font-weight:normal;">公式操作マニュアル</span></h1>
+    <div class="header-meta">
+        <span>📅 最終更新: 2026年1月15日</span>
+        <span>📱 対象: iPhone (iOS / Safari)</span>
+        <span>🤖 AI骨格検出搭載</span>
+    </div>
+    <div class="intro-text">
+        <p><strong>Form Mirror Sync Pro</strong> は、AI骨格検出・手書き描画分析・2画面同期再生を搭載した、本格的なフォーム比較・分析ツールです。2本の動画を同時に再生・比較し、スポーツやダンスのフォーム改善を強力にサポートします。</p>
+        <p>インストール不要・登録不要・完全無料。iPhoneのSafariブラウザですぐにお使いいただけます。</p>
+    </div>
+    <div class="use-case-badges">
+        <span class="uc-badge">⛳ ゴルフ</span>
+        <span class="uc-badge">💃 ダンス</span>
+        <span class="uc-badge">🏋️ 筋トレ</span>
+        <span class="uc-badge">🥊 格闘技</span>
+        <span class="uc-badge">⚾ 野球</span>
+        <span class="uc-badge">🩺 リハビリ</span>
+        <span class="uc-badge">🏊 水泳</span>
+    </div>
+</header>
+
+<!-- 目次 -->
+<nav class="toc" aria-label="目次">
+    <p class="toc-title">📋 目次</p>
+    <ol>
+        <li><a href="#difference">Form Mirror Pro との違い</a></li>
+        <li><a href="#usecase">こんな方におすすめ</a></li>
+        <li><a href="#quickstart">クイックスタート（基本の流れ）</a></li>
+        <li><a href="#top-panel">基本操作（上部パネル）</a></li>
+        <li><a href="#tools">分析ツール（下部スクロール）</a></li>
+        <li><a href="#playback">再生とループ制御</a></li>
+        <li><a href="#tips">効果的な使い方のコツ</a></li>
+        <li><a href="#faq">FAQ &amp; トラブルシューティング</a></li>
+        <li><a href="#version">バージョン履歴</a></li>
+    </ol>
+</nav>
+
+<main>
+
+    <!-- Form Mirror Proとの違い -->
+    <section id="difference">
+        <h2>🆚 Form Mirror Pro との違い</h2>
+        <p>当スタジオでは「Form Mirror Pro」と「Form Mirror Sync Pro」の2種類のフォーム分析ツールを提供しています。Sync Pro は、カメラ比較に加えて2本の動画を同時に比較分析できる上位版です。</p>
+        <table class="diff-table">
+            <thead>
+                <tr>
+                    <th>機能</th>
+                    <th>Form Mirror Pro</th>
+                    <th>Form Mirror Sync Pro</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>お手本動画とカメラ映像の比較</td><td class="check">✔</td><td class="check">✔</td></tr>
+                <tr><td>2本の動画ファイルを同時比較</td><td class="cross">—</td><td class="check">✔</td></tr>
+                <tr><td>AI骨格検出（Skeleton）</td><td class="cross">—</td><td class="check">✔</td></tr>
+                <tr><td>手書き描画・メモ機能</td><td class="cross">—</td><td class="check">✔</td></tr>
+                <tr><td>音声波形表示（Waveform）</td><td class="cross">—</td><td class="check">✔</td></tr>
+                <tr><td>2画面の位置・ズーム同期（SyncPos）</td><td class="cross">—</td><td class="check">✔</td></tr>
+                <tr><td>遅延表示・ループ再生・Fade機能</td><td class="check">✔</td><td class="check">✔</td></tr>
+                <tr><td>分析画面の録画・保存</td><td class="check">✔</td><td class="check">✔</td></tr>
+            </tbody>
+        </table>
+        <div class="tips-box"><strong>💡 使い分けの目安：</strong> 自分のリアルタイム映像とお手本を並べてセルフチェックしたい場合は「Form Mirror Pro」、過去に撮影した2本の動画を詳細に比較・分析したい場合は「Form Mirror Sync Pro」がおすすめです。</div>
+    </section>
+
+    <!-- こんな方におすすめ -->
+    <section id="usecase">
+        <h2>🎯 こんな方におすすめ</h2>
+        <p>Form Mirror Sync Pro は、2本の動画を精密に比較したい方・AIによる骨格分析を活用したい方・コーチとしてフィードバックを行いたい方に特に適しています。</p>
+        <div class="usecase-grid">
+            <div class="usecase-card">
+                <h4>⛳ ゴルフのスイング精密分析</h4>
+                <p>先月と今月の自分のスイング動画を並べ、改善点を骨格ライン付きで比較。AI骨格検出で関節の軌跡を可視化できます。</p>
+            </div>
+            <div class="usecase-card">
+                <h4>💃 ダンスのフォーム指導</h4>
+                <p>お手本と生徒の動画を同期再生しながら、手書き描画で改善ポイントを直接書き込み。録画してフィードバック動画として送付できます。</p>
+            </div>
+            <div class="usecase-card">
+                <h4>⚾ 投球・打撃フォームの変化追跡</h4>
+                <p>練習前後の動画を並べて同じ再生位置で比較。音声波形でインパクト音のタイミングずれも確認できます。</p>
+            </div>
+            <div class="usecase-card">
+                <h4>🩺 リハビリの進捗確認</h4>
+                <p>治療開始時と現在の動作を並べてズームで比較。補助線（Grid）と骨格表示で動作の改善量を数値的・視覚的に把握できます。</p>
+            </div>
         </div>
-    </header>
+    </section>
 
-    <main>
-
-        <section>
-            <h2>🚀 基本操作（上部パネル）</h2>
-            <div class="grid-wrapper">
-                <div class="card">
-                    <div class="feature-block">
-                        <span class="badge blue">📂 A / 📂 B</span>
-                        <span class="jp-text">動画の読み込み</span>
-                        <p style="font-size:0.9rem; color:#666;">画面A（左/上）と画面B（右/下）に比較したい動画を読み込みます。</p>
-                    </div>
-                    <div class="feature-block">
-                        <span class="badge blue">📺 Layout</span>
-                        <span class="jp-text">レイアウト切替</span>
-                        <p style="font-size:0.9rem; color:#666;">左右並列 / 上下 / 重ね合わせ を切り替えます。</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="feature-block">
-                        <span class="badge yellow">🔗 SyncPos</span>
-                        <span class="jp-text">位置・ズーム同期</span>
-                        <p style="font-size:0.9rem; color:#666;">有効にすると、2つの画面の拡大や移動を同時に行えます。</p>
-                    </div>
-                    <div class="feature-block">
-                        <span class="badge red">● REC</span>
-                        <span class="jp-text">分析画面の保存</span>
-                        <p style="font-size:0.9rem; color:#666;">分析中の画面（音声込）を録画します。タップで開始/停止。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>🛠 分析ツール（下部スクロール）</h2>
-            
-            <h3>🤖 AI骨格検出 (Skeleton)</h3>
-            <div class="card" style="border-left: 5px solid #30D158;">
-                <div class="feature-block">
-                    <span class="badge" style="background:#30D158">💀 Skel</span>
-                    <span class="jp-text">骨格表示オン/オフ</span>
-                    <p style="font-size:0.9rem; color:#666;">AIによる関節位置のトラッキング表示を切り替えます。</p>
-                </div>
-                <div class="feature-block">
-                    <span class="badge" style="background:#30D158">💀 Width / Color</span>
-                    <span class="jp-text">骨格ラインの調整</span>
-                    <p style="font-size:0.9rem; color:#666;">骨格の太さや色を変更し、視認性を高めることができます。</p>
-                </div>
-            </div>
-
-            <h3>✏️ 描画とメモ</h3>
-            <div class="grid-wrapper">
-                <div class="card">
-                    <div class="feature-block">
-                        <span class="badge">✏️ Draw</span>
-                        <span class="jp-text">手書き描画</span>
-                        <p style="font-size:0.9rem; color:#666;">画面上に直線や円を書き込み、角度や位置を視覚化します。</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="feature-block">
-                        <span class="badge">📅 Memo</span>
-                        <span class="jp-text">メモ・日付表示</span>
-                        <p style="font-size:0.9rem; color:#666;">画面上にテキストメモを表示し、録画データに情報を残せます。</p>
-                    </div>
-                </div>
-            </div>
-
-            <h3>📐 映像調整</h3>
-            <div class="tech-box">
-                <ul style="list-style:none; padding:0; margin:0;">
-                    <li style="margin-bottom:10px;">
-                        <strong># Grid:</strong> 補助線を表示し、体の軸を確認しやすくします。
-                    </li>
-                    <li style="margin-bottom:10px;">
-                        <strong>⚡ Speed:</strong> 再生速度を変更（x0.1 スロー 〜 x2.0 倍速）。詳細な動きのチェックに役立ちます。
-                    </li>
-                    <li style="margin-bottom:10px;">
-                        <strong>A&lt; / A&gt;:</strong> 動画Aを0.05秒ずつ微調整し、2つの動画のタイミングを合わせます。
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <section>
-            <h2>🎛 再生とループ制御</h2>
-            
-            <div class="card">
-                <h3>📍 ABループ</h3>
-                <p>
-                    確認したい動作の区間を繰り返し再生して、微細な差異をチェックします。
-                </p>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:15px;">
-                    <span class="badge">📍 Loop In</span> <span style="font-size:0.9rem; color:#666;">開始点(A)</span>
-                    <span class="badge">📍 Loop Out</span> <span style="font-size:0.9rem; color:#666;">終了点(B)</span>
-                    <span class="badge red">🔄 Loop ON/OFF</span>
-                </div>
-            </div>
-
-            <div class="grid-wrapper" style="margin-top:20px;">
-                <div class="card">
-                    <span class="jp-text">✨ Fade (重ね合わせ)</span>
-                    <p>
-                        動画Aの透明度を調整し、動画Bに重ねてフォームのズレを確認しやすくします。
-                    </p>
-                </div>
-                <div class="card">
-                    <span class="jp-text">🌊 Waveform (音声波形)</span>
-                    <p>
-                        音声の波形を表示します。インパクト音などのタイミング調整に役立ちます。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>❓ FAQ & Troubleshooting</h2>
-            <div class="card">
-                <div class="faq-item">
-                    <span class="faq-q">Q. なぜ無料で使えるのですか？ 後から課金されませんか？</span>
-                    <span class="faq-a">A. 個人開発者の技術ポートフォリオとして運営しているため、完全無料です。後から請求が来ることは絶対にありません。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. フォーム確認で撮影した動画は流出しませんか？</span>
-                    <span class="faq-a">A. はい、安全です。動画はサーバーへ送信されず、すべてお使いの端末（ブラウザ）内だけで処理されるため、外部に漏れる心配はありません。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. アプリのインストールや会員登録は必要ですか？</span>
-                    <span class="faq-a">A. 不要です。ブラウザですぐに動くため、スマホの容量を圧迫せず、面倒なID登録もありません。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. AI骨格検出をうまく表示させるコツはありますか？</span>
-                    <span class="faq-a">A. 被写体全体が画面に収まり、背景と衣服のコントラストがはっきりしていると、より正確に関節位置を把握しやすくなります。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. 2つの動画のズーム位置を同時に変えるには？</span>
-                    <span class="faq-a">A. <strong>"🔗 SyncPos"</strong>ボタンをONにしてください。片方の画面をピンチ操作で拡大・移動させると、もう片方も同じ比率で同期して動きます。</span>
-                </div>
-            </div>
-        </section>
-               
-    </main>
-
-    <footer>
-        <a href="/index.html" style="display: block; margin-bottom: 15px; color: var(--accent-color); text-decoration: none; font-weight: bold;">← ホームへ戻る</a>
-        <div class="footer-links">
-            <a href="/ja/about.html">About Us</a>
-            <a href="/ja/legal.html">プライバシーと利用規約</a>
-            <a href="/ja/contact.html">お問い合わせ</a>
+    <!-- クイックスタート -->
+    <section id="quickstart">
+        <h2>🚀 クイックスタート（基本の流れ）</h2>
+        <div class="card">
+            <p>初めてお使いの方は、以下の手順でスムーズにご利用いただけます。</p>
+            <ol class="step-list">
+                <li><strong>SafariでURLを開く</strong> — App Storeからのインストールは不要。iPhoneのSafariブラウザでアクセスするだけです。</li>
+                <li><strong>画面Aに1本目の動画を読み込む</strong> — 「📂 A」ボタンをタップし、比較したい動画（例：過去のフォーム）を選択します。</li>
+                <li><strong>画面Bに2本目の動画を読み込む</strong> — 「📂 B」ボタンで2本目の動画（例：最新のフォーム）を選択します。</li>
+                <li><strong>レイアウトを選ぶ</strong> — 「📺 Layout」で並べ方（左右・上下・重ね合わせ）を選択します。</li>
+                <li><strong>SyncPosをONにする</strong> — 「🔗 SyncPos」をONにすると、2画面のズーム・位置操作が同期します。</li>
+                <li><strong>ABループで比較区間を設定する</strong> — 比較したいシーンの開始点（Loop In）と終了点（Loop Out）を設定してループ再生します。</li>
+                <li><strong>分析ツールを活用する</strong> — 必要に応じてAI骨格検出（Skel）・手書き描画（Draw）・Fadeを組み合わせます。</li>
+                <li><strong>録画して保存する</strong> — 「● REC」で分析画面を録画し、フィードバック動画として保存・共有します。</li>
+            </ol>
         </div>
-        <p class="copyright">&copy; 2026 KuniFami Soft Studio</p>
-    </footer>
+    </section>
+
+    <!-- 基本操作 -->
+    <section id="top-panel">
+        <h2>🚀 基本操作（上部パネル）</h2>
+        <div class="grid-wrapper">
+            <div class="card">
+                <div class="feature-block">
+                    <span class="badge blue">📂 A / 📂 B</span>
+                    <span class="jp-text">動画の読み込み</span>
+                    <p class="detail-text">画面A（左/上）と画面B（右/下）にそれぞれ比較したい動画を読み込みます。MP4・MOV・WebMなど主要な動画形式に対応しています。iPhoneのカメラロールや「ファイル」アプリ・iCloud Driveから選択できます。</p>
+                    <div class="tips-box"><strong>💡 Tip:</strong> 過去と現在の自分の動画、またはお手本と自分の動画を読み込むことで、時系列での変化や手本との差を直接比較できます。</div>
+                </div>
+                <div class="feature-block">
+                    <span class="badge blue">📺 Layout</span>
+                    <span class="jp-text">レイアウト切替</span>
+                    <p class="detail-text">2画面の配置を3パターンから選択できます。</p>
+                    <table class="compare-table">
+                        <thead><tr><th>レイアウト</th><th>おすすめシーン</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>左右並列</strong></td><td>横方向の動き（スイング・ステップ）の比較</td></tr>
+                            <tr><td><strong>上下</strong></td><td>縦方向の動き（ジャンプ・姿勢）の比較</td></tr>
+                            <tr><td><strong>重ね合わせ</strong></td><td>Fade機能と組み合わせた精密比較</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="feature-block">
+                    <span class="badge yellow">🔗 SyncPos</span>
+                    <span class="jp-text">位置・ズームの2画面同期</span>
+                    <p class="detail-text">ONにすると、片方の画面でピンチ操作（拡大/縮小）やドラッグ（移動）を行うと、もう片方の画面も同じ比率・方向で同期して動きます。細部を拡大して比較する際に両方の位置がズレないため、精密な比較が可能になります。</p>
+                    <div class="tips-box"><strong>💡 Tip:</strong> 手首や膝など特定部位をクローズアップして比較したい場合は、SyncPosをONにしてからピンチで拡大すると、2画面が同時にその部位にフォーカスされます。</div>
+                </div>
+                <div class="feature-block">
+                    <span class="badge red">● REC</span>
+                    <span class="jp-text">分析画面の録画・保存</span>
+                    <p class="detail-text">骨格表示・手書き描画・Fadeなどの分析ツールを適用した状態の画面を、音声込みで録画できます。タップで録画開始、もう一度タップで停止します。録画した映像はそのままコーチや選手へのフィードバック動画として活用できます。</p>
+                    <div class="tips-box"><strong>💡 Tip:</strong> 録画前に「📅 Memo」で氏名・日付・コメントを入力しておくと、誰の・いつの・どんな分析かが映像に記録され、後から管理しやすくなります。</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 分析ツール -->
+    <section id="tools">
+        <h2>🛠 分析ツール（下部スクロールエリア）</h2>
+        <p>画面下部を横スクロールするエリアに、フォーム分析を深掘りするためのツールが並んでいます。</p>
+
+        <h3>🤖 AI骨格検出（Skeleton）</h3>
+        <div class="card" style="border-left: 5px solid var(--green-color);">
+            <div class="feature-block">
+                <span class="badge green">💀 Skel（骨格表示オン/オフ）</span>
+                <span class="jp-text">AIによる関節位置のトラッキング表示</span>
+                <p class="detail-text">ONにすると、AIが動画内の人物の関節位置（肩・肘・手首・腰・膝・足首など）をリアルタイムで検出し、骨格ラインとして映像上に重ねて表示します。肉眼では捉えにくい関節の軌跡・左右差・前後のブレを視覚化できます。</p>
+                <div class="tips-box"><strong>💡 精度を上げるコツ:</strong> 被写体が全身映っており、背景と衣服のコントラストがはっきりしているほどAIの検出精度が上がります。暗い場所や柄物の服は検出精度が下がる場合があります。</div>
+            </div>
+            <div class="feature-block">
+                <span class="badge green">💀 Width（骨格ラインの太さ）</span>
+                <span class="jp-text">骨格ラインの視認性を調整</span>
+                <p class="detail-text">スライダーで骨格ラインの太さを変更できます。動画の解像度や画面サイズに合わせて、見やすい太さに調整してください。録画してフィードバック動画を作る際は、やや太めにすると視認しやすくなります。</p>
+            </div>
+            <div class="feature-block">
+                <span class="badge green">💀 Color（骨格ラインの色）</span>
+                <span class="jp-text">骨格ラインの色を変更</span>
+                <p class="detail-text">骨格ラインの色を変更し、動画の背景・衣服の色と被らないよう調整できます。2画面の骨格ラインを異なる色にすることで、どちらの動画の骨格かを一目で区別できます。</p>
+            </div>
+        </div>
+
+        <h3>✏️ 描画・メモ機能</h3>
+        <div class="grid-wrapper">
+            <div class="card">
+                <div class="feature-block">
+                    <span class="badge">✏️ Draw（手書き描画）</span>
+                    <span class="jp-text">画面上への直接書き込み</span>
+                    <p class="detail-text">指で画面上に直線・円・矢印などを自由に書き込めます。動画を一時停止した状態で腕の角度・体の軸・スイング軌跡などに線を引くことで、フォームのどこが問題かを視覚的に説明できます。</p>
+                    <div class="tips-box"><strong>💡 Tip:</strong> 動画を「Speed 0.1x」のスローモーションで再生しながらDrawで描き込み、そのまま「● REC」で録画することで、解説付きのフィードバック動画が作れます。</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="feature-block">
+                    <span class="badge">📅 Memo（メモ・日付表示）</span>
+                    <span class="jp-text">録画データへのテキスト情報付加</span>
+                    <p class="detail-text">画面上に任意のテキストメモ（選手名・日付・コメントなど）を表示できます。録画した動画にこの情報が入るため、後から見返す際に「誰の・いつの・何の練習か」が一目でわかります。複数選手のデータを管理するコーチに特に便利です。</p>
+                </div>
+            </div>
+        </div>
+
+        <h3>📐 映像・再生調整</h3>
+        <div class="tech-box">
+            <ul>
+                <li>
+                    <strong># Grid（補助線）：</strong> 水平・垂直の補助線を表示します。体の軸のブレ・前傾角度・腰の高さなど、フォームの位置関係を客観的な基準で確認できます。ゴルフのアドレスやダンスの姿勢チェックに特に有効です。
+                </li>
+                <li>
+                    <strong>⚡ Speed（再生速度）：</strong> 再生速度を0.1x（超スロー）〜2.0x（倍速）の範囲で変更できます。0.1xのスロー再生ではインパクトの瞬間・重心移動・関節の軌跡など、通常速度では確認しにくい細かな動きを丁寧に観察できます。
+                    <div class="tips-box" style="margin-top:8px;"><strong>💡 Tip:</strong> AI骨格検出とスロー再生（0.1x〜0.5x）を組み合わせると、通常の目視では不可能なレベルの関節軌跡の分析が可能になります。</div>
+                </li>
+                <li>
+                    <strong>A&lt; / A&gt;（動画Aの微調整）：</strong> 動画Aを0.05秒単位で前後に微調整します。2本の動画のスタートタイミングが微妙にズレている場合、このボタンで細かく合わせることで、同じ動作の瞬間を正確に並べることができます。
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 再生とループ制御 -->
+    <section id="playback">
+        <h2>🎛 再生とループ制御</h2>
+
+        <div class="card">
+            <h3 style="border:none; margin-top:0;">📍 ABループ再生</h3>
+            <p>確認したい動作の区間を指定して繰り返し再生し、2本の動画の微細な差異を集中してチェックします。</p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin: 15px 0;">
+                <span class="badge">📍 Loop In</span><span style="font-size:0.9rem; color:#666; margin-right:8px;">開始点（A）を設定</span>
+                <span class="badge">📍 Loop Out</span><span style="font-size:0.9rem; color:#666; margin-right:8px;">終了点（B）を設定</span>
+                <span class="badge red">🔄 Loop ON/OFF</span>
+            </div>
+            <p class="detail-text">動画再生中にLoop Inを押すと開始点、Loop Outを押すと終了点が記録され、Loop ONにするとその区間が繰り返し再生されます。ゴルフのダウンスイングだけ・ダンスの特定8カウントだけを繰り返し比較するなど、集中的な分析に役立ちます。</p>
+            <div class="tips-box"><strong>💡 Tip:</strong> SyncPosをONにした状態でABループを使うと、2画面が同じ区間・同じ位置・同じ倍率で繰り返し再生され続けるため、わずかな動作の差異も見逃しにくくなります。</div>
+        </div>
+
+        <div class="grid-wrapper" style="margin-top:20px;">
+            <div class="card">
+                <span class="badge blue">✨ Fade（重ね合わせ）</span>
+                <span class="jp-text" style="margin-top:8px;">動画Aを動画Bに半透明で重ねる</span>
+                <p class="detail-text">スライダーで動画Aの透明度を調整し、動画Bの上に重ねてフォームのズレを視覚化します。レイアウトを「重ね合わせ」にした状態でFadeを調整すると、2本の動画のフォームの差が直感的に把握できます。</p>
+                <div class="tips-box"><strong>💡 Tip:</strong> まず「A&lt; / A&gt;」で2本のタイミングを揃えてからFadeを使うと、より正確な比較ができます。</div>
+            </div>
+            <div class="card">
+                <span class="badge blue">🌊 Waveform（音声波形）</span>
+                <span class="jp-text" style="margin-top:8px;">音声の波形表示でタイミングを確認</span>
+                <p class="detail-text">動画の音声波形を画面上に表示します。ゴルフのインパクト音・テニスのボールヒット音・ダンスの足音など、特定の音のタイミングを波形で視覚的に把握できます。2本の動画の音のタイミングを波形で比較することで、ミリ秒単位でのタイミング差も確認できます。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 効果的な使い方のコツ -->
+    <section id="tips">
+        <h2>💡 効果的な使い方のコツ</h2>
+        <div class="card">
+            <h3 style="border:none; margin-top:0;">ゴルフのスイング精密分析に使う場合</h3>
+            <p>先月と今月の自分のスイング動画をA・Bに読み込み、SyncPosをONにして左右並列で表示します。「AI骨格検出（Skel）」をONにし、Speed 0.1xのスロー再生でダウンスイング時の肘・手首の軌跡を比較します。「Waveform」でインパクト音のタイミング差も確認しながら、「Draw」でスイング軌道に線を引いて解説した画面を「● REC」で録画することで、自分専用の改善レポート動画が作れます。</p>
+
+            <h3 style="border:none;">ダンスのコーチング・フィードバックに使う場合</h3>
+            <p>お手本と生徒の動画をA・Bに読み込み、ABループで習得させたい振り付けの区間を設定します。「📅 Memo」で生徒名と日付を入力した後、「Draw」で修正すべきポイントに書き込みをしながら「● REC」で録画します。録画した動画を生徒に送ることで、口頭では伝えにくいポイントも視覚的にフィードバックできます。</p>
+
+            <h3 style="border:none;">リハビリの進捗記録に使う場合</h3>
+            <p>治療開始時と現在の動作動画をA・Bに読み込み、「AI骨格検出」と「Grid補助線」を両方ONにします。SyncPosでズームを合わせながら、関節の可動域の変化や左右差の改善を骨格ラインで数値的・視覚的に比較します。「📅 Memo」で日付と担当者名を記録し、定期的に録画・保存することで継続的な進捗記録が残せます。</p>
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ iOSの仕様に関する注意事項</strong>
+            iPhoneでの録画・保存機能は、必ずSafariブラウザから直接サイトを開いてご利用ください。「ホーム画面に追加」した状態（PWAモード）では、iOSの制限により録画・保存が正常に動作しない場合があります。
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <h2>❓ FAQ &amp; トラブルシューティング</h2>
+        <div class="card">
+            <div class="faq-item">
+                <span class="faq-q">なぜ無料で使えるのですか？後から課金されませんか？</span>
+                <span class="faq-a">個人開発者の技術ポートフォリオとして公開しており、完全無料でご利用いただけます。サブスクリプションや有料プランは存在せず、後から請求が来ることは一切ありません。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">フォーム確認で撮影した動画は外部に流出しませんか？</span>
+                <span class="faq-a">はい、安全です。このアプリはすべてお使いのブラウザ内で動作するクライアントサイドアプリケーションです。読み込んだ動画・録画データはサーバーに一切送信されず、インターネット上に保存されることもありません。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">アプリのインストールや会員登録は必要ですか？</span>
+                <span class="faq-a">不要です。SafariブラウザでURLにアクセスするだけで、すぐにご利用いただけます。App Storeからのインストールも、メールアドレス等の個人情報の登録も一切必要ありません。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">AI骨格検出をうまく表示させるコツはありますか？</span>
+                <span class="faq-a">被写体の全身が画面内に収まり、背景と衣服のコントラストがはっきりしているほど検出精度が上がります。暗い場所での撮影・柄物や背景と同系色の衣服は精度が下がる場合があります。また、複数人が映っている動画より、一人が映っている動画の方が精度は高くなります。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">2つの動画のズーム位置を同時に変えるには？</span>
+                <span class="faq-a">「🔗 SyncPos」ボタンをONにしてください。ONの状態でどちらかの画面をピンチ操作で拡大・縮小・移動させると、もう片方の画面も同じ比率・方向でリアルタイムに同期して動きます。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">2本の動画のタイミングがずれているときの合わせ方は？</span>
+                <span class="faq-a">下部スクロールエリアの「A&lt;」「A&gt;」ボタンで動画Aを0.05秒単位で前後に微調整できます。比較したい動作（例：インパクトの瞬間）が2画面で揃うまで少しずつ調整してください。「Waveform（音声波形）」を表示することで、音のタイミングを視覚的に合わせることもできます。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">録画・保存ができない場合はどうすればいいですか？</span>
+                <span class="faq-a">iPhoneのSafariブラウザから直接サイトを開いているかを確認してください。「ホーム画面に追加」した状態（PWAモード）では保存できない場合があります。また、Safariのカメラ・マイクのアクセス許可が「オフ」になっていないかも確認してください（設定 → Safari → カメラ/マイク）。</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- バージョン履歴 -->
+    <section id="version">
+        <h2>📋 バージョン履歴</h2>
+        <div class="card">
+            <table class="version-table">
+                <thead>
+                    <tr>
+                        <th>バージョン</th>
+                        <th>リリース日</th>
+                        <th>主な変更内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="version-badge">最新版</span></td>
+                        <td>2026年1月</td>
+                        <td>✨ Fade機能の精度改善。AI骨格検出のColor設定を追加。Waveform表示を2画面対応に拡張。</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <a href="/index.html" style="display: block; margin-bottom: 15px; color: var(--accent-color); text-decoration: none; font-weight: bold;">← ホームへ戻る</a>
+    <div class="footer-links">
+        <a href="/ja/about.html">About Us</a>
+        <a href="/ja/legal.html">プライバシーと利用規約</a>
+        <a href="/ja/contact.html">お問い合わせ</a>
+    </div>
+    <p class="copyright">&copy; 2026 KuniFami Soft Studio. All rights reserved.</p>
+</footer>
+```
+
 </div>
 
 </body>
