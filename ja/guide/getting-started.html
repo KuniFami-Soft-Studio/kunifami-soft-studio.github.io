@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
@@ -8,216 +9,492 @@
         gtag('js', new Date());
         gtag('config', 'G-1V1ELMWFTY');
     </script>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>はじめての方へ - Form Mirror Pro | 3ステップ導入ガイド</title>
-    <meta name="description" content="Form Mirror Proを使い始めるための3ステップガイド。iPhoneやPCでのアプリ起動方法、カメラ設置のコツ、競技別の最適な遅延時間設定などをfade（フェード）モードと併せて解説。">
-    <meta name="keywords" content="Form Mirror Pro, 使い方, はじめて, フォームチェック, ゴルフ練習, ダンス練習, 録画, 設置方法, スタートガイド, fadeモード">
-    
-    <meta property="og:title" content="はじめての方へ - Form Mirror Pro | 3ステップ導入ガイド">
-    <meta property="og:description" content="わずか3ステップでフォームチェックを効率化。アプリの起動から設置のコツまで解説。">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://kunifami-soft-studio.com/ja/guide/getting-started.html">
-    <meta property="og:image" content="https://kunifami-soft-studio.com/assets/img/common/Logo1.jpg">
 
-    <link rel="icon" href="/assets/img/common/Logo1.jpg" type="image/jpg">
+```
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #27ae60;
-            --info: #2980b9;
-            --bg: #f9f9f9;
-            --card: #ffffff;
-        }
-        body {
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            line-height: 1.8; color: #333; background: var(--bg); margin: 0; padding: 0;
-        }
-        .container { max-width: 850px; margin: 0 auto; padding: 40px 20px; }
-        
-        .lang-switch { text-align: right; margin-bottom: 10px; font-size: 0.9rem; }
-        .lang-switch a { text-decoration: none; color: #555; margin-left: 10px; }
-        .lang-switch a:hover { text-decoration: underline; color: var(--accent); }
+<title>はじめての方へ - Form Mirror Pro | 3ステップ導入ガイド</title>
+<meta name="description" content="Form Mirror Proを使い始めるための3ステップガイド。iPhoneやPCでのアプリ起動方法、カメラ設置のコツ、競技別の最適な遅延時間設定などをfade（フェード）モードと併せて解説。">
+<meta name="keywords" content="Form Mirror Pro, 使い方, はじめて, フォームチェック, ゴルフ練習, ダンス練習, 録画, 設置方法, スタートガイド, fadeモード">
 
-        header { 
-            text-align: center; padding: 50px 20px; background: white; 
-            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 40px; border-bottom: 5px solid var(--accent);
-        }
-        h1 { font-size: 2.2rem; color: var(--primary); margin: 0; }
-        .sub-headline { font-size: 1.2rem; color: var(--accent); font-weight: bold; margin-top: 10px; }
+<meta property="og:title" content="はじめての方へ - Form Mirror Pro | 3ステップ導入ガイド">
+<meta property="og:description" content="わずか3ステップでフォームチェックを効率化。アプリの起動から設置のコツまで解説。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kunifami-soft-studio.com/ja/guide/getting-started.html">
+<meta property="og:image" content="https://kunifami-soft-studio.com/assets/img/common/Logo1.jpg">
 
-        h2 { 
-            font-size: 1.6rem; color: var(--primary); border-bottom: 2px solid #ddd;
-            padding-bottom: 10px; margin: 60px 0 30px; display: flex; align-items: center; gap: 10px;
-        }
-        h3 { font-size: 1.3rem; color: var(--info); margin-top: 30px; }
+<link rel="canonical" href="https://kunifami-soft-studio.com/ja/guide/getting-started.html">
+<link rel="icon" href="/assets/img/common/Logo1.jpg" type="image/jpg">
 
-        .card { background: var(--card); padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #eee; margin-bottom: 30px; }
-        
-        /* FAQ Styling */
-        .faq-item { margin-bottom: 20px; border-bottom: 1px dashed #eee; padding-bottom: 15px; }
-        .faq-item:last-child { border-bottom: none; }
-        .faq-q { font-weight: bold; color: var(--primary); display: block; margin-bottom: 5px; }
-        .faq-a { color: #555; display: block; font-size: 0.95rem; }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Form Mirror Pro 3ステップ導入ガイド",
+  "description": "Form Mirror Proを使い始めるための3ステップガイド。",
+  "step": [
+    { "@type": "HowToStep", "name": "アプリを起動する", "text": "iPhoneはSafariで、PCはChromeまたはEdgeでURLにアクセスするだけ。インストール・登録不要。" },
+    { "@type": "HowToStep", "name": "カメラを設置する", "text": "三脚を使い、全身が映る距離・高さにカメラを固定する。" },
+    { "@type": "HowToStep", "name": "遅延秒数を選択する", "text": "競技・用途に合わせてDelay（3〜7秒）を設定し、練習を開始する。" }
+  ],
+  "author": {
+    "@type": "Organization",
+    "name": "KuniFami Soft Studio",
+    "url": "https://kunifami-soft-studio.com"
+  },
+  "dateModified": "2026-01-15",
+  "inLanguage": "ja"
+}
+</script>
 
-        .step-num { 
-            background: var(--accent); color: white; width: 35px; height: 35px; 
-            display: inline-flex; align-items: center; justify-content: center; 
-            border-radius: 50%; font-weight: bold; margin-right: 10px;
-        }
+<style>
+    :root {
+        --primary: #2c3e50;
+        --accent: #27ae60;
+        --info: #2980b9;
+        --bg: #f9f9f9;
+        --card: #ffffff;
+        --text-sub: #555555;
+        --border: #e0e0e0;
+    }
+    * { box-sizing: border-box; }
+    body {
+        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+        line-height: 1.8; color: #333; background: var(--bg); margin: 0; padding: 0;
+    }
+    .container { max-width: 850px; margin: 0 auto; padding: 30px 20px 60px; }
 
-        .btn-link {
-            display: inline-block; padding: 15px 30px; background: var(--primary); color: white;
-            text-decoration: none; border-radius: 10px; font-weight: bold; margin: 15px 0;
-            transition: opacity 0.2s;
-        }
-        .btn-link:hover { opacity: 0.8; }
+    /* パンくずリスト */
+    .breadcrumb { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 20px; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 6px; }
 
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: white; }
-        th, td { border: 1px solid #ddd; padding: 15px; text-align: left; }
-        th { background: #f2f2f2; color: var(--primary); }
+    .top-nav { margin-bottom: 20px; }
+    .top-nav a { color: var(--accent); text-decoration: none; font-weight: bold; font-size: 0.95rem; }
 
-        .privacy-box { background: #e8f5e9; border-left: 6px solid #4caf50; padding: 25px; border-radius: 10px; }
+    header {
+        text-align: center; padding: 50px 30px; background: white;
+        border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin-bottom: 15px; border-bottom: 5px solid var(--accent);
+    }
+    h1 { font-size: 2.1rem; color: var(--primary); margin: 0 0 10px; line-height: 1.4; }
+    .sub-headline { font-size: 1.1rem; color: var(--accent); font-weight: bold; margin-top: 10px; }
+    .header-meta { font-size: 0.85rem; color: var(--text-sub); margin-top: 12px; }
+    .header-intro {
+        font-size: 1.0rem; color: var(--text-sub); max-width: 660px; margin: 18px auto 0;
+        border-top: 1px solid #eee; padding-top: 18px; line-height: 1.9; text-align: left;
+    }
 
-        footer { text-align: center; margin-top: 80px; padding: 40px 0; border-top: 1px solid #ddd; }
-        .footer-links a { color: #555; text-decoration: none; margin: 0 15px; font-size: 0.9rem; }
-        .footer-links a:hover { color: var(--accent); }
+    /* 目次 */
+    .toc {
+        background: white; border: 1px solid var(--border); border-radius: 12px;
+        padding: 22px 28px; margin: 25px 0;
+    }
+    .toc-title { font-size: 1rem; font-weight: bold; color: var(--primary); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--accent); text-decoration: none; font-size: 0.95rem; }
+    .toc a:hover { text-decoration: underline; }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 1.6rem; }
-            .card { padding: 20px; }
-        }
-    </style>
+    h2 {
+        font-size: 1.5rem; color: var(--primary); border-bottom: 2px solid #ddd;
+        padding-bottom: 10px; margin: 60px 0 25px;
+        display: flex; align-items: center; gap: 12px;
+    }
+    h3 { font-size: 1.15rem; color: var(--info); margin-top: 28px; margin-bottom: 12px; }
+    h4 { font-size: 1.0rem; color: var(--primary); margin: 20px 0 8px; }
+
+    .step-num {
+        background: var(--accent); color: white; width: 36px; height: 36px;
+        display: inline-flex; align-items: center; justify-content: center;
+        border-radius: 50%; font-weight: bold; flex-shrink: 0; font-size: 1.05rem;
+    }
+
+    .card {
+        background: var(--card); padding: 28px; border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.03); border: 1px solid var(--border); margin-bottom: 22px;
+    }
+
+    /* Tips・情報ボックス */
+    .tips-box {
+        background: #f0fff4; border-left: 5px solid var(--accent);
+        padding: 13px 17px; border-radius: 0 8px 8px 0; margin: 12px 0 0; font-size: 0.93rem;
+    }
+    .tips-box strong { color: #1a7a40; }
+
+    .warning-box {
+        background: #fff8e1; border-left: 5px solid #f9a825;
+        padding: 13px 17px; border-radius: 0 8px 8px 0; margin: 12px 0 0; font-size: 0.93rem;
+    }
+    .warning-box strong { color: #e65100; }
+
+    .info-box-blue {
+        background: #e3f2fd; border-left: 5px solid var(--info);
+        padding: 13px 17px; border-radius: 0 8px 8px 0; margin: 12px 0 0; font-size: 0.93rem;
+    }
+
+    /* ボタン */
+    .btn-link {
+        display: inline-block; padding: 14px 28px; background: var(--primary); color: white;
+        text-decoration: none; border-radius: 10px; font-weight: bold; margin: 12px 0;
+        font-size: 1.0rem;
+    }
+    .btn-link:hover { opacity: 0.85; }
+    .btn-link.green { background: var(--accent); }
+    .btn-link.blue { background: var(--info); }
+
+    /* テーブル */
+    table { width: 100%; border-collapse: collapse; margin: 18px 0; background: white; font-size: 0.95rem; }
+    th, td { border: 1px solid #ddd; padding: 13px 16px; text-align: left; vertical-align: top; }
+    th { background: #f2f2f2; color: var(--primary); font-weight: bold; }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    /* 設置チェックカード */
+    .setup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 18px 0; }
+    .setup-card {
+        background: white; border: 1px solid var(--border); border-radius: 12px;
+        padding: 20px; border-top: 4px solid var(--accent);
+    }
+    .setup-card h4 { margin: 0 0 10px; color: var(--primary); font-size: 1rem; }
+    .setup-card p { margin: 0; font-size: 0.92rem; color: var(--text-sub); line-height: 1.7; }
+
+    /* プライバシーボックス */
+    .privacy-box {
+        background: #e8f5e9; border-left: 6px solid #4caf50;
+        padding: 25px; border-radius: 10px; margin: 40px 0;
+    }
+    .privacy-box h2 { border-bottom: none; margin-top: 0; padding-bottom: 0; font-size: 1.3rem; }
+
+    /* 関連ガイドリンク */
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 18px 0; }
+    .related-card {
+        background: white; border: 1px solid var(--border); border-radius: 10px;
+        padding: 14px; text-decoration: none; color: var(--primary);
+        font-size: 0.88rem; font-weight: bold; text-align: center;
+        border-top: 3px solid var(--accent); display: block;
+    }
+    .related-card:hover { background: #f0fff4; }
+    .related-card span { display: block; font-size: 1.3rem; margin-bottom: 5px; }
+
+    /* FAQ */
+    .faq-item { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px dashed var(--border); }
+    .faq-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .faq-q { font-weight: bold; color: var(--primary); display: block; margin-bottom: 8px; font-size: 1.0rem; }
+    .faq-q::before { content: "Q. "; color: var(--accent); }
+    .faq-a { color: var(--text-sub); display: block; font-size: 0.95rem; line-height: 1.8; }
+    .faq-a::before { content: "A. "; font-weight: bold; color: var(--info); }
+
+    footer { text-align: center; margin-top: 80px; padding: 40px 0; border-top: 1px solid #ddd; }
+    .footer-links { margin-bottom: 20px; }
+    .footer-links a { color: #555; text-decoration: none; margin: 0 15px; font-size: 0.9rem; }
+    .footer-links a:hover { color: var(--accent); text-decoration: underline; }
+
+    @media (max-width: 600px) {
+        h1 { font-size: 1.6rem; }
+        h2 { font-size: 1.3rem; }
+        .card { padding: 18px; }
+        .container { padding: 20px 15px 40px; }
+        .setup-grid { grid-template-columns: 1fr; }
+    }
+</style>
+```
+
 </head>
 <body>
-    <noscript><p>このコンテンツの表示にはJavaScriptが必要です。</p></noscript>
 
 <div class="container">
 
-    <header>
-        <h1>🚀 はじめての方へ</h1>
-        <p class="sub-headline">わずか3ステップで、フォームチェックを効率化。</p>
-    </header>
+```
+<nav class="breadcrumb" aria-label="パンくずリスト">
+    <a href="/index.html">ホーム</a>
+    <span>›</span>
+    <a href="/ja/guide/">ガイド</a>
+    <span>›</span>
+    <span>はじめての方へ</span>
+</nav>
 
-    <main>
+<nav class="top-nav">
+    <a href="/index.html">← ホームへ戻る</a>
+</nav>
 
-        <section>
-            <h2><span class="step-num">1</span> Step 1: アプリを起動する</h2>
-            <p><strong>インストールや会員登録は不要です。</strong></p>
-            
-            <div class="card">
-                <h3>📱 iPhone / iPad の場合（推奨）</h3>
-                <a href="/ja/tools/formmirror_iPhone.html" class="btn-link">iPhone版アプリを起動</a>
-                
-                <h4>A. 録画・シンクロ機能を使いたい場合</h4>
-                <p>👉 <strong>Safariでそのまま使う</strong><br>
-                録画機能を利用する場合は、Safariブラウザでそのまま使用してください。「ホーム画面に追加」した状態（PWAモード）では、iOSの制限により動画保存ができない場合があります。</p>
+<header>
+    <h1>🚀 はじめての方へ</h1>
+    <p class="sub-headline">わずか3ステップで、フォームチェックを効率化。</p>
+    <div class="header-meta">📅 最終更新: 2026年1月15日</div>
+    <div class="header-intro">
+        <p><strong>Form Mirror Pro</strong> はインストール不要・登録不要・完全無料で使えるフォーム分析ツールです。iPhoneやPCのブラウザからURLにアクセスするだけで、すぐにお手本との比較・録画・遅延フォームチェックが始められます。</p>
+        <p>このガイドでは、初めてお使いの方に向けて「アプリの起動→設置→設定」の3ステップをわかりやすく解説します。</p>
+    </div>
+</header>
 
-                <h4>B. 日々の練習（全画面表示）で使う場合</h4>
-                <p>👉 <strong>ホーム画面に追加して使う</strong><br>
-                Safariの「共有」ボタンから<strong>「ホーム画面に追加」</strong>してください。全画面表示で自分の動作確認に集中できます（遅延再生のみの利用に最適です）。</p>
+<!-- 目次 -->
+<nav class="toc" aria-label="目次">
+    <p class="toc-title">📋 目次</p>
+    <ol>
+        <li><a href="#step1">Step 1 — アプリを起動する</a></li>
+        <li><a href="#step2">Step 2 — カメラを設置する</a></li>
+        <li><a href="#step3">Step 3 — 遅延秒数を選択する</a></li>
+        <li><a href="#features">主要機能の紹介</a></li>
+        <li><a href="#privacy">安心のプライバシー保護</a></li>
+        <li><a href="#related">競技・用途別ガイド</a></li>
+        <li><a href="#faq">FAQ &amp; トラブルシューティング</a></li>
+    </ol>
+</nav>
+
+<main>
+
+    <!-- Step 1 -->
+    <section id="step1">
+        <h2><span class="step-num">1</span> Step 1：アプリを起動する</h2>
+        <p><strong>インストールや会員登録は一切不要です。</strong> お使いのデバイスのブラウザでURLにアクセスするだけで、すぐに使い始められます。</p>
+
+        <div class="card">
+            <h3>📱 iPhone / iPad の場合</h3>
+            <a href="/ja/tools/formmirror_iPhone.html" class="btn-link green">iPhone版アプリを起動</a>
+
+            <h4>A. 録画・保存機能を使いたい場合（推奨）</h4>
+            <p><strong>Safariブラウザからそのまま使う</strong><br>
+            iOSの仕様上、Safariブラウザから直接アクセスすることで、録画・動画保存・カメラ機能のすべてを安定してご利用いただけます。アドレスバーにURLを入力してアクセスしてください。</p>
+            <div class="warning-box"><strong>⚠️ 注意：</strong>「ホーム画面に追加」した状態（PWAモード）では、iOSの制限により録画した動画の保存ができない場合があります。録画機能を使う場合は必ずSafariからアクセスしてください。</div>
+
+            <h4 style="margin-top: 20px;">B. 遅延フォームチェックのみを使う場合</h4>
+            <p><strong>ホーム画面に追加して全画面で使う</strong><br>
+            録画は不要で遅延映像でのフォーム確認のみを行う場合は、Safariの「共有」ボタンから<strong>「ホーム画面に追加」</strong>することで全画面表示で使えます。アドレスバーや操作バーが非表示になり、動きの確認に集中できます。</p>
+            <div class="tips-box"><strong>💡 ホーム画面への追加手順：</strong> Safariでページを開く → 画面下部の共有ボタン（□に↑マーク）をタップ → 「ホーム画面に追加」をタップ → 「追加」をタップ</div>
+        </div>
+
+        <div class="card">
+            <h3>💻 PC / Mac の場合</h3>
+            <a href="/ja/tools/form-mirror-pro-pc.html" class="btn-link blue">PC版アプリを起動</a>
+            <p>大型モニターやノートPCの大画面で細かな動きを確認したい場合に最適です。外付けWebカメラを三脚に固定することで、より安定した環境でフォームチェックができます。</p>
+            <div class="tips-box"><strong>💡 推奨ブラウザ：</strong> Google Chrome（最新版）または Microsoft Edge（最新版）を推奨します。インストールや会員登録は一切不要です。</div>
+        </div>
+
+        <div class="card">
+            <h3>🔗 Form Mirror Sync Pro（2動画比較・AI骨格検出）</h3>
+            <a href="/ja/tools/formmirror_sync.html" class="btn-link">Sync Pro を起動</a>
+            <p>過去に撮影した2本の動画を並べて同時比較したい場合や、AI骨格検出・手書き描画機能を使いたい場合はSync Proをご利用ください。</p>
+            <table>
+                <thead><tr><th>機能</th><th>Form Mirror Pro</th><th>Form Mirror Sync Pro</th></tr></thead>
+                <tbody>
+                    <tr><td>カメラ映像 + お手本動画の比較</td><td>✅</td><td>✅</td></tr>
+                    <tr><td>2本の動画ファイルを同時比較</td><td>—</td><td>✅</td></tr>
+                    <tr><td>AI骨格検出・手書き描画</td><td>—</td><td>✅</td></tr>
+                    <tr><td>2画面の位置・ズーム同期</td><td>—</td><td>✅</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section id="step2">
+        <h2><span class="step-num">2</span> Step 2：カメラを設置する</h2>
+        <p>フォームチェックの精度はカメラの設置方法に大きく左右されます。以下のポイントを参考に、最適な環境を整えてください。</p>
+
+        <div class="setup-grid">
+            <div class="setup-card">
+                <h4>📷 三脚を使って固定する</h4>
+                <p>手持ちや立てかけではフレームがずれやすく、フォームの正確な比較が難しくなります。三脚やスマートフォンスタンドを使ってカメラを固定してください。毎回同じ位置に固定することで、日々のフォームの変化を比較しやすくなります。</p>
             </div>
-
-            <div class="card">
-                <h3>💻 PC / Mac の場合</h3>
-                <a href="/ja/tools/form-mirror-pro-pc.html" class="btn-link" style="background: #34495e;">PC版アプリを起動</a>
-                <p>大型モニターやノートPCを使い、大画面で細かな動きを確認したい場合に適しています。</p>
+            <div class="setup-card">
+                <h4>📏 2〜3mの距離を確保する</h4>
+                <p>全身（頭頂から足先まで）が画面に収まる距離に設置してください。目安は2〜3mですが、身長や練習スペースに合わせて調整してください。近すぎると上半身しか映らず、動作全体の確認ができません。</p>
             </div>
-        </section>
-
-        <section>
-            <h2><span class="step-num">2</span> Step 2: 設置のコツ</h2>
-            <div class="card">
-                <ul>
-                    <li><strong>1. 三脚を使用する:</strong> カメラを固定することで、フォームの比較をより正確に行えます。</li>
-                    <li><strong>2. 2〜3mの距離をとる:</strong> 全身が画面に収まるよう距離を調整してください。</li>
-                    <li><strong>3. グリッドを活用する:</strong> 画面上の補助線（グリッド）を使い、体の軸や水平を確認する目安にします。</li>
-                </ul>
+            <div class="setup-card">
+                <h4>📐 撮影方向を決める</h4>
+                <p>側面（横から）の撮影が基本です。ゴルフ・野球・アーチェリーなどは側面からの映像が最も情報量が多くなります。正面・後方・斜めからも撮ると多角的に分析できます。目的に応じて方向を使い分けましょう。</p>
             </div>
-        </section>
+            <div class="setup-card">
+                <h4>☀️ 照明と背景を整える</h4>
+                <p>逆光（窓を背にした状態）は映像が暗くなり、フォームが見づらくなります。光源が自分の正面または横から当たるよう、カメラの向きを調整してください。背景はシンプルな単色の壁が最も見やすく、AI骨格検出（Sync Pro）の精度も上がります。</p>
+            </div>
+        </div>
 
-        <section>
-            <h2><span class="step-num">3</span> Step 3: 遅延秒数の選択</h2>
-            <p>動きに合わせて、最適な遅延時間を選択してください。</p>
+        <div class="card">
+            <h3>競技別のカメラ設置方向の目安</h3>
+            <table>
+                <thead><tr><th>競技・用途</th><th>推奨カメラ方向</th><th>補足</th></tr></thead>
+                <tbody>
+                    <tr><td>ゴルフ</td><td>正面または側面（飛球線後方）</td><td>スイング軌道・体の回転を確認</td></tr>
+                    <tr><td>野球・投球</td><td>三塁側の真横</td><td>ステップ方向・リリースポイントを確認</td></tr>
+                    <tr><td>野球・打撃</td><td>投手側の斜め前方（約45度）</td><td>スイング軌道・体重移動を確認</td></tr>
+                    <tr><td>ダンス</td><td>正面</td><td>振り付けの左右・全身の動きを確認</td></tr>
+                    <tr><td>ヨガ・ピラティス</td><td>正面または側面</td><td>ポーズの角度・軸を確認</td></tr>
+                    <tr><td>アーチェリー</td><td>引き手側の真横</td><td>アンカーポイント・残身を確認</td></tr>
+                    <tr><td>ボウリング</td><td>利き腕側の真横</td><td>助走・リリース・フォロースルーを確認</td></tr>
+                </tbody>
+            </table>
+
+            <h3>グリッド補助線を活用する</h3>
+            <p>設置が完了したら、下部ツールエリアの「Grid」をONにしてください。水平・垂直の補助線が表示され、体の傾き・軸のブレ・左右差を客観的な基準で確認できるようになります。</p>
+            <div class="tips-box"><strong>💡 グリッドの活用例：</strong> ゴルフのアドレス（肩の傾き）・ダンスのターン（垂直軸）・ヨガのバランスポーズ（重心の位置）など、あらゆる競技のフォーム確認に役立ちます。</div>
+        </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section id="step3">
+        <h2><span class="step-num">3</span> Step 3：遅延秒数を選択する</h2>
+        <p>下部スライダーの「Delay」を設定します。動作の種類や練習環境に合わせて最適な遅延時間を選んでください。</p>
+
+        <div class="card">
             <table>
                 <thead>
                     <tr>
                         <th>遅延設定</th>
-                        <th>推奨用途</th>
+                        <th>推奨競技・用途</th>
+                        <th>選ぶ理由</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>[ 3秒 ]</strong></td>
-                        <td><strong>ゴルフ、テニス</strong><br>スイング直後の姿勢確認などに。</td>
+                        <td><strong>3秒</strong></td>
+                        <td>ゴルフ・テニス・素振り</td>
+                        <td>スイング直後にすぐ確認できる。動作が短くそばで確認できる場合。</td>
                     </tr>
                     <tr>
-                        <td><strong>[ 4秒 ]</strong></td>
-                        <td><strong>野球</strong><br>投球のフォロースルー完了までの確認に。</td>
+                        <td><strong>4秒</strong></td>
+                        <td>野球・投球・バッティング</td>
+                        <td>フォロースルーまで完了し、一呼吸置いてから確認できる。</td>
                     </tr>
                     <tr>
-                        <td><strong>[ 5秒 ]</strong></td>
-                        <td><strong>ダンス、ヨガ</strong><br>一連の流れを落ち着いて振り返るのに最適。</td>
+                        <td><strong>5秒</strong></td>
+                        <td>ダンス・ヨガ・ボウリング</td>
+                        <td>動作後に画面前まで移動する時間を確保できる。最も汎用的な設定。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>7秒</strong></td>
+                        <td>アーチェリー・遠距離確認</td>
+                        <td>弓を安全に下ろして画面前まで移動するなど、時間が必要な場合。</td>
                     </tr>
                 </tbody>
             </table>
-        </section>
 
-        <section>
-            <h2>✨ 応用：比較録画機能 (Smart Sync)</h2>
-            <div class="card">
-                <p>お手本動画を読み込むと、自身の動きと同期して並べて録画できます。<br>
-                お手本とのタイミングを合わせることで、✨ <strong>fade（フェード）モード</strong>により動作の差異を視覚的に捉えやすくなります。</p>
-            </div>
-        </section>
-
-        <section class="privacy-box">
-            <h2>🛡️ 安心のプライバシー保護</h2>
-            <p><strong>動画データは一切サーバーへ送信されません。</strong><br>
-            映像の処理や録画はすべて、お使いのデバイス内だけで完結します。プライバシーが守られた環境で安心してご利用いただけます。</p>
-        </section>
-
-        <section>
-            <h2>❓ FAQ & Troubleshooting</h2>
-            <div class="card">
-                <div class="faq-item">
-                    <span class="faq-q">Q. なぜ無料で使えるのですか？ 後から課金されませんか？</span>
-                    <span class="faq-a">A. 個人開発者の技術ポートフォリオとして運営しているため、完全無料です。後から請求が来ることは絶対にありません。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. フォーム確認で撮影した動画は流出しませんか？</span>
-                    <span class="faq-a">A. はい、安全です。動画はサーバーへ送信されず、すべてお使いのブラウザ内だけで処理されるため、外部に漏れる心配はありません。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. アプリのインストールは必要ですか？</span>
-                    <span class="faq-a">A. 不要です。ブラウザですぐに動くため、スマホの容量を圧迫せず、面倒な会員登録もありません。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. 遅延再生（Video Delay）はどのようなメリットがありますか？</span>
-                    <span class="faq-a">A. 自分の動きを数秒後に客観的に見られるため、動作の感覚が残っているうちに視覚的な修正ポイントを確認しやすくなります。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. iPhoneのホーム画面から録画がうまく保存できません。</span>
-                    <span class="faq-a">A. iOSの仕様により、ホーム画面に追加したアプリ（PWA）からはファイル保存に制限がかかる場合があります。録画・保存機能を使う際はSafariブラウザから直接アクセスしてください。</span>
-                </div>
-            </div>
-        </section>
-        
-    </main>
-
-    <footer>
-        <a href="/index.html" style="display: block; margin-bottom: 15px; color: var(--accent); text-decoration: none; font-weight: bold;">← Back to Top</a>
-        <div class="footer-links">
-            <a href="/ja/about.html">About Us</a>
-            <a href="/ja/legal.html">プライバシーと利用規約</a>
-            <a href="/ja/contact.html">お問い合わせ</a>
+            <div class="tips-box"><strong>💡 迷ったら5秒から始める：</strong> 初めて使う場合は「5秒」に設定してみてください。動作を終えてから画面を見るのに「ちょうど良い」と感じた場合はその設定が合っています。早すぎると感じたら7秒に、遅すぎると感じたら3〜4秒に変更してください。</div>
         </div>
-        <p class="copyright">&copy; 2026 KuniFami Soft Studio</p>
-    </footer>
+
+        <div class="card">
+            <h3>遅延機能の仕組みと効果</h3>
+            <p>「Delay（遅延）」機能は、カメラ映像を設定した秒数だけ遅らせて画面に表示する機能です。一般的な動画撮影と異なり、練習しながらリアルタイムで（数秒後に）自分のフォームを確認できるため、以下のメリットがあります。</p>
+            <ul>
+                <li><strong>動作の感覚が残っているうちに視覚で確認できる</strong> — 「今の動きがどう見えたか」を体の感覚と照合しやすくなります。</li>
+                <li><strong>スマートフォンに触らずに確認できる</strong> — 録画ボタンを押したり動画を再生したりする手間がなく、練習のリズムが途切れません。</li>
+                <li><strong>繰り返しのフィードバックサイクルが作れる</strong> — 「動く→遅延映像で確認→修正→また動く」のサイクルを自動で繰り返せます。</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 主要機能 -->
+    <section id="features">
+        <h2>✨ 主要機能の紹介</h2>
+
+        <div class="card">
+            <h3>✨ Fade（フェード）機能 — お手本と自分を重ねて比較</h3>
+            <p>「Choose File」でお手本動画（プロ選手の動画・自分のベストフォーム）を読み込み、Fadeスライダーを調整すると、お手本がカメラ映像の上に半透明で重なります。自分の体とお手本のラインを直接重ね合わせることで、角度・位置・タイミングのズレを視覚的に把握できます。</p>
+            <div class="info-box-blue">使い方の詳細は各競技別ガイド（下部のリンク）をご覧ください。</div>
+
+            <h3 style="margin-top: 28px;">🔁 A-Bループ — 繰り返し確認したい区間を自動再生</h3>
+            <p>お手本動画の特定区間（例：ダンスの難しい8カウント・ゴルフのダウンスイング部分）を指定してループ再生できます。デバイスに触れることなく繰り返し再生され続けるため、練習のテンポを落とさずフォーム確認ができます。</p>
+
+            <h3 style="margin-top: 28px;">🪞 Mirror Me / Mirror Model — 鏡のように確認</h3>
+            <p>「Mirror Me」をONにするとカメラ映像が左右反転し、スタジオの鏡を見るような感覚で確認できます。「Mirror Model」はお手本動画を左右反転する機能で、向かい合ったコーチ・インストラクターの動画を参考にする際に役立ちます。</p>
+
+            <h3 style="margin-top: 28px;">⏺ 録画と保存 — 練習の記録・フィードバック用途に</h3>
+            <p>「Record」ボタンでカウントダウン後に録画がスタートします。録画停止後のプレビュー画面から「Save Video」（PC版）または「Save / Share」（iPhone版）で保存できます。フォームの変化を記録として残したり、コーチへのフィードバック動画として活用できます。</p>
+        </div>
+    </section>
+
+    <!-- プライバシー -->
+    <section id="privacy" class="privacy-box">
+        <h2>🛡️ 安心のプライバシー保護</h2>
+        <p><strong>動画データは一切サーバーへ送信されません。</strong><br>
+        映像の処理・遅延再生・録画はすべてお使いのデバイスのブラウザ内だけで完結します。カメラ映像・録画データがインターネット上に保存されることは一切なく、外部に流出する心配はありません。プライバシーが完全に守られた環境で安心してご利用いただけます。</p>
+        <div style="margin-top: 15px; font-size: 0.93rem; color: #2e7d32;">
+            ✅ サーバーへの動画送信なし &nbsp;|&nbsp; ✅ 個人情報の登録なし &nbsp;|&nbsp; ✅ 課金・サブスクなし &nbsp;|&nbsp; ✅ インストールなし
+        </div>
+    </section>
+
+    <!-- 競技別ガイド -->
+    <section id="related">
+        <h2>📚 競技・用途別ガイド</h2>
+        <p>各競技に特化した使い方・チェックポイント・推奨設定を詳しく解説した専用ガイドがあります。</p>
+        <div class="related-grid">
+            <a href="/ja/guide/FormMirrorProforPCUserManual.html" class="related-card">
+                <span>💻</span>PC版<br>操作マニュアル
+            </a>
+            <a href="/ja/guide/FormMirrorProforiphoneUserManual.html" class="related-card">
+                <span>📱</span>iPhone版<br>操作マニュアル
+            </a>
+            <a href="/ja/guide/FormMirrorSyncforiphoneUserManual.html" class="related-card">
+                <span>🔗</span>Sync Pro<br>マニュアル
+            </a>
+            <a href="/ja/guide/archery-form-tips.html" class="related-card">
+                <span>🏹</span>アーチェリー<br>上達ガイド
+            </a>
+            <a href="/ja/guide/baseball-softball-tips.html" class="related-card">
+                <span>⚾</span>野球・ソフトボール<br>上達ガイド
+            </a>
+            <a href="/ja/guide/bowling-form-tips.html" class="related-card">
+                <span>🎳</span>ボウリング<br>上達ガイド
+            </a>
+            <a href="/ja/guide/dance-form-improvement.html" class="related-card">
+                <span>💃</span>ダンス・ヨガ<br>上達ガイド
+            </a>
+            <a href="/ja/guide/faq.html" class="related-card">
+                <span>❓</span>よくある質問<br>(FAQ)
+            </a>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <h2>❓ FAQ &amp; トラブルシューティング</h2>
+        <div class="card">
+            <div class="faq-item">
+                <span class="faq-q">なぜ無料で使えるのですか？後から課金されませんか？</span>
+                <span class="faq-a">個人開発者の技術ポートフォリオとして公開しており、完全無料でご利用いただけます。サブスクリプションや有料プランは存在せず、後から請求が来ることは一切ありません。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">フォーム確認で撮影した動画は外部に流出しませんか？</span>
+                <span class="faq-a">はい、安全です。動画はサーバーへ一切送信されず、すべてお使いのブラウザ内だけで処理されます。インターネット上に保存されることもないため、プライバシーは完全に守られます。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">アプリのインストールや会員登録は必要ですか？</span>
+                <span class="faq-a">不要です。iPhoneはSafari、PCはChromeまたはEdgeでURLにアクセスするだけで、すぐにご利用いただけます。メールアドレス等の個人情報の登録も一切必要ありません。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">遅延再生（Delay）はどんなメリットがありますか？</span>
+                <span class="faq-a">動作を終えた直後に、体の感覚が残っているうちに自分の映像を視覚で確認できます。録画ボタンの操作や動画の再生が不要なため練習のリズムが途切れず、「動く→確認→修正→また動く」のフィードバックサイクルを効率よく繰り返せます。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">iPhoneのホーム画面から録画がうまく保存できません。</span>
+                <span class="faq-a">iOSの仕様により、「ホーム画面に追加」した状態（PWAモード）ではファイル保存に制限がかかる場合があります。録画・保存機能を使う際は必ずSafariブラウザからURL直接アクセスしてご利用ください。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">カメラが認識されません（PC）。</span>
+                <span class="faq-a">ブラウザのアドレスバー左側の🔒鍵マークをクリックし、カメラの権限が「許可」になっているかを確認してください。「ブロック」になっている場合は「許可」に変更してページを再読み込みしてください。ZoomやTeamsなど他のアプリがカメラを使用していないかも確認してください。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">Form Mirror Pro と Form Mirror Sync Pro はどう違いますか？</span>
+                <span class="faq-a">Form Mirror Pro は「カメラ映像（自分）とお手本動画」を並べてリアルタイム比較する基本版です。Form Mirror Sync Pro は「2本の動画ファイル」を同時比較でき、AI骨格検出・手書き描画・2画面同期ズームなどの高度な分析機能が加わった上位版です。まずはForm Mirror Proから始め、より詳細な分析が必要になったらSync Proをお試しください。</span>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <a href="/index.html" style="display: block; margin-bottom: 15px; color: var(--accent); text-decoration: none; font-weight: bold;">← ホームへ戻る</a>
+    <div class="footer-links">
+        <a href="/ja/about.html">About Us</a>
+        <a href="/ja/legal.html">プライバシーと利用規約</a>
+        <a href="/ja/contact.html">お問い合わせ</a>
+    </div>
+    <p class="copyright" style="color: #bbb; font-size: 0.8rem; margin-top: 15px;">&copy; 2026 KuniFami Soft Studio. All rights reserved.</p>
+</footer>
+```
+
 </div>
 
 </body>
