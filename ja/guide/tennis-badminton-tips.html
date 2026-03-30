@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1V1ELMWFTY"></script>
@@ -8,172 +9,541 @@
         gtag('js', new Date());
         gtag('config', 'G-1V1ELMWFTY');
     </script>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>テニス・バドミントン上達ガイド - Form Mirror Pro | サーブとフットワークの確認</title>
-    <meta name="description" content="3〜4秒遅延でサーブの打点やフットワークを客観的にチェック。トスの高さの目安設定やスプリットステップの同期など、フォームのセルフチェックをサポートする無料Webツール。">
-    <meta name="keywords" content="Form Mirror Pro, テニスフォーム, バドミントン練習, サーブ確認, フットワーク, 3秒遅延, スプリットステップ, フォームチェック, fadeモード">
-    
-    <meta property="og:title" content="テニス・バドミントン上達ガイド - Form Mirror Pro | フォームの客観的分析">
-    <meta property="og:description" content="1打ごとの「感触」と「映像」を同期。コートの白線を基準に、自身のフォームを視覚的にチェック。">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://kunifami-soft-studio.com/ja/guide/tennis-badminton-tips.html">
-    <meta property="og:image" content="https://kunifami-soft-studio.com/assets/img/common/Logo1.jpg">
 
-    <link rel="icon" href="/assets/img/common/Logo1.jpg" type="image/jpg">
+```
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        :root {
-            --primary: #33691e; /* Court Green */
-            --accent: #c6ff00; /* Tennis Ball Yellow */
-            --bg: #f1f8e9;
-            --card: #ffffff;
-            --text: #1b5e20;
-        }
-        body {
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            line-height: 1.8; color: var(--text); background: var(--bg); margin: 0; padding: 0;
-        }
-        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-        
-        .lang-switch { text-align: right; margin-bottom: 10px; font-size: 0.9rem; }
-        .lang-switch a { text-decoration: none; color: #555; margin-left: 10px; }
-        .lang-switch a:hover { text-decoration: underline; color: var(--primary); }
+<title>テニス・バドミントン上達ガイド - Form Mirror Pro | サーブとフットワークの確認</title>
+<meta name="description" content="3〜4秒遅延でサーブの打点やフットワークを客観的にチェック。トスの高さの目安設定やスプリットステップの同期など、フォームのセルフチェックをサポートする無料Webツール。">
+<meta name="keywords" content="Form Mirror Pro, テニスフォーム, バドミントン練習, サーブ確認, フットワーク, 3秒遅延, スプリットステップ, フォームチェック, fadeモード">
 
-        header { 
-            text-align: center; padding: 60px 20px; background: white; 
-            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 40px; border-top: 8px solid var(--accent);
-        }
-        h1 { font-size: 2.2rem; color: var(--primary); margin: 0; }
-        .hero-sub { font-size: 1.1rem; color: #558b2f; font-weight: bold; margin-top: 15px; }
+<meta property="og:title" content="テニス・バドミントン上達ガイド - Form Mirror Pro | フォームの客観的分析">
+<meta property="og:description" content="1打ごとの「感触」と「映像」を同期。コートの白線を基準に、自身のフォームを視覚的にチェック。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://kunifami-soft-studio.com/ja/guide/tennis-badminton-tips.html">
+<meta property="og:image" content="https://kunifami-soft-studio.com/assets/img/common/Logo1.jpg">
 
-        h2 { 
-            font-size: 1.6rem; color: white; background: var(--primary);
-            padding: 12px 20px; border-radius: 8px; margin: 50px 0 25px;
-            box-shadow: 0 4px 10px rgba(51, 105, 30, 0.2);
-        }
+<link rel="canonical" href="https://kunifami-soft-studio.com/ja/guide/tennis-badminton-tips.html">
+<link rel="icon" href="/assets/img/common/Logo1.jpg" type="image/jpg">
 
-        h3 { font-size: 1.3rem; color: var(--primary); border-bottom: 2px solid #dcedc8; padding-bottom: 5px; margin-top: 35px; }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "テニス・バドミントン上達ガイド - Form Mirror Pro | サーブとフットワークの確認",
+  "description": "3〜4秒遅延・Fade・グリッドを活用してテニス・バドミントンのサーブとフットワークをセルフチェック。種目別の具体的な確認方法を解説。",
+  "author": {
+    "@type": "Organization",
+    "name": "KuniFami Soft Studio",
+    "url": "https://kunifami-soft-studio.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "KuniFami Soft Studio"
+  },
+  "datePublished": "2025-01-01",
+  "dateModified": "2026-01-15",
+  "inLanguage": "ja"
+}
+</script>
 
-        .card { background: var(--card); padding: 30px; border-radius: 15px; border: 1px solid #dcedc8; margin-bottom: 30px; }
-        
-        .faq-item { margin-bottom: 20px; border-bottom: 1px dashed #dcedc8; padding-bottom: 15px; }
-        .faq-item:last-child { border-bottom: none; }
-        .faq-q { font-weight: bold; color: var(--primary); display: block; margin-bottom: 5px; }
-        .faq-a { color: #555; display: block; font-size: 0.95rem; }
+<style>
+    :root {
+        --primary: #33691e;
+        --accent: #c6ff00;
+        --accent-dark: #8bc34a;
+        --bg: #f1f8e9;
+        --card: #ffffff;
+        --text: #1b5e20;
+        --text-sub: #555555;
+        --border: #dcedc8;
+    }
+    * { box-sizing: border-box; }
+    body {
+        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+        line-height: 1.8; color: var(--text); background: var(--bg); margin: 0; padding: 0;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 30px 20px 60px; }
 
-        .drill-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
-        .drill-card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #e0e0e0; }
+    /* パンくずリスト */
+    .breadcrumb { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 20px; }
+    .breadcrumb a { color: var(--primary); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 6px; }
 
-        .setup-tip { background: #fffde7; border-left: 6px solid var(--accent); padding: 25px; border-radius: 8px; margin: 30px 0; }
+    .top-nav { margin-bottom: 20px; }
+    .top-nav a { color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.95rem; }
 
-        footer { text-align: center; margin-top: 80px; padding: 40px 0; border-top: 1px solid #ddd; }
-        .footer-links a { color: #555; text-decoration: none; margin: 0 15px; font-size: 0.95rem; }
-        .footer-links a:hover { color: var(--primary); }
+    header {
+        text-align: center; padding: 50px 30px; background: white;
+        border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin-bottom: 15px; border-top: 8px solid var(--accent);
+    }
+    h1 { font-size: 2.1rem; color: var(--primary); margin: 0 0 12px; line-height: 1.4; }
+    .hero-sub { font-size: 1.05rem; color: #558b2f; font-weight: bold; margin-top: 10px; }
+    .header-meta { font-size: 0.85rem; color: var(--text-sub); margin-top: 12px; }
+    .header-meta span { margin: 0 12px; }
+    .header-intro {
+        font-size: 1.0rem; color: var(--text-sub); max-width: 680px; margin: 18px auto 0;
+        border-top: 1px solid #eee; padding-top: 18px; line-height: 1.9; text-align: left;
+    }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 1.7rem; }
-            .drill-section { grid-template-columns: 1fr; }
-        }
-    </style>
+    /* バッジ */
+    .level-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 15px; }
+    .level-badge {
+        background: #f1f8e9; color: var(--primary); border: 1px solid var(--border);
+        border-radius: 20px; padding: 4px 14px; font-size: 0.85rem; font-weight: bold;
+    }
+
+    /* 目次 */
+    .toc {
+        background: white; border: 1px solid var(--border); border-radius: 12px;
+        padding: 22px 28px; margin: 25px 0;
+    }
+    .toc-title { font-size: 1rem; font-weight: bold; color: var(--primary); margin: 0 0 12px; }
+    .toc ol { margin: 0; padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--primary); text-decoration: none; font-size: 0.95rem; }
+    .toc a:hover { text-decoration: underline; }
+
+    h2 {
+        font-size: 1.55rem; color: white; background: var(--primary);
+        padding: 12px 20px; border-radius: 8px; margin: 55px 0 25px;
+        box-shadow: 0 4px 10px rgba(51,105,30,0.2);
+    }
+    h3 { font-size: 1.2rem; color: var(--primary); border-bottom: 2px solid var(--border); padding-bottom: 6px; margin: 35px 0 15px; }
+
+    .card { background: var(--card); padding: 28px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 25px; }
+
+    /* Tipsボックス */
+    .tips-box {
+        background: #fffde7; border-left: 5px solid #f9a825;
+        padding: 13px 17px; border-radius: 0 8px 8px 0; margin: 12px 0 0; font-size: 0.93rem;
+    }
+    .tips-box strong { color: #e65100; }
+
+    .info-box {
+        background: #e8f5e9; border-left: 5px solid var(--primary);
+        padding: 13px 17px; border-radius: 0 8px 8px 0; margin: 12px 0 0; font-size: 0.93rem;
+    }
+    .info-box strong { color: var(--primary); }
+
+    /* ステップリスト */
+    .step-list { list-style: none; padding: 0; margin: 15px 0 0; counter-reset: step; }
+    .step-list li {
+        counter-increment: step; padding: 11px 11px 11px 52px; position: relative;
+        margin-bottom: 10px; background: #f9fbe7; border-radius: 8px; font-size: 0.95rem; line-height: 1.7;
+    }
+    .step-list li::before {
+        content: counter(step); position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+        background: var(--primary); color: white; width: 27px; height: 27px;
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-weight: bold; font-size: 0.85rem;
+    }
+
+    /* 技術カード */
+    .drill-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 15px 0; }
+    .drill-card {
+        background: white; padding: 24px; border-radius: 12px;
+        border: 1px solid var(--border); border-top: 4px solid var(--primary);
+    }
+    .drill-card strong { display: block; font-size: 1.05rem; margin-bottom: 10px; color: var(--primary); }
+
+    /* チェックテーブル */
+    .check-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95rem; }
+    .check-table th { background: var(--primary); color: white; padding: 9px 14px; text-align: left; }
+    .check-table td { padding: 9px 14px; border-bottom: 1px solid #e8f5e9; vertical-align: top; }
+    .check-table tr:last-child td { border-bottom: none; }
+    .check-table tr:nth-child(even) td { background: #f9fbe7; }
+
+    /* 遅延比較表 */
+    .delay-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin: 15px 0; }
+    .delay-table th { background: var(--primary); color: white; padding: 9px 14px; text-align: left; }
+    .delay-table td { padding: 9px 14px; border-bottom: 1px solid #e8f5e9; }
+    .delay-table tr:last-child td { border-bottom: none; }
+    .delay-table tr:nth-child(even) td { background: #f9fbe7; }
+    .delay-table .recommended { color: #d32f2f; font-weight: bold; }
+
+    /* セットアップ Tip */
+    .setup-tip {
+        background: #fffde7; border-left: 6px solid #f9a825;
+        padding: 25px; border-radius: 8px; margin: 30px 0;
+    }
+    .setup-tip h3 { margin-top: 0; border: none; }
+
+    /* FAQ */
+    .faq-item { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px dashed var(--border); }
+    .faq-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .faq-q { font-weight: bold; color: var(--primary); display: block; margin-bottom: 8px; font-size: 1.0rem; }
+    .faq-q::before { content: "Q. "; }
+    .faq-a { color: var(--text-sub); display: block; font-size: 0.95rem; line-height: 1.8; }
+    .faq-a::before { content: "A. "; font-weight: bold; color: var(--accent-dark); }
+
+    /* 関連リンク */
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 18px 0; }
+    .related-card {
+        background: white; border: 1px solid var(--border); border-radius: 10px;
+        padding: 14px; text-decoration: none; color: var(--primary);
+        font-size: 0.88rem; font-weight: bold; text-align: center;
+        border-top: 3px solid var(--primary); display: block;
+    }
+    .related-card:hover { background: #f1f8e9; }
+    .related-card span { display: block; font-size: 1.3rem; margin-bottom: 5px; }
+
+    footer { text-align: center; margin-top: 80px; padding: 40px 0; border-top: 1px solid #ddd; }
+    .footer-links { margin-bottom: 20px; }
+    .footer-links a { color: #888; text-decoration: none; margin: 0 15px; font-size: 0.9rem; }
+    .footer-links a:hover { color: var(--primary); text-decoration: underline; }
+
+    @media (max-width: 600px) {
+        h1 { font-size: 1.6rem; }
+        h2 { font-size: 1.3rem; }
+        .container { padding: 20px 15px 40px; }
+        .drill-section { grid-template-columns: 1fr; }
+    }
+</style>
+```
+
 </head>
 <body>
-    <noscript><p>このコンテンツの表示にはJavaScriptが必要です。</p></noscript>
 
 <div class="container">
 
-    <header>
-        <h1>🎾 テニス・バドミントン上達ガイド</h1>
-        <p class="hero-sub">「3〜4秒遅延」で、サーブの打点やフットワークを客観的に確認する。</p>
-    </header>
+```
+<nav class="breadcrumb" aria-label="パンくずリスト">
+    <a href="/index.html">ホーム</a>
+    <span>›</span>
+    <a href="/ja/guide/">ガイド</a>
+    <span>›</span>
+    <span>テニス・バドミントン上達ガイド</span>
+</nav>
 
-    <main>
-        <section>
-            <h2>⏱️ なぜ「3〜4秒」なのか？</h2>
-            <div class="card">
-                <p><strong>動作のリズムに合わせた確認</strong><br>
-                サーブや1スイングの動作は約2秒です。3〜4秒の遅延を設定すれば、打ち終わって構え直した瞬間にリプレイが始まるため、一打一打の「感触」が鮮明なうちに映像で客観的なチェックが行えます。</p>
+<nav class="top-nav">
+    <a href="/index.html">← ホームへ戻る</a>
+</nav>
+
+<header>
+    <h1>🎾 テニス・バドミントン上達ガイド</h1>
+    <p class="hero-sub">「3〜4秒遅延」で、サーブの打点やフットワークを客観的に確認する。</p>
+    <div class="header-meta">
+        <span>📅 最終更新: 2026年1月15日</span>
+        <span>🎾 対象: テニス・バドミントン（初心者〜競技者）</span>
+    </div>
+    <div class="header-intro">
+        <p>テニスやバドミントンの上達において「自分のフォームを客観的に見る」ことは非常に重要です。サーブのトスの高さ・インパクトの打点・スプリットステップのタイミングなど、一瞬の動作を自分の目で確認することはできません。</p>
+        <p>このガイドでは、<strong>Form Mirror Pro</strong> の3〜4秒遅延・Fade重ね合わせ・グリッド補助線・ループ機能を活用して、サーブ・フットワーク・ストロークフォームを一人でセルフチェック・改善する方法を解説します。</p>
+    </div>
+    <div class="level-badges">
+        <span class="level-badge">🟢 初心者</span>
+        <span class="level-badge">🔵 中級者</span>
+        <span class="level-badge">🎾 テニス</span>
+        <span class="level-badge">🏸 バドミントン</span>
+        <span class="level-badge">🏟️ コート練習</span>
+        <span class="level-badge">🏠 自宅素振り</span>
+    </div>
+</header>
+
+<!-- 目次 -->
+<nav class="toc" aria-label="目次">
+    <p class="toc-title">📋 目次</p>
+    <ol>
+        <li><a href="#why3to4sec">なぜ「3〜4秒遅延」が効果的なのか？</a></li>
+        <li><a href="#setup">セットアップとカメラ設置のコツ</a></li>
+        <li><a href="#serve">サーブ・スマッシュの動作確認</a></li>
+        <li><a href="#footwork">フットワークの確認</a></li>
+        <li><a href="#strokes">ストローク・リターンの分析</a></li>
+        <li><a href="#loop">ループ機能での反復確認</a></li>
+        <li><a href="#court-grid">コートの白線とグリッドの活用</a></li>
+        <li><a href="#checklist">フォームチェックリスト</a></li>
+        <li><a href="#related">関連ガイド</a></li>
+        <li><a href="#faq">FAQ &amp; トラブルシューティング</a></li>
+    </ol>
+</nav>
+
+<main>
+
+    <!-- なぜ3〜4秒か -->
+    <section id="why3to4sec">
+        <h2>⏱️ なぜ「3〜4秒遅延」が効果的なのか？</h2>
+        <div class="card">
+            <h3>動作のリズムに合わせた最適なフィードバックタイミング</h3>
+            <p>テニスのサーブや1スイングの動作は約1〜2秒で完了します。3〜4秒の遅延設定であれば、サーブを打ち終えてホームポジションに戻り、一呼吸置いた瞬間にリプレイが画面に映し出されます。</p>
+            <p>動作の「感触（インパクトの感覚・ラケットの振り抜き感・足の踏み込み感）」が体に残っているうちに映像で確認できるため、「今の感覚はどう見えたか」を照合しやすく、修正ポイントを特定しやすくなります。</p>
+
+            <table class="delay-table">
+                <thead><tr><th>遅延設定</th><th>おすすめシーン</th><th>特徴</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><strong>3秒</strong></td>
+                        <td>サーブ練習・素振り・室内近距離確認</td>
+                        <td>テンポよく繰り返せる。動作が短くすぐ確認できる場合</td>
+                    </tr>
+                    <tr>
+                        <td class="recommended"><strong>4秒（推奨）</strong></td>
+                        <td>コートでの実打・フットワーク込みの動作</td>
+                        <td>打ち終わってホームポジションに戻るのにちょうど良い余裕</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tips-box"><strong>💡 設定方法：</strong> Form Mirror Pro の「Delay」スライダーを3または4秒に設定するだけです。カメラをコート端に三脚で固定し、いつも通り打つだけで自動的に遅延映像が表示されます。</div>
+        </div>
+    </section>
+
+    <!-- セットアップ -->
+    <section id="setup">
+        <h2>📱 セットアップとカメラ設置のコツ</h2>
+        <div class="card">
+            <p>Form Mirror Pro でテニス・バドミントンのフォームチェックを始める基本的な準備手順です。</p>
+            <ol class="step-list">
+                <li><strong>ChromeまたはSafariでForm Mirror Proを開く</strong> — インストール不要。URLにアクセスするだけで使えます。</li>
+                <li><strong>カメラのアクセス許可を承認する</strong> — ブラウザから許可を求められたら「許可」を選択します。</li>
+                <li><strong>スマートフォンを三脚で固定する</strong> — コートのベースライン後方またはネット横のフェンス際など安全な場所に設置します。</li>
+                <li><strong>Delayを「3〜4s」に設定する</strong> — 下部スライダーの「Delay」を設定します。サーブ確認は3秒、フットワーク込みは4秒がおすすめです。</li>
+                <li><strong>Gridをオンにする（任意）</strong> — コートの白線に合わせてグリッドを設定することで、体の傾きや位置の基準線として活用できます。</li>
+                <li><strong>お手本動画を読み込む（任意）</strong> — プロ選手の動画を「Choose File」で読み込み、Fadeで重ね合わせる準備をします。</li>
+                <li><strong>練習を開始する</strong> — いつも通り打つだけ。3〜4秒後に映像が表示されます。</li>
+            </ol>
+        </div>
+
+        <div class="setup-tip">
+            <h3>📍 コートでの設置のコツ</h3>
+            <p>ベースライン後方（後方カメラ）またはネット横のフェンス際（横からカメラ）に三脚を設置してください。グリッドをコートの白線（ベースラインやサイドライン）に合わせることで、姿勢や位置を確認するための正確な基準線として機能します。</p>
+            <p><strong>サーブ確認：</strong> コートのベースライン後方に設置し、全身が映るよう少し引いた距離に調整してください。トスの高さ・踏み込みの位置・フォロースルーがすべて確認できます。</p>
+            <p><strong>フットワーク確認：</strong> ベースラインの側面（サイドライン外）に設置すると、前後・左右のステップが確認しやすくなります。</p>
+        </div>
+    </section>
+
+    <!-- サーブ・スマッシュ -->
+    <section id="serve">
+        <h2>🎯 サーブ・スマッシュの動作確認</h2>
+        <p>サーブ・スマッシュは再現性が高いほど安定した成績につながります。Form Mirror Pro の各機能で一球ごとのフォームを客観的に記録・確認することで、再現性の高いフォームを習得できます。</p>
+
+        <div class="drill-section">
+            <div class="drill-card">
+                <strong>📐 トスの高さと位置（グリッド）</strong>
+                <p>グリッドの水平線を理想的なトスの最高到達点の高さに合わせます。毎回この水平線と同じ高さまでトスが上がっているか、また垂直線との関係でトスが左右・前後にブレていないかを確認できます。</p>
+                <div class="tips-box"><strong>💡 Tip:</strong> トスがブレると打点が安定しないため、トスの一定性はサーブ安定の最重要ポイントです。グリッドで「毎回同じ位置に上げられているか」を客観的に確認してください。</div>
             </div>
-        </section>
+            <div class="drill-card">
+                <strong>✨ インパクトの形（Fadeモード）</strong>
+                <p>プロ選手のサーブ動画を読み込み、インパクトの瞬間でFadeで重ね合わせます。肘の伸び具合・ラケット面の向き・打点の高さ・体の回転量の差を視覚的に比較できます。</p>
+                <div class="tips-box"><strong>💡 Tip:</strong> インパクト時に「肘が十分に伸びているか」「腕が耳の横まで伸びているか」をFadeで重ねて確認することで、サーブの威力と安定性に直結する修正ポイントが見えやすくなります。</div>
+            </div>
+        </div>
 
-        <section>
-            <h2>📐 サーブ・スマッシュの動作確認</h2>
+        <div class="card" style="margin-top: 20px;">
+            <h3>サーブフォームの主要チェックポイント</h3>
+            <table class="check-table">
+                <thead><tr><th>フェーズ</th><th>チェック項目</th><th>推奨機能</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>構え・グリップ</strong></td><td>コンチネンタルグリップの握り・体の向き</td><td>遅延3〜4秒</td></tr>
+                    <tr><td><strong>トス</strong></td><td>毎回同じ高さ・位置にトスが上がっているか</td><td>Grid（水平線）</td></tr>
+                    <tr><td><strong>テイクバック</strong></td><td>肘が適切な位置まで引けているか</td><td>遅延・Fade</td></tr>
+                    <tr><td><strong>インパクト</strong></td><td>打点の高さ・肘の伸び・ラケット面の向き</td><td>Fade</td></tr>
+                    <tr><td><strong>フォロースルー</strong></td><td>体が前方に向かって自然に振り抜けているか</td><td>遅延3〜4秒</td></tr>
+                    <tr><td><strong>着地</strong></td><td>サービスラインを越えていないか・バランスが保てているか</td><td>Grid（垂直線）</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- フットワーク -->
+    <section id="footwork">
+        <h2>🏃 フットワークの確認</h2>
+        <div class="card">
+            <h3>スプリットステップのタイミング（スマート・シンクロ）</h3>
+            <p>スプリットステップは「相手がラケットにボールを当てた瞬間」に合わせて着地するのが理想です。お手本の動画とForm Mirror Proを同期させることで、自分のスプリットステップのタイミングがお手本と比べてどれだけずれているかを視覚的に確認できます。</p>
+            <div class="tips-box"><strong>💡 タイミングのチェック方法：</strong> お手本動画の「相手がインパクトする瞬間」をPoint Aに設定し、自分の動きをDelay 3〜4秒で確認します。自分がスプリットステップを踏むタイミングがどれだけ遅れているかが一目でわかります。</div>
+
+            <h3>ホームポジションへの戻り（Fadeモード）</h3>
+            <p>打った後に最短距離でホームポジションに戻れているか。Fade機能でお手本のフットワークと重ね合わせることで、無駄な動き・遠回りのステップを視覚的に確認できます。</p>
+
+            <h3>フットワークの主要チェックポイント</h3>
+            <ul>
+                <li><strong>スプリットステップの着地タイミング：</strong> 相手のインパクト時に体が浮いているか</li>
+                <li><strong>ファーストステップの方向：</strong> ボールに向かって最短経路で動けているか</li>
+                <li><strong>打球後の戻り：</strong> ホームポジションへの戻りが遅れていないか</li>
+                <li><strong>クロスオーバーステップ vs サイドステップ：</strong> 距離に応じた適切なステップを使えているか</li>
+                <li><strong>打球時の足の位置：</strong> ストロークを打つ際に適切な踏み込みができているか</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ストローク -->
+    <section id="strokes">
+        <h2>🏸 ストローク・リターンの分析</h2>
+        <div class="card">
+            <h3>フォアハンドストロークの確認</h3>
+            <p>グリッドの水平線を腰の高さに合わせ、テイクバックからフォロースルーまでの腰のラインが一定に保たれているかを確認します。Fadeでプロのストロークと重ねることで、テイクバックの深さ・ラケットのスイング軌道・フォロースルーの完成度を比較できます。</p>
+            <div class="tips-box"><strong>💡 打球点の確認：</strong> フォアハンドの打球点は「利き腕の前方・腰の高さ前後」が基本です。グリッドの垂直線・水平線の交点に打球点が来るよう意識することで、一定の打球点の習慣化に役立ちます。</div>
+
+            <h3>バックハンドストロークの確認</h3>
+            <p>両手打ちバックハンドの場合、グリッドで両肩のラインがスイング時に水平を保っているかを確認します。片手バックハンドはテイクバックでのラケットの引き具合・インパクト時の肩の回転をFadeでプロと比較することで、スイングの弱点を特定できます。</p>
+
+            <h3>バドミントンのスマッシュ・ドロップ</h3>
             <div class="drill-section">
                 <div class="drill-card">
-                    <strong>トスの高さの目安 (Grid)</strong>
-                    <p>理想的なトスの高さに水平なグリッド線を引きます。垂直線も併用することで、トスが左右に大きくブレていないかを視覚的に確認する目安になります。</p>
+                    <strong>🏸 スマッシュのインパクトポイント確認</strong>
+                    <p>グリッドの水平線を頭上のインパクトポイントの高さに設定します。毎回同じ高さで打てているか・ラケット面が下向きに正確に向いているかを確認してください。Fadeでプロのスマッシュフォームと重ねると、腕の伸び・体の回転の差が視覚化されます。</p>
                 </div>
                 <div class="drill-card">
-                    <strong>インパクトの形 (✨ Fade)</strong>
-                    <p>お手本の動作を ✨ <strong>Fade</strong> モードで重ねます。肘の伸び具合や、打点が適切な位置にあるかを視覚的に比較・分析するのに役立ちます。</p>
+                    <strong>🏸 フットワーク・ポジショニング</strong>
+                    <p>バドミントンはシャトルの速度が非常に高速なため、ポジショニングとスプリットステップの精度が重要です。遅延映像で「打球前の準備姿勢・打球後のホームへの戻り」を繰り返し確認することで、無駄な動きを減らせます。</p>
                 </div>
             </div>
-        </section>
-
-        <section>
-            <h2>🏃 フットワークのチェック</h2>
-            <div class="card">
-                <h3>ステップのタイミング (Smart Sync)</h3>
-                <p>参考動画と自分を同期させて比較。相手が打つ瞬間のスプリットステップなど、タイミングの差異を視覚的に捉えることで、効率的な動作の参考にできます。</p>
-
-                <h3>ホームポジションへの戻り (✨ Fade)</h3>
-                <p>打った後、最短距離でホームポジションに戻れているか。✨ <strong>Fade</strong> 機能でお手本や自身のベストな動きと比較することで、無駄の少ない足運びを客観的に確認できます。</p>
-            </div>
-        </section>
-
-        <section>
-            <h2>🔁 ループ機能での反復確認</h2>
-            <div class="card">
-                <p><strong>反復練習を効率化</strong><br>
-                ループ機能を使い、特定のショットを反復します。1球ごとに遅延映像で自身のフォームを確認し、デバイスに触れることなく次の球へ移行できるため、集中力を維持した練習をサポートします。</p>
-            </div>
-        </section>
-
-        <section class="setup-tip">
-            <h3>🛡️ コートでの設置のコツ</h3>
-            <p>ベースライン後方やネット横に三脚を設置してください。画面上の「グリッド」をコートの白線（ベースラインやサイドライン）に合わせることで、姿勢や位置を確認するための正確な基準線として機能します。</p>
-        </section>
-
-        <section>
-            <h2>❓ FAQ & Troubleshooting</h2>
-            <div class="card">
-                <div class="faq-item">
-                    <span class="faq-q">Q. なぜ無料で使えるのですか？ 後から課金されませんか？</span>
-                    <span class="faq-a">A. 個人開発者の技術ポートフォリオとして運営しているため、完全無料です。後から請求が来ることは絶対にありません。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. フォーム確認で撮影した動画は流出しませんか？</span>
-                    <span class="faq-a">A. はい、安全です。動画データはサーバーへ送信されず、すべてお使いの端末（ブラウザ）内だけで処理されるため、外部に漏れる心配はありません。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. 広告は表示されますか？</span>
-                    <span class="faq-a">A. 運営費維持のために一部表示していますが、お子様が見ても問題のない健全な広告のみに制限しています。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. テニスの練習で3〜4秒の遅延が推奨されるのはなぜですか？</span>
-                    <span class="faq-a">A. サーブを打ち終わってホームポジションに戻り、一呼吸置いてから画面を見るのにちょうど良い時間だからです。動作の感覚が残っているうちに確認できます。</span>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-q">Q. コートの白線とグリッドを合わせるメリットは？</span>
-                    <span class="faq-a">A. 画面上の線が実際のコートと平行・垂直になることで、自身の体の傾きやステップの踏み込み位置をより正確に把握するための基準になります。</span>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <a href="/index.html" style="display: block; margin-bottom: 15px; color: var(--primary); text-decoration: none; font-weight: bold;">← Back to Top</a>
-        <div style="display: flex; justify-content: center; gap: 15px; border-top: 1px solid #eee; padding-top: 15px;">
-            <a href="/ja/about.html" style="color: #888; text-decoration: none; font-size: 12px;">About Us</a>
-            <a href="/ja/legal.html" style="color: #888; text-decoration: none; font-size: 12px;">プライバシーと利用規約</a>
-            <a href="/ja/contact.html" style="color: #888; text-decoration: none; font-size: 12px;">お問い合わせ</a>
         </div>
-        <p style="color: #bbb; font-size: 10px; margin-top: 15px;">&copy; 2026 KuniFami Soft Studio</p>
-    </footer>
+    </section>
+
+    <!-- ループ練習 -->
+    <section id="loop">
+        <h2>🔁 ループ機能での反復確認</h2>
+        <div class="card">
+            <h3>反復練習の効率を最大化する</h3>
+            <p>A-Bループ機能を使い、お手本動画の特定区間（例：サーブのトスからインパクトまで・スプリットステップのフォーム）を繰り返し再生します。デバイスに触れることなく次の打球へ移行できるため、練習のテンポを維持しながらフォーム確認を繰り返せます。</p>
+
+            <div class="drill-section">
+                <div class="drill-card">
+                    <strong>🔁 サーブ練習でのループ活用例</strong>
+                    <ol style="padding-left:18px; margin:0; font-size:0.95rem; line-height:2.0;">
+                        <li>プロのサーブ動画を読み込み、トスからフォロースルーのA点・B点を設定</li>
+                        <li>LoopをONにしてお手本を繰り返し再生</li>
+                        <li>Delay 3〜4sでサーブを1球打つ</li>
+                        <li>3〜4秒後に遅延映像で自分のフォームを確認</li>
+                        <li>修正ポイントを意識して次の1球へ</li>
+                    </ol>
+                </div>
+                <div class="drill-card">
+                    <strong>🔁 フットワーク練習でのループ活用例</strong>
+                    <p>お手本のフットワーク動画のスプリットステップ区間をA-Bループに設定し、自分もDelay 4秒で同じ動作を繰り返します。「お手本と自分のタイミングのズレ」をセットごとに確認しながら徐々に修正することで、反応速度と動作の質を同時に高められます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- コート×グリッド -->
+    <section id="court-grid">
+        <h2>📐 コートの白線とグリッドの活用</h2>
+        <div class="card">
+            <p>テニスやバドミントンのコートには水平・垂直に引かれた白線があります。これをグリッドの補助線と合わせることで、フォームを確認するための「絶対的な基準」として活用できます。</p>
+
+            <h3>コート白線とグリッドの合わせ方</h3>
+            <ol class="step-list">
+                <li>スマートフォンをコートの白線が映る角度・距離に設置する</li>
+                <li>Gridをオンにして補助線を表示する</li>
+                <li>グリッドの水平線がベースライン・サービスラインと平行になるようカメラの角度を微調整する</li>
+                <li>グリッドの垂直線がセンターラインやサイドラインと平行になることを確認する</li>
+            </ol>
+
+            <h3>コート×グリッドで確認できること</h3>
+            <table class="check-table">
+                <thead><tr><th>確認項目</th><th>コートのどの線を使うか</th><th>何がわかるか</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>体の傾き</strong></td><td>ベースライン（水平線）</td><td>体が左右に傾いていないか</td></tr>
+                    <tr><td><strong>ステップの方向</strong></td><td>サイドライン（垂直線）</td><td>コートに対して直角に動けているか</td></tr>
+                    <tr><td><strong>打球後の位置</strong></td><td>センターライン（垂直線）</td><td>ホームポジションに戻れているか</td></tr>
+                    <tr><td><strong>サービスラインへの踏み込み</strong></td><td>サービスライン（水平線）</td><td>サーブ時にサービスラインを越えていないか</td></tr>
+                </tbody>
+            </table>
+            <div class="tips-box"><strong>💡 Tip:</strong> コートのラインとグリッドを一致させた後は、カメラを動かさず同じ位置で継続的に確認することで、日をまたいだフォームの変化を正確に比較できます。</div>
+        </div>
+    </section>
+
+    <!-- チェックリスト -->
+    <section id="checklist">
+        <h2>✅ 練習セッション フォームチェックリスト</h2>
+        <div class="card">
+            <p>毎回の練習でフォームチェックに抜け漏れが出ないよう、以下のリストを参考にしてください。一度に複数を修正しようとせず、1セッションで1〜2項目に絞ることが上達の近道です。</p>
+            <table class="check-table">
+                <thead><tr><th>技術・フェーズ</th><th>チェック項目</th><th>推奨機能</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>サーブ①</strong></td><td>トスの高さ・位置が毎回一定か</td><td>Grid（水平線）</td></tr>
+                    <tr><td><strong>サーブ②</strong></td><td>インパクト時の肘の伸び・打点の高さ</td><td>Fade・遅延</td></tr>
+                    <tr><td><strong>サーブ③</strong></td><td>フォロースルーが自然に振り抜けているか</td><td>遅延3〜4秒</td></tr>
+                    <tr><td><strong>フットワーク①</strong></td><td>スプリットステップのタイミング</td><td>遅延・Sync</td></tr>
+                    <tr><td><strong>フットワーク②</strong></td><td>打球後のホームポジションへの戻り</td><td>Fade・遅延</td></tr>
+                    <tr><td><strong>フォアハンド</strong></td><td>テイクバックの深さ・インパクトの打球点</td><td>Fade・Grid</td></tr>
+                    <tr><td><strong>バックハンド</strong></td><td>両肩のラインの水平性・スイング軌道</td><td>Grid・Fade</td></tr>
+                    <tr><td><strong>全体</strong></td><td>体の傾き・軸のブレ</td><td>Grid（コート線基準）</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 関連ガイド -->
+    <section id="related">
+        <h2>📚 関連ガイド</h2>
+        <div class="related-grid">
+            <a href="/ja/guide/ghost-mode-guide.html" class="related-card">
+                <span>✨</span>Fade＆グリッド<br>活用ガイド
+            </a>
+            <a href="/ja/guide/baseball-softball-tips.html" class="related-card">
+                <span>⚾</span>野球・ソフトボール<br>上達ガイド
+            </a>
+            <a href="/ja/guide/FormMirrorProforiphoneUserManual.html" class="related-card">
+                <span>📱</span>iPhone版<br>操作マニュアル
+            </a>
+            <a href="/ja/guide/smart-sync-recording.html" class="related-card">
+                <span>🎥</span>スマート・シンクロ<br>録画ガイド
+            </a>
+            <a href="/ja/guide/getting-started.html" class="related-card">
+                <span>🚀</span>はじめての方へ<br>導入ガイド
+            </a>
+            <a href="/ja/guide/faq.html" class="related-card">
+                <span>❓</span>よくある質問<br>(FAQ)
+            </a>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <h2>❓ FAQ &amp; トラブルシューティング</h2>
+        <div class="card">
+            <div class="faq-item">
+                <span class="faq-q">なぜ無料で使えるのですか？後から課金されませんか？</span>
+                <span class="faq-a">個人開発者の技術ポートフォリオとして公開しており、完全無料でご利用いただけます。サブスクリプションや有料プランは存在せず、後から請求が来ることは一切ありません。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">フォーム確認で撮影した動画は外部に流出しませんか？</span>
+                <span class="faq-a">はい、安全です。動画データはサーバーへ一切送信されず、すべてお使いのブラウザ内だけで処理されます。インターネット上に保存されることもないため、プライバシーは完全に守られます。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">テニスの練習で3〜4秒の遅延が推奨されるのはなぜですか？</span>
+                <span class="faq-a">サーブを打ち終えてホームポジションに戻り、一呼吸置いてから画面を見るのにちょうど良い時間だからです。動作の感覚が残っているうちに確認することで、感覚と映像を照合しやすくなります。3秒は素振りや近距離確認向け、4秒は実打込みのコート練習向けです。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">コートの白線とグリッドを合わせるメリットは何ですか？</span>
+                <span class="faq-a">コートの白線は完全に水平・垂直に引かれているため、これにグリッドを合わせることで「絶対的に正確な基準線」を画面上に持てます。体の傾き・ステップの方向・打球後の位置などを、感覚ではなく客観的な基準で確認できるようになります。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">コートにスマートフォンを設置しても大丈夫ですか？</span>
+                <span class="faq-a">コートの外側（フェンス際・ベースライン後方のスペース）に三脚を使って設置してください。他のプレイヤーの邪魔にならない場所を選び、風で倒れないよう重しを置くか安定した三脚を使用してください。施設によっては撮影に関するルールがある場合があるため、管理者に事前に確認することをおすすめします。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">屋外コートで直射日光があたる場合、画面が見えにくいです。</span>
+                <span class="faq-a">スマートフォンの画面輝度を最大にすることである程度対応できます。それでも見えにくい場合は、スマートフォンが日陰になるよう設置位置を調整するか、日よけカバー（スマートフォン用ビューアー）を使用することをおすすめします。また、確認の際は画面に体を近づけることでも見やすくなります。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">バドミントンのスマッシュのような高速動作でも確認できますか？</span>
+                <span class="faq-a">遅延映像での確認に加えて、Form Mirror Pro（PC版）で再生速度を0.5xに落とすことで、高速動作も詳細に確認できます。また、スマートフォンのスロー動画機能（240fps）で撮影した映像をChoose Fileで読み込むことで、インパクトの瞬間のラケット面の向きなども精密に確認できます。</span>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <a href="/index.html" style="display: block; margin-bottom: 15px; color: var(--primary); text-decoration: none; font-weight: bold;">← ホームへ戻る</a>
+    <div class="footer-links">
+        <a href="/ja/about.html">About Us</a>
+        <a href="/ja/legal.html">プライバシーと利用規約</a>
+        <a href="/ja/contact.html">お問い合わせ</a>
+    </div>
+    <p style="color: #bbb; font-size: 0.8rem; margin-top: 15px;">&copy; 2026 KuniFami Soft Studio. All rights reserved.</p>
+</footer>
+```
+
 </div>
 
 </body>
